@@ -24,12 +24,16 @@ import {
   SunMedium,
   SunDim,
   SunMoon,
+  ArrowDown,
+  ArrowRight,
+  ChevronRightIcon,
 } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [darkTheme, toggleDarkTheme] = useState(false);
   const [isEnglish, setIsEnglish] = useState(true);
+  const [morePagesDropDown, setMorePagesDropDown] = useState(true);
 
   const menuPagesDesktop = [
     "Prayer Times",
@@ -110,22 +114,64 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6 ">
             <nav className="flex gap-3 lg:gap-5 xl:gap-12">
-              {menuPagesDesktop.map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  className="text-gray-700 text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
-                >
-                  {item}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                </a>
-              ))}
+              {menuPagesDesktop.map((item, index) =>
+                menuPagesDesktop.length - 1 === index ? (
+                  <div
+                    onMouseEnter={() => setMorePagesDropDown(true)}
+                    onMouseLeave={() => setMorePagesDropDown(false)}
+                  >
+                    <a
+                      key={item}
+                      href="#"
+                      className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                    >
+                      {item}{" "}
+                      <ChevronRightIcon
+                        className={`transition-all duration-300   ${
+                          morePagesDropDown ? "rotate-0" : "rotate-90"
+                        }`}
+                      />
+                      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+                    </a>
+                    {
+                      <div
+                        className={`transition-all duration-300 bg-white border rounded-lg shadow-sm border-gray-300 z-900 absolute ${
+                          morePagesDropDown !== true && "hidden"
+                        }`}
+                      >
+                        <div className="py-2 px-3 flex flex-col gap-2">
+                          {["Blog", "About Us", "Contact Us", "Events"].map(
+                            (item) => (
+                              <a
+                                key={item}
+                                href="#"
+                                className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                              > {item}
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+                              </a>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    }
+                  </div>
+                ) : (
+                  <a
+                    key={item}
+                    href="#"
+                    className="text-gray-700 text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                  >
+                    {item}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+                  </a>
+                )
+              )}
             </nav>
           </div>
 
           <div className="flex gap-7 sm:gap-14 md:gap-2 lg:gap-7 justify-center items-center">
             {/*  Change Language  */}
-            <div>
+            <div className="md:scale-90 lg:scale-100">
               <div className="bg-gray-100 flex  border border-gray-200 rounded-full items-center relative">
                 <button
                   onClick={() => setIsEnglish(!isEnglish)}
@@ -155,7 +201,7 @@ const Navbar = () => {
             </div>
 
             {/* Change Theme Background */}
-            <div>
+            <div className="md:scale-90 lg:scale-100">
               {darkTheme ? (
                 <button
                   onClick={() => toggleDarkTheme(!darkTheme)}
