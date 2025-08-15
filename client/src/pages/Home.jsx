@@ -10,8 +10,6 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <Navbar />
-
       {/* Hero Section */}
       <section
         className="relative grid min-h-[560px] place-items-center overflow-hidden bg-neutral-900 text-white"
@@ -57,7 +55,6 @@ const Home = () => {
       {/* Events */}
       <Events/>
       
-      <Footer/>
     </div>
   );
 };
