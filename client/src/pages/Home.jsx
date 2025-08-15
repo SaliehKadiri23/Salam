@@ -1,9 +1,13 @@
-import React, { useId, useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import MosqueHeroImage from "../assets/Mosque - Hero Image.png";
-import { ExternalLink } from "lucide-react";
+import { Calendar, ExternalLink } from "lucide-react";
+import Footer from "../components/Footer";
 
 const Home = () => {
+  
+
+
   return (
     <div className="w-full">
       <Navbar />
@@ -47,11 +51,98 @@ const Home = () => {
       </section>
 
       {/* Prayer Tools */}
-      <PrayerTools/>
-      <Resources/>
+      <PrayerTools />
+      <Resources />
+
+      {/* Events */}
+      <Events/>
+      
+      <Footer/>
     </div>
   );
 };
+
+// Events Section
+function Events(){
+  const formatDate = (iso) => new Date(iso).toLocaleDateString();
+  const events = useMemo(
+    () => [
+      {
+        title: "Islamic Conference 2024",
+        desc: "Join us for a weekend of inspiring lectures, workshops, and networking.",
+        date: Date.now(),
+        image:
+          "wrw",
+      },
+      {
+        title: "Community Iftar Dinner",
+        desc: "Break your fast with fellow Muslims in a spirit of unity and fellowship.",
+        date: Date.now(),
+        image:
+          "https://lh3.googleusercontent.com/aida-public/AB6AXuBzlmkQAVpX-3O6M3S1VjKhd4c7DzkjlvyJSbYKmWavTtIxbSO375DPxeleLYhnAJ2U7gtgsh107VF3GSIAyVoz_evApG0PoW0lfGItznR5k5o_mM9Y6IZV4HS7MwdNkQeNE1DXCJXhXEryPfrNruIhcTqZcwTxnygY9MJbJysOqIgkb37IQmA-rOmeUy4DP-VT5dUrpBpePo3ErGxIiTpH74Wz2S_B2lxf3qajmNzfXJqtgwTrIMrkx6rit-KH3NAznYpeZ6OAUl4",
+      },
+      {
+        title: "Eid al-Adha Celebration",
+        desc: "Celebrate Eid with prayers, festivities, and community gatherings.",
+        date: Date.now(),
+        image:
+          "jjk",
+      },
+    ],
+    []
+  );
+
+  return (
+    <div className="w-full flex justify-center items-center bg-gray-100">
+      <section
+        id="events"
+        className="rounded-xl bg-slate-50 dark:bg-slate-300 p-6 max-w-[1130px] w-full my-7 mx-3 "
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <h3 className="text-2xl font-semibold">Events</h3>
+          <div className="text-sm text-gray-800">
+            Join upcoming community activities
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {events.map((e) => (
+            <article
+              key={e.id}
+              className="rounded-lg bg-gray-100 shadow-sm transition-all duration-300 hover:scale-110 overflow-hidden"
+            >
+              <div
+                className="h-44 bg-cover bg-center"
+                style={{ backgroundImage: `url('${e.image}')` }}
+                role="img"
+                aria-label={e.title}
+              />
+              <div className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <h4 className="font-semibold text-lg">{e.title}</h4>
+                  <time className="text-sm text-gray-700">
+                    {formatDate(e.date)}
+                  </time>
+                </div>
+                <p className="mt-2 text-sm text-gray-600">
+                  {e.desc}
+                </p>
+                <div className="mt-4 flex items-center gap-3">
+                  <Calendar
+                    size={18}
+                    className="text-green-600 "
+                  />
+                  <a href="#" className="text-sm font-medium text-green-500">
+                    Learn more
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
 
 // Prayer Tools Section
 function PrayerTools() {
@@ -239,14 +330,14 @@ function Resources() {
             Resources &amp; Educational Content
           </h3>
         </header>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
           {cards.map((c) => (
             <article
               key={c.title}
               className="group overflow-hidden rounded-2xl bg-white/80 shadow-sm ring-1 ring-gray-200 transition duration-300 hover:-translate-y-1 hover:shadow-md backdrop-blur"
             >
               <div
-                className="h-48 w-full bg-cover bg-center"
+                className="md:h-48 h-40 w-full bg-cover bg-center"
                 style={{ backgroundImage: `url('${c.image}')` }}
                 aria-hidden
               />
