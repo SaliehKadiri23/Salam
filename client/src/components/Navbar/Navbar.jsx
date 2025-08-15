@@ -27,13 +27,15 @@ import {
   ArrowDown,
   ArrowRight,
   ChevronRightIcon,
+  HeartHandshake,
+  Globe,
 } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [darkTheme, toggleDarkTheme] = useState(false);
   const [isEnglish, setIsEnglish] = useState(true);
-  const [morePagesDropDown, setMorePagesDropDown] = useState(true);
+  const [morePagesDropDown, setMorePagesDropDown] = useState(false);
 
   const menuPagesDesktop = [
     "Prayer Times",
@@ -58,7 +60,7 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-white/20 shadow-sm">
+    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
@@ -146,7 +148,9 @@ const Navbar = () => {
                                 key={item}
                                 href="#"
                                 className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
-                              > {item}
+                              >
+                                {" "}
+                                {item}
                                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
                               </a>
                             )
@@ -170,8 +174,8 @@ const Navbar = () => {
           </div>
 
           <div className="flex gap-7 sm:gap-14 md:gap-2 lg:gap-7 justify-center items-center">
-            {/*  Change Language  */}
-            <div className="md:scale-90 lg:scale-100">
+            {/*  Change Language - Mobile/Tablet version  */}
+            <div className="hidden md:flex md:scale-90 lg:scale-100 lg:hidden">
               <div className="bg-gray-100 flex  border border-gray-200 rounded-full items-center relative">
                 <button
                   onClick={() => setIsEnglish(!isEnglish)}
@@ -198,6 +202,18 @@ const Navbar = () => {
                   <div className=" rounded-full bg-gray-400 size-7"></div>
                 </div>
               </div>
+            </div>
+
+            {/* Change Language - Desktop version  */}
+            <div className="items-center md:hidden lg:flex">
+              <button
+                type="button"
+                onClick={() => setIsEnglish(!isEnglish)}
+                className="inline-flex items-center gap-2 transition-all duration-300 hover:scale-110 rounded-lg bg-gray-100 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400/60"
+              >
+                <Globe className="size-4" aria-hidden />
+                <span className="truncate">English/العربية</span>
+              </button>
             </div>
 
             {/* Change Theme Background */}
