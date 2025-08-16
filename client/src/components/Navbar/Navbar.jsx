@@ -29,34 +29,43 @@ import {
   ChevronRightIcon,
   HeartHandshake,
   Globe,
+  ChevronDown,
 } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [darkTheme, toggleDarkTheme] = useState(false);
-  const [isEnglish, setIsEnglish] = useState(true);
   const [morePagesDropDown, setMorePagesDropDown] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
   const menuPagesDesktop = [
-    "Prayer Times",
-    "Resources",
-    "Community",
-    "Donate",
-    "More",
+    {title:"Prayer Times", link: "prayer_times"},
+    {title:"Resources", link:"resources"},
+    {title:"Community", link:"community"},
+    {title:"Donate", link:"donate"},
+    {title:"More"},
     // "Blog",
     // "About Us",
     // "Contact Us",
     // "Events",
   ];
   const menuPagesMobile = [
-    "Prayer Times",
-    "Resources",
-    "Community",
-    "Donate",
-    "Events",
-    "Blog",
-    "About Us",
-    "Contact Us",
+    {title:"Prayer Times", link: "prayer_times"},
+    {title:"Resources", link:"resources"},
+    {title:"Community", link:"community"},
+    {title:"Donate", link:"donate"},
+    {title:"Events", link:"events"},
+    {title:"Blog", link:"blog"},
+    {title:"About Us", link:"about_us"},
+    {title:"Contact Us", link:"contact_us"},
+  ];
+
+  const languages = [
+    { code: "en", name: "English" },
+    { code: "ar", name: "العربية" },
+    { code: "ur", name: "اردو" },
+    { code: "fr", name: "Français" },
   ];
 
   return (
@@ -64,7 +73,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
-          <div className="flex items-center gap-3 cursor-pointer">
+          <a href="/" className="flex items-center gap-3 cursor-pointer">
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-r  from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
                 <Stars
@@ -108,7 +117,7 @@ const Navbar = () => {
               className="text-green-600 font-bold ml-[-1.0em] mb-[1.3em]"
               size={"1.2em"}
             />
-          </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6 ">
@@ -119,19 +128,18 @@ const Navbar = () => {
                     onMouseEnter={() => setMorePagesDropDown(true)}
                     onMouseLeave={() => setMorePagesDropDown(false)}
                   >
-                    <a
-                      key={item}
-                      href="#"
+                    <p
+                      key={item.title}
                       className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
                     >
-                      {item}{" "}
+                      {item.title}{" "}
                       <ChevronRightIcon
                         className={`transition-all duration-300   ${
                           morePagesDropDown ? "rotate-0" : "rotate-90"
                         }`}
                       />
                       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                    </a>
+                    </p>
                     {
                       <div
                         className={`transition-all duration-300 bg-white border rounded-lg shadow-sm border-gray-300 z-900 absolute ${
@@ -139,30 +147,33 @@ const Navbar = () => {
                         }`}
                       >
                         <div className="py-2 px-3 flex flex-col gap-2">
-                          {["Blog", "About Us", "Contact Us", "Events"].map(
-                            (item) => (
-                              <a
-                                key={item}
-                                href="#"
-                                className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
-                              >
-                                {" "}
-                                {item}
-                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                              </a>
-                            )
-                          )}
+                          {[
+                            { title: "Blog", link: "blog" },
+                            { title: "Events", link: "events" },
+                            { title: "About Us", link: "about_us" },
+                            { title: "Contact Us", link: "contact_us" },
+                          ].map((item) => (
+                            <a
+                              key={item.title}
+                              href={`/${item.link}`}
+                              className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                            >
+                              {" "}
+                              {item.title}
+                              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+                            </a>
+                          ))}
                         </div>
                       </div>
                     }
                   </div>
                 ) : (
                   <a
-                    key={item}
-                    href="#"
+                    key={item.title}
+                    href={`/${item.link}`}
                     className="text-gray-700 text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
                   >
-                    {item}
+                    {item.title}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
                   </a>
                 )
@@ -171,46 +182,43 @@ const Navbar = () => {
           </div>
 
           <div className="flex gap-7 sm:gap-14 md:gap-2 lg:gap-7 justify-center items-center">
-            {/*  Change Language - Mobile/Tablet version  */}
-            <div className="hidden md:flex md:scale-90 lg:scale-100 lg:hidden">
-              <div className="bg-gray-100 flex  border border-gray-200 rounded-full items-center relative">
-                <button
-                  onClick={() => setIsEnglish(!isEnglish)}
-                  className={`font-bold px-2 py-1 rounded-full z-2 
-                   
-                `}
-                >
-                  EN
-                  {/* ${isEnglish && "bg-gray-400"} */}
-                </button>{" "}
-                <button
-                  onClick={() => setIsEnglish(!isEnglish)}
-                  className={`font-bold px-2 py-1 rounded-full z-2 
-                    `}
-                >
-                  AR
-                  {/* ${isEnglish !== true && "bg-gray-400"} */}
-                </button>
-                <div
-                  className={`px-1 py-1 absolute transition-all duration-300 ${
-                    isEnglish !== true && "translate-x-9.5"
-                  }`}
-                >
-                  <div className=" rounded-full bg-gray-400 size-7"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Change Language - Desktop version  */}
-            <div className="items-center md:hidden lg:flex">
+            {/* Language Switcher */}
+            <div className="relative">
               <button
-                type="button"
-                onClick={() => setIsEnglish(!isEnglish)}
-                className="inline-flex items-center gap-2 transition-all duration-300 hover:scale-110 rounded-lg bg-gray-100 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400/60"
+                onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+                className="w-full bg-emerald-600 border border-emerald-600 text-white py-2 px-2 rounded-xl transition-all hover:border-yellow-400 flex items-center justify-between"
               >
-                <Globe className="size-4" aria-hidden />
-                <span className="truncate">English/العربية</span>
+                <div className="flex items-center space-x-2">
+                  <Globe className="h-5 w-5" />
+                  <span>
+                    {
+                      languages.find((lang) => lang.code === selectedLanguage)
+                        ?.name
+                    }
+                  </span>
+                </div>
+                <ChevronDown
+                  className={`h-4 w-4 transform transition-transform ${
+                    showLanguageDropdown ? "rotate-180" : ""
+                  }`}
+                />
               </button>
+              {showLanguageDropdown && (
+                <div className="absolute top-full mt-1 left-0 right-0 mb-2 bg-emerald-800 border border-emerald-600 rounded-xl shadow-xl overflow-hidden z-10">
+                  {languages.map((language) => (
+                    <button
+                      key={language.code}
+                      onClick={() => {
+                        setSelectedLanguage(language.code);
+                        setShowLanguageDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-white hover:bg-emerald-700 transition-colors"
+                    >
+                      {language.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Change Theme Background */}
@@ -284,11 +292,11 @@ const Navbar = () => {
             </div> */}
             {menuPagesMobile.map((item) => (
               <a
-                key={item}
-                href="#"
+                key={item.title}
+                href={`/${item.link}`}
                 className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2"
               >
-                {item}
+                {item.title}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
               </a>
             ))}

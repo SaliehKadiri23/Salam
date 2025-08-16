@@ -20,14 +20,14 @@ const Footer = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
   const navigationLinks = [
-    { name: "Home", href: "#" },
-    { name: "Prayer Times", href: "#" },
-    { name: "Resources & Learning", href: "#" },
-    { name: "About Us", href: "#" },
-    { name: "Events & News", href: "#" },
-    { name: "Donate Charity", href: "#" },
-    { name: "Blog & Articles", href: "#" },
-    { name: "Contact Us", href: "#" },
+    { name: "Home", href: "/" },
+    { name: "Prayer Times", href: "prayer_times" },
+    { name: "Resources & Learning", href: "resources" },
+    { name: "About Us", href: "about_us" },
+    { name: "Events & News", href: "events" },
+    { name: "Donate Charity", href: "donate" },
+    { name: "Blog & Articles", href: "blog" },
+    { name: "Contact Us", href: "contact_us" },
   ];
 
   const socialLinks = [
@@ -53,8 +53,6 @@ const Footer = () => {
 
   return (
     <footer className="relative bg-gradient-to-br from-emerald-300 via-emerald-800 to-emerald-900 text-white overflow-hidden">
-     
-
       {/* Top Border */}
       <div className="relative h-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300 to-transparent animate-pulse"></div>
@@ -83,7 +81,7 @@ const Footer = () => {
             </div>
 
             {/* Prayer Times Widget */}
-            <div className="bg-emerald-800/50 backdrop-blur-sm border border-yellow-400/20 rounded-2xl p-6 shadow-2xl">
+            <div className="bg-emerald-800/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-yellow-400/20 rounded-2xl p-6 shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="bg-yellow-400 p-2 rounded-full">
@@ -120,7 +118,7 @@ const Footer = () => {
             </div>
 
             {/* Newsletter Signup */}
-            <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-400/5 border border-yellow-400/30 rounded-2xl p-6">
+            <div className="bg-gradient-to-br transition-all duration-300 hover:scale-105 from-yellow-500/10 to-yellow-400/5 border border-yellow-400/30 rounded-2xl p-6">
               <h3 className="text-xl font-semibold mb-4 text-center">
                 Stay Connected
               </h3>
@@ -146,6 +144,7 @@ const Footer = () => {
                 </button>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -200,10 +199,10 @@ const Footer = () => {
             </h3>
             <div className="space-y-4">
               {/* Donation Button */}
-              <button className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 border border-yellow-400/50 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2">
+              <a href="/donate" className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 border border-yellow-400/50 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2">
                 <Heart className="h-5 w-5" />
                 <span>Donate Now</span>
-              </button>
+              </a>
 
               {/* Language Switcher */}
               <div className="relative">

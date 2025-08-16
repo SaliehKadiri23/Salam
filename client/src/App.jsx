@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
-import SalamApp from './SalamApp';
 import Layout from './layout/Layout';
 import Home from './pages/Home';
 import PrayerTimes from "./pages/PrayerTimes";
