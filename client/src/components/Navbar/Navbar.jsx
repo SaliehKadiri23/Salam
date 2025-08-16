@@ -31,6 +31,7 @@ import {
   Globe,
   ChevronDown,
 } from "lucide-react";
+import { NavLink } from "react-router";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,25 +41,25 @@ const Navbar = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
   const menuPagesDesktop = [
-    {title:"Prayer Times", link: "prayer_times"},
-    {title:"Resources", link:"resources"},
-    {title:"Community", link:"community"},
-    {title:"Donate", link:"donate"},
-    {title:"More"},
+    { title: "Prayer Times", link: "prayer_times" },
+    { title: "Resources", link: "resources" },
+    { title: "Community", link: "community" },
+    { title: "Donate", link: "donate" },
+    { title: "More" },
     // "Blog",
     // "About Us",
     // "Contact Us",
     // "Events",
   ];
   const menuPagesMobile = [
-    {title:"Prayer Times", link: "prayer_times"},
-    {title:"Resources", link:"resources"},
-    {title:"Community", link:"community"},
-    {title:"Donate", link:"donate"},
-    {title:"Events", link:"events"},
-    {title:"Blog", link:"blog"},
-    {title:"About Us", link:"about_us"},
-    {title:"Contact Us", link:"contact_us"},
+    { title: "Prayer Times", link: "prayer_times" },
+    { title: "Resources", link: "resources" },
+    { title: "Community", link: "community" },
+    { title: "Donate", link: "donate" },
+    { title: "Events", link: "events" },
+    { title: "Blog", link: "blog" },
+    { title: "About Us", link: "about_us" },
+    { title: "Contact Us", link: "contact_us" },
   ];
 
   const languages = [
@@ -73,7 +74,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 cursor-pointer">
+          <div href="/" className="flex items-center gap-3 cursor-pointer">
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-r  from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
                 <Stars
@@ -117,7 +118,7 @@ const Navbar = () => {
               className="text-green-600 font-bold ml-[-1.0em] mb-[1.3em]"
               size={"1.2em"}
             />
-          </a>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6 ">
@@ -130,7 +131,7 @@ const Navbar = () => {
                   >
                     <p
                       key={item.title}
-                      className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                      className="text-gray-700 flex justify-between items-center text-sm lg:text-md  xl:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
                     >
                       {item.title}{" "}
                       <ChevronRightIcon
@@ -153,29 +154,31 @@ const Navbar = () => {
                             { title: "About Us", link: "about_us" },
                             { title: "Contact Us", link: "contact_us" },
                           ].map((item) => (
-                            <a
+                            <NavLink
+                              to={`/${item.link}`}
                               key={item.title}
-                              href={`/${item.link}`}
-                              className="text-gray-700 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                              className="text-gray-700  flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
                             >
                               {" "}
                               {item.title}
                               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                            </a>
+                              {/* </p> */}
+                            </NavLink>
                           ))}
                         </div>
                       </div>
                     }
                   </div>
                 ) : (
-                  <a
+                  <NavLink
+                    to={`/${item.link}`}
                     key={item.title}
-                    href={`/${item.link}`}
-                    className="text-gray-700 text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                    className="text-gray-700 text-sm lg:text-md hover:text-green-600 xl:text-lg font-medium transition-colors duration-200 relative group"
                   >
                     {item.title}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                  </a>
+                    {/* </p> */}
+                  </NavLink>
                 )
               )}
             </nav>
@@ -254,7 +257,7 @@ const Navbar = () => {
           </button>
 
           {/* Only When Logged - In */}
-          <div className="hidden md:flex items-center ml-4">
+          {/* <div className="hidden md:flex items-center ml-4">
             <div className="size-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full overflow-hidden ring-2 ring-white shadow-lg hover:scale-105 transition-transform duration-200">
               <img
                 // src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5-0papwQrmLrhdypIS_bdOqEXSZ7-qljcpnEWE-HG1lpU1bmb106DVURRMF0VrVR06lTP_RMlj1qiCNdgxsQRLRz8nthUNwzx_eiJ2pnjXj0xLuWuYvQEVVMHKX1KEI4q-fY88Y3blxyAnlj9ttoGSFAFPDSYL2pPZNOMRrLnqNGqREUevT8a-9CsMVM_vTeVVDvSLpgM3Uj2yWCVf6D7z5VdXjxHAbAiRQ9JjdjOavP92WFrPdIG2TaQZC8uCFN7Kcj84CpG9IY"
@@ -262,17 +265,21 @@ const Navbar = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Sign Up / Log In */}
-          {/* <div className="hidden md:flex flex-col my-1 gap-1 justify-center items-center lg:flex-row lg:gap-4 md:justify-between ">
-            <button className="px-2  rounded-md py-1 lg:py-2 bg-gradient-to-r from-green-200 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
-              Sign Up
-            </button>
-            <button className="px-3  rounded-md py-1 lg:py-2 grow-1 bg-gradient-to-l from-green-200 to-blue-600 font-bold text-white transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
-              Log In
-            </button>
-          </div> */}
+          <div className="hidden md:flex flex-col my-1 gap-1 justify-center items-center lg:flex-row lg:gap-4 md:justify-between ">
+            <NavLink to={`/sign_up`}>
+              <p className="px-2  rounded-md py-1 lg:py-2 bg-gradient-to-r from-green-200 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
+                Sign Up
+              </p>
+            </NavLink>
+            <NavLink to={`/login`}>
+              <p className="px-3  rounded-md py-1 lg:py-2 grow-1 bg-gradient-to-l from-green-200 to-blue-600 font-bold text-white transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
+                Log In
+              </p>
+            </NavLink>
+          </div>
         </div>
       </div>
 
@@ -291,25 +298,31 @@ const Navbar = () => {
               </div>
             </div> */}
             {menuPagesMobile.map((item) => (
-              <a
-                key={item.title}
-                href={`/${item.link}`}
-                className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2"
-              >
-                {item.title}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-              </a>
+              <NavLink to={`/${item.link}`} key={item.title} className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2">
+                  {item.title}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+              </NavLink>
             ))}
           </div>
 
           {/* Sign Up / Log In */}
           <div className="flex flex-row my-1 gap-4 sm:gap-8 justify-center items-center md:justify-between px-7 mb-5 ">
-            <button className="px-2  rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-200 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
-              Sign Up
-            </button>
-            <button className="px-3  rounded-md py-2 lg:py-2 grow-1 bg-gradient-to-l from-green-200 to-blue-600 font-bold text-white transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
-              Log In
-            </button>
+            <NavLink
+              to={`/sign_up`}
+              className={"w-full flex justify-center items-center"}
+            >
+              <p className="px-2 text-center  rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-200 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
+                Sign Up
+              </p>
+            </NavLink>
+            <NavLink
+              to={`/login`}
+              className={"w-full flex justify-center items-center"}
+            >
+              <p className="px-3  rounded-md text-center py-2 lg:py-2 grow-1 bg-gradient-to-l from-green-200 to-blue-600 font-bold text-white transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
+                Log In
+              </p>
+            </NavLink>
           </div>
         </div>
       )}

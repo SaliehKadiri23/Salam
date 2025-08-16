@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ArrowRight,
 } from "lucide-react";
+import { NavLink } from "react-router";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ const Footer = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
   const navigationLinks = [
-    { name: "Home", href: "/" },
+    { name: "Home", href: "" },
     { name: "Prayer Times", href: "prayer_times" },
     { name: "Resources & Learning", href: "resources" },
     { name: "About Us", href: "about_us" },
@@ -144,7 +145,6 @@ const Footer = () => {
                 </button>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -157,13 +157,11 @@ const Footer = () => {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {navigationLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.href}
-                  className="text-emerald-200 hover:text-yellow-400 transition-colors duration-300 text-sm py-1 hover:translate-x-1 transform inline-block"
-                >
-                  {link.name}
-                </a>
+                <NavLink to={`/${link.href}`} key={index}>
+                  <p className="text-emerald-200 hover:text-yellow-400 transition-colors duration-300 text-sm py-1 hover:translate-x-1 transform inline-block">
+                    {link.name}
+                  </p>
+                </NavLink>
               ))}
             </div>
           </div>
@@ -199,7 +197,10 @@ const Footer = () => {
             </h3>
             <div className="space-y-4">
               {/* Donation Button */}
-              <a href="/donate" className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 border border-yellow-400/50 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2">
+              <a
+                href="/donate"
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 border border-yellow-400/50 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+              >
                 <Heart className="h-5 w-5" />
                 <span>Donate Now</span>
               </a>
