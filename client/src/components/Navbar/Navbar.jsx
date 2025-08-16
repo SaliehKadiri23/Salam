@@ -298,9 +298,14 @@ const Navbar = () => {
               </div>
             </div> */}
             {menuPagesMobile.map((item) => (
-              <NavLink to={`/${item.link}`} key={item.title} className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2">
-                  {item.title}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+              <NavLink
+                to={`/${item.link}`}
+                key={item.title}
+                onClick={() => setIsMenuOpen(false)}
+                className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2"
+              >
+                {item.title}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
               </NavLink>
             ))}
           </div>
