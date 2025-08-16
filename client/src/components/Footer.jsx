@@ -25,7 +25,7 @@ const Footer = () => {
     { name: "Prayer Times", href: "prayer_times" },
     { name: "Resources & Learning", href: "resources" },
     { name: "About Us", href: "about_us" },
-    { name: "Events & News", href: "events" },
+    { name: "Events & News", href: "events_and_news" },
     { name: "Donate Charity", href: "donate" },
     { name: "Blog & Articles", href: "blog" },
     { name: "Contact Us", href: "contact_us" },

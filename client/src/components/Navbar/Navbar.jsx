@@ -56,7 +56,7 @@ const Navbar = () => {
     { title: "Resources", link: "resources" },
     { title: "Community", link: "community" },
     { title: "Donate", link: "donate" },
-    { title: "Events", link: "events" },
+    { title: "Events & News", link: "events_and_news" },
     { title: "Blog", link: "blog" },
     { title: "About Us", link: "about_us" },
     { title: "Contact Us", link: "contact_us" },
@@ -74,7 +74,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
-          <div href="/" className="flex items-center gap-3 cursor-pointer">
+          <a href="/" className="flex items-center gap-3 cursor-pointer">
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-r  from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
                 <Stars
@@ -118,7 +118,7 @@ const Navbar = () => {
               className="text-green-600 font-bold ml-[-1.0em] mb-[1.3em]"
               size={"1.2em"}
             />
-          </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6 ">
@@ -150,7 +150,7 @@ const Navbar = () => {
                         <div className="py-2 px-3 flex flex-col gap-2">
                           {[
                             { title: "Blog", link: "blog" },
-                            { title: "Events", link: "events" },
+                            { title: "Events & News", link: "events_and_news" },
                             { title: "About Us", link: "about_us" },
                             { title: "Contact Us", link: "contact_us" },
                           ].map((item) => (

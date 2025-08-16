@@ -7,7 +7,7 @@ import ResourcesGrid from '../components/resources/ResourcesGrid';
 import ResourceDetailView from '../components/resources/ResourceDetailView';
 import EmptyState from '../components/resources/EmptyState';
 
-const IslamicResourcesPlatform = () => {
+const Resources = () => {
   const { currentView } = useSelector((state) => state.ui);
   const { all, searchQuery, selectedCategory, selectedType } = useSelector(
     (state) => state.resources
@@ -65,4 +65,4 @@ const IslamicResourcesPlatform = () => {
   );
 };
 
-export default IslamicResourcesPlatform;
+export default Resources;

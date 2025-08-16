@@ -10,6 +10,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router";
+import EventsAndNews from './pages/EventsAndNews';
 
 const App = () => {
 
@@ -34,14 +35,8 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="prayer_times" element={<PrayerTimes />} />
         <Route path="resources" element={<Resources />} />
-        {/* <Route
-          path="/PrayerTimesDesktopVariant1"
-          element={<PrayerTimesDesktopVariant1 />}
-        />
-        <Route
-          path="/PrayerTimesDesktopVariant11"
-          element={<PrayerTimesDesktopVariant11 />}
-        /> */}
+        <Route path="events_and_news" element={<EventsAndNews />} />
+        
       </Route>
     )
   );
