@@ -16,7 +16,7 @@ import {
   LucideMedal,
   MedalIcon,
 } from "lucide-react";
-import { TbBrandLinkedin, TbMedal, TbMedal2 } from "react-icons/tb";
+import { TbBrandLinkedin, TbBrandTelegram, TbMedal, TbMedal2 } from "react-icons/tb";
 
 
 // Glassmorphism Card
@@ -124,9 +124,9 @@ const IslamicAboutPage = () => {
 
   const socialLinks = [
     { icon: Facebook, href: "#", hoverColor: "hover:text-blue-600" },
-    { icon: Instagram, href: "#", hoverColor: "hover:text-pink-500" },
-    { icon: TbBrandLinkedin, href: "#", hoverColor: "hover:text-blue-800" },
     { icon: Youtube, href: "#", hoverColor: "hover:text-red-500" },
+    { icon: TbBrandTelegram, href: "#", hoverColor: "hover:text-blue-500" },
+    { icon: TbBrandLinkedin, href: "#", hoverColor: "hover:text-blue-800" },
   ];
 
   const handleFormSubmit = (e) => {
