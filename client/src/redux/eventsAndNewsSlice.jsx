@@ -1,16 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import {
-  Calendar,
-  BookOpen,
-  Heart,
-  Target,
-} from "lucide-react";
-
-const TbBuildingMosque = ({ className }) => (
-  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 2L8 6h8l-4-4zm0 18c-4 0-8-2-8-6V8h16v6c0 4-4 6-8 6z" />
-  </svg>
-);
+import { createSlice } from "@reduxjs/toolkit";
+import { Calendar, BookOpen, Heart, Target } from "lucide-react";
+import { TbBuildingMosque } from "react-icons/tb";
 
 const initialState = {
   activeTab: "events",
@@ -31,7 +21,7 @@ const initialState = {
       featured: true,
       registrationRequired: false,
       image:
-        "https://images.unsplash.com/photo-1564769625905-50c888ceb1e8?w=400&h=250&fit=crop&crop=center",
+        "/",
       description:
         "Weekly congregational Friday prayer with inspiring khutbah on community unity.",
     },
@@ -77,8 +67,7 @@ const initialState = {
       registrationRequired: true,
       image:
         "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=400&h=250&fit=crop&crop=center",
-      description:
-        "Weekly Quran study and tafsir session. Open to all levels.",
+      description: "Weekly Quran study and tafsir session. Open to all levels.",
     },
     {
       id: 5,
@@ -90,8 +79,7 @@ const initialState = {
       attendees: 200,
       featured: true,
       registrationRequired: true,
-      image:
-        "/",
+      image: "/",
       description:
         "Building bridges between communities through meaningful dialogue.",
     },
@@ -186,7 +174,7 @@ const initialState = {
 };
 
 const eventsAndNewsSlice = createSlice({
-  name: 'eventsAndNews',
+  name: "eventsAndNews",
   initialState,
   reducers: {
     setActiveTab: (state, action) => {
@@ -208,7 +196,9 @@ const eventsAndNewsSlice = createSlice({
       const eventId = action.payload;
       const isRegistered = state.registeredEvents.includes(eventId);
       if (isRegistered) {
-        state.registeredEvents = state.registeredEvents.filter(id => id !== eventId);
+        state.registeredEvents = state.registeredEvents.filter(
+          (id) => id !== eventId
+        );
       } else {
         state.registeredEvents.push(eventId);
       }

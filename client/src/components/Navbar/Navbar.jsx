@@ -126,13 +126,11 @@ const Navbar = () => {
               {menuPagesDesktop.map((item, index) =>
                 menuPagesDesktop.length - 1 === index ? (
                   <div
+                    key={item.title}
                     onMouseEnter={() => setMorePagesDropDown(true)}
                     onMouseLeave={() => setMorePagesDropDown(false)}
                   >
-                    <p
-                      key={item.title}
-                      className="text-gray-700 flex justify-between items-center text-sm lg:text-md  xl:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
-                    >
+                    <p className="text-gray-700 flex justify-between items-center text-sm lg:text-md  xl:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group">
                       {item.title}{" "}
                       <ChevronRightIcon
                         className={`transition-all duration-300   ${
@@ -162,7 +160,7 @@ const Navbar = () => {
                               {" "}
                               {item.title}
                               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                              {/* </p> */}
+                              
                             </NavLink>
                           ))}
                         </div>
