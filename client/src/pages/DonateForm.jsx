@@ -580,7 +580,7 @@ const ImpactPreview = ({ amount, donationType, detailed = false }) => {
         {
           metric: Math.floor(amount / 30),
           label: "medical treatments",
-          icon: "⚕️",
+          icon: "❤️‍🩹",
         },
       ],
       general: [

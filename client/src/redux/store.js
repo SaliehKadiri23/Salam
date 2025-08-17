@@ -3,6 +3,7 @@ import uiReducer from './uiSlice';
 import resourcesReducer from './resourcesSlice';
 import userReducer from './userSlice';
 import eventsAndNewsReducer from './eventsAndNewsSlice.jsx';
+import donateReducer from './donateSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     resources: resourcesReducer,
     user: userReducer,
     eventsAndNews: eventsAndNewsReducer,
+    donate: donateReducer,
   },
 });
