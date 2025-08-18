@@ -14,6 +14,7 @@ import {
 import EventsAndNews from "./pages/EventsAndNews";
 import AboutUs from "./pages/AboutUs";
 import DonationForm from "./pages/DonateForm";
+import BlogAndArticles from "./pages/BlogAndArticles";
 
 const App = () => {
   // const [response, setResponse] = useState("")
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="about_us" element={<AboutUs />} />
         <Route path="donate" element={<Donate />} />
         <Route path="donate_form" element={<DonationForm />} />
+        {/* <Route path="blog_and_articles" element={<BlogAndArticles />} /> */}
       </Route>
     )
   );
