@@ -42,7 +42,8 @@ const App = () => {
         <Route path="about_us" element={<AboutUs />} />
         <Route path="donate" element={<Donate />} />
         <Route path="donate_form" element={<DonationForm />} />
-        {/* <Route path="blog_and_articles" element={<BlogAndArticles />} /> */}
+        <Route path="blog_and_articles" element={<BlogAndArticles />} />
+        <Route path="blog" element={<BlogAndArticles />} />
       </Route>
     )
   );
