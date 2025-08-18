@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Search, Heart, Share2, BookmarkPlus, Facebook, Youtube, Linkedin, MessageCircle, Clock, Calendar, Star, ArrowRight, Filter, X } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Heart, Star } from 'lucide-react';
+import QuranicVerse from '../components/blog/QuranicVerse';
+import BlogHeader from '../components/blog/BlogHeader';
+import FilterControls from '../components/blog/FilterControls';
+import ArticlesGrid from '../components/blog/ArticlesGrid';
+import { setArticles, setSearchTerm, setSelectedCategory, setPage, toggleBookmark } from '../redux/blogSlice';
 
 // Custom Hook for Debouncing (Fix #4)
 const useDebounce = (value, delay) => {
@@ -369,20 +375,19 @@ const shareArticle = (article, platform) => {
 
 // Main Component
 const IslamicBlogPage = () => {
-  const [articles, setArticles] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const dispatch = useDispatch();
+  const { articles, searchTerm, selectedCategory, page } = useSelector((state) => state.blog);
+
   const [isLoading, setIsLoading] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [page, setPage] = useState(1);
   const articlesPerPage = 9;
   
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Initialize articles
   useEffect(() => {
-    setArticles(generateMockArticles());
-  }, []);
+    dispatch(setArticles(generateMockArticles()));
+  }, [dispatch]);
 
   // Categories
   const categories = useMemo(() => {
@@ -421,18 +426,18 @@ const IslamicBlogPage = () => {
 
   // Reset pagination when filters change
   useEffect(() => {
-    setPage(1);
-  }, [debouncedSearchTerm, selectedCategory]);
+    dispatch(setPage(1));
+  }, [debouncedSearchTerm, selectedCategory, dispatch]);
 
   // Load more articles function (for Intersection Observer)
   const loadMoreArticles = useCallback(() => {
     if (isLoading || !hasMore) return;
     setIsLoading(true);
     setTimeout(() => { // Simulate network delay
-      setPage(prevPage => prevPage + 1);
+      dispatch(setPage(page + 1));
       setIsLoading(false);
     }, 500);
-  }, [isLoading, hasMore]);
+  }, [isLoading, hasMore, dispatch, page]);
   
   // Intersection Observer for infinite scroll (Fix #2)
   const observer = useRef();
@@ -449,11 +454,9 @@ const IslamicBlogPage = () => {
 
 
   // Toggle bookmark (Fix #3 - this now works correctly)
-  const toggleBookmark = useCallback((articleId) => {
-    setArticles(prev => prev.map(article =>
-      article.id === articleId ? { ...article, isBookmarked: !article.isBookmarked } : article
-    ));
-  }, []);
+  const handleToggleBookmark = useCallback((articleId) => {
+    dispatch(toggleBookmark(articleId));
+  }, [dispatch]);
 
   // Newsletter signup
   const handleNewsletterSubmit = (e) => {
@@ -466,347 +469,31 @@ const IslamicBlogPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 font-sans">
-      {/* Quranic Verse Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 py-16">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute inset-0 bg-islamic-pattern-light"></div>
-
-        <div className="relative container mx-auto px-6 text-center">
-          <div className="backdrop-blur-sm bg-white/10 rounded-2xl p-8 max-w-4xl mx-auto border border-white/20 shadow-2xl">
-            <div className="flex items-center justify-center mb-6">
-              <Star className="text-yellow-300 w-8 h-8 mr-2" />
-              <h2 className="text-2xl font-bold text-white">
-                Verse of the Day
-              </h2>
-              <Star className="text-yellow-300 w-8 h-8 ml-2" />
-            </div>
-
-            <div className="space-y-4">
-              <p
-                className="text-3xl text-white leading-relaxed font-semibold"
-                dir="rtl"
-                style={{ fontFamily: "Amiri, serif" }}
-              >
-                {quranicVerse.arabic}
-              </p>
-              <p className="text-lg text-green-100 italic">
-                {quranicVerse.transliteration}
-              </p>
-              <p className="text-xl text-white font-medium">
-                "{quranicVerse.translation}"
-              </p>
-              <p className="text-green-200 font-semibold">
-                {quranicVerse.reference}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <QuranicVerse verse={quranicVerse} />
 
       {/* Main Content */}
       <main className="container mx-auto px-6 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-            Articles & Insights
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Explore our collection of articles on Islam, culture, lifestyle, and
-            community. Discover wisdom, inspiration, and guidance for modern
-            Muslim living.
-          </p>
-        </div>
-
-        {/* Search and Filter Controls */}
-        <div className="mb-12 space-y-6">
-          {/* Search Bar */}
-          <div className="relative max-w-2xl mx-auto">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="h-6 w-6 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              placeholder="Search articles, authors, or topics..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-2xl focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-300 bg-white shadow-lg"
-            />
-          </div>
-
-          {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-3">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
-                  selectedCategory === category
-                    ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg"
-                    : "bg-white text-gray-700 hover:bg-green-50 border-2 border-gray-200 hover:border-green-300"
-                }`}
-              >
-                {category}
-                {category === "Latest" && (
-                  <span className="ml-2 px-2 py-1 text-xs bg-red-500 text-white rounded-full">
-                    NEW
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Articles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articlesToDisplay.map((article, index) => {
-            if (articlesToDisplay.length === index + 1) {
-              return (
-                <div ref={lastArticleElementRef} key={article.id}>
-                  <ArticleCard
-                    article={article}
-                    onBookmark={toggleBookmark}
-                    onShare={shareArticle}
-                  />
-                </div>
-              );
-            } else {
-              return (
-                <ArticleCard
-                  key={article.id}
-                  article={article}
-                  onBookmark={toggleBookmark}
-                  onShare={shareArticle}
-                />
-              );
-            }
-          })}
-        </div>
-
-        {/* Newsletter Signup (appears between articles) */}
-        {articlesToDisplay.length >= 6 && (
-          <div className="my-16">
-            <NewsletterSignup
-              email={newsletterEmail}
-              setEmail={setNewsletterEmail}
-              onSubmit={handleNewsletterSubmit}
-            />
-          </div>
-        )}
-
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-500 border-t-transparent"></div>
-          </div>
-        )}
-
-        {/* No More Articles */}
-        {!hasMore && articlesToDisplay.length > 0 && !isLoading && (
-          <div className="text-center py-12">
-            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full">
-              <Heart className="w-5 h-5 mr-2" />
-              You've reached the end! Thank you for reading.
-            </div>
-          </div>
-        )}
-
-        {/* No Results */}
-        {filteredArticles.length === 0 && !isLoading && (
-          <div className="text-center py-20 col-span-full">
-            <div className="text-6xl mb-4">📚</div>
-            <h3 className="text-2xl font-bold text-gray-700 mb-2">
-              No articles found
-            </h3>
-            <p className="text-gray-500">
-              Try adjusting your search terms or filters
-            </p>
-          </div>
-        )}
-      </main>
-    </div>
-  );
-};
-
-// Article Card Component
-const ArticleCard = ({ article, onBookmark, onShare }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [showShareMenu, setShowShareMenu] = useState(false);
-
-  return (
-    <article className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 flex flex-col h-full">
-      {/* Article Image */}
-      <div className="relative overflow-hidden h-48">
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse"></div>
-        )}
-        <img
-          src={article.image}
-          alt={article.title}
-          onLoad={() => setImageLoaded(true)}
-          className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+        <BlogHeader />
+        <FilterControls
+          searchTerm={searchTerm}
+          setSearchTerm={(value) => dispatch(setSearchTerm(value))}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={(value) => dispatch(setSelectedCategory(value))}
         />
-        
-        {/* Overlay Actions */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-            <div className="flex items-center space-x-2 text-white text-sm">
-              <Clock className="w-4 h-4" />
-              <span>{article.readTime} min read</span>
-            </div>
-            <div className="flex space-x-2">
-              <button
-                onClick={() => onBookmark(article.id)}
-                aria-label={article.isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
-                className={`p-2 rounded-full transition-all duration-300 ${
-                  article.isBookmarked
-                    ? 'bg-red-500 text-white'
-                    : 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30'
-                }`}
-              >
-                <BookmarkPlus className="w-4 h-4" />
-              </button>
-              <div className="relative">
-                <button
-                  onClick={() => setShowShareMenu(!showShareMenu)}
-                  onBlur={() => setShowShareMenu(false)}
-                  aria-label="Share article"
-                  className="p-2 rounded-full bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-all duration-300"
-                >
-                  <Share2 className="w-4 h-4" />
-                </button>
-                
-                {/* Share Menu */}
-                {showShareMenu && (
-                  <div className="absolute bottom-full right-0 mb-2 bg-white rounded-lg shadow-xl border p-2 flex space-x-1 z-50">
-                    {[
-                      { platform: 'facebook', icon: Facebook, color: 'text-blue-600' },
-                      { platform: 'telegram', icon: MessageCircle, color: 'text-blue-500' },
-                      { platform: 'whatsapp', icon: MessageCircle, color: 'text-green-500' },
-                      { platform: 'linkedin', icon: Linkedin, color: 'text-blue-700' },
-                    ].map(({ platform, icon: Icon, color }) => (
-                      <button
-                        key={platform} // Fix #5
-                        onClick={() => {
-                          onShare(article, platform);
-                          setShowShareMenu(false);
-                        }}
-                        className={`p-1 hover:bg-gray-100 rounded transition-colors ${color}`}
-                        aria-label={`Share on ${platform}`}
-                      >
-                        <Icon className="w-4 h-4" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Category Badge */}
-        <div className="absolute top-4 left-4">
-          <span className="px-3 py-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-semibold rounded-full shadow-lg">
-            {article.category}
-          </span>
-        </div>
-
-        {/* New Badge for Latest Articles */}
-        {isLatest(article.publishDate) && (
-          <div className="absolute top-4 right-4">
-            <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full animate-pulse">
-              NEW
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Article Content */}
-      <div className="p-6 space-y-4 flex-grow flex flex-col">
-        {/* Article Title */}
-        <h3 className="text-xl font-bold text-gray-800 leading-tight group-hover:text-green-600 transition-colors duration-300" style={{display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
-          <a href={`/articles/${article.id}`} className="hover:underline focus:outline-none focus:ring-2 focus:ring-green-300 rounded">
-            {article.title}
-          </a>
-        </h3>
-
-        {/* Article Excerpt */}
-        <p className="text-gray-600 text-sm leading-relaxed flex-grow" style={{display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
-          {article.excerpt}
-        </p>
-
-        {/* Article Meta */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-           {/* Fix #6 - Author link is now a semantic anchor tag */}
-          <a href={`/authors/${article.author.replace(/\s+/g, '-').toLowerCase()}`} className="flex items-center space-x-3 group/author rounded focus:outline-none focus:ring-2 focus:ring-green-300">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-              {article.author.split(' ').map(n => n[0]).join('')}
-            </div>
-            <div>
-              <p className="font-medium text-gray-800 text-sm group-hover/author:underline">{article.author}</p>
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
-                <Calendar className="w-3 h-3" />
-                <span>{new Date(article.publishDate).toLocaleDateString()}</span>
-              </div>
-            </div>
-          </a>
-
-          <div className="flex items-center space-x-3 text-sm text-gray-500">
-            <div className="flex items-center space-x-1">
-              <Heart className="w-4 h-4" />
-              <span>{article.likes}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Read More Button (Fix #6 - now a semantic anchor tag) */}
-        <div className="pt-2">
-          <a href={`/articles/${article.id}`} className="group/btn inline-flex items-center space-x-2 text-green-600 hover:text-green-700 font-semibold transition-all duration-300 rounded focus:outline-none focus:ring-2 focus:ring-green-300">
-            <span>Read More</span>
-            <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-          </a>
-        </div>
-      </div>
-    </article>
-  );
-};
-
-// Newsletter Signup Component
-const NewsletterSignup = ({ email, setEmail, onSubmit }) => {
-  return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-8 shadow-2xl">
-      <div className="absolute inset-0 bg-islamic-pattern opacity-30"></div>
-      
-      <div className="relative text-center">
-        <h3 className="text-3xl font-bold text-white mb-2">Stay Updated</h3>
-        <p className="text-green-100 mb-6 text-lg">
-          Subscribe to receive our latest articles and Islamic insights directly in your inbox
-        </p>
-        
-        <form onSubmit={onSubmit} className="max-w-md mx-auto">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email address"
-              required
-              className="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-4 focus:ring-white/25 transition-all duration-300"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              Subscribe
-            </button>
-          </div>
-        </form>
-        
-        <p className="text-green-200 text-sm mt-4">
-          Join 10,000+ Muslims receiving weekly inspiration
-        </p>
-      </div>
+        <ArticlesGrid
+          articlesToDisplay={articlesToDisplay}
+          lastArticleElementRef={lastArticleElementRef}
+          toggleBookmark={handleToggleBookmark}
+          shareArticle={shareArticle}
+          newsletterEmail={newsletterEmail}
+          setNewsletterEmail={setNewsletterEmail}
+          handleNewsletterSubmit={handleNewsletterSubmit}
+          isLoading={isLoading}
+          hasMore={hasMore}
+          filteredArticles={filteredArticles}
+        />
+      </main>
     </div>
   );
 };
