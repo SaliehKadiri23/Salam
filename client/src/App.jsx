@@ -15,6 +15,7 @@ import EventsAndNews from "./pages/EventsAndNews";
 import AboutUs from "./pages/AboutUs";
 import DonationForm from "./pages/DonateForm";
 import BlogAndArticles from "./pages/BlogAndArticles";
+import Community from "./pages/Community";
 
 const App = () => {
   // const [response, setResponse] = useState("")
@@ -36,14 +37,34 @@ const App = () => {
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        {/* Prayer Times */}
         <Route path="prayer_times" element={<PrayerTimes />} />
+        <Route path="prayers" element={<PrayerTimes />} />
+
+        {/* Resources */}
         <Route path="resources" element={<Resources />} />
+
+        {/* Events & News */}
         <Route path="events_and_news" element={<EventsAndNews />} />
+        <Route path="events" element={<EventsAndNews />} />
+        <Route path="news" element={<EventsAndNews />} />
+
+        {/* About Us */}
         <Route path="about_us" element={<AboutUs />} />
+
+        {/* Donate */}
         <Route path="donate" element={<Donate />} />
+
+        {/* Donate Form Page */}
         <Route path="donate_form" element={<DonationForm />} />
+
+        {/* Blog And Articles */}
         <Route path="blog_and_articles" element={<BlogAndArticles />} />
+        <Route path="articles" element={<BlogAndArticles />} />
         <Route path="blog" element={<BlogAndArticles />} />
+
+        {/* Community */}
+        <Route path="community" element={<Community />} />
       </Route>
     )
   );

@@ -6,6 +6,7 @@ import eventsAndNewsReducer from './eventsAndNewsSlice.jsx';
 import donateReducer from './donateSlice';
 import donationFormReducer from './donationFormSlice';
 import blogReducer from './blogSlice';
+import communityReducer from './communitySlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     donate: donateReducer,
     donationForm: donationFormReducer,
     blog: blogReducer,
+    community: communityReducer,
   },
 });
