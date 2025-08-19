@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Clock, Users, ArrowRight } from 'lucide-react';
+import { MapPin, Clock, Users, ArrowRight, Medal } from 'lucide-react';
 
 const VolunteerCard = ({ opportunity, onApply }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -72,7 +72,7 @@ const VolunteerCard = ({ opportunity, onApply }) => {
               {opportunity.timeCommitment}
             </div>
             <div className="flex items-center gap-1 text-slate-600">
-              <Users className="w-4 h-4 text-teal-600" />
+              <Medal className="w-4 h-4 text-teal-600" />
               {opportunity.spotsAvailable} spots
             </div>
           </div>

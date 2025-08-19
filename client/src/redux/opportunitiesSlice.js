@@ -66,7 +66,7 @@ const volunteerOpportunities = [
     urgency: "medium",
     spotsAvailable: 12,
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDFA3La12Ox36ChuanS7t6aPHUxkyqRf5qRvte1OvAKzU1tX6QzLYqKFimvS-gkNYqreQUYlTFieaRhQDYcUnHQqyg1v_vfgOGtgMoKoPMOOrpOgd3EI9ceq1Uimqs8ZYOnqnwRjiqDlcA5zHxQQuFprRqaI_gg5aSgGPgI4ZlGCWoYK2LQNzGr3GEbBNkcrJlUbvfCsTAQgcRVaDNZLV5iRbIV6mbOtjk5q-lJf_Q2O4hwtPhkiN-aRzfLnMH0pkRhT6qJQZSP1m0",
+      "/3m",
     remote: true,
   },
   {
@@ -100,7 +100,7 @@ const volunteerOpportunities = [
     urgency: "low",
     spotsAvailable: 15,
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuD9_S6337RKl_zBI14Sb-l0WXgB8RSWtK_tQ7VUyRIhV1YYge3ZcYs5N-zRJnOq2a30OruCTRAthLE94Ykg-aO0zFbQZIfms-RNBSLujT7YQ9l8VNiZFqKAuMLh_0zuHaT1rzPLe3ll9WdOI17zem-XRtMGyqVWEMovO-LK8t50y8io6s6R6P4QsYTeCPvjGt8ZJAPwCv113SsweBm3j8jC4xhcLZGMnlKzVMspKKmaVQBQNgdjWidYtEuKbtLCwy8AiYUHQEHuVpY",
+      "rk",
     remote: false,
   },
 ];

@@ -14,6 +14,7 @@ import {
   Clock,
   MapPin,
 } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const iconComponents = {
   Heart,
@@ -25,6 +26,7 @@ const iconComponents = {
 };
 
 const Community = () => {
+  const navigate = useNavigate()
   const {
     forumCategories,
     scholarQA,
@@ -327,7 +329,10 @@ const Community = () => {
           );
         })}
 
-        <button className="w-full mt-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+        <button
+          onClick={() => navigate("/volunteer_board")}
+          className="w-full mt-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+        >
           View All Opportunities
         </button>
       </div>
