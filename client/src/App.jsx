@@ -17,6 +17,7 @@ import DonationForm from "./pages/DonateForm";
 import BlogAndArticles from "./pages/BlogAndArticles";
 import Community from "./pages/Community";
 import VolunteerBoard from "./pages/VolunteerBoard";
+import QuestionsAndAnswers from "./pages/QuestionsAndAnswers";
 
 const App = () => {
   // const [response, setResponse] = useState("")
@@ -67,6 +68,7 @@ const App = () => {
         {/* Community */}
         <Route path="community" element={<Community />} />
         <Route path="volunteer_board" element={<VolunteerBoard />} />
+        <Route path="questions_and_answers" element={<QuestionsAndAnswers />} />
       </Route>
     )
   );
