@@ -7,6 +7,8 @@ import donateReducer from './donateSlice';
 import donationFormReducer from './donationFormSlice';
 import blogReducer from './blogSlice';
 import communityReducer from './communitySlice';
+import filtersReducer from './filtersSlice';
+import opportunitiesReducer from './opportunitiesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +20,7 @@ export const store = configureStore({
     donationForm: donationFormReducer,
     blog: blogReducer,
     community: communityReducer,
+    filters: filtersReducer,
+    opportunities: opportunitiesReducer,
   },
 });
