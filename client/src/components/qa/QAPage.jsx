@@ -1,11 +1,10 @@
 import React from "react";
-import HeroSection from "../components/qa/hero/HeroSection";
-import QuestionForm from "../components/qa/form/QuestionForm";
-import QAStats from "../components/qa/stats/QAStats";
-import QAFeed from "../components/qa/feed/QAFeed";
+import HeroSection from "./hero/HeroSection";
+import QuestionForm from "./form/QuestionForm";
+import QAStats from "./stats/QAStats";
+import QAFeed from "./feed/QAFeed";
 
-// Main App Component - now using refactored components with Redux
-export default function IslamicQAApp() {
+function QAPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 relative">
       {/* Islamic Pattern Background */}
@@ -34,3 +33,5 @@ export default function IslamicQAApp() {
     </div>
   );
 }
+
+export default QAPage;

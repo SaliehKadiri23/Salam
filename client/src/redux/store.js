@@ -9,6 +9,7 @@ import blogReducer from './blogSlice';
 import communityReducer from './communitySlice';
 import filtersReducer from './filtersSlice';
 import opportunitiesReducer from './opportunitiesSlice';
+import qaReducer from './qaSlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     community: communityReducer,
     filters: filtersReducer,
     opportunities: opportunitiesReducer,
+    qa: qaReducer,
   },
 });
