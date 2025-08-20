@@ -20,6 +20,7 @@ import VolunteerBoard from "./pages/VolunteerBoard";
 import QuestionsAndAnswers from "./pages/QuestionsAndAnswers";
 import DuaRequestWall from "./pages/DuaRequestWall";
 import ContactUs from "./pages/ContactUs";
+import Profile from "./pages/Profile";
 
 const App = () => {
   // const [response, setResponse] = useState("")
@@ -73,6 +74,7 @@ const App = () => {
         <Route path="questions_and_answers" element={<QuestionsAndAnswers />} />
         <Route path="dua_request" element={<DuaRequestWall />} />
         <Route path="contact_us" element={<ContactUs />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
     )
   );

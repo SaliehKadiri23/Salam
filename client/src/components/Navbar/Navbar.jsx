@@ -160,7 +160,6 @@ const Navbar = () => {
                               {" "}
                               {item.title}
                               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                              
                             </NavLink>
                           ))}
                         </div>
@@ -236,7 +235,12 @@ const Navbar = () => {
                   onClick={() => toggleDarkTheme(!darkTheme)}
                   className="bg-gray-200 p-2 rounded-full transition-all duration-300 hover:rotate-360"
                 >
-                  <Sun size={"1.5em"} fill="yellow" color="#d89c2c" />
+                  <Sun
+                    size={"1.5em"}
+                    fill="yellow"
+                    color="#d89c2c"
+                    className="transition-all duration-300 hover:rotate-360"
+                  />
                 </button>
               )}
             </div>
