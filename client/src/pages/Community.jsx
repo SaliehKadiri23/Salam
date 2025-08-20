@@ -13,14 +13,17 @@ import {
   Globe,
   Clock,
   MapPin,
+  Stars
 } from "lucide-react";
 import { useNavigate } from "react-router";
+
 
 const iconComponents = {
   Heart,
   Users,
   Star,
   HandHeart,
+  Stars,
   BookOpen,
   Calendar,
 };
@@ -222,7 +225,7 @@ const Community = () => {
           ))}
         </div>
 
-        <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+        <button onClick={()=> navigate("/questions_and_answers")} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
           Ask a Question
         </button>
       </div>
@@ -267,7 +270,10 @@ const Community = () => {
           ))}
         </div>
 
-        <button className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+        <button
+          onClick={() => navigate("/dua_request")}
+          className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+        >
           Submit a Dua Request
         </button>
       </div>

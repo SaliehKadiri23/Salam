@@ -12,7 +12,9 @@ import {
   Globe,
   Clock,
   MapPin,
+  Stars
 } from "lucide-react";
+
 
 const initialState = {
   forumCategories: [
@@ -26,7 +28,7 @@ const initialState = {
     {
       title: "Parenting & Family",
       description: "Share advice on raising a Muslim family",
-      icon: 'Users',
+      icon: 'Stars',
       posts: 567,
       color: "from-blue-50 to-indigo-50 border-blue-200",
     },
