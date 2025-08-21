@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Facebook,
   Youtube,
@@ -14,10 +14,11 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { NavLink } from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import { setSelectedLanguage } from "../redux/userSlice";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
   const navigationLinks = [
@@ -38,12 +39,10 @@ const Footer = () => {
     { icon: Send, href: "#", name: "TikTok" },
   ];
 
-  const languages = [
-    { code: "en", name: "English" },
-    { code: "ar", name: "العربية" },
-    { code: "ur", name: "اردو" },
-    { code: "fr", name: "Français" },
-  ];
+
+  const { selectedLanguage } = useSelector((state) => state.user);
+
+  const languages = useMemo(()=> useSelector((state)=> state.user.languages))
 
   const handleNewsletterSubmit = () => {
     if (email) {
@@ -51,6 +50,8 @@ const Footer = () => {
       setEmail("");
     }
   };
+
+  const dispatch = useDispatch()
 
   return (
     <footer className="relative bg-gradient-to-br from-emerald-300 via-emerald-800 to-emerald-900 text-white overflow-hidden">
@@ -233,7 +234,7 @@ const Footer = () => {
                       <button
                         key={language.code}
                         onClick={() => {
-                          setSelectedLanguage(language.code);
+                          dispatch(setSelectedLanguage(language.code));
                           setShowLanguageDropdown(false);
                         }}
                         className="w-full text-left px-4 py-2 text-white hover:bg-emerald-700 transition-colors"

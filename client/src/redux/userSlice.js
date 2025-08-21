@@ -8,12 +8,22 @@ const initialState = {
     4: 78,
   },
   reviews: {},
+  languages: [
+    { code: "en", name: "English" },
+    { code: "ar", name: "العربية" },
+    { code: "ur", name: "اردو" },
+    { code: "fr", name: "Français" },
+  ],
+  selectedLanguage: "en",
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setSelectedLanguage: (state, action) => {
+      state.selectedLanguage = action.payload;
+    },
     toggleBookmark: (state, action) => {
       const id = action.payload;
       if (state.bookmarkedItems.includes(id)) {
@@ -42,6 +52,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { toggleBookmark, updateProgress, addReview } = userSlice.actions;
+export const { setSelectedLanguage,toggleBookmark, updateProgress, addReview } = userSlice.actions;
 
 export default userSlice.reducer;

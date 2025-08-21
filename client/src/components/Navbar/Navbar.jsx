@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Menu,
   X,
@@ -32,12 +32,13 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { NavLink } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedLanguage } from "../../redux/userSlice";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [darkTheme, toggleDarkTheme] = useState(false);
   const [morePagesDropDown, setMorePagesDropDown] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
 
   const menuPagesDesktop = [
@@ -62,13 +63,10 @@ const Navbar = () => {
     { title: "Contact Us", link: "contact_us" },
   ];
 
-  const languages = [
-    { code: "en", name: "English" },
-    { code: "ar", name: "العربية" },
-    { code: "ur", name: "اردو" },
-    { code: "fr", name: "Français" },
-  ];
+  const { selectedLanguage } = useSelector((state) => state.user);
 
+  const languages = useMemo(() => useSelector((state) => state.user.languages));
+  const dispatch = useDispatch();
   return (
     <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -209,7 +207,7 @@ const Navbar = () => {
                     <button
                       key={language.code}
                       onClick={() => {
-                        setSelectedLanguage(language.code);
+                        dispatch(setSelectedLanguage(language.code));
                         setShowLanguageDropdown(false);
                       }}
                       className="w-full text-left px-4 py-2 text-white hover:bg-emerald-700 transition-colors"
