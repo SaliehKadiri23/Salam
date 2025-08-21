@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar/Navbar";
 import MosqueHeroImage from "../assets/Mosque - Hero Image.png";
 import { Calendar, ExternalLink } from "lucide-react";
 import Footer from "../components/Footer";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const Home = () => {
   
@@ -62,33 +64,13 @@ const Home = () => {
 // Events Section
 function Events(){
   const formatDate = (iso) => new Date(iso).toLocaleDateString();
-  const events = useMemo(
-    () => [
-      {
-        title: "Islamic Conference 2024",
-        desc: "Join us for a weekend of inspiring lectures, workshops, and networking.",
-        date: Date.now(),
-        image:
-          "wrw",
-      },
-      {
-        title: "Community Iftar Dinner",
-        desc: "Break your fast with fellow Muslims in a spirit of unity and fellowship.",
-        date: Date.now(),
-        image:
-          "https://lh3.googleusercontent.com/aida-public/AB6AXuBzlmkQAVpX-3O6M3S1VjKhd4c7DzkjlvyJSbYKmWavTtIxbSO375DPxeleLYhnAJ2U7gtgsh107VF3GSIAyVoz_evApG0PoW0lfGItznR5k5o_mM9Y6IZV4HS7MwdNkQeNE1DXCJXhXEryPfrNruIhcTqZcwTxnygY9MJbJysOqIgkb37IQmA-rOmeUy4DP-VT5dUrpBpePo3ErGxIiTpH74Wz2S_B2lxf3qajmNzfXJqtgwTrIMrkx6rit-KH3NAznYpeZ6OAUl4",
-      },
-      {
-        title: "Eid al-Adha Celebration",
-        desc: "Celebrate Eid with prayers, festivities, and community gatherings.",
-        date: Date.now(),
-        image:
-          "jjk",
-      },
-    ],
+  const { eventsData } = useSelector((state) => state.eventsAndNews);
+  const latestThreeEvents = useMemo(
+    () => eventsData.filter((e,idx)=> (idx >= eventsData.length -3)),
     []
   );
 
+  const navigate= useNavigate()
   return (
     <div className="w-full flex justify-center items-center bg-gray-100">
       <section
@@ -97,14 +79,15 @@ function Events(){
       >
         <div className="mb-6 flex items-center justify-between">
           <h3 className="text-2xl font-semibold">Events</h3>
-          <div className="text-sm text-gray-800">
+          <div className="text-sm text-gray-800 font-bold">
             Join upcoming community activities
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {events.map((e) => (
-            <article
+          {latestThreeEvents.map((e) => (
+            <button
               key={e.id}
+              onClick={() => navigate(e.eventLink)}
               className="rounded-lg bg-gray-100 shadow-sm transition-all duration-300 hover:scale-110 overflow-hidden"
             >
               <div
@@ -114,26 +97,26 @@ function Events(){
                 aria-label={e.title}
               />
               <div className="p-4">
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start flex-col justify-evenly gap-3">
                   <h4 className="font-semibold text-lg">{e.title}</h4>
                   <time className="text-sm text-gray-700">
                     {formatDate(e.date)}
                   </time>
                 </div>
-                <p className="mt-2 text-sm text-gray-600">
-                  {e.desc}
+                <p className="mt-2 text-left text-sm text-gray-600">
+                  {e.description}
                 </p>
                 <div className="mt-4 flex items-center gap-3">
-                  <Calendar
-                    size={18}
-                    className="text-green-600 "
-                  />
-                  <a href="#" className="text-sm font-medium text-green-500">
+                  <Calendar size={18} className="text-green-600 " />
+                  <button
+                    onClick={() => navigate(e.eventLink)}
+                    className="text-sm font-medium text-green-500"
+                  >
                     Learn more
-                  </a>
+                  </button>
                 </div>
               </div>
-            </article>
+            </button>
           ))}
         </div>
       </section>

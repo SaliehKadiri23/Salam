@@ -11,7 +11,7 @@ const initialState = {
   hoveredDate: null,
   eventsData: [
     {
-      id: 1,
+      eventLink: "/eventslink",
       title: "Jummah Prayer & Khutbah",
       date: new Date(2020, 9, 25).toISOString(),
       time: "1:15 PM",
@@ -20,13 +20,12 @@ const initialState = {
       attendees: 150,
       featured: true,
       registrationRequired: false,
-      image:
-        "/",
+      image: "/",
       description:
         "Weekly congregational Friday prayer with inspiring khutbah on community unity.",
     },
     {
-      id: 2,
+      eventLink: "/eventslink",
       title: "Community Service Day",
       date: new Date(2024, 9, 26).toISOString(),
       time: "10:00 AM",
@@ -41,7 +40,7 @@ const initialState = {
         "Join our community in serving those in need through volunteer work.",
     },
     {
-      id: 3,
+      eventLink: "/eventslink",
       title: "Islamic History Lecture",
       date: new Date(2024, 9, 30).toISOString(),
       time: "7:30 PM",
@@ -56,7 +55,7 @@ const initialState = {
         "Exploring the rich heritage of Islamic civilization with Dr. Amira Hassan.",
     },
     {
-      id: 4,
+      eventLink: "/eventslink",
       title: "Quran Study Circle",
       date: new Date(2027, 10, 5).toISOString(),
       time: "7:00 PM",
@@ -70,7 +69,7 @@ const initialState = {
       description: "Weekly Quran study and tafsir session. Open to all levels.",
     },
     {
-      id: 5,
+      eventLink: "/eventslink",
       title: "QUR'AN RECITATION",
       date: new Date(2024, 10, 15).toISOString(),
       time: "6:00 PM",
@@ -83,23 +82,9 @@ const initialState = {
       description:
         "Building bridges between communities through meaningful dialogue.",
     },
+
     {
-      id: 6,
-      title: "Youth Soccer Tournament",
-      date: new Date(2024, 10, 23).toISOString(),
-      time: "2:00 PM",
-      location: "Sports Complex",
-      category: "youth",
-      attendees: 60,
-      featured: false,
-      registrationRequired: true,
-      image:
-        "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=250&fit=crop&crop=center",
-      description:
-        "Annual youth soccer tournament promoting fitness and teamwork.",
-    },
-    {
-      id: 7,
+      eventLink: "/eventslink",
       title: "Islamic Calligraphy Workshop",
       date: new Date(2024, 11, 5).toISOString(),
       time: "10:00 AM",
@@ -114,7 +99,7 @@ const initialState = {
         "Learn the beautiful art of Arabic calligraphy with master calligrapher Ustadh Ahmad.",
     },
     {
-      id: 8,
+      eventLink: "/eventslink",
       title: "Charity Gala",
       date: new Date(2024, 11, 14).toISOString(),
       time: "7:30 PM",
@@ -132,6 +117,7 @@ const initialState = {
   newsData: [
     {
       id: 1,
+      newsLink: "/eventslink",
       title: "New Islamic School Opens in Downtown",
       date: "October 20, 2024",
       category: "education",
@@ -143,6 +129,7 @@ const initialState = {
     },
     {
       id: 2,
+      newsLink: "/eventslink",
       title: "Ramadan Food Drive Exceeds Goals",
       date: "October 18, 2024",
       category: "community",
@@ -154,6 +141,7 @@ const initialState = {
     },
     {
       id: 3,
+      newsLink: "/eventslink",
       title: "Interfaith Peace Conference Success",
       date: "October 15, 2024",
       category: "interfaith",

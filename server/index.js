@@ -8,6 +8,11 @@ app.use(cors());
 app.get("/home", (req, res)=>{
     res.send("This Is the homepage mate");
 })
+app.get("/home/:id", (req, res)=>{
+    const {id}= req.params
+    res.send(`This Is the ${id} homepage mate`);
+})
+
 app.get("/cow", (req, res)=>{
     res.send("This Is the cowpage mate");
 })
@@ -15,3 +20,4 @@ app.get("/cow", (req, res)=>{
 app.listen(7000, () => {
     console.log("RUNNING ON PORT: 7000");
 })
+
