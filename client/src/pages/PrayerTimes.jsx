@@ -107,7 +107,7 @@ const duas = {
   isha: "اللَّهُمَّ أَسْلَمْتُ نَفْسِي إِلَيْكَ",
 };
 
-// Sub-components defined outside main component
+// Hero component
 const Hero = ({ currentTime, location, currentQuote }) => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-amber-50">
@@ -334,7 +334,7 @@ const HijriCalendar = ({ currentHijriMonth, setCurrentHijriMonth }) => {
     () => Array.from({ length: 30 }, (_, i) => i + 1),
     []
   );
-  const currentDay = 15; // Mock current day
+  const currentDay = 21; 
 
   return (
     <div className="bg-white rounded-2xl shadow-xl p-6">
@@ -542,7 +542,7 @@ export default function PrayerTimes() {
   // States
   const [activeTab, setActiveTab] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [location, setLocation] = useState("New York, USA");
+  const [location, setLocation] = useState("Kano State, Nigeria");
   const [searchQuery, setSearchQuery] = useState("");
   const [qiblaDirection, setQiblaDirection] = useState(45);
   const [dhikrCount, setDhikrCount] = useState(0);

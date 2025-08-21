@@ -37,9 +37,6 @@ const Community = () => {
     volunteerOpportunities,
   } = useSelector((state) => state.community);
 
-  // Navigation Component - Removed (user has existing navbar)
-
-  // Mobile Menu Component - Removed (user has existing navbar)
 
   // Hero Section Component
   const HeroSection = () => (

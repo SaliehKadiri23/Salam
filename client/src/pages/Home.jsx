@@ -3,8 +3,9 @@ import Navbar from "../components/Navbar/Navbar";
 import MosqueHeroImage from "../assets/Mosque - Hero Image.png";
 import { Calendar, ExternalLink } from "lucide-react";
 import Footer from "../components/Footer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { setSelectedCategory } from "../redux/resourcesSlice";
 
 const Home = () => {
   
@@ -282,18 +283,21 @@ function Resources() {
     () => [
       {
         title: "The Noble Qur'an",
+        category:"quran",
         desc: "Explore the complete text of the Qur'an with translations and commentary.",
         image:
           "https://lh3.googleusercontent.com/aida-public/AB6AXuD5mc4cugco4BtST0cp4f9PBPfrAeuJ8Bg_H9DgsFL_JMJZTvxO0NlwOdTB2VM53hlBEilyHWRCY8XXpiwBxuito4Bp1VRBQ9GiAGGE6lNxQ_PFsHNxfM118JRHVO6QJXL1Es9IowDDkjYhPOjeIG3My2LJlVcRwAolYO7Wp6sw1xn4-fAIMmXdhmxx7slrm21DNgq9eLu2X9HKuwz_cy7aAvP9RX4oUXs_IBwTTZHdq56oTr9V6QMubwciPiokJDuc4xAz3_hhl4A",
       },
       {
         title: "Authentic Hadith",
+        category:"hadith",
         desc: "Access a vast collection of authentic Hadith from various sources.",
         image:
           "https://lh3.googleusercontent.com/aida-public/AB6AXuA6re382bpArMytF44yfUE2VoZNLdZIk3n8bqzpH_Ke4dUIdHYIYu18MoAOn1yzSCStOlDDB77quk8ojHN3u-9L9sliSmb-M1_VJ9Mg-UD6YelXX1fELhDyFTjYXpIcGUVOfg6_J5p1ZyH2_0g6sV-D97Y9hzShBW1wl9mkoUW9VqyIxPMkZMoagLX7ktO-FlapW-3gdAhGCrA60N2HAMA55wtgUTEqS-5JJd6VmB2QIeev9MbO02IdIGStD1kLEPgJP3-ThHgYuhU",
       },
       {
         title: "Islamic Articles",
+        link:"/blog",
         desc: "Read insightful articles on Islam, from theology to contemporary issues.",
         image:
           "https://lh3.googleusercontent.com/aida-public/AB6AXuCjFDCpbDXaG_slokdkCBJmhrA8WzkX_-GDfvpL-cJYKD82sRmfuMgVAv9_EHuSpLW8YlSVCehGd-ADhOAkcfQv78a7U1EfuHCsotSxlaisNGqE6kmuHcMuSzp7aiqT7ID0CaogJzuCSgm0LwPsooMQ6clLyAcB3ZLJ8EfSjzID8fMrbO3cB5nqHdKdgwf8AVO2uqz2YU6SxKYd75sqtpfmeGG96HRbQsa50ye4ySRFCvjAthWhC0l-PRb4Y6EaQWZHiYMywm2usEc",
@@ -301,6 +305,11 @@ function Resources() {
     ],
     []
   );
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+
 
   return (
     <section id="resources" className="bg-gray-200 py-16">
@@ -312,12 +321,13 @@ function Resources() {
         </header>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
           {cards.map((c) => (
-            <article
+            <button
               key={c.title}
-              className="group overflow-hidden rounded-2xl bg-white/80 shadow-sm ring-1 ring-gray-200 transition duration-300 hover:-translate-y-1 hover:shadow-md backdrop-blur"
+              onClick={()=> navigate(c.link ? c.link : dispatch(setSelectedCategory(c.category) ) && "/resources")}
+              className="group text-left overflow-hidden rounded-2xl bg-white/80 shadow-sm ring-1 ring-gray-200 transition duration-300 hover:-translate-y-1 hover:shadow-md backdrop-blur"
             >
               <div
-                className="md:h-48 h-40 w-full bg-cover bg-center"
+                className="md:h-48 h-44 mt-[-10px] w-full bg-cover bg-center"
                 style={{ backgroundImage: `url('${c.image}')` }}
                 aria-hidden
               />
@@ -333,7 +343,7 @@ function Resources() {
                   Learn more <ExternalLink className="size-4" aria-hidden />
                 </a>
               </div>
-            </article>
+            </button>
           ))}
         </div>
       </div>
