@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 const AnimatedCounter = ({
   target,
   duration = 2000,
-  prefix = "",
-  suffix = "",
+ 
 }) => {
   const [count, setCount] = useState(0);
 
@@ -29,9 +28,7 @@ const AnimatedCounter = ({
 
   return (
     <span>
-      {prefix}
       {count.toLocaleString()}
-      {suffix}
     </span>
   );
 };

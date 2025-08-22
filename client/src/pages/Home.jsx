@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setSelectedCategory } from "../redux/resourcesSlice";
+import {motion} from "framer-motion"
 
 const Home = () => {
   
@@ -35,18 +36,44 @@ const Home = () => {
             Muslims to connect, learn, and grow in their faith.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a
+            <motion.a
+              initial={{
+                opacity: 0,
+                y: 200,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.5 },
+              }}
+              exit={{
+                opacity: 0,
+                y: 200,
+              }}
               href="#resources"
               className="inline-flex items-center justify-center rounded-xl bg-green-500 px-6 py-3 text-base font-bold text-white shadow-lg shadow-green-600/10 transition-transform hover:-translate-y-0.5 hover:bg-green-600 focus:outline-none "
             >
               Explore Resources
-            </a>
-            <a
+            </motion.a>
+            <motion.a
+              initial={{
+                opacity: 0,
+                y: 300,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.8 },
+              }}
+              exit={{
+                opacity: 0,
+                y: 300,
+              }}
               href="#events"
-              className="inline-flex items-center justify-center rounded-xl bg-white/10 px-6 py-3 text-base font-semibold text-white ring-1 ring-inset ring-white/30 backdrop-blur transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 hover:-translate-y-0.5 "
+              className="inline-flex items-center justify-center rounded-xl bg-white/10 px-6 py-3  font-semibold text-white ring-1 ring-inset ring-white/30 backdrop-blur transition-all hover:bg-white/15 focus:outline-none focus-visible:ring-2 hover:-translate-y-0.5 "
             >
               Upcoming Events
-            </a>
+            </motion.a>
           </div>
         </div>
       </section>
@@ -56,8 +83,7 @@ const Home = () => {
       <Resources />
 
       {/* Events */}
-      <Events/>
-      
+      <Events />
     </div>
   );
 };

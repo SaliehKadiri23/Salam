@@ -3,31 +3,10 @@ import {
   Menu,
   X,
   Sun,
-  Compass,
-  MapPin,
-  Book,
-  BookOpen,
-  Bookmark,
-  Users,
-  Calendar,
-  Twitter,
-  Instagram,
-  Facebook,
   Star,
   Stars,
-  StarHalf,
-  StarHalfIcon,
-  StarIcon,
-  StarsIcon,
-  Moon,
   MoonStar,
-  SunMedium,
-  SunDim,
-  SunMoon,
-  ArrowDown,
-  ArrowRight,
   ChevronRightIcon,
-  HeartHandshake,
   Globe,
   ChevronDown,
 } from "lucide-react";
@@ -224,7 +203,7 @@ const Navbar = () => {
               {darkTheme ? (
                 <button
                   onClick={() => toggleDarkTheme(!darkTheme)}
-                  className="bg-gray-200 p-2 rounded-full transition-all duration-300 hover:rotate-360"
+                  className="bg-gray-200 p-2 rounded-full z-10 transition-all duration-300 hover:rotate-360"
                 >
                   <MoonStar size={"1.5em"} fill="grey" />
                 </button>
@@ -270,12 +249,12 @@ const Navbar = () => {
           {/* Sign Up / Log In */}
           <div className="hidden md:flex flex-col my-1 gap-1 justify-center items-center lg:flex-row lg:gap-4 md:justify-between ">
             <NavLink to={`/sign_up`}>
-              <p className="px-2  rounded-md py-1 lg:py-2 bg-gradient-to-r from-green-200 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
+              <p className="px-2  rounded-md py-1 lg:py-2 bg-gradient-to-r from-green-400 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
                 Sign Up
               </p>
             </NavLink>
             <NavLink to={`/login`}>
-              <p className="px-3  rounded-md py-1 lg:py-2 grow-1 bg-gradient-to-l from-green-200 to-blue-600 font-bold text-white transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
+              <p className="px-3  rounded-md py-1 lg:py-2 grow-1 bg-white  font-bold text-green-600 ring-1 ring-green-600 transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
                 Log In
               </p>
             </NavLink>
@@ -316,7 +295,7 @@ const Navbar = () => {
               to={`/sign_up`}
               className={"w-full flex justify-center items-center"}
             >
-              <p className="px-2 text-center  rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-200 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
+              <p className="px-2 text-center w-full  rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-400 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
                 Sign Up
               </p>
             </NavLink>
@@ -324,7 +303,7 @@ const Navbar = () => {
               to={`/login`}
               className={"w-full flex justify-center items-center"}
             >
-              <p className="px-3  rounded-md text-center py-2 lg:py-2 grow-1 bg-gradient-to-l from-green-200 to-blue-600 font-bold text-white transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
+              <p className="px-3 w-full rounded-md ring-1 ring-green-600 text-center bg-white py-2 lg:py-2 grow-1 font-bold text-green-600 transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
                 Log In
               </p>
             </NavLink>

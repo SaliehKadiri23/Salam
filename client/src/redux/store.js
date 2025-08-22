@@ -10,6 +10,9 @@ import communityReducer from './communitySlice';
 import filtersReducer from './filtersSlice';
 import opportunitiesReducer from './opportunitiesSlice';
 import qaReducer from './qaSlice';
+import prayerTimesReducer from './prayerTimesSlice';
+import hijriCalendarReducer from './hijriCalendarSlice';
+import islamicUtilitiesReducer from './islamicUtilitiesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -24,5 +27,8 @@ export const store = configureStore({
     filters: filtersReducer,
     opportunities: opportunitiesReducer,
     qa: qaReducer,
+    prayerTimes: prayerTimesReducer,
+    hijriCalendar: hijriCalendarReducer,
+    islamicUtilities: islamicUtilitiesReducer,
   },
 });
