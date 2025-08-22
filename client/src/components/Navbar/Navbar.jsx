@@ -13,6 +13,7 @@ import {
 import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLanguage } from "../../redux/userSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,10 +27,6 @@ const Navbar = () => {
     { title: "Community", link: "community" },
     { title: "Donate", link: "donate" },
     { title: "More" },
-    // "Blog",
-    // "About Us",
-    // "Contact Us",
-    // "Events",
   ];
   const menuPagesMobile = [
     { title: "Prayer Times", link: "prayer_times" },
@@ -42,9 +39,7 @@ const Navbar = () => {
     { title: "Contact Us", link: "contact_us" },
   ];
 
-  const { selectedLanguage } = useSelector((state) => state.user);
-
-  const languages = useMemo(() => useSelector((state) => state.user.languages));
+  const { selectedLanguage, languages } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   return (
     <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
@@ -264,10 +259,26 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg">
-          <div className="px-4 mx-3 py-3 space-y-2">
-            {/* Only When Logged - In */}
-            {/* <div className="flex justify-center my-3 items-center">
+        <AnimatePresence>
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: -150,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.5 },
+            }}
+            exit={{
+              opacity: 0,
+              y: 300,
+            }}
+            className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg"
+          >
+            <div className="px-4 mx-3 py-3 space-y-2">
+              {/* Only When Logged - In */}
+              {/* <div className="flex justify-center my-3 items-center">
               <div className="size-15 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full overflow-hidden ring-2 ring-white shadow-lg hover:scale-105 transition-transform duration-200">
                 <img
                   // src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5-0papwQrmLrhdypIS_bdOqEXSZ7-qljcpnEWE-HG1lpU1bmb106DVURRMF0VrVR06lTP_RMlj1qiCNdgxsQRLRz8nthUNwzx_eiJ2pnjXj0xLuWuYvQEVVMHKX1KEI4q-fY88Y3blxyAnlj9ttoGSFAFPDSYL2pPZNOMRrLnqNGqREUevT8a-9CsMVM_vTeVVDvSLpgM3Uj2yWCVf6D7z5VdXjxHAbAiRQ9JjdjOavP92WFrPdIG2TaQZC8uCFN7Kcj84CpG9IY"
@@ -276,39 +287,71 @@ const Navbar = () => {
                 />
               </div>
             </div> */}
-            {menuPagesMobile.map((item) => (
-              <NavLink
-                to={`/${item.link}`}
-                key={item.title}
-                onClick={() => setIsMenuOpen(false)}
-                className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2"
-              >
-                {item.title}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-              </NavLink>
-            ))}
-          </div>
+              {menuPagesMobile.map((item) => (
+                <NavLink
+                  to={`/${item.link}`}
+                  key={item.title}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2"
+                >
+                  {item.title}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+                </NavLink>
+              ))}
+            </div>
 
-          {/* Sign Up / Log In */}
-          <div className="flex flex-row my-1 gap-4 sm:gap-8 justify-center items-center md:justify-between px-7 mb-5 ">
-            <NavLink
-              to={`/sign_up`}
-              className={"w-full flex justify-center items-center"}
-            >
-              <p className="px-2 text-center w-full  rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-400 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
-                Sign Up
-              </p>
-            </NavLink>
-            <NavLink
-              to={`/login`}
-              className={"w-full flex justify-center items-center"}
-            >
-              <p className="px-3 w-full rounded-md ring-1 ring-green-600 text-center bg-white py-2 lg:py-2 grow-1 font-bold text-green-600 transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
-                Log In
-              </p>
-            </NavLink>
-          </div>
-        </div>
+            {/* Sign Up / Log In */}
+            <div className="flex flex-row my-1 gap-4 sm:gap-8 justify-center items-center md:justify-between px-7 mb-5 ">
+              <NavLink
+                to={`/sign_up`}
+                className={"w-full flex justify-center items-center"}
+              >
+                <motion.p
+                  initial={{
+                    opacity: 0,
+                    x: -150,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.35 },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    x: 150,
+                  }}
+                  className="px-2 text-center w-full  rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-400 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110"
+                >
+                  Sign Up
+                </motion.p>
+              </NavLink>
+              <NavLink
+                to={`/login`}
+                className={"w-full flex justify-center items-center"}
+              >
+                <motion.p
+                  initial={{
+                    opacity: 0,
+                    x: 150,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.35 },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    x: -150,
+                  }}
+                  
+                  className="px-3 w-full rounded-md ring-1 ring-green-600 text-center bg-white py-2 lg:py-2 grow-1 font-bold text-green-600 transition-all duration-300 hover:bg-gradient-to-r hover:scale-110"
+                >
+                  Log In
+                </motion.p>
+              </NavLink>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       )}
     </header>
   );

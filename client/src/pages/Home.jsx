@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import { setSelectedCategory } from "../redux/resourcesSlice";
 import { motion } from "framer-motion";
 import { calculateTimeLeft } from "../components/prayer-times/utils/timeHelpers";
+import HijriCalendar from "../components/prayer-times/calendar/HijriCalendar";
 
 const Home = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -248,7 +249,8 @@ function PrayerTools({currentTime}) {
                 aria-labelledby={tablistId}
                 className="grid gap-4 p-6"
               >
-                <div className="grid grid-cols-7 gap-1 rounded-xl bg-gray-200 p-3 text-center text-sm">
+                <HijriCalendar/>
+                {/* <div className="grid grid-cols-7 gap-1 rounded-xl bg-gray-200 p-3 text-center text-sm">
                   {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
                     <span key={d} className="py-1 font-semibold text-gray-600">
                       {d}
@@ -262,7 +264,7 @@ function PrayerTools({currentTime}) {
                       {i + 1}
                     </button>
                   ))}
-                </div>
+                </div> */}
               </div>
             )}
 

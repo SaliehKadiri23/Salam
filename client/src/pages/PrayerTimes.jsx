@@ -46,44 +46,7 @@ export default function PrayerTimes() {
   const { qiblaDirection, dhikrCount, currentQuote, islamicQuotes } = useSelector(state => state.islamicUtilities);
   const { activeTab } = useSelector(state => state.ui);
 
-  // Fallback Prayer Times
-  useEffect(() => {
-    if (prayerTimes.length === 0) {
-      const initialPrayerTimes = [
-        {
-          name: "Fajr",
-          begins: "05:30",
-          iqama: "05:45",
-          icon: Moon,
-          next: false,
-        },
-        {
-          name: "Sunrise",
-          begins: "06:45",
-          iqama: "-",
-          icon: Sunrise,
-          next: false,
-        },
-        { name: "Dhuhr", begins: "13:15", iqama: "13:30", icon: Sun, next: true },
-        { name: "Asr", begins: "17:00", iqama: "17:15", icon: Sun, next: false },
-        {
-          name: "Maghrib",
-          begins: "20:30",
-          iqama: "20:45",
-          icon: Sunset,
-          next: false,
-        },
-        {
-          name: "Isha",
-          begins: "22:00",
-          iqama: "22:15",
-          icon: Moon,
-          next: false,
-        },
-      ];
-      dispatch(setPrayerTimes(initialPrayerTimes));
-    }
-  }, [dispatch, prayerTimes.length]);
+  // Note: Initial prayer times are now handled by Redux store initialState
 
   // Update current time every second
   useEffect(() => {

@@ -1,21 +1,32 @@
 import React, { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { 
-  incrementHijriMonth, 
+import {
+  incrementHijriMonth,
   decrementHijriMonth,
   hijriMonths,
-  islamicEvents 
+  islamicEvents,
+  getDaysInHijriMonth,
+  getIslamicEventsForMonth
 } from "../../../redux/hijriCalendarSlice";
 
 const HijriCalendar = () => {
   const dispatch = useDispatch();
   const { currentHijriMonth, currentHijriDate } = useSelector((state) => state.hijriCalendar);
   
-  const hijriDays = useMemo(
-    () => Array.from({ length: 30 }, (_, i) => i + 1),
-    []
-  );
+  const hijriDays = useMemo(() => {
+    // Get days in current Hijri month using the imported function
+    const daysInMonth = getDaysInHijriMonth(currentHijriMonth, currentHijriDate.year);
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    return days;
+  }, [currentHijriMonth, currentHijriDate.year]);
+
+  // Get events for the current month
+  const currentMonthEvents = useMemo(() => {
+    const events = getIslamicEventsForMonth(currentHijriMonth);
+    return events;
+  }, [currentHijriMonth]);
+
   const currentDay = currentHijriDate.day;
 
   const handlePrevMonth = () => {
@@ -54,9 +65,9 @@ const HijriCalendar = () => {
 
           {/* Days of week */}
           <div className="grid grid-cols-7 gap-2 mb-4">
-            {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
+            {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
               <div
-                key={day}
+                key={`${day}-${index}`}
                 className="text-center text-sm font-semibold text-gray-500 py-2"
               >
                 {day}
@@ -73,7 +84,7 @@ const HijriCalendar = () => {
                 className={`aspect-square flex items-center justify-center text-sm rounded-lg cursor-pointer transition-all ${
                   day === currentDay
                     ? "bg-gradient-to-br from-emerald-500 to-amber-500 text-white font-bold shadow-lg"
-                    : islamicEvents[day]
+                    : currentMonthEvents[day]
                     ? "bg-amber-100 text-amber-700 font-semibold"
                     : "hover:bg-gray-100"
                 }`}
@@ -90,28 +101,34 @@ const HijriCalendar = () => {
             Islamic Events This Month
           </h4>
           <div className="space-y-3">
-            <div className="flex items-center space-x-3 p-3 bg-amber-50 rounded-xl">
-              <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                9
+            {Object.keys(currentMonthEvents).length > 0 ? (
+              Object.entries(currentMonthEvents)
+                .slice(0, 3) // Show first 3 events
+                .map(([day, eventName], index) => (
+                  <div
+                    key={day}
+                    className={`flex items-center space-x-3 p-3 rounded-xl ${
+                      index % 2 === 0 ? 'bg-amber-50' : 'bg-emerald-50'
+                    }`}
+                  >
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                      index % 2 === 0 ? 'bg-amber-500' : 'bg-emerald-500'
+                    }`}>
+                      {day}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-800">{eventName}</p>
+                      <p className="text-sm text-gray-600">
+                        {hijriMonths[currentHijriMonth]} {day}, {currentHijriDate.year} AH
+                      </p>
+                    </div>
+                  </div>
+                ))
+            ) : (
+              <div className="flex items-center justify-center p-6 bg-gray-50 rounded-xl">
+                <p className="text-gray-500 text-sm">No Islamic events this month</p>
               </div>
-              <div>
-                <p className="font-semibold text-gray-800">Day of Ashura</p>
-                <p className="text-sm text-gray-600">
-                  Day of fasting and remembrance
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3 p-3 bg-emerald-50 rounded-xl">
-              <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                12
-              </div>
-              <div>
-                <p className="font-semibold text-gray-800">Mawlid an-Nabi</p>
-                <p className="text-sm text-gray-600">
-                  Birthday of Prophet Muhammad (PBUH)
-                </p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

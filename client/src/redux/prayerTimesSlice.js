@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Moon, Sun, Sunrise, Sunset } from 'lucide-react';
 
 const initialState = {
   prayerTimes: [
@@ -6,42 +7,42 @@ const initialState = {
       name: "Fajr",
       begins: "05:30",
       iqama: "05:45",
-      icon: "Moon",
+      icon: Moon,
       next: false,
     },
     {
       name: "Sunrise",
       begins: "06:45",
       iqama: "-",
-      icon: "Sunrise",
+      icon: Sunrise,
       next: false,
     },
-    { 
-      name: "Dhuhr", 
-      begins: "13:15", 
-      iqama: "13:30", 
-      icon: "Sun", 
-      next: true 
+    {
+      name: "Dhuhr",
+      begins: "13:15",
+      iqama: "13:30",
+      icon: Sun,
+      next: true
     },
-    { 
-      name: "Asr", 
-      begins: "17:00", 
-      iqama: "17:15", 
-      icon: "Sun", 
-      next: false 
+    {
+      name: "Asr",
+      begins: "17:00",
+      iqama: "17:15",
+      icon: Sun,
+      next: false
     },
     {
       name: "Maghrib",
       begins: "20:30",
       iqama: "20:45",
-      icon: "Sunset",
+      icon: Sunset,
       next: false,
     },
     {
       name: "Isha",
       begins: "22:00",
       iqama: "22:15",
-      icon: "Moon",
+      icon: Moon,
       next: false,
     },
   ],

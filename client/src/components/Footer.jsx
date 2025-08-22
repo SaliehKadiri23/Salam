@@ -13,8 +13,8 @@ import {
   ChevronDown,
   ArrowRight,
 } from "lucide-react";
-import { NavLink } from "react-router";
-import {useDispatch, useSelector} from "react-redux";
+import { NavLink, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLanguage } from "../redux/userSlice";
 
 const Footer = () => {
@@ -39,10 +39,11 @@ const Footer = () => {
     { icon: Send, href: "#", name: "TikTok" },
   ];
 
+  const prayerTimes = useSelector((state) => state.prayerTimes.prayerTimes);
 
   const { selectedLanguage } = useSelector((state) => state.user);
 
-  const languages = useMemo(()=> useSelector((state)=> state.user.languages))
+  const languages = useMemo(() => useSelector((state) => state.user.languages));
 
   const handleNewsletterSubmit = () => {
     if (email) {
@@ -50,8 +51,9 @@ const Footer = () => {
       setEmail("");
     }
   };
+  const navigate = useNavigate()
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <footer className="relative bg-gradient-to-br from-emerald-300 via-emerald-800 to-emerald-900 text-white overflow-hidden">
@@ -83,7 +85,7 @@ const Footer = () => {
             </div>
 
             {/* Prayer Times Widget */}
-            <div className="bg-emerald-800/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-yellow-400/20 rounded-2xl p-6 shadow-2xl">
+              <button onClick={()=>navigate("/prayer_times")} className="bg-emerald-800/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-yellow-400/20 rounded-2xl p-6 shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="bg-yellow-400 p-2 rounded-full">
@@ -96,28 +98,23 @@ const Footer = () => {
                 </button>
               </div>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-emerald-200">Fajr</span>
-                  <span className="text-white font-medium">5:32 AM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-emerald-200">Dhuhr</span>
-                  <span className="text-white font-medium">12:45 PM</span>
-                </div>
-                <div className="flex justify-between border-l-2 border-yellow-400 pl-2">
-                  <span className="text-yellow-400 font-medium">Asr</span>
-                  <span className="text-yellow-400 font-medium">4:18 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-emerald-200">Maghrib</span>
-                  <span className="text-white font-medium">7:23 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-emerald-200">Isha</span>
-                  <span className="text-white font-medium">8:45 PM</span>
-                </div>
+                {prayerTimes.map((p) =>
+                  p.name === "Asr" ? (
+                    <div className="flex justify-between border-l-2 border-yellow-400 pl-2">
+                      <span className="text-yellow-400">{p.name}</span>
+                      <span className="text-yellow-400 font-medium">
+                        {p.iqama}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between">
+                      <span className="text-emerald-200">{p.name}</span>
+                      <span className="text-white font-medium">{p.iqama}</span>
+                    </div>
+                  )
+                )}
               </div>
-            </div>
+            </button>
 
             {/* Newsletter Signup */}
             <div className="bg-gradient-to-br transition-all duration-300 hover:scale-105 from-yellow-500/10 to-yellow-400/5 border border-yellow-400/30 rounded-2xl p-6">
