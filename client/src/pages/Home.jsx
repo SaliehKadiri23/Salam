@@ -33,10 +33,23 @@ const Home = () => {
           backgroundPosition: "center",
         }}
       >
-        
         <div className="pointer-events-none absolute inset-0 from-black/50 to-transparent " />
-
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 150,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.35 },
+          }}
+          exit={{
+            opacity: 0,
+            y: -300,
+          }}
+          className="relative z-10 mx-auto max-w-4xl px-4 text-center"
+        >
           <h2 className="text-balance text-4xl font-black tracking-tight md:text-6xl">
             Empowering the Ummah Worldwide
           </h2>
@@ -84,11 +97,13 @@ const Home = () => {
               Upcoming Events
             </motion.a>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Prayer Tools */}
       <PrayerTools currentTime={currentTime} />
+
+      {/* Resources */}
       <Resources />
 
       {/* Events */}
@@ -120,8 +135,22 @@ function Events() {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {latestThreeEvents.map((e) => (
-            <button
+          {latestThreeEvents.map((e, index) => (
+            <motion.button
+              initial={{
+                opacity: 0,
+                y: 200,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.3+ (0.2 * index/2) },
+              }}
+              exit={{
+                opacity: 0,
+                y: 200,
+              }}
+              viewport={{ once: true }}
               key={e.id}
               onClick={() => navigate(e.eventLink)}
               className="rounded-lg bg-gray-100 shadow-sm transition-all duration-300 hover:scale-110 overflow-hidden"
@@ -152,7 +181,7 @@ function Events() {
                   </button>
                 </div>
               </div>
-            </button>
+            </motion.button>
           ))}
         </div>
       </section>
@@ -169,7 +198,21 @@ function PrayerTools({currentTime}) {
 
   return (
     <div className="w-full bg-gray-100/90 ">
-      <section
+      <motion.section
+        initial={{
+          opacity: 0,
+          y: 300,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.5 },
+        }}
+        exit={{
+          opacity: 0,
+          y: 300,
+        }}
+        viewport={{once:true}}
         id="prayer-tools"
         className="container mx-auto w-full max-w-6xl px-4 py-16 "
       >
@@ -218,12 +261,9 @@ function PrayerTools({currentTime}) {
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                     {prayerTimes.map((p) => {
-                          const timeLeft = calculateTimeLeft(
-                            p.begins,
-                            currentTime
-                          );
+                      const timeLeft = calculateTimeLeft(p.begins, currentTime);
 
-                      return(
+                      return (
                         <div
                           key={p.name}
                           className="flex flex-col transition-all duration-300 hover:scale-110 items-center p-3 rounded-md bg-gray-50"
@@ -249,7 +289,7 @@ function PrayerTools({currentTime}) {
                 aria-labelledby={tablistId}
                 className="grid gap-4 p-6"
               >
-                <HijriCalendar/>
+                <HijriCalendar />
                 {/* <div className="grid grid-cols-7 gap-1 rounded-xl bg-gray-200 p-3 text-center text-sm">
                   {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
                     <span key={d} className="py-1 font-semibold text-gray-600">
@@ -286,7 +326,7 @@ function PrayerTools({currentTime}) {
             )}
           </div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }
@@ -343,15 +383,33 @@ function Resources() {
 
   return (
     <section id="resources" className="bg-gray-200 py-16">
-      <div className="container mx-auto max-w-6xl px-4">
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 300,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.5 },
+        }}
+        exit={{
+          opacity: 0,
+          y: 300,
+        }}
+        viewport={{ once: true }}
+        className="container mx-auto max-w-6xl px-4"
+      >
         <header className="mb-10 text-center">
           <h3 className="text-3xl font-bold">
             Resources &amp; Educational Content
           </h3>
         </header>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
-          {cards.map((c) => (
+          {cards.map((c, index) => (
             <button
+              
+              viewport={{ once: true }}
               key={c.title}
               onClick={() =>
                 navigate(
@@ -380,7 +438,7 @@ function Resources() {
             </button>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
