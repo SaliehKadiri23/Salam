@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { MapPin, MessageCircle } from "lucide-react";
+import {motion} from "framer-motion"
 
 const Hero = ({ currentTime, location, currentQuote }) => {
   const { islamicQuotes } = useSelector((state) => state.islamicUtilities);

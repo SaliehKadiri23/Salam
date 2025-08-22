@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Plus, Minus, RotateCcw } from 'lucide-react';
 import { incrementDhikrCount, decrementDhikrCount, resetDhikrCount } from '../../../redux/islamicUtilitiesSlice';
+import { motion } from "framer-motion";
 
 const DhikrCounter = () => {
   const dispatch = useDispatch();
@@ -20,11 +21,25 @@ const DhikrCounter = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-6 text-center">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 250,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.4 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 250,
+      }}
+      viewport={{ once: true }}
+      className="bg-white rounded-2xl shadow-xl p-6 text-center"
+    >
       <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-amber-200 rounded-full flex items-center justify-center">
-        <span className="text-2xl font-bold text-amber-700">
-          {dhikrCount}
-        </span>
+        <span className="text-2xl font-bold text-amber-700">{dhikrCount}</span>
       </div>
       <h3 className="font-semibold text-gray-800 mb-4">Digital Tasbih</h3>
       <div className="flex space-x-2 justify-center">
@@ -47,7 +62,7 @@ const DhikrCounter = () => {
           <RotateCcw className="h-4 w-4" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

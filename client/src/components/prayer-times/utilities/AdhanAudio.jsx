@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Volume2, Play, Pause } from 'lucide-react';
 import { toggleAudio } from '../../../redux/prayerTimesSlice';
+import { motion } from "framer-motion";
 
 const AdhanAudio = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,23 @@ const AdhanAudio = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-6 text-center">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 350,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.4 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 350,
+      }}
+      viewport={{once:true}}
+      className="bg-white rounded-2xl shadow-xl p-6 text-center"
+    >
       <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
         <Volume2 className="h-8 w-8 text-blue-600" />
       </div>
@@ -28,7 +45,7 @@ const AdhanAudio = () => {
         )}
         <span className="text-sm">{audioPlaying ? "Pause" : "Play"}</span>
       </button>
-    </div>
+    </motion.div>
   );
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Bell } from 'lucide-react';
 import { setNotificationsEnabled } from '../../../redux/prayerTimesSlice';
+import { motion } from "framer-motion";
 
 const PrayerNotifications = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,23 @@ const PrayerNotifications = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-6 text-center">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 300,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.4 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 300,
+      }}
+      viewport={{ once: true }}
+      className="bg-white rounded-2xl shadow-xl p-6 text-center"
+    >
       <div
         className={`w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center ${
           notificationsEnabled ? "bg-emerald-100" : "bg-gray-100"
@@ -47,7 +64,7 @@ const PrayerNotifications = () => {
       >
         {notificationsEnabled ? "Enabled" : "Enable"}
       </button>
-    </div>
+    </motion.div>
   );
 };
 

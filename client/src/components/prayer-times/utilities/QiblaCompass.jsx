@@ -1,12 +1,30 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Compass } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const QiblaCompass = () => {
   const qiblaDirection = useSelector((state) => state.islamicUtilities.qiblaDirection);
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-6 text-center">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 200,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.4 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 200,
+      }}
+      
+      viewport={{ once: true }}
+      className="bg-white rounded-2xl shadow-xl p-6 text-center"
+    >
       <div className="relative w-24 h-24 mx-auto mb-4">
         <div
           className="w-full h-full border-4 border-emerald-200 rounded-full relative transition-transform duration-1000"
@@ -19,7 +37,7 @@ const QiblaCompass = () => {
       <h3 className="font-semibold text-gray-800 mb-2">Qibla Direction</h3>
       <p className="text-2xl font-bold text-emerald-600">{qiblaDirection}°</p>
       <p className="text-sm text-gray-600">Northeast</p>
-    </div>
+    </motion.div>
   );
 };
 
