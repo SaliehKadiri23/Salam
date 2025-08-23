@@ -11,6 +11,8 @@ import {
   Award,
 } from "lucide-react";
 import { setActiveTab, setSelectedCategory, toggleEventRegistration } from '../../redux/eventsAndNewsSlice.jsx';
+import { motion } from "framer-motion";
+
 
 // Tab Navigation Component
 export const TabNavigation = () => {
@@ -49,8 +51,22 @@ export const CategoryFilters = () => {
 
   return (
     <div className="flex flex-wrap gap-3">
-      {categories.map((category) => (
-        <button
+      {categories.map((category, index) => (
+        <motion.button
+          initial={{
+            opacity: 0,
+            x: 50 + index * 10,
+          }}
+          whileInView={{
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.45 + (0.15 * index) },
+          }}
+          exit={{
+            opacity: 0,
+            x: 50,
+          }}
+          viewport={{ once: true }}
           key={category.id}
           onClick={() => dispatch(setSelectedCategory(category.id))}
           className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
@@ -61,7 +77,7 @@ export const CategoryFilters = () => {
         >
           <category.icon className="w-4 h-4" />
           <span>{category.label}</span>
-        </button>
+        </motion.button>
       ))}
     </div>
   );

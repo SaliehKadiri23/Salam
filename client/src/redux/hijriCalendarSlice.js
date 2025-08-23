@@ -49,7 +49,7 @@ export function getIslamicEventsForMonth(monthIndex) {
   return islamicEvents[monthIndex] || {};
 }
 
-const today = new Date();
+export const today = new Date();
 
 function gregorianToHijri(gregorianDate) {
   // Validate input

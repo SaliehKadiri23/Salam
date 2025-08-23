@@ -3,8 +3,9 @@ import { useSelector } from "react-redux";
 import Sidebar from "../components/events/Sidebar";
 import { TabNavigation } from "../components/events/EventComponents";
 import { EventsContent, NewsContent } from "../components/events/Content";
+import { motion } from "framer-motion";
 
-const IslamicEventsPage = () => {
+const EventsAndNews = () => {
   const {
     activeTab,
     selectedCategory,
@@ -68,4 +69,4 @@ const IslamicEventsPage = () => {
   );
 };
 
-export default IslamicEventsPage;
+export default EventsAndNews;
