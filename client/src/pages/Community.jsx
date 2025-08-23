@@ -13,10 +13,10 @@ import {
   Globe,
   Clock,
   MapPin,
-  Stars
+  Stars,
 } from "lucide-react";
 import { useNavigate } from "react-router";
-
+import { motion } from "framer-motion";
 
 const iconComponents = {
   Heart,
@@ -29,14 +29,9 @@ const iconComponents = {
 };
 
 const Community = () => {
-  const navigate = useNavigate()
-  const {
-    forumCategories,
-    scholarQA,
-    duaRequests,
-    volunteerOpportunities,
-  } = useSelector((state) => state.community);
-
+  const navigate = useNavigate();
+  const { forumCategories, scholarQA, duaRequests, volunteerOpportunities } =
+    useSelector((state) => state.community);
 
   // Hero Section Component
   const HeroSection = () => (
@@ -83,7 +78,21 @@ const Community = () => {
             bridges of faith, knowledge, and compassion.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <motion.a
+              initial={{
+                opacity: 0,
+                x: -200,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                transition: { duration: 0.4 },
+              }}
+              exit={{
+                opacity: 0,
+                x: -200,
+              }}
+              viewport={{ once: true }}
               href="#DiscussionForums"
               className="group bg-gradient-to-r from-emerald-600 to-green-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
             >
@@ -92,13 +101,27 @@ const Community = () => {
                 className="inline ml-2 group-hover:translate-x-1 transition-transform"
                 size={18}
               />
-            </a>
-            <a
+            </motion.a>
+            <motion.a
+              initial={{
+                opacity: 0,
+                x: 200,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+                transition: { duration: 0.4 },
+              }}
+              exit={{
+                opacity: 0,
+                x: 200,
+              }}
+              viewport={{ once: true }}
               href="#Q&A"
               className="bg-white text-slate-700 px-8 py-4 rounded-xl font-semibold border-2 border-gray-200 hover:border-emerald-200 hover:shadow-md transition-all duration-200"
             >
               Ask A Question
-            </a>
+            </motion.a>
           </div>
         </div>
       </div>
@@ -107,7 +130,21 @@ const Community = () => {
 
   // Discussion Forums Component
   const DiscussionForums = () => (
-    <div
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 50,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45, type: "tween", ease:"linear" },
+      }}
+      exit={{
+        opacity: 0,
+        y: 50,
+      }}
+      viewport={{ once: true }}
       id="DiscussionForums"
       className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
@@ -165,14 +202,27 @@ const Community = () => {
           View All Communities
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 
   // Q&A Section Component
   const ScholarQA = () => (
-    <div
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 70,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 70,
+      }}
+      viewport={{ once: true }}
       id="Q&A"
-      
       className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
       <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
@@ -222,16 +272,35 @@ const Community = () => {
           ))}
         </div>
 
-        <button onClick={()=> navigate("/questions_and_answers")} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+        <button
+          onClick={() => navigate("/questions_and_answers")}
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+        >
           Ask a Question
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 
   // Dua Wall Component
   const DuaWall = () => (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 100,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 100,
+      }}
+      viewport={{ once: true }}
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300"
+    >
       <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-violet-50">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-purple-100 rounded-xl">
@@ -274,14 +343,28 @@ const Community = () => {
           Submit a Dua Request
         </button>
       </div>
-    </div>
+    </motion.div>
   );
-
-  
 
   // Volunteer Opportunities Component
   const VolunteerBoard = () => (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 130,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 130,
+      }}
+      viewport={{ once: true }}
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+    >
       <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-orange-50">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-amber-100 rounded-xl">
@@ -339,12 +422,28 @@ const Community = () => {
           View All Opportunities
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 
   // Community Guidelines Component
   const CommunityGuidelines = () => (
-    <div className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-2xl p-6 border border-gray-200">
+    <motion.div
+      initial={{
+        opacity: 0,
+        x: -200,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        transition: { duration: 0.4 },
+      }}
+      exit={{
+        opacity: 0,
+        x: 200,
+      }}
+      viewport={{ once: true }}
+      className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-2xl p-6 border border-gray-200"
+    >
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 bg-slate-100 rounded-xl">
           <Globe className="text-slate-600" size={20} />
@@ -367,7 +466,7 @@ const Community = () => {
           Welcome newcomers and help them feel at home
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
@@ -393,7 +492,6 @@ const Community = () => {
         <HeroSection />
 
         <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <div className="lg:col-span-1">
               <DiscussionForums />
