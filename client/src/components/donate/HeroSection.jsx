@@ -62,7 +62,7 @@ const QuickDonateActions = () => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-4 overflow-hidden">
+    <div className="flex flex-wrap pb-4 justify-center gap-4 overflow-hidden">
       {quickAmounts.map((amount, index) => (
         <motion.button
           initial={{

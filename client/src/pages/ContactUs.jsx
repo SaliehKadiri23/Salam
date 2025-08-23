@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { TbBrandTelegram } from "react-icons/tb";
 import { useNavigate } from "react-router";
+import {motion} from "framer-motion";
 
 
 
@@ -51,8 +52,8 @@ const ContactForm = () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setIsSubmitting(false);
-    // Reset form or show success message
-    console.log("Form submitted:", formData);
+    
+    alert("Form submitted:", formData);
   };
 
   // Social media icons with hover effects
@@ -79,7 +80,23 @@ const ContactForm = () => {
   ];
 
   return (
-    <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-all duration-500">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 70,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.55 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 70,
+      }}
+      viewport={{ once: true }}
+      className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-all duration-500"
+    >
       <div className="mb-8">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4">
           Contact Us
@@ -223,11 +240,25 @@ const ContactForm = () => {
           <p className="text-sm text-gray-600 mb-4 text-center">
             Follow us on social media
           </p>
-          <div className="flex justify-center space-x-6">
-            {socialIcons.map(({ icon: Icon, href, label, color }) => (
-              <a
+          <div className="flex justify-center space-x-6 ">
+            {socialIcons.map(({ icon: Icon, href, label, color }, index) => (
+              <motion.a
                 key={label}
                 href={href}
+                initial={{
+                  opacity: 0,
+                  y: 20 + (10 * index) ,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.37 + 0.2 * index },
+                }}
+                exit={{
+                  opacity: 0,
+                  y: 20,
+                }}
+                viewport={{ once: true }}
                 className={`p-3 bg-gray-50 hover:bg-white rounded-full transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 text-gray-600 ${color} group`}
                 aria-label={label}
               >
@@ -235,12 +266,12 @@ const ContactForm = () => {
                   size={20}
                   className="group-hover:scale-110 transition-transform duration-200"
                 />
-              </a>
+              </motion.a>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -263,7 +294,23 @@ const ContactInfo = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-500">
+      <motion.div
+        initial={{
+          opacity: 0,
+          x: 70,
+        }}
+        whileInView={{
+          opacity: 1,
+          x: 0,
+          transition: { duration: 0.55 },
+        }}
+        exit={{
+          opacity: 0,
+          x: 70,
+        }}
+        viewport={{ once: true }}
+        className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-500"
+      >
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Get In Touch</h2>
         <div className="space-y-6">
           {contactMethods.map(({ icon: Icon, title, info, subtitle }) => (
@@ -281,9 +328,7 @@ const ContactInfo = () => {
             </div>
           ))}
         </div>
-      </div>
-
-      
+      </motion.div>
     </div>
   );
 };
@@ -351,10 +396,24 @@ const CommunityActions = () => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {actions.map(({ icon: Icon, title, description, gradient, href }) => (
-          <button
+        {actions.map(({ icon: Icon, title, description, gradient, href }, index) => (
+          <motion.button
+            initial={{
+              opacity: 0,
+              y: 30 + (index * 15),
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.55 + 0.2 * index },
+            }}
+            exit={{
+              opacity: 0,
+              y: 30,
+            }}
+            viewport={{ once: true }}
             key={title}
-            onClick={()=> navigate(href)}
+            onClick={() => navigate(href)}
             className="group flex flex-col justify-center items-center bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-6 hover:shadow-xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
           >
             <div
@@ -371,7 +430,7 @@ const CommunityActions = () => {
             <div className="mt-4 flex items-center text-emerald-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300">
               Learn more →
             </div>
-          </button>
+          </motion.button>
         ))}
       </div>
     </div>
@@ -381,8 +440,7 @@ const CommunityActions = () => {
 // Main Contact Page Component - Orchestrates all components
 const ContactUsPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-green-50/20">
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-green-50/20 overflow-hidden">
       <main className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
         {/* Hero Section with Contact Form and Info */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
@@ -399,7 +457,23 @@ const ContactUsPage = () => {
 
         {/* Testimonial or Feature Section */}
         <div className="mt-16 text-center">
-          <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-500">
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 70,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.55 },
+            }}
+            exit={{
+              opacity: 0,
+              y: 70,
+            }}
+            viewport={{ once: true }}
+            className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-500"
+          >
             <div className="flex justify-center mb-4">
               <Star className="h-8 w-8 text-yellow-500 fill-current" />
             </div>
@@ -408,11 +482,9 @@ const ContactUsPage = () => {
               here truly embodies the spirit of unity and compassion."
             </blockquote>
             <p className="text-gray-600">- Community Member</p>
-          </div>
+          </motion.div>
         </div>
       </main>
-
-      
     </div>
   );
 };
