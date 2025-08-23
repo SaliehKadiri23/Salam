@@ -1,10 +1,6 @@
-import React from 'react';
-import {
-  CheckCircle2,
-  BookmarkCheck,
-  TrendingUp,
-  Clock,
-} from 'lucide-react';
+import React from "react";
+import { CheckCircle2, BookmarkCheck, TrendingUp, Clock } from "lucide-react";
+import { motion } from "framer-motion";
 
 const PageHeader = ({ userStats }) => (
   <div className="mb-8">
@@ -20,30 +16,101 @@ const PageHeader = ({ userStats }) => (
 
       {/* User Progress Stats */}
       <div className="flex flex-wrap gap-4 mt-4 lg:mt-0">
-        <StatCard
-          icon={CheckCircle2}
-          value={userStats.totalCompleted}
-          label="Completed"
-          color="emerald"
-        />
-        <StatCard
-          icon={BookmarkCheck}
-          value={userStats.totalBookmarked}
-          label="Bookmarked"
-          color="amber"
-        />
-        <StatCard
-          icon={TrendingUp}
-          value={userStats.totalInProgress}
-          label="In Progress"
-          color="blue"
-        />
-        <StatCard
-          icon={Clock}
-          value={`${userStats.totalTimeSpent}m`}
-          label="Time Spent"
-          color="purple"
-        />
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 200,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.4 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 200,
+          }}
+          viewport={{ once: true }}
+        >
+          <StatCard
+            icon={CheckCircle2}
+            value={userStats.totalCompleted}
+            label="Completed"
+            color="emerald"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 250,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.55 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 250,
+          }}
+          viewport={{ once: true }}
+        >
+          <StatCard
+            icon={BookmarkCheck}
+            value={userStats.totalBookmarked}
+            label="Bookmarked"
+            color="amber"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 300,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.7 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 300,
+          }}
+          viewport={{ once: true }}
+        >
+          <StatCard
+            icon={TrendingUp}
+            value={userStats.totalInProgress}
+            label="In Progress"
+            color="blue"
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 350,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.85 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 350,
+          }}
+          viewport={{ once: true }}
+        >
+          <StatCard
+            icon={Clock}
+            value={`${userStats.totalTimeSpent}m`}
+            label="Time Spent"
+            color="purple"
+          />
+        </motion.div>
       </div>
     </div>
   </div>
@@ -51,10 +118,10 @@ const PageHeader = ({ userStats }) => (
 
 const StatCard = ({ icon: Icon, value, label, color }) => {
   const colorClasses = {
-    emerald: 'text-emerald-600',
-    amber: 'text-amber-600',
-    blue: 'text-blue-600',
-    purple: 'text-purple-600',
+    emerald: "text-emerald-600",
+    amber: "text-amber-600",
+    blue: "text-blue-600",
+    purple: "text-purple-600",
   };
 
   return (

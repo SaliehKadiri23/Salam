@@ -6,6 +6,7 @@ import ResultsHeader from '../components/resources/ResultsHeader';
 import ResourcesGrid from '../components/resources/ResourcesGrid';
 import ResourceDetailView from '../components/resources/ResourceDetailView';
 import EmptyState from '../components/resources/EmptyState';
+import {motion} from "framer-motion";
 
 const Resources = () => {
   const { currentView } = useSelector((state) => state.ui);
