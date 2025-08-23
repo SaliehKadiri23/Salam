@@ -1,12 +1,13 @@
 import React from "react";
-import { Heart, Users } from "lucide-react";
+import { Heart, Stars } from "lucide-react";
 import { TbBuildingMosque } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { motion } from "framer-motion";
 
 const iconMap = {
   Heart: <Heart className="w-6 h-6" />,
-  Users: <Users className="w-6 h-6" />,
+  Users: <Stars className="w-6 h-6" />,
   TbBuildingMosque: <TbBuildingMosque className="w-6 h-6" />,
 };
 
@@ -84,11 +85,28 @@ const DonationTypesSection = () => {
 
         <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-1">
           {donationTypes.map((donation, index) => (
-            <DonationCard
-              key={donation.id}
-              donation={donation}
-              index={index}
-            />
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 65,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.4 },
+              }}
+              exit={{
+                opacity: 0,
+                y: 65,
+              }}
+              viewport={{ once: true }}
+            >
+              <DonationCard
+                key={donation.id}
+                donation={donation}
+                index={index}
+              />
+            </motion.div>
           ))}
         </div>
       </div>

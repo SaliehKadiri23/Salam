@@ -1,6 +1,7 @@
 import React from "react";
 import { Globe, Star, Heart } from "lucide-react";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
 const iconMap = {
   Globe: <Globe className="w-8 h-8" />,
@@ -45,7 +46,24 @@ const ImpactStoriesSection = () => {
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {impactStories.map((story, index) => (
-            <ImpactCard key={index} story={story} index={index} />
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 70 + (15* index),
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.55 + (0.15 * index) },
+              }}
+              exit={{
+                opacity: 0,
+                y: 70,
+              }}
+              viewport={{ once: true }}
+            >
+              <ImpactCard key={index} story={story} index={index} />
+            </motion.div>
           ))}
         </div>
       </div>

@@ -6,6 +6,7 @@ import ProgressBar from "../utility/ProgressBar";
 import AnimatedCounter from "../utility/AnimatedCounter";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { motion } from "framer-motion";
 
 const CampaignProgress = () => {
   const { goal, current, donorCount } = useSelector(
@@ -62,14 +63,28 @@ const QuickDonateActions = () => {
 
   return (
     <div className="flex flex-wrap justify-center gap-4">
-      {quickAmounts.map((amount) => (
-        <button
+      {quickAmounts.map((amount, index) => (
+        <motion.button
+          initial={{
+            opacity: 0,
+            y: 50,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.5 + (0.2 * index) },
+          }}
+          exit={{
+            opacity: 0,
+            y: 50,
+          }}
+          viewport={{ once: true }}
           key={amount}
           onClick={() => handleQuickDonate(amount)}
           className="px-6 py-3 bg-white/80 hover:bg-white text-emerald-600 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-emerald-200 hover:border-emerald-300"
         >
           Quick Donate ${amount}
-        </button>
+        </motion.button>
       ))}
     </div>
   );
@@ -106,8 +121,24 @@ const HeroSection = () => (
           transparency and ensuring your contributions make a meaningful impact.
         </p>
       </div>
-
-      <CampaignProgress />
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 70,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.55 },
+        }}
+        exit={{
+          opacity: 0,
+          y: 70,
+        }}
+        viewport={{ once: true }}
+      >
+        <CampaignProgress />
+      </motion.div>
 
       <QuickDonateActions />
     </div>

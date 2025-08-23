@@ -1,5 +1,6 @@
 import React from "react";
 import { Shield, Award, TrendingUp, Globe } from "lucide-react";
+import { motion } from "framer-motion";
 
 const TrustBadge = ({ icon, title, description }) => (
   <div className="text-center group">
@@ -13,7 +14,23 @@ const TrustBadge = ({ icon, title, description }) => (
 
 const TrustIndicators = () => (
   <section className="py-16 px-6 bg-white">
-    <div className="max-w-4xl mx-auto text-center">
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 150,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.55 },
+      }}
+      exit={{
+        opacity: 0,
+        y: 150,
+      }}
+      viewport={{ once: true }}
+      className="max-w-4xl mx-auto text-center"
+    >
       <h2 className="text-3xl font-bold text-gray-800 mb-12">
         Why Donate with Salam?
       </h2>
@@ -40,7 +57,7 @@ const TrustIndicators = () => (
           description="Supporting 40+ countries"
         />
       </div>
-    </div>
+    </motion.div>
   </section>
 );
 
