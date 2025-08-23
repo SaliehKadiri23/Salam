@@ -361,7 +361,7 @@ const DuaRequestWall = () => {
         {filteredRequests.length > 0 && (
           <div className="text-center mt-12">
             <button className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-6 py-3 rounded-xl transition-colors">
-              Load More Requests
+              Load More Duas
             </button>
           </div>
         )}

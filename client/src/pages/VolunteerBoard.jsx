@@ -89,7 +89,7 @@ const VolunteerBoard = () => {
               <OpportunitiesSection onApply={handleApply} />
             )}
 
-            {filteredOpportunities.length > 0 && <CallToAction />}
+            {<CallToAction />}
           </div>
         </div>
       </main>
