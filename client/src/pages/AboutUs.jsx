@@ -16,8 +16,13 @@ import {
   LucideMedal,
   MedalIcon,
 } from "lucide-react";
-import { TbBrandLinkedin, TbBrandTelegram, TbMedal, TbMedal2 } from "react-icons/tb";
-
+import {
+  TbBrandLinkedin,
+  TbBrandTelegram,
+  TbMedal,
+  TbMedal2,
+} from "react-icons/tb";
+import { motion } from "framer-motion";
 
 // Glassmorphism Card
 const GlassmorphismCard = ({ children, className = "" }) => (
@@ -98,8 +103,6 @@ const IslamicAboutPage = () => {
 
     return () => clearInterval(interval);
   }, []);
-
- 
 
   const impactStats = [
     {
@@ -188,7 +191,23 @@ const IslamicAboutPage = () => {
 
         {/* Mission Section */}
         <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 70,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.55 },
+            }}
+            exit={{
+              opacity: 0,
+              y: 70,
+            }}
+            viewport={{ once: true }}
+            className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl"
+          >
             <GlassmorphismCard className="rounded-3xl p-8 md:p-12">
               <div className="text-center mb-8">
                 <IconWrapper icon={Home} />
@@ -204,12 +223,28 @@ const IslamicAboutPage = () => {
                 Islamic teachings and culture.
               </p>
             </GlassmorphismCard>
-          </div>
+          </motion.div>
         </section>
 
         {/* Values Section */}
         <section className="py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 70,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.55 },
+            }}
+            exit={{
+              opacity: 0,
+              y: 70,
+            }}
+            viewport={{ once: true }}
+            className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl"
+          >
             <GlassmorphismCard className="rounded-3xl p-8 md:p-12">
               <div className="text-center mb-8">
                 <IconWrapper
@@ -227,7 +262,7 @@ const IslamicAboutPage = () => {
                 our users.
               </p>
             </GlassmorphismCard>
-          </div>
+          </motion.div>
         </section>
 
         {/* Vision & Impact Section */}
@@ -245,13 +280,30 @@ const IslamicAboutPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {impactStats.map((stat, index) => (
-                <StatCard
-                  key={stat.label}
-                  icon={stat.icon}
-                  value={stat.value}
-                  label={stat.label}
-                  suffix={stat.suffix}
-                />
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: 50 + index * 15,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.45 + 0.2 * index },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: 50,
+                  }}
+                  viewport={{ once: true }}
+                >
+                  <StatCard
+                    key={stat.label}
+                    icon={stat.icon}
+                    value={stat.value}
+                    label={stat.label}
+                    suffix={stat.suffix}
+                  />
+                </motion.div>
               ))}
             </div>
           </div>
@@ -259,7 +311,23 @@ const IslamicAboutPage = () => {
 
         {/* Newsletter Section */}
         <section className="py-20">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 70,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.5 },
+            }}
+            exit={{
+              opacity: 0,
+              y: 70,
+            }}
+            viewport={{ once: true }}
+            className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl"
+          >
             <GlassmorphismCard className="rounded-3xl p-8 md:p-12 text-center">
               <IconWrapper
                 icon={Mail}
@@ -288,12 +356,28 @@ const IslamicAboutPage = () => {
                 </button>
               </div>
             </GlassmorphismCard>
-          </div>
+          </motion.div>
         </section>
 
         {/* Contact Section */}
         <section className="py-20">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 70,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.5 },
+            }}
+            exit={{
+              opacity: 0,
+              y: 70,
+            }}
+            viewport={{ once: true }}
+            className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl"
+          >
             <GlassmorphismCard className="rounded-3xl p-8 md:p-12">
               <div className="text-center mb-8">
                 <IconWrapper
@@ -336,7 +420,7 @@ const IslamicAboutPage = () => {
                 </div>
               </div>
             </GlassmorphismCard>
-          </div>
+          </motion.div>
         </section>
 
         {/* Social Media Section */}
@@ -353,12 +437,29 @@ const IslamicAboutPage = () => {
 
               <div className="flex justify-center gap-6">
                 {socialLinks.map((social, index) => (
-                  <SocialIcon
-                    key={index}
-                    icon={social.icon}
-                    href={social.href}
-                    hoverColor={social.hoverColor}
-                  />
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      y: 50 + (index* 15),
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.45 + 0.25 * index },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: 50,
+                    }}
+                    viewport={{ once: true }}
+                  >
+                    <SocialIcon
+                      key={index}
+                      icon={social.icon}
+                      href={social.href}
+                      hoverColor={social.hoverColor}
+                    />
+                  </motion.div>
                 ))}
               </div>
             </div>
