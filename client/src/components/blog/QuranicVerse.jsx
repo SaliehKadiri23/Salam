@@ -3,7 +3,7 @@ import { Star } from 'lucide-react';
 
 const QuranicVerse = ({ verse }) => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 py-16">
+    <div className="relative overflow-hidden bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 py-7">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="absolute inset-0 bg-islamic-pattern-light"></div>
 

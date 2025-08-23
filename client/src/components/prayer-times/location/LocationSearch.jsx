@@ -30,7 +30,7 @@ const LocationSearch = () => {
     dispatch(setLocation("Detecting location..."));
     // Simulate API call delay
     setTimeout(() => {
-      dispatch(setLocation("San Francisco, CA, USA"));
+      dispatch(setLocation("Kano State, Nigeria"));
     }, 2000);
   };
 

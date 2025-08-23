@@ -2,6 +2,7 @@ import React from "react";
 import ArticleCard from "./ArticleCard";
 import NewsletterSignup from "./NewsletterSignup";
 import { Heart } from "lucide-react";
+import { motion } from "framer-motion";
 
 const ArticlesGrid = ({
   articlesToDisplay,
@@ -44,13 +45,29 @@ const ArticlesGrid = ({
 
       {/* Newsletter Signup (appears between articles) */}
       {articlesToDisplay.length >= 6 && (
-        <div className="my-16">
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 70,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.55 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 70,
+          }}
+          viewport={{ once: true }}
+          className="my-16"
+        >
           <NewsletterSignup
             email={newsletterEmail}
             setEmail={setNewsletterEmail}
             onSubmit={handleNewsletterSubmit}
           />
-        </div>
+        </motion.div>
       )}
 
       {/* Loading State */}

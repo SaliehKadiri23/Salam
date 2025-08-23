@@ -35,12 +35,21 @@ const initialState = {
   currentQuote: 0, // Index for current Islamic quote
   islamicQuotes, // Array of Islamic quotes
   duas, // Prayer-specific duas
+  quranicVerseOfTheDay : {
+  arabic: "وَمَن يَتَّقِ اللَّـهَ يَجْعَل لَّهُ مَخْرَجًا",
+  transliteration: "Wa man yattaqi Allaha yaj'al lahu makhrajan",
+  translation: "And whoever fears Allah - He will make for him a way out.",
+  reference: "Quran 65:2"
+}
 };
 
 export const islamicUtilitiesSlice = createSlice({
-  name: 'islamicUtilities',
+  name: "islamicUtilities",
   initialState,
   reducers: {
+    setQuranicVerseOfTheDay: (state, action) => {
+      state.quranicVerseOfTheDay = action.payload;
+    },
     setQiblaDirection: (state, action) => {
       state.qiblaDirection = action.payload;
     },
@@ -80,6 +89,7 @@ export const islamicUtilitiesSlice = createSlice({
 });
 
 export const {
+  setQuranicVerseOfTheDay,
   setQiblaDirection,
   updateQiblaDirection,
   incrementDhikrCount,

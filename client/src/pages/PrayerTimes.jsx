@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Moon,
-  Sun,
-  Sunrise,
-  Sunset,
-} from "lucide-react";
+import { Moon, Sun, Sunrise, Sunset } from "lucide-react";
 
 // Import extracted components
-import Hero from '../components/prayer-times/hero/Hero';
-import LocationSearch from '../components/prayer-times/location/LocationSearch';
-import PrayerTable from '../components/prayer-times/table/PrayerTable';
-import HijriCalendar from '../components/prayer-times/calendar/HijriCalendar';
-import UtilityCards from '../components/prayer-times/utilities/UtilityCards';
+import Hero from "../components/prayer-times/hero/Hero";
+import LocationSearch from "../components/prayer-times/location/LocationSearch";
+import PrayerTable from "../components/prayer-times/table/PrayerTable";
+import HijriCalendar from "../components/prayer-times/calendar/HijriCalendar";
+import UtilityCards from "../components/prayer-times/utilities/UtilityCards";
 
 // Import Redux actions
 import {
@@ -21,18 +16,14 @@ import {
   setSearchQuery,
   setNotificationsEnabled,
   setAudioPlaying,
-} from '../redux/prayerTimesSlice';
-import {
-  setCurrentHijriMonth,
-} from '../redux/hijriCalendarSlice';
+} from "../redux/prayerTimesSlice";
+import { setCurrentHijriMonth } from "../redux/hijriCalendarSlice";
 import {
   setQiblaDirection,
   setDhikrCount,
   nextQuote,
-} from '../redux/islamicUtilitiesSlice';
-import {
-  setActiveTab,
-} from '../redux/uiSlice';
+} from "../redux/islamicUtilitiesSlice";
+import { setActiveTab } from "../redux/uiSlice";
 
 // Main component
 export default function PrayerTimes() {
@@ -41,10 +32,17 @@ export default function PrayerTimes() {
 
   // Redux state selectors
   const dispatch = useDispatch();
-  const { prayerTimes, location, searchQuery, notificationsEnabled, audioPlaying } = useSelector(state => state.prayerTimes);
-  const { currentHijriMonth } = useSelector(state => state.hijriCalendar);
-  const { qiblaDirection, dhikrCount, currentQuote, islamicQuotes } = useSelector(state => state.islamicUtilities);
-  const { activeTab } = useSelector(state => state.ui);
+  const {
+    prayerTimes,
+    location,
+    searchQuery,
+    notificationsEnabled,
+    audioPlaying,
+  } = useSelector((state) => state.prayerTimes);
+  const { currentHijriMonth } = useSelector((state) => state.hijriCalendar);
+  const { qiblaDirection, dhikrCount, currentQuote, islamicQuotes } =
+    useSelector((state) => state.islamicUtilities);
+  const { activeTab } = useSelector((state) => state.ui);
 
   // Note: Initial prayer times are now handled by Redux store initialState
 
@@ -141,7 +139,9 @@ export default function PrayerTimes() {
             ) : (
               <HijriCalendar
                 currentHijriMonth={currentHijriMonth}
-                setCurrentHijriMonth={(month) => dispatch(setCurrentHijriMonth(month))}
+                setCurrentHijriMonth={(month) =>
+                  dispatch(setCurrentHijriMonth(month))
+                }
               />
             )}
           </div>
