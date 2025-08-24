@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
@@ -62,6 +62,10 @@ const Login = () => {
   // Local state
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  
+  // Refs
+  const signInCardRef = useRef(null);
   
   // Redux state
   const authLoading = useSelector(selectAuthLoading);
@@ -90,10 +94,25 @@ const Login = () => {
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
     dispatch(setUserRole(role));
+    
+    // Scroll to top of sign-in card after role selection
+    setTimeout(() => {
+      if (signInCardRef.current) {
+        signInCardRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 300); // Small delay to allow animation to start
   };
 
   const handleBackToRoleSelection = () => {
     setSelectedRole(null);
+    setShowEmailForm(false); // Reset email form visibility
+  };
+
+  const handleShowEmailForm = () => {
+    setShowEmailForm(true);
   };
 
   const handleForgotPassword = () => {
@@ -398,6 +417,7 @@ const Login = () => {
             <AnimatePresence>
               {selectedRole && (
                 <motion.div
+                  ref={signInCardRef}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -30 }}
@@ -460,18 +480,46 @@ const Login = () => {
                     )}
                   </AnimatePresence>
 
-                  {/* Formik Login Form */}
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleFormSubmit}
-                    enableReinitialize={true}
-                    validate={handleFormChange}
-                  >
-                    {({ values, errors, touched, isSubmitting, isValid, setFieldValue }) => (
-                      <Form className="space-y-6">
-                        {/* Email Field with custom styling */}
-                        <div className="space-y-2">
+                  {/* Sign In Options */}
+                  {!showEmailForm ? (
+                    <div className="space-y-4">
+                      {/* Sign In with Email Button */}
+                      <motion.button
+                        type="button"
+                        onClick={handleShowEmailForm}
+                        className="w-full py-4 px-6 rounded-xl font-semibold text-lg bg-islamic-500 text-white hover:bg-islamic-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-islamic-glow"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <Mail className="w-5 h-5" />
+                          Sign In with Email
+                        </div>
+                      </motion.button>
+                    </div>
+                  ) : (
+                    // Email/Password Form - Show only when user clicks "Sign In with Email"
+                    <Formik
+                      initialValues={initialValues}
+                      validationSchema={validationSchema}
+                      onSubmit={handleFormSubmit}
+                      enableReinitialize={true}
+                      validate={handleFormChange}
+                    >
+                      {({ values, errors, touched, isSubmitting, isValid, setFieldValue }) => (
+                        <Form className="space-y-6">
+                          {/* Back to Options Button */}
+                          <button
+                            type="button"
+                            onClick={() => setShowEmailForm(false)}
+                            className="flex items-center gap-2 text-islamic-600 hover:text-islamic-700 transition-colors mb-4"
+                          >
+                            <ArrowLeft className="w-4 h-4" />
+                            <span className="text-sm">Back to sign-in options</span>
+                          </button>
+
+                          {/* Email Field with custom styling */}
+                          <div className="space-y-2">
                           <label className="block text-gray-700 font-semibold text-sm">
                             {getFieldLabel('email')}
                             {isFieldRequired('email') && <span className="text-red-500 ml-1">*</span>}
@@ -699,49 +747,50 @@ const Login = () => {
                       </Form>
                     )}
                   </Formik>
+                )}
 
-                  {/* Social Login Section */}
-                  <div className="mt-8">
-                    <div className="flex items-center my-6">
-                      <div className="flex-1 border-t border-gray-300"></div>
-                      <span className="px-4 text-gray-500 text-sm">or continue with</span>
-                      <div className="flex-1 border-t border-gray-300"></div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <SocialAuthButton
-                        provider="google"
-                        onClick={handleSocialAuth}
-                        loading={authLoading}
-                        disabled={loginLoading}
-                      />
-                      
-                      <SocialAuthButton
-                        provider="facebook"
-                        onClick={handleSocialAuth}
-                        loading={authLoading}
-                        disabled={loginLoading}
-                      />
-                    </div>
+                {/* Social Login Section */}
+                <div className="mt-8">
+                  <div className="flex items-center my-6">
+                    <div className="flex-1 border-t border-gray-300"></div>
+                    <span className="px-4 text-gray-500 text-sm">or continue with</span>
+                    <div className="flex-1 border-t border-gray-300"></div>
                   </div>
 
-                  {/* Sign Up Link */}
-                  <motion.div 
-                    className="text-center mt-8 pt-6 border-t border-gray-200"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8 }}
-                  >
-                    <p className="text-gray-600">
-                      New to Qur'an-ly?{' '}
-                      <Link 
-                        to="/signup" 
-                        className="text-islamic-600 hover:text-islamic-700 font-semibold transition-colors hover:underline"
-                      >
-                        Create an account
-                      </Link>
-                    </p>
-                  </motion.div>
+                  <div className="space-y-3">
+                    <SocialAuthButton
+                      provider="google"
+                      onClick={handleSocialAuth}
+                      loading={authLoading}
+                      disabled={loginLoading}
+                    />
+                    
+                    <SocialAuthButton
+                      provider="facebook"
+                      onClick={handleSocialAuth}
+                      loading={authLoading}
+                      disabled={loginLoading}
+                    />
+                  </div>
+                </div>
+
+                {/* Sign Up Link */}
+                <motion.div
+                  className="text-center mt-8 pt-6 border-t border-gray-200"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <p className="text-gray-600">
+                    New to Qur'an-ly?{' '}
+                    <Link
+                      to="/signup"
+                      className="text-islamic-600 hover:text-islamic-700 font-semibold transition-colors hover:underline"
+                    >
+                      Create an account
+                    </Link>
+                  </p>
+                </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
