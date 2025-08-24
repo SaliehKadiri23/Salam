@@ -13,6 +13,8 @@ import qaReducer from './qaSlice';
 import prayerTimesReducer from './prayerTimesSlice';
 import hijriCalendarReducer from './hijriCalendarSlice';
 import islamicUtilitiesReducer from './islamicUtilitiesSlice';
+import signupReducer from './signupSlice';
+import authReducer from './authSlice';
 
 export const store = configureStore({
   reducer: {
@@ -30,5 +32,7 @@ export const store = configureStore({
     prayerTimes: prayerTimesReducer,
     hijriCalendar: hijriCalendarReducer,
     islamicUtilities: islamicUtilitiesReducer,
+    signup: signupReducer,
+    auth: authReducer,
   },
 });

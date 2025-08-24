@@ -288,7 +288,7 @@ const ContactInfo = () => {
       icon: Mail,
       title: "Email",
       info: "info@salam.org",
-      subtitle: "We reply within 24 hours",
+      subtitle: "IN SHA ALLAH We will reply within 24 hours",
     },
   ];
 

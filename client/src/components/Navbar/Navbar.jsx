@@ -14,12 +14,13 @@ import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLanguage } from "../../redux/userSlice";
 import { motion, AnimatePresence } from "framer-motion";
+import useTheme from "../../hooks/useTheme";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [darkTheme, toggleDarkTheme] = useState(false);
   const [morePagesDropDown, setMorePagesDropDown] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [theme, toggle] = useTheme()
 
   const menuPagesDesktop = [
     { title: "Prayer Times", link: "prayer_times" },
@@ -42,7 +43,7 @@ const Navbar = () => {
   const { selectedLanguage, languages } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   return (
-    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
@@ -195,16 +196,16 @@ const Navbar = () => {
 
             {/* Change Theme Background */}
             <div className="md:scale-90 lg:scale-100">
-              {darkTheme ? (
+              {theme === "dark" ? (
                 <button
-                  onClick={() => toggleDarkTheme(!darkTheme)}
+                  onClick={toggle}
                   className="bg-gray-200 p-2 rounded-full z-10 transition-all duration-300 hover:rotate-360"
                 >
                   <MoonStar size={"1.5em"} fill="grey" />
                 </button>
               ) : (
                 <button
-                  onClick={() => toggleDarkTheme(!darkTheme)}
+                  onClick={toggle}
                   className="bg-gray-200 p-2 rounded-full transition-all duration-300 hover:rotate-360"
                 >
                   <Sun
@@ -274,7 +275,7 @@ const Navbar = () => {
               opacity: 0,
               y: 300,
             }}
-            className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg"
+            className="md:hidden  overflow-hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg"
           >
             <div className="px-4 mx-3 py-3 space-y-2">
               {/* Only When Logged - In */}
@@ -343,7 +344,6 @@ const Navbar = () => {
                     opacity: 0,
                     x: -150,
                   }}
-                  
                   className="px-3 w-full rounded-md ring-1 ring-green-600 text-center bg-white py-2 lg:py-2 grow-1 font-bold text-green-600 transition-all duration-300 hover:bg-gradient-to-r hover:scale-110"
                 >
                   Log In

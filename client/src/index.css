@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Islamic Sign Up Page Design Tokens */
+:root {
+  /* Islamic Golden Ratio Spacing */
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.618rem;   /* 26px - φ */
+  --space-xl: 2.618rem;   /* 42px - φ² */
+  --space-2xl: 4.236rem;  /* 68px - φ³ */
+  
+  /* Enhanced Islamic Colors */
+  --islamic-green: #22c55e;
+  --islamic-gold: #fbbf24;
+  --islamic-teal: #14b8a6;
+  --wisdom-purple: #8b5cf6;
+  --peace-blue: #3b82f6;
+  --purity-white: #ffffff;
+  
+  /* Dark Mode Variants */
+  --dark-islamic-green: #16a34a;
+  --dark-islamic-gold: #f59e0b;
+  --dark-surface: #1f2937;
+  --dark-text: #f9fafb;
+  
+  /* Signup Specific */
+  --signup-radius: 1.5rem;
+  --signup-shadow: 0 10px 15px rgba(34, 197, 94, 0.2);
+  --signup-glow: 0 0 20px rgba(34, 197, 94, 0.3);
+}
+/* Optional: define theme tokens using CSS variables */
+/* @theme {
+  --color-primary: #2563eb;
+  --color-background-light: #ffffff;
+  --color-background-dark: #1e293b;
+} */
+
+
 .active {
   color: #13ad4d;
   border-bottom: 2px solid #fdc700;
@@ -154,4 +191,68 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Islamic Sign Up Page Animations */
+@keyframes islamicPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: scale(1.05); 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes geometricRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes roleCardSelect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@keyframes socialAuthHover {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* Islamic Animation Classes */
+.animate-islamic-pulse {
+  animation: islamicPulse 3s ease-in-out infinite;
+}
+
+.animate-role-select {
+  animation: roleCardSelect 0.4s ease-out;
+}
+
+.animate-social-hover {
+  animation: socialAuthHover 0.3s ease-out;
+}
+
+/* Signup-specific utility classes */
+.signup-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+.role-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.auth-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--signup-radius);
+  padding: var(--space-xl);
+  box-shadow: var(--signup-shadow);
 }

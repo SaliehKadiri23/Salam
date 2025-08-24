@@ -21,6 +21,8 @@ import QuestionsAndAnswers from "./pages/QuestionsAndAnswers";
 import DuaRequestWall from "./pages/DuaRequestWall";
 import ContactUs from "./pages/ContactUs";
 import Profile from "./pages/Profile";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 
 const App = () => {
   // const [response, setResponse] = useState("")
@@ -75,6 +77,9 @@ const App = () => {
         <Route path="dua_request" element={<DuaRequestWall />} />
         <Route path="contact_us" element={<ContactUs />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="sign_up" element={<SignUp />} />
+        <Route path="signup" element={<SignUp />} />
+        <Route path="login" element={<Login />} />
       </Route>
     )
   );

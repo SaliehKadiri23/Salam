@@ -47,6 +47,57 @@ const IslamicPattern = ({
           fillOpacity="0.08"
         />
       </svg>
+    ),
+
+    'corner-decoration': (
+      <svg width="48" height="48" viewBox="0 0 48 48" className="w-full h-full">
+        <path
+          d="M0,0 L48,0 L48,12 Q36,12 24,24 Q12,36 0,48 Z"
+          fill={color}
+          fillOpacity="0.15"
+        />
+        <path
+          d="M0,0 L12,0 Q12,12 24,24 Q36,36 48,48 L48,36 Q36,24 24,12 Q12,0 0,0 Z"
+          fill={color}
+          fillOpacity="0.1"
+        />
+      </svg>
+    ),
+
+    divider: (
+      <svg width="96" height="24" viewBox="0 0 96 24" className="w-full h-full">
+        <g fill={color} fillOpacity="0.2">
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="24" cy="12" r="1" />
+          <circle cx="36" cy="12" r="2" />
+          <circle cx="48" cy="12" r="3" />
+          <circle cx="60" cy="12" r="2" />
+          <circle cx="72" cy="12" r="1" />
+          <circle cx="84" cy="12" r="2" />
+        </g>
+        <path
+          d="M0,12 Q12,8 24,12 T48,12 T72,12 T96,12"
+          stroke={color}
+          strokeOpacity="0.1"
+          strokeWidth="1"
+          fill="none"
+        />
+      </svg>
+    ),
+
+    'eight-pointed-star': (
+      <svg width="60" height="60" viewBox="0 0 60 60" className="w-full h-full">
+        <defs>
+          <pattern id="eight-star" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path
+              d="M15,2 L17,8 L23,6 L19,12 L25,14 L19,16 L23,22 L17,20 L15,26 L13,20 L7,22 L11,16 L5,14 L11,12 L7,6 L13,8 Z"
+              fill={color}
+              fillOpacity="0.12"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#eight-star)" />
+      </svg>
     )
   };
 
