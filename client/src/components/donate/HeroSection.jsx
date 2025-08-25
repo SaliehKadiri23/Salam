@@ -91,7 +91,7 @@ const QuickDonateActions = () => {
 };
 
 const HeroSection = () => (
-  <section className="relative px-6 py-20 bg-gradient-to-br from-emerald-50 via-white to-green-50 overflow-hidden">
+  <section className="relative px-6 py-20 bg-gradient-to-r from-emerald-50 via-white to-green-50 dark:from-emerald-800 dark:via-emerald-600 dark:to-emerald-800 overflow-hidden">
     <div className="fixed inset-0">
       <IslamicPattern className="absolute inset-0 text-emerald-500" />
     </div>
@@ -108,14 +108,14 @@ const HeroSection = () => (
 
     <div className="max-w-6xl mx-auto text-center relative z-10">
       <div className="mb-8">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-100 mb-6 leading-tight">
           Give to Those in
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-600">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 dark:from-emerald-300 dark:to-green-500 to-green-600">
             {" "}
             Need
           </span>
         </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-xl text-gray-600 dark:text-gray-100 max-w-3xl mx-auto leading-relaxed">
           Your generous donation will help us provide essential resources and
           support to Muslim communities worldwide. We are committed to
           transparency and ensuring your contributions make a meaningful impact.

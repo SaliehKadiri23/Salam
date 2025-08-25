@@ -11,7 +11,7 @@ const iconMap = {
 
 const ImpactCard = ({ story, index }) => (
   <div
-    className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-100 text-center group"
+    className="bg-white dark:bg-gradient-to-br dark:bg-black from-gray-500 to-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-100 dark:border-emerald-600 text-center group"
     style={{ animationDelay: `${index * 150}ms` }}
   >
     <div className="mb-6">
@@ -20,12 +20,18 @@ const ImpactCard = ({ story, index }) => (
       </div>
     </div>
 
-    <h3 className="text-2xl font-bold text-gray-800 mb-3">{story.title}</h3>
-    <p className="text-gray-600 mb-6">{story.description}</p>
+    <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3">
+      {story.title}
+    </h3>
+    <p className="text-gray-600 dark:text-gray-300 mb-6">{story.description}</p>
 
     <div className="border-t border-gray-100 pt-6">
-      <p className="text-3xl font-bold text-emerald-600 mb-1">{story.number}</p>
-      <p className="text-gray-600 font-medium">{story.label}</p>
+      <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-500 mb-1">
+        {story.number}
+      </p>
+      <p className="text-gray-600 dark:text-gray-200 font-medium">
+        {story.label}
+      </p>
     </div>
   </div>
 );
@@ -34,11 +40,11 @@ const ImpactStoriesSection = () => {
   const impactStories = useSelector((state) => state.donate.impactStories);
 
   return (
-    <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 to-green-50">
+    <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 dark:from-gray-900 dark:to-gray-900 to-green-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">Our Impact</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6">Our Impact</h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             See how your donations have made a real difference in communities
             around the world
           </p>
@@ -49,12 +55,12 @@ const ImpactStoriesSection = () => {
             <motion.div
               initial={{
                 opacity: 0,
-                y: 70 + (15* index),
+                y: 70 + 15 * index,
               }}
               whileInView={{
                 opacity: 1,
                 y: 0,
-                transition: { duration: 0.55 + (0.15 * index) },
+                transition: { duration: 0.55 + 0.15 * index },
               }}
               exit={{
                 opacity: 0,

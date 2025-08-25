@@ -20,7 +20,7 @@ const DonationCard = ({ donation, index }) => {
 
   return (
     <div
-      className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-emerald-200"
+      className="group bg-white dark:bg-black/85 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 dark:border-emerald-600 hover:border-emerald-200"
       style={{ animationDelay: `${index * 200}ms` }}
     >
       <div className="flex flex-col md:flex-row">
@@ -40,7 +40,7 @@ const DonationCard = ({ donation, index }) => {
                 {iconMap[donation.icon]}
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-gray-800">
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                   {donation.title}
                 </h3>
                 <p className="text-emerald-600 font-medium">
@@ -49,7 +49,7 @@ const DonationCard = ({ donation, index }) => {
               </div>
             </div>
 
-            <p className="text-gray-600 leading-relaxed mb-6">
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
               {donation.description}
             </p>
           </div>
@@ -71,13 +71,13 @@ const DonationTypesSection = () => {
   const donationTypes = useSelector((state) => state.donate.donationTypes);
 
   return (
-    <section className="py-20 px-6">
+    <section className="py-20 px-6 dark:bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">
+          <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6">
             Donation Options
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-200 max-w-3xl mx-auto">
             Choose how you'd like to contribute to our mission of serving Muslim
             communities worldwide
           </p>
@@ -102,10 +102,7 @@ const DonationTypesSection = () => {
               }}
               viewport={{ once: true }}
             >
-              <DonationCard
-                donation={donation}
-                index={index}
-              />
+              <DonationCard donation={donation} index={index} />
             </motion.div>
           ))}
         </div>

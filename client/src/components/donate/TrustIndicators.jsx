@@ -7,13 +7,13 @@ const TrustBadge = ({ icon, title, description }) => (
     <div className="inline-flex p-4 bg-emerald-100 rounded-2xl text-emerald-600 mb-4 group-hover:scale-110 transition-transform duration-300">
       {icon}
     </div>
-    <h3 className="font-bold text-gray-800 mb-2">{title}</h3>
-    <p className="text-gray-600 text-sm">{description}</p>
+    <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-2">{title}</h3>
+    <p className="text-gray-600 dark:text-gray-300 text-sm">{description}</p>
   </div>
 );
 
 const TrustIndicators = () => (
-  <section className="py-16 px-6 bg-white">
+  <section className="py-16 px-6 bg-white dark:bg-black/90">
     <motion.div
       initial={{
         opacity: 0,
@@ -31,7 +31,7 @@ const TrustIndicators = () => (
       viewport={{ once: true }}
       className="max-w-4xl mx-auto text-center"
     >
-      <h2 className="text-3xl font-bold text-gray-800 mb-12">
+      <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-12">
         Why Donate with Salam?
       </h2>
 
