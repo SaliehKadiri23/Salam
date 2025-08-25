@@ -23,12 +23,11 @@ import {
   setHoveredDate,
 } from "../../redux/eventsAndNewsSlice.jsx";
 import { gregorianToHijri } from "../../redux/hijriCalendarSlice.js";
-  import { motion } from "framer-motion";
-
+import { motion } from "framer-motion";
 
 // Current Date Display Component
 const CurrentDateDisplay = () => {
-  const today = new Date()
+  const today = new Date();
   return (
     <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6">
       <div className="flex items-center justify-between mb-4">
@@ -135,8 +134,8 @@ const InteractiveCalendar = () => {
       </div>
 
       <div className="grid grid-cols-7 gap-1 text-center mb-2">
-        {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
-          <div key={day} className="text-xs font-medium text-slate-500 py-2">
+        {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+          <div key={index} className="text-xs font-medium text-slate-500 py-2">
             {day}
           </div>
         ))}
@@ -248,10 +247,9 @@ const UpcomingEvents = ({ upcomingEvents }) => (
 );
 
 const Sidebar = ({ upcomingEvents }) => {
-
   return (
     <div className="lg:col-span-1 space-y-6">
-      <CurrentDateDisplay  />
+      <CurrentDateDisplay />
       <InteractiveCalendar />
       <UpcomingEvents upcomingEvents={upcomingEvents} />
     </div>

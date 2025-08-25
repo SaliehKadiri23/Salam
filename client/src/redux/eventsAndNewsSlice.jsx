@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Calendar, BookOpen, Heart, Target } from "lucide-react";
-import { TbBuildingMosque } from "react-icons/tb";
 
 const initialState = {
   activeTab: "events",
@@ -10,7 +8,8 @@ const initialState = {
   selectedDate: null,
   hoveredDate: null,
   eventsData: [
-    {id: 1,
+    {
+      id: 1,
       eventLink: "/eventslink",
       title: "Jummah Prayer & Khutbah",
       date: new Date(2020, 9, 25).toISOString(),
@@ -22,9 +21,10 @@ const initialState = {
       registrationRequired: false,
       image: "/",
       description:
-        "Weekly congregational Friday prayer with inspiring khutbah on community unity.",
+        "Weekly congregational Friday prayer with inspiring Khutbah on community unity.",
     },
-    {id: 2,
+    {
+      id: 2,
       eventLink: "/eventslink",
       title: "Community Service Day",
       date: new Date(2024, 9, 26).toISOString(),
@@ -39,7 +39,8 @@ const initialState = {
       description:
         "Join our community in serving those in need through volunteer work.",
     },
-    {id: 3,
+    {
+      id: 3,
       eventLink: "/eventslink",
       title: "Islamic History Lecture",
       date: new Date(2024, 9, 30).toISOString(),
@@ -54,7 +55,8 @@ const initialState = {
       description:
         "Exploring the rich heritage of Islamic civilization with Dr. Amira Hassan.",
     },
-    {id: 4,
+    {
+      id: 4,
       eventLink: "/eventslink",
       title: "Quran Study Circle",
       date: new Date(2027, 10, 5).toISOString(),
@@ -68,7 +70,8 @@ const initialState = {
         "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=400&h=250&fit=crop&crop=center",
       description: "Weekly Quran study and tafsir session. Open to all levels.",
     },
-    {id: 5,
+    {
+      id: 5,
       eventLink: "/eventslink",
       title: "QUR'AN RECITATION",
       date: new Date(2024, 10, 15).toISOString(),
@@ -83,7 +86,8 @@ const initialState = {
         "Building bridges between communities through meaningful dialogue.",
     },
 
-    { id: 6,
+    {
+      id: 6,
       eventLink: "/eventslink",
       title: "Islamic Calligraphy Workshop",
       date: new Date(2024, 11, 5).toISOString(),
@@ -98,7 +102,8 @@ const initialState = {
       description:
         "Learn the beautiful art of Arabic calligraphy with master calligrapher Ustadh Ahmad.",
     },
-    { id: 7,
+    {
+      id: 7,
       eventLink: "/eventslink",
       title: "Charity Gala",
       date: new Date(2024, 11, 14).toISOString(),
@@ -153,11 +158,11 @@ const initialState = {
     },
   ],
   categories: [
-    { id: "all", label: "All Events", icon: Calendar },
-    { id: "prayer", label: "Prayer", icon: TbBuildingMosque },
-    { id: "education", label: "Education", icon: BookOpen },
-    { id: "community", label: "Community", icon: Heart },
-    { id: "youth", label: "Youth", icon: Target },
+    { id: "all", label: "All Events", icon: "Calendar" },
+    { id: "prayer", label: "Prayer", icon: "TbBuildingMosque" },
+    { id: "education", label: "Education", icon: "BookOpen" },
+    { id: "community", label: "Community", icon: "Heart" },
+    { id: "youth", label: "Youth", icon: "Target" },
   ],
 };
 

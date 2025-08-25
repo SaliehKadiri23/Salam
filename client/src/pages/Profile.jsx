@@ -15,7 +15,7 @@ const ProfilePage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [userData, setUserData] = useState(null);
 
-  // Mock user data - in real app this would come from API/Redux
+  // Mock user data - use redux
   const mockUserData = {
     id: "user123",
     username: "aisha.k",

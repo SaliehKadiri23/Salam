@@ -7,7 +7,7 @@ import TrustIndicators from "../components/donate/TrustIndicators";
 const Donate = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <style jsx>{`
+      <style jsx="true">{`
         @keyframes float {
           0%,
           100% {

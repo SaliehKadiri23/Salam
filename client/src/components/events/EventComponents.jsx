@@ -9,9 +9,22 @@ import {
   MessageCircle,
   CheckCircle,
   Award,
+  BookOpen,
+  Heart,
+  Target,
 } from "lucide-react";
+import { TbBuildingMosque } from "react-icons/tb";
 import { setActiveTab, setSelectedCategory, toggleEventRegistration } from '../../redux/eventsAndNewsSlice.jsx';
 import { motion } from "framer-motion";
+
+// Icon mapping for categories
+const iconMap = {
+  Calendar,
+  TbBuildingMosque,
+  BookOpen,
+  Heart,
+  Target,
+};
 
 
 // Tab Navigation Component
@@ -51,34 +64,37 @@ export const CategoryFilters = () => {
 
   return (
     <div className="flex flex-wrap gap-3">
-      {categories.map((category, index) => (
-        <motion.button
-          initial={{
-            opacity: 0,
-            x: 50 + index * 10,
-          }}
-          whileInView={{
-            opacity: 1,
-            x: 0,
-            transition: { duration: 0.45 + (0.15 * index) },
-          }}
-          exit={{
-            opacity: 0,
-            x: 50,
-          }}
-          viewport={{ once: true }}
-          key={category.id}
-          onClick={() => dispatch(setSelectedCategory(category.id))}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
-            selectedCategory === category.id
-              ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
-              : "bg-white/70 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 border border-white/20 backdrop-blur-xl"
-          }`}
-        >
-          <category.icon className="w-4 h-4" />
-          <span>{category.label}</span>
-        </motion.button>
-      ))}
+      {categories.map((category, index) => {
+        const IconComponent = iconMap[category.icon];
+        return (
+          <motion.button
+            initial={{
+              opacity: 0,
+              x: 50 + index * 10,
+            }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+              transition: { duration: 0.45 + (0.15 * index) },
+            }}
+            exit={{
+              opacity: 0,
+              x: 50,
+            }}
+            viewport={{ once: true }}
+            key={category.id}
+            onClick={() => dispatch(setSelectedCategory(category.id))}
+            className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
+              selectedCategory === category.id
+                ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
+                : "bg-white/70 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 border border-white/20 backdrop-blur-xl"
+            }`}
+          >
+            {IconComponent && <IconComponent className="w-4 h-4" />}
+            <span>{category.label}</span>
+          </motion.button>
+        );
+      })}
     </div>
   );
 };

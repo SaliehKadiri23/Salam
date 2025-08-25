@@ -69,7 +69,7 @@ const SocialIcon = ({ icon: Icon, href, hoverColor }) => (
   </a>
 );
 
-const IslamicAboutPage = () => {
+const AboutUs = () => {
   const [counters, setCounters] = useState({
     users: 0,
     communities: 0,
@@ -295,6 +295,7 @@ const IslamicAboutPage = () => {
                     y: 50,
                   }}
                   viewport={{ once: true }}
+                  key={stat.label}
                 >
                   <StatCard
                     key={stat.label}
@@ -440,7 +441,7 @@ const IslamicAboutPage = () => {
                   <motion.div
                     initial={{
                       opacity: 0,
-                      y: 50 + (index* 15),
+                      y: 50 + index * 15,
                     }}
                     whileInView={{
                       opacity: 1,
@@ -452,6 +453,7 @@ const IslamicAboutPage = () => {
                       y: 50,
                     }}
                     viewport={{ once: true }}
+                    key={index}
                   >
                     <SocialIcon
                       key={index}
@@ -470,4 +472,4 @@ const IslamicAboutPage = () => {
   );
 };
 
-export default IslamicAboutPage;
+export default AboutUs;

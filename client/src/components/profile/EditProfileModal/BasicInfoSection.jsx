@@ -1,24 +1,30 @@
-import React from 'react';
-import { User, Type, FileText, Star } from 'lucide-react';
-import FormField from '../../utility/FormField';
+import React from "react";
+import { User, Type, FileText, Star } from "lucide-react";
+import FormField from "../../utility/FormField";
 
 const BasicInfoSection = ({ formData, onInputChange }) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 border-b border-gray-200 pb-2">
         <Star className="w-5 h-5 text-islamic-500" />
-        <h3 className="text-lg font-semibold text-gray-900">Basic Information</h3>
+        <h3 className="text-lg font-semibold text-gray-900">
+          Basic Information
+        </h3>
       </div>
-      
+
       <div className="space-y-4">
         {/* Preferred Name */}
-        <FormField label="Preferred Name" helper="How you'd like to be addressed in the community">
+        <FormField
+          label="Preferred Name"
+          helper="How you'd like to be addressed in the community"
+          useFormik={false}
+        >
           <div className="relative">
             <Type className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
-              value={formData.preferredName || ''}
-              onChange={(e) => onInputChange('preferredName', e.target.value)}
+              value={formData.preferredName || ""}
+              onChange={(e) => onInputChange("preferredName", e.target.value)}
               className="
                 w-full pl-10 pr-4 py-3 
                 border border-gray-300 
@@ -34,17 +40,21 @@ const BasicInfoSection = ({ formData, onInputChange }) => {
             />
           </div>
           <div className="text-xs text-gray-500 text-right">
-            {(formData.preferredName || '').length}/50
+            {(formData.preferredName || "").length}/50
           </div>
         </FormField>
 
         {/* Bio */}
-        <FormField label="Bio" helper="Tell the community a bit about yourself">
+        <FormField
+          label="Bio"
+          helper="Tell the community a bit about yourself"
+          useFormik={false}
+        >
           <div className="relative">
             <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <textarea
-              value={formData.bio || ''}
-              onChange={(e) => onInputChange('bio', e.target.value)}
+              value={formData.bio || ""}
+              onChange={(e) => onInputChange("bio", e.target.value)}
               rows={4}
               className="
                 w-full pl-10 pr-4 py-3 
@@ -62,7 +72,7 @@ const BasicInfoSection = ({ formData, onInputChange }) => {
             />
           </div>
           <div className="text-xs text-gray-500 text-right">
-            {(formData.bio || '').length}/500
+            {(formData.bio || "").length}/500
           </div>
         </FormField>
       </div>

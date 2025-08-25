@@ -56,7 +56,7 @@ const AmountStep = () => {
       </div>
 
       {/* Custom Amount */}
-      <FormField label="Custom Amount">
+      <FormField label="Custom Amount" useFormik={false}>
         <div className="relative">
           <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
@@ -71,7 +71,7 @@ const AmountStep = () => {
       </FormField>
 
       {/* Frequency Selection */}
-      <FormField label="Donation Frequency">
+      <FormField label="Donation Frequency" useFormik={false}>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {['One-time', 'Monthly', 'Quarterly', 'Annually'].map((freq) => (
             <button

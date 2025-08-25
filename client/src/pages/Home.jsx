@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import MosqueHeroImage from "../assets/Mosque - Hero Image.png";
 import { Calendar, ExternalLink } from "lucide-react";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setSelectedCategory } from "../redux/resourcesSlice";
@@ -173,12 +173,9 @@ function Events() {
                 </p>
                 <div className="mt-4 flex items-center gap-3">
                   <Calendar size={18} className="text-green-600 " />
-                  <button
-                    onClick={() => navigate(e.eventLink)}
-                    className="text-sm font-medium text-green-500"
-                  >
+                  <span className="text-sm font-medium text-green-500">
                     Learn more
-                  </button>
+                  </span>
                 </div>
               </div>
             </motion.button>
@@ -428,12 +425,9 @@ function Resources() {
               <div className="p-6">
                 <h4 className="text-xl font-semibold">{c.title}</h4>
                 <p className="mt-2 text-sm text-gray-500">{c.desc}</p>
-                <a
-                  href="#"
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-green-500 hover:underline"
-                >
+                <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-green-500">
                   Learn more <ExternalLink className="size-4" aria-hidden />
-                </a>
+                </span>
               </div>
             </button>
           ))}

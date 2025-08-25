@@ -61,6 +61,7 @@ const ImpactStoriesSection = () => {
                 y: 70,
               }}
               viewport={{ once: true }}
+              key={index}
             >
               <ImpactCard key={index} story={story} index={index} />
             </motion.div>

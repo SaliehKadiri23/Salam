@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedLanguage } from "../redux/userSlice";
+import { setSelectedLanguage } from "../../redux/userSlice.js";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -41,9 +41,7 @@ const Footer = () => {
 
   const prayerTimes = useSelector((state) => state.prayerTimes.prayerTimes);
 
-  const { selectedLanguage } = useSelector((state) => state.user);
-
-  const languages = useMemo(() => useSelector((state) => state.user.languages));
+  const { selectedLanguage, languages } = useSelector((state) => state.user);
 
   const handleNewsletterSubmit = () => {
     if (email) {
@@ -93,21 +91,21 @@ const Footer = () => {
                   </div>
                   <h3 className="font-semibold text-lg">Prayer Times</h3>
                 </div>
-                <button className="text-yellow-400 hover:text-yellow-300 transition-colors">
+                <span className="text-yellow-400 hover:text-yellow-300 transition-colors">
                   <ArrowRight className="h-5 w-5" />
-                </button>
+                </span>
               </div>
               <div className="space-y-2 text-sm">
-                {prayerTimes.map((p) =>
+                {prayerTimes.map((p, index) =>
                   p.name === "Asr" ? (
-                    <div className="flex justify-between border-l-2 border-yellow-400 pl-2">
+                    <div key={index} className="flex justify-between border-l-2 border-yellow-400 pl-2">
                       <span className="text-yellow-400">{p.name}</span>
                       <span className="text-yellow-400 font-medium">
                         {p.iqama}
                       </span>
                     </div>
                   ) : (
-                    <div className="flex justify-between">
+                    <div key={index} className="flex justify-between">
                       <span className="text-emerald-200">{p.name}</span>
                       <span className="text-white font-medium">{p.iqama}</span>
                     </div>

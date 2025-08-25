@@ -43,6 +43,7 @@ const FilterControls = ({
               x: 60,
             }}
             viewport={{ once: true }}
+            key={category}
           >
             <button
               key={category}

@@ -20,6 +20,7 @@ export const EventsContent = ({ featuredEvents, filteredEvents }) => (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {featuredEvents.map((event, index) => (
           <motion.div
+            key={event.id}
             initial={{
               opacity: 0,
               y: 70 + index * 15,
@@ -35,7 +36,7 @@ export const EventsContent = ({ featuredEvents, filteredEvents }) => (
             }}
             viewport={{ once: true }}
           >
-            <EventCard key={event.id} event={event} />
+            <EventCard event={event} />
           </motion.div>
         ))}
       </div>
@@ -46,6 +47,7 @@ export const EventsContent = ({ featuredEvents, filteredEvents }) => (
       <div className="space-y-4">
         {filteredEvents.map((event, index) => (
           <motion.div
+            key={event.id}
             initial={{
               opacity: 0,
               x: 50 + index * 13,
@@ -61,7 +63,7 @@ export const EventsContent = ({ featuredEvents, filteredEvents }) => (
             }}
             viewport={{ once: true }}
           >
-            <EventListItem key={event.id} event={event} />
+            <EventListItem event={event} />
           </motion.div>
         ))}
       </div>
@@ -79,6 +81,7 @@ export const NewsContent = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {newsData.map((news, index) => (
           <motion.div
+            key={news.id}
             initial={{
               opacity: 0,
               y: 70 + index * 15,
@@ -94,7 +97,7 @@ export const NewsContent = () => {
             }}
             viewport={{ once: true }}
           >
-            <NewsCard key={news.id} news={news} />
+            <NewsCard news={news} />
           </motion.div>
         ))}
       </div>

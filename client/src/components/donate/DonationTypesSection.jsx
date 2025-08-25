@@ -86,6 +86,7 @@ const DonationTypesSection = () => {
         <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-1">
           {donationTypes.map((donation, index) => (
             <motion.div
+              key={donation.id}
               initial={{
                 opacity: 0,
                 y: 65,
@@ -102,7 +103,6 @@ const DonationTypesSection = () => {
               viewport={{ once: true }}
             >
               <DonationCard
-                key={donation.id}
                 donation={donation}
                 index={index}
               />
