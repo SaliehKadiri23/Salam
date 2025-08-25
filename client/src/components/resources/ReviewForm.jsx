@@ -22,11 +22,15 @@ const ReviewForm = ({ onSubmit, onClose }) => {
   };
 
   return (
-    <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-      <h4 className="text-sm font-medium text-gray-900 mb-3">Write a Review</h4>
+    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+      <h4 className="text-sm font-medium text-gray-900 dark:text-gray-50 mb-3 ">
+        Write a Review
+      </h4>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>
-          <label className="block text-xs text-gray-600 mb-1">Rating</label>
+          <label className="block text-xs text-gray-600 dark:text-gray-300 mb-1">
+            Rating
+          </label>
           <div className="flex space-x-1">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
@@ -40,8 +44,8 @@ const ReviewForm = ({ onSubmit, onClose }) => {
                 <Star
                   className={`w-5 h-5 transition-colors ${
                     star <= (hoveredRating || rating)
-                      ? 'fill-amber-400 text-amber-400'
-                      : 'text-gray-300'
+                      ? "fill-amber-400 text-amber-400"
+                      : "text-gray-300"
                   }`}
                 />
               </button>
@@ -49,7 +53,7 @@ const ReviewForm = ({ onSubmit, onClose }) => {
           </div>
         </div>
         <div>
-          <label className="block text-xs text-gray-600 mb-1">
+          <label className="block text-xs text-gray-600 dark:text-gray-300 mb-2">
             Your thoughts
           </label>
           <textarea
@@ -72,7 +76,7 @@ const ReviewForm = ({ onSubmit, onClose }) => {
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-2 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+            className="px-3 py-2 border border-gray-200 text-gray-600 dark:text-gray-100 dark:hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
           >
             Cancel
           </button>

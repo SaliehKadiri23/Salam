@@ -53,8 +53,8 @@ const ResourceCard = ({ resource }) => {
   const isListView = viewMode === 'list';
 
   const cardClass = isListView
-    ? 'flex bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-emerald-200 transition-all duration-300'
-    : 'group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-emerald-200 transition-all duration-300 transform hover:-translate-y-1';
+    ? "flex bg-white dark:bg-black/50 rounded-xl shadow-sm border border-gray-100 dark:border-emerald-500 overflow-hidden hover:shadow-xl hover:border-emerald-200 transition-all duration-300"
+    : "group bg-white dark:bg-black/50 rounded-xl shadow-sm border border-gray-100 dark:border-emerald-500 overflow-hidden hover:shadow-xl hover:border-emerald-200 transition-all duration-300 transform hover:-translate-y-1";
 
   const handleOpenDetail = () => {
     dispatch(openResourceDetail(resource));
@@ -76,14 +76,14 @@ const ResourceCard = ({ resource }) => {
     <div className={cardClass}>
       <div
         className={
-          isListView ? 'w-[40%] flex-shrink-0' : 'relative overflow-hidden'
+          isListView ? "w-[40%] flex-shrink-0" : "relative overflow-hidden"
         }
       >
         <div
           className={
             isListView
-              ? 'h-full bg-gray-100 relative'
-              : 'aspect-video bg-gray-100 relative'
+              ? "h-full bg-gray-100 relative"
+              : "aspect-video bg-gray-100 relative"
           }
         >
           {!imageLoaded && (
@@ -95,8 +95,8 @@ const ResourceCard = ({ resource }) => {
             src={resource.image}
             alt={resource.title}
             className={`w-full h-full object-cover transition-all duration-300 ${
-              !isListView ? 'group-hover:scale-105' : ''
-            } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              !isListView ? "group-hover:scale-105" : ""
+            } ${imageLoaded ? "opacity-100" : "opacity-0"}`}
             onLoad={() => setImageLoaded(true)}
             loading="lazy"
           />
@@ -126,7 +126,7 @@ const ResourceCard = ({ resource }) => {
             <div className="absolute top-4 left-4">
               <div className="flex items-center space-x-1 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
                 <TypeIcon className="w-3 h-3 text-emerald-600" />
-                <span className="text-xs font-medium text-gray-700 capitalize">
+                <span className="text-xs font-medium capitalize">
                   {resource.type}
                 </span>
               </div>
@@ -144,13 +144,13 @@ const ResourceCard = ({ resource }) => {
           </>
         )}
       </div>
-      <div className={isListView ? 'flex-1 p-6' : 'p-6'}>
+      <div className={isListView ? "flex-1 p-6" : "p-6"}>
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50 mb-1 line-clamp-2 group-hover:text-emerald-600 transition-colors">
               {resource.title}
             </h3>
-            <p className="text-sm text-gray-600 line-clamp-2">
+            <p className="text-sm text-gray-600 dark:text-gray-200 line-clamp-2">
               {resource.description}
             </p>
           </div>
@@ -173,22 +173,22 @@ const ResourceCard = ({ resource }) => {
               onClick={handleOpenDetail}
               className="flex w-full my-3 text-white font-bold py-2 rounded-lg transition-all duration-300 hover:scale-107 justify-center items-center text-center bg-blue-600 "
             >
-              {resource.type === 'article'
-                ? 'Read Article'
-                : resource.type === 'video'
-                ? 'Watch Video'
-                : resource.type === 'podcast'
-                ? 'Listen To Podcast'
-                : resource.type === 'course'
-                ? 'View Course'
-                : 'View'}
+              {resource.type === "article"
+                ? "Read Article"
+                : resource.type === "video"
+                ? "Watch Video"
+                : resource.type === "podcast"
+                ? "Listen To Podcast"
+                : resource.type === "course"
+                ? "View Course"
+                : "View"}
             </button>
           </div>
         </div>
-        <div className="flex items-center space-x-4 mb-3 text-xs text-gray-500">
+        <div className="flex items-center space-x-4 mb-3 text-xs text-gray-500 dark:text-gray-100">
           <div className="flex items-center space-x-1">
             <TypeIcon className="w-3 h-3" />
-            <span className="capitalize">{resource.type}</span>
+            <span className="capitalize ">{resource.type}</span>
           </div>
           <div className="flex items-center space-x-1">
             <Clock className="w-3 h-3" />
@@ -204,12 +204,16 @@ const ResourceCard = ({ resource }) => {
           </div>
         </div>
         <div className="flex items-center justify-between mb-4">
-          <span className="text-sm text-gray-600">by {resource.author}</span>
+          <span className="text-sm text-gray-600 dark:text-gray-100">
+            by {resource.author}
+          </span>
         </div>
         {progress > 0 && (
           <div className="mb-4">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-gray-600">Progress</span>
+              <span className="text-xs text-gray-600 dark:text-gray-100">
+                Progress
+              </span>
               <span className="text-xs font-medium text-emerald-600">
                 {progress}%
               </span>
@@ -241,26 +245,29 @@ const ResourceCard = ({ resource }) => {
           ))}
         </div>
         <div className="flex space-x-2">
-          {isCompleted ? null : (<button
-            className="flex-1 disabled bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors font-medium text-sm"
-            onClick={() => {
-              if (progress < 100) {
-                console.log(progress)
-                handleUpdateProgress(Math.min(progress + 25, 100));
-              }
-            
-            }}
-          >
-            {isCompleted
-              ? 'Review'
-              : progress > 0
-              ? 'Continue'
-              : 'Start Learning'}
-          </button>)}
-          
+          {isCompleted ? null : (
+            <button
+              className="flex-1 disabled bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors font-medium text-sm"
+              onClick={() => {
+                if (progress < 100) {
+                  console.log(progress);
+                  handleUpdateProgress(Math.min(progress + 25, 100));
+                }
+              }}
+            >
+              {isCompleted
+                ? "Review"
+                : progress > 0
+                ? "Continue"
+                : "Start Learning"}
+            </button>
+          )}
+
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className={`px-4 py-2 border border-emerald-200 text-emerald-600 rounded-lg hover:bg-emerald-50 transition-colors text-sm ${isCompleted ? "w-full" : ""} `}
+            className={`px-4 py-2 border border-emerald-200 text-emerald-600 dark:text-emerald-100 dark:hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors text-sm ${
+              isCompleted ? "w-full" : ""
+            } `}
           >
             Details
           </button>
@@ -269,7 +276,7 @@ const ResourceCard = ({ resource }) => {
           <div className="mt-2">
             <button
               onClick={() => setShowReviewForm(!showReviewForm)}
-              className="w-full px-4 py-2 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center justify-center space-x-2"
+              className="w-full px-4 py-2 border border-gray-200 text-gray-600 dark:text-gray-100 dark:hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center justify-center space-x-2"
             >
               <Star className="w-4 h-4" />
               <span>Write a Review</span>
@@ -286,29 +293,35 @@ const ResourceCard = ({ resource }) => {
           <div className="mt-4 pt-4 border-t border-gray-100 animate-fadeIn">
             <div className="space-y-3">
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-2">
+                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                   About this resource
                 </h4>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   {resource.description}
                 </p>
               </div>
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-2">
+                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                   What you'll learn
                 </h4>
                 <ul className="text-sm text-gray-600 space-y-1">
                   <li className="flex items-center space-x-2">
                     <div className="w-1 h-1 bg-emerald-500 rounded-full"></div>
-                    <span>Core concepts and principles</span>
+                    <span className="dark:text-gray-300">
+                      Core concepts and principles
+                    </span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <div className="w-1 h-1 bg-emerald-500 rounded-full"></div>
-                    <span>Practical applications</span>
+                    <span className="dark:text-gray-300">
+                      Practical applications
+                    </span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <div className="w-1 h-1 bg-emerald-500 rounded-full"></div>
-                    <span>Historical context</span>
+                    <span className="dark:text-gray-300">
+                      Historical context
+                    </span>
                   </li>
                 </ul>
               </div>

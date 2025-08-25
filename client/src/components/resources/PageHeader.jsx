@@ -6,10 +6,10 @@ const PageHeader = ({ userStats }) => (
   <div className="mb-8">
     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-50 mb-2">
           Islamic Resources & Learning
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600  dark:text-gray-100">
           Deepen your understanding with curated Islamic knowledge
         </p>
       </div>
@@ -118,18 +118,22 @@ const PageHeader = ({ userStats }) => (
 
 const StatCard = ({ icon: Icon, value, label, color }) => {
   const colorClasses = {
-    emerald: "text-emerald-600",
-    amber: "text-amber-600",
-    blue: "text-blue-600",
-    purple: "text-purple-600",
+    emerald: "text-emerald-400",
+    amber: "text-amber-400",
+    blue: "text-blue-400",
+    purple: "text-purple-400",
   };
 
   return (
-    <div className="bg-white rounded-lg px-4 py-2 shadow-sm border border-emerald-100">
+    <div className="bg-white dark:bg-black/40 rounded-lg transition-all duration-300 hover:scale-110 px-4 py-2 shadow-sm border border-emerald-100 dark:border-emerald-500">
       <div className="flex items-center space-x-2">
         <Icon className={`w-4 h-4 ${colorClasses[color]}`} />
-        <span className="text-sm font-medium text-gray-900">{value}</span>
-        <span className="text-xs text-gray-600">{label}</span>
+        <span className="text-sm font-medium text-gray-900  dark:text-gray-100">
+          {value}
+        </span>
+        <span className="text-xs text-gray-600  dark:text-gray-100">
+          {label}
+        </span>
       </div>
     </div>
   );
