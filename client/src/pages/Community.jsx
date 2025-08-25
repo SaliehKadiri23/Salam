@@ -35,7 +35,7 @@ const Community = () => {
 
   // Hero Section Component
   const HeroSection = () => (
-    <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-green-50">
+    <section className="relative overflow-hidden rounded-b-lg ">
       {/* Islamic Geometric Pattern Background */}
       <div className="absolute inset-0 opacity-5">
         <svg
@@ -65,15 +65,15 @@ const Community = () => {
         </svg>
       </div>
 
-      <div className="relative container mx-auto px-4 py-5 text-center">
+      <div className="relative inset-0 container dark:bg-black/75 mx-auto px-4 py-5 text-center md:rounded-b-xl ">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-800 mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-800 dark:text-slate-100 mb-6 leading-tight">
             Community
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-600">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-600 ">
               Hub
             </span>
           </h1>
-          <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
             Connect, learn, and grow with your Muslim community. Building
             bridges of faith, knowledge, and compassion.
           </p>
@@ -118,7 +118,7 @@ const Community = () => {
               }}
               viewport={{ once: true }}
               href="#Q&A"
-              className="bg-white text-slate-700 px-8 py-4 rounded-xl font-semibold border-2 border-gray-200 hover:border-emerald-200 hover:shadow-md transition-all duration-200"
+              className="bg-white dark:bg-black/65 text-slate-700 dark:text-slate-200 px-8 py-4 rounded-xl font-semibold border-2 border-gray-200 dark:border-gray-600 hover:border-emerald-200 hover:dark:border-emerald-600 hover:shadow-md transition-all duration-200"
             >
               Ask A Question
             </motion.a>
@@ -138,7 +138,7 @@ const Community = () => {
       whileInView={{
         opacity: 1,
         y: 0,
-        transition: { duration: 0.45, type: "tween", ease:"linear" },
+        transition: { duration: 0.45, type: "tween", ease: "linear" },
       }}
       exit={{
         opacity: 0,
@@ -146,16 +146,18 @@ const Community = () => {
       }}
       viewport={{ once: true }}
       id="DiscussionForums"
-      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300"
+      className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
-      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700 dark:to-white/40">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-emerald-100 rounded-xl">
             <MessageSquare className="text-emerald-600" size={20} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800">Communities</h2>
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-50 ">
+            Communities
+          </h2>
         </div>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-100">
           Engage in meaningful conversations with your community
         </p>
       </div>
@@ -166,32 +168,32 @@ const Community = () => {
           return (
             <div
               key={index}
-              className={`group/item p-4 rounded-xl border-2 bg-gradient-to-r ${category.color} hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer`}
+              className={`group/item p-4 rounded-xl border-2 bg-gradient-to-r ${category.color} dark:from-gray-600 dark:to-gray-500  hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer`}
             >
               <div className="flex items-start gap-4">
                 <div className="p-2 bg-white rounded-lg shadow-sm">
                   <IconComponent size={20} className="text-emerald-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-slate-800 mb-1 group-hover/item:text-emerald-700 transition-colors">
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-100 mb-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-400 transition-colors">
                     {category.title}
                   </h3>
-                  <p className="text-sm text-slate-600 mb-2">
+                  <p className="text-sm text-slate-600 dark:text-slate-300 mb-2">
                     {category.description}
                   </p>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-slate-500 dark:text-slate-300">
                       {category.posts} discussions
                     </span>
                     <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-                    <span className="text-xs text-emerald-600 font-medium">
+                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
                       Active
                     </span>
                   </div>
                 </div>
                 <ArrowRight
                   size={16}
-                  className="text-slate-400 group-hover/item:text-emerald-600 group-hover/item:translate-x-1 transition-all"
+                  className="text-slate-400 dark:text-slate-100 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 group-hover/item:translate-x-1 transition-all"
                 />
               </div>
             </div>
@@ -223,18 +225,18 @@ const Community = () => {
       }}
       viewport={{ once: true }}
       id="Q&A"
-      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300"
+      className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
-      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <div className="p-6 border-b border-gray-100 bg-gradient-to-r dark:border-emerald-600 from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-white/40">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-blue-100 rounded-xl">
             <HelpCircle className="text-blue-600" size={20} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-50">
             Q&A with Scholar
           </h2>
         </div>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-100">
           Get your Islamic questions answered by knowledgeable scholars
         </p>
       </div>
@@ -244,15 +246,15 @@ const Community = () => {
           {scholarQA.map((qa, index) => (
             <div
               key={index}
-              className="p-4 border border-gray-200 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 transition-all duration-200"
+              className="p-4 border border-gray-200 dark:border-emerald-600 rounded-xl dark:bg-gray-600 hover:border-blue-200 dark:hover:border-blue-600 dark:hover:bg-blue-50/20 hover:bg-blue-50/30 transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
-                  <p className="font-semibold text-slate-800 mb-2">
+                  <p className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
                     Q: {qa.question}
                   </p>
                   <div className="flex items-center gap-3">
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-500 dark:text-slate-300">
                       Asked by {qa.askedBy}
                     </p>
                     <span
@@ -266,7 +268,10 @@ const Community = () => {
                     </span>
                   </div>
                 </div>
-                <BookOpen size={16} className="text-slate-400 mt-1" />
+                <BookOpen
+                  size={16}
+                  className="text-slate-400 dark:text-slate-100 mt-1"
+                />
               </div>
             </div>
           ))}
@@ -299,18 +304,18 @@ const Community = () => {
         y: 100,
       }}
       viewport={{ once: true }}
-      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition-all duration-300"
+      className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
-      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-violet-50">
+      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-purple-50 to-violet-50 dark:from-gray-700 dark:to-white/40">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-purple-100 rounded-xl">
             <Heart className="text-purple-600" size={20} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
             Dua Request Wall
           </h2>
         </div>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-200">
           Share your supplications and pray for others
         </p>
       </div>
@@ -320,16 +325,20 @@ const Community = () => {
           {duaRequests.map((dua, index) => (
             <div
               key={index}
-              className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100 hover:shadow-sm transition-all duration-200"
+              className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-600 dark:to-gray-600 rounded-xl border border-green-100 hover:shadow-sm transition-all duration-200"
             >
-              <p className="text-sm text-slate-700 mb-3 leading-relaxed">
+              <p className="text-sm text-slate-700 dark:text-slate-100 mb-3 leading-relaxed">
                 "{dua.text}"
               </p>
               <div className="flex items-center justify-between">
-                <p className="text-xs text-slate-500">- {dua.author}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-100">
+                  - {dua.author}
+                </p>
                 <div className="flex items-center gap-1">
                   <Heart size={12} className="text-red-400 fill-red-400" />
-                  <span className="text-xs text-slate-500">{dua.hearts}</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-100">
+                    {dua.hearts}
+                  </span>
                 </div>
               </div>
             </div>
@@ -363,18 +372,18 @@ const Community = () => {
         y: 130,
       }}
       viewport={{ once: true }}
-      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+      className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden"
     >
-      <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-orange-50">
+      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900 dark:to-orange-700">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-amber-100 rounded-xl">
             <HandHeart className="text-amber-600" size={20} />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
             Volunteer Opportunities
           </h2>
         </div>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-200">
           Get involved and give back to the community
         </p>
       </div>
@@ -385,7 +394,7 @@ const Community = () => {
           return (
             <div
               key={index}
-              className="group p-4 border border-gray-200 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              className="group p-4 border border-gray-200 dark:border-emerald-600 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
             >
               <div className="flex items-start gap-4">
                 <div
@@ -394,15 +403,18 @@ const Community = () => {
                   <IconComponent size={20} className="text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-slate-800 mb-1 group-hover:text-emerald-700 transition-colors">
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-50 mb-1 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
                     {opportunity.title}
                   </h3>
-                  <p className="text-sm text-slate-600 mb-2">
+                  <p className="text-sm text-slate-600 dark:text-slate-300 mb-2">
                     {opportunity.description}
                   </p>
                   <div className="flex items-center gap-2">
-                    <MapPin size={14} className="text-slate-400" />
-                    <span className="text-xs text-slate-500">
+                    <MapPin
+                      size={14}
+                      className="text-slate-400 dark:text-slate-100"
+                    />
+                    <span className="text-xs text-slate-500 dark:text-slate-300">
                       {opportunity.location}
                     </span>
                   </div>
@@ -442,17 +454,17 @@ const Community = () => {
         x: 200,
       }}
       viewport={{ once: true }}
-      className="bg-gradient-to-br from-slate-50 to-gray-50 rounded-2xl p-6 border border-gray-200"
+      className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-600 dark:to-gray-500 rounded-2xl p-6 border border-gray-200 dark:border-emerald-600"
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 bg-slate-100 rounded-xl">
           <Globe className="text-slate-600" size={20} />
         </div>
-        <h3 className="text-xl font-bold text-slate-800">
+        <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
           Community Guidelines
         </h3>
       </div>
-      <div className="space-y-3 text-sm text-slate-600">
+      <div className="space-y-3 text-sm text-slate-600 dark:text-slate-200">
         <p className="flex items-start gap-2">
           <span className="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></span>
           Maintain respect and kindness in all interactions
@@ -470,7 +482,7 @@ const Community = () => {
   );
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-50 dark:bg-black/35">
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
@@ -491,7 +503,7 @@ const Community = () => {
       <main>
         <HeroSection />
 
-        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 ">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <div className="lg:col-span-1">
               <DiscussionForums />
