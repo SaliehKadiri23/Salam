@@ -43,7 +43,7 @@ const Navbar = () => {
   const { selectedLanguage, languages } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   return (
-    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black/90 dark:border-gray-400/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
@@ -103,7 +103,7 @@ const Navbar = () => {
                     onMouseEnter={() => setMorePagesDropDown(true)}
                     onMouseLeave={() => setMorePagesDropDown(false)}
                   >
-                    <p className="text-gray-700 flex justify-between items-center text-sm lg:text-md  xl:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group">
+                    <p className="text-gray-700 z-200 dark:hover:text-green-600 dark:text-white flex justify-between items-center text-sm lg:text-md  xl:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group">
                       {item.title}{" "}
                       <ChevronRightIcon
                         className={`transition-all duration-300   ${
@@ -114,7 +114,7 @@ const Navbar = () => {
                     </p>
                     {
                       <div
-                        className={`transition-all duration-300 bg-white border rounded-lg shadow-sm border-gray-300 z-900 absolute ${
+                        className={`transition-all duration-300 z-2000 bg-white dark:bg-black/70 border rounded-lg shadow-sm border-gray-300 dark:border-gray-500 z-50 absolute ${
                           morePagesDropDown !== true && "hidden"
                         }`}
                       >
@@ -128,7 +128,7 @@ const Navbar = () => {
                             <NavLink
                               to={`/${item.link}`}
                               key={item.title}
-                              className="text-gray-700  flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
+                              className="text-gray-700 dark:text-white dark:hover:text-green-600 flex justify-between items-center text-sm lg:text-lg hover:text-green-600 font-medium transition-colors duration-200 relative group"
                             >
                               {" "}
                               {item.title}
@@ -143,11 +143,10 @@ const Navbar = () => {
                   <NavLink
                     to={`/${item.link}`}
                     key={item.title}
-                    className="text-gray-700 text-sm lg:text-md hover:text-green-600 xl:text-lg font-medium transition-colors duration-200 relative group"
+                    className="text-gray-700 text-sm lg:text-md dark:text-white dark:hover:text-green-600 hover:text-green-600 xl:text-lg font-medium transition-colors duration-200 relative group"
                   >
                     {item.title}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                    {/* </p> */}
                   </NavLink>
                 )
               )}
@@ -222,12 +221,12 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-4 text-gray-600 hover:text-green-600 rounded-lg"
+            className="md:hidden p-4 text-gray-600 dark:text-white/95 dark:hover:text-green-600 hover:text-green-600 rounded-lg"
           >
             {isMenuOpen ? (
               <X className="w-6 scale-125 hover:scale-145 transition-all duration-300 h-6" />
             ) : (
-              <Menu className="w-6 scale-125 hover:scale-145 transition-all duration-300 h-6" />
+              <Menu className="w-6 scale-125 hover:scale-145  transition-all duration-300 h-6" />
             )}
           </button>
 
@@ -275,7 +274,7 @@ const Navbar = () => {
               opacity: 0,
               y: 300,
             }}
-            className="md:hidden  overflow-hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg"
+            className="md:hidden overflow-hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-black/95 backdrop-blur-lg border-b border-gray-200 dark:border-gray-500 shadow-lg"
           >
             <div className="px-4 mx-3 py-3 space-y-2">
               {/* Only When Logged - In */}
@@ -293,7 +292,7 @@ const Navbar = () => {
                   to={`/${item.link}`}
                   key={item.title}
                   onClick={() => setIsMenuOpen(false)}
-                  className="transition-colors duration-200 relative group block text-gray-700 hover:text-green-600 font-medium py-2"
+                  className="transition-colors duration-200 relative group block text-gray-700 dark:text-white dark:hover:text-green-600 hover:text-green-600 font-medium py-2"
                 >
                   {item.title}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
