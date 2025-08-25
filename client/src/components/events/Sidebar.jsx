@@ -29,9 +29,11 @@ import { motion } from "framer-motion";
 const CurrentDateDisplay = () => {
   const today = new Date();
   return (
-    <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6">
+    <div className="bg-white/70 dark:bg-black/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-800">Today</h3>
+        <h3 className="text-lg font-semibold text-slate-800 dark:text-gray-100">
+          Today
+        </h3>
         <Globe className="w-5 h-5 text-emerald-600" />
       </div>
       <div className="text-center space-y-2">
@@ -39,10 +41,12 @@ const CurrentDateDisplay = () => {
           <p className="text-xl font-bold text-emerald-600">
             {gregorianToHijri(today).formatted}
           </p>
-          <p className="text-xs text-slate-500">Hijri Calendar</p>
+          <p className="text-xs text-slate-500 dark:text-gray-300">
+            Hijri Calendar
+          </p>
         </div>
-        <div className="border-t border-slate-200 pt-2">
-          <p className="text-lg font-semibold text-slate-700">
+        <div className="border-t border-slate-200 dark:border-emerald-600 pt-2">
+          <p className="text-lg font-semibold text-slate-700 dark:text-gray-200">
             {today.toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
@@ -50,7 +54,9 @@ const CurrentDateDisplay = () => {
               day: "numeric",
             })}
           </p>
-          <p className="text-xs text-slate-500">Gregorian Calendar</p>
+          <p className="text-xs text-slate-500 dark:text-gray-300">
+            Gregorian Calendar
+          </p>
         </div>
       </div>
     </div>
@@ -115,27 +121,32 @@ const InteractiveCalendar = () => {
         y: 90,
       }}
       viewport={{ once: true }}
-      className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 overflow-hidden"
+      className="bg-white/70 dark:bg-black/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 p-6 overflow-hidden"
     >
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => navigateMonth(-1)}
-          className="p-2 hover:bg-emerald-50 rounded-lg transition-all duration-200 hover:scale-105"
+          className="p-2 hover:bg-emerald-50 dark:hover:bg-emerald-700 rounded-lg transition-all duration-200 hover:scale-105"
         >
-          <ChevronLeft className="w-4 h-4 text-slate-600" />
+          <ChevronLeft className="w-4 h-4 text-slate-600 dark:text-gray-200" />
         </button>
-        <h3 className="font-semibold text-slate-800">{getMonthYear(date)}</h3>
+        <h3 className="font-semibold text-slate-800 dark:text-gray-100">
+          {getMonthYear(date)}
+        </h3>
         <button
           onClick={() => navigateMonth(1)}
-          className="p-2 hover:bg-emerald-50 rounded-lg transition-all duration-200 hover:scale-105"
+          className="p-2 hover:bg-emerald-50 dark:hover:bg-emerald-700 rounded-lg transition-all duration-200 hover:scale-105"
         >
-          <ChevronRight className="w-4 h-4 text-slate-600" />
+          <ChevronRight className="w-4 h-4 text-slate-600 dark:text-gray-200" />
         </button>
       </div>
 
       <div className="grid grid-cols-7 gap-1 text-center mb-2">
         {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
-          <div key={index} className="text-xs font-medium text-slate-500 py-2">
+          <div
+            key={index}
+            className="text-xs font-medium text-slate-500 dark:text-gray-300 py-2"
+          >
             {day}
           </div>
         ))}
@@ -151,10 +162,10 @@ const InteractiveCalendar = () => {
                 onMouseLeave={() => dispatch(setHoveredDate(null))}
                 className={`h-8 w-8 rounded-lg text-sm transition-all duration-200 hover:scale-105 relative ${
                   day === selectedDate
-                    ? "bg-gradient-to-br from-emerald-500 to-green-600 text-white shadow-lg"
+                    ? "bg-gradient-to-br from-emerald-500 to-green-700 text-white shadow-lg"
                     : hasEvents(day)
                     ? "bg-gradient-to-br from-emerald-400 to-green-500 text-white shadow-md"
-                    : "hover:bg-emerald-50 text-slate-700"
+                    : "hover:bg-emerald-50 text-slate-700 dark:text-gray-100 dark:hover:bg-emerald-600"
                 }`}
               >
                 {day}
@@ -205,8 +216,8 @@ const UpcomingEvents = ({ upcomingEvents }) => (
     viewport={{ once: true }}
     className="w-full flex justify-center items-center"
   >
-    <div className="bg-white/70 w-full sm:w-[90%] sm:max-w-[600px] lg:w-full backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6">
-      <h3 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
+    <div className="bg-white/70 dark:bg-black/70 w-full sm:w-[90%] sm:max-w-[600px] lg:w-full backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 p-6">
+      <h3 className="font-semibold text-slate-800 dark:text-gray-100 mb-4 flex items-center gap-2">
         <Sparkles className="w-5 h-5 text-emerald-600" />
         Upcoming Events
       </h3>
@@ -222,16 +233,18 @@ const UpcomingEvents = ({ upcomingEvents }) => (
                   <Calendar className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-800 truncate group-hover:text-emerald-700 transition-colors">
+                  <p className="font-medium text-slate-800 dark:text-gray-100 truncate group-hover:text-emerald-700 transition-colors">
                     {event.title}
                   </p>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-gray-300">
                     {new Date(event.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                     })}
                   </p>
-                  <p className="text-xs text-slate-500">{event.time}</p>
+                  <p className="text-xs text-slate-500 dark:text-gray-300">
+                    {event.time}
+                  </p>
                 </div>
               </div>
             </div>

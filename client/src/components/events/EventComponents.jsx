@@ -38,7 +38,7 @@ export const TabNavigation = () => {
   ];
 
   return (
-    <div className="flex bg-white/70 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-1">
+    <div className="flex bg-white/70 dark:bg-black/70 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 dark:border-emerald-600 p-1">
       {tabs.map((tab) => (
         <button
           key={tab.id}
@@ -46,7 +46,7 @@ export const TabNavigation = () => {
           className={`flex-1 flex items-center justify-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
             activeTab === tab.id
               ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md"
-              : "text-slate-600 hover:text-emerald-600 hover:bg-emerald-50/50"
+              : "text-slate-600 dark:text-gray-100 hover:text-emerald-600 hover:bg-emerald-50/50 dark:hover:bg-gray-700"
           }`}
         >
           <tab.icon className="w-4 h-4" />
@@ -75,7 +75,7 @@ export const CategoryFilters = () => {
             whileInView={{
               opacity: 1,
               x: 0,
-              transition: { duration: 0.45 + (0.15 * index) },
+              transition: { duration: 0.45 + 0.15 * index },
             }}
             exit={{
               opacity: 0,
@@ -87,7 +87,7 @@ export const CategoryFilters = () => {
             className={`flex items-center space-x-2 px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
               selectedCategory === category.id
                 ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg"
-                : "bg-white/70 text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 border border-white/20 backdrop-blur-xl"
+                : "bg-white/70 dark:bg-black/70 text-slate-600 dark:text-gray-100 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 border border-white/20 dark:border-emerald-600 backdrop-blur-xl"
             }`}
           >
             {IconComponent && <IconComponent className="w-4 h-4" />}
@@ -105,7 +105,7 @@ export const EventCard = ({ event }) => {
   const registeredEvents = useSelector(state => state.eventsAndNews.registeredEvents);
 
   return (
-    <div className="group bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+    <div className="group bg-white/70 dark:bg-black/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
       <div className="aspect-video overflow-hidden">
         <img
           src={event.image}
@@ -118,11 +118,13 @@ export const EventCard = ({ event }) => {
         />
       </div>
       <div className="p-6">
-        <h3 className="font-bold text-slate-800 mb-2 group-hover:text-emerald-600 transition-colors">
+        <h3 className="font-bold text-slate-800 dark:text-gray-100 mb-2 group-hover:text-emerald-600 transition-colors">
           {event.title}
         </h3>
-        <p className="text-slate-600 text-sm mb-4">{event.description}</p>
-        <div className="flex items-center justify-between text-sm text-slate-500 mb-4">
+        <p className="text-slate-600 dark:text-gray-300 text-sm mb-4">
+          {event.description}
+        </p>
+        <div className="flex items-center justify-between text-sm text-slate-500 dark:text-gray-300 mb-4">
           <div className="flex items-center space-x-1">
             <Clock className="w-4 h-4" />
             <span>{event.time}</span>
@@ -162,7 +164,7 @@ export const EventListItem = ({ event }) => {
   const registeredEvents = useSelector(state => state.eventsAndNews.registeredEvents);
 
   return (
-    <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div className="bg-white/70 dark:bg-black/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 p-4 sm:p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       {/* Mobile Layout */}
       <div className="block sm:hidden">
         <div className="flex items-start space-x-3 mb-3">
@@ -170,10 +172,10 @@ export const EventListItem = ({ event }) => {
             <Calendar className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-slate-800 mb-1 text-sm">
+            <h3 className="font-bold text-slate-800 dark:text-gray-100 mb-1 text-sm">
               {event.title}
             </h3>
-            <div className="flex items-center space-x-1 text-xs text-slate-600 mb-1">
+            <div className="flex items-center space-x-1 text-xs text-slate-600 dark:text-gray-300 mb-1">
               <Clock className="w-3 h-3" />
               <span>
                 {new Date(event.date).toLocaleDateString("en-US", {
@@ -183,20 +185,20 @@ export const EventListItem = ({ event }) => {
                 • {event.time}
               </span>
             </div>
-            <div className="flex items-center space-x-1 text-xs text-slate-600">
+            <div className="flex items-center space-x-1 text-xs text-slate-600 dark:text-gray-300">
               <Award className="w-3 h-3" />
               <span>{event.attendees} attending</span>
             </div>
           </div>
         </div>
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1 text-xs text-slate-600">
+          <div className="flex items-center space-x-1 text-xs text-slate-600 dark:text-gray-200">
             <MapPin className="w-3 h-3" />
             <span>{event.location}</span>
           </div>
           <div className="flex items-center space-x-2">
-            <button className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors">
-              <Share2 className="w-4 h-4 text-slate-600" />
+            <button className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+              <Share2 className="w-4 h-4 text-slate-600 dark:text-gray-300" />
             </button>
             {event.registrationRequired && (
               <button
@@ -207,7 +209,9 @@ export const EventListItem = ({ event }) => {
                     : "bg-gradient-to-r from-emerald-500 to-green-600 text-white"
                 }`}
               >
-                {registeredEvents.includes(event.id) ? "Registered" : "Register"}
+                {registeredEvents.includes(event.id)
+                  ? "Registered"
+                  : "Register"}
               </button>
             )}
           </div>
@@ -221,27 +225,29 @@ export const EventListItem = ({ event }) => {
             <Calendar className="w-8 h-8 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-slate-800 mb-2">{event.title}</h3>
+            <h3 className="font-bold text-slate-800 dark:text-gray-100 mb-2">
+              {event.title}
+            </h3>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 text-sm text-slate-600">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 dark:text-gray-300">
                 <Clock className="w-4 h-4 flex-shrink-0" />
-                <span>
+                <span className="">
                   {new Date(event.date).toLocaleDateString()} • {event.time}
                 </span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 dark:text-gray-300">
                 <MapPin className="w-4 h-4 flex-shrink-0" />
-                <span>{event.location}</span>
+                <span className="">{event.location}</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 dark:text-gray-300">
                 <Award className="w-4 h-4 flex-shrink-0" />
-                <span>{event.attendees} attending</span>
+                <span className="">{event.attendees} attending</span>
               </div>
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-              <Share2 className="w-5 h-5 text-slate-600" />
+            <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+              <Share2 className="w-5 h-5 text-slate-600 dark:text-gray-200" />
             </button>
             {event.registrationRequired && (
               <button
@@ -252,7 +258,9 @@ export const EventListItem = ({ event }) => {
                     : "bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg"
                 }`}
               >
-                {registeredEvents.includes(event.id) ? "Registered" : "Register"}
+                {registeredEvents.includes(event.id)
+                  ? "Registered"
+                  : "Register"}
               </button>
             )}
           </div>
@@ -264,7 +272,7 @@ export const EventListItem = ({ event }) => {
 
 // News Card Component
 export const NewsCard = ({ news }) => (
-  <article className="group bg-white/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+  <article className="group bg-white/70 dark:bg-black/70 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
     <div className="aspect-video overflow-hidden">
       <img
         src={news.image}
@@ -277,13 +285,17 @@ export const NewsCard = ({ news }) => (
         <span className="text-xs font-medium px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full">
           {news.category}
         </span>
-        <span className="text-sm text-slate-500">{news.date}</span>
+        <span className="text-sm text-slate-500 dark:text-gray-300">
+          {news.date}
+        </span>
       </div>
-      <h3 className="font-bold text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors">
+      <h3 className="font-bold text-slate-800 mb-3 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 dark:text-gray-100 transition-colors">
         {news.title}
       </h3>
-      <p className="text-slate-600 text-sm mb-4">{news.excerpt}</p>
-      <button className="flex items-center space-x-2 text-emerald-600 font-medium hover:text-emerald-700 transition-colors">
+      <p className="text-slate-600 dark:text-gray-300 text-sm mb-4">
+        {news.excerpt}
+      </p>
+      <button className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-500 font-medium hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
         <span>Read More</span>
         <ArrowRight className="w-4 h-4" />
       </button>

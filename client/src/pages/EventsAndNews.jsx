@@ -35,7 +35,7 @@ const EventsAndNews = () => {
   }, [eventsData]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50/30 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-600 dark:to-slate-900">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <Sidebar upcomingEvents={upcomingEvents} />
@@ -43,10 +43,10 @@ const EventsAndNews = () => {
           <div className="lg:col-span-3 space-y-8">
             {/* Page Header */}
             <div className="text-center lg:text-left">
-              <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent mb-4">
+              <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent dark:text-gray-100 mb-4">
                 Events & News
               </h1>
-              <p className="text-lg text-slate-600 max-w-2xl">
+              <p className="text-lg text-slate-600 dark:text-gray-300 max-w-2xl">
                 Stay connected with our vibrant Islamic community through
                 upcoming events and latest news.
               </p>

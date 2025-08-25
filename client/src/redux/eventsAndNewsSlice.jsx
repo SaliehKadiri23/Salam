@@ -140,7 +140,7 @@ const initialState = {
       category: "community",
       featured: true,
       image:
-        "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=400&h=250&fit=crop&crop=center",
+        "klj",
       excerpt:
         "Community raises over $50,000 and 10,000 meals for local families in need.",
     },
@@ -152,7 +152,7 @@ const initialState = {
       category: "interfaith",
       featured: false,
       image:
-        "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=250&fit=crop&crop=center",
+        "hbjkl",
       excerpt:
         "Leaders from various faith communities gather to promote understanding and peace.",
     },
