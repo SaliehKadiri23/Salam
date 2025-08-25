@@ -48,7 +48,7 @@ const Home = () => {
             opacity: 0,
             y: -300,
           }}
-          className="relative z-10 mx-auto max-w-4xl px-4 text-center"
+          className="relative z-10 mx-auto max-w-4xl px-4 text-center "
         >
           <h2 className="text-balance text-4xl font-black tracking-tight md:text-6xl">
             Empowering the Ummah Worldwide
@@ -112,79 +112,7 @@ const Home = () => {
   );
 };
 
-// Events Section
-function Events() {
-  const formatDate = (iso) => new Date(iso).toLocaleDateString();
-  const { eventsData } = useSelector((state) => state.eventsAndNews);
-  const latestThreeEvents = useMemo(
-    () => eventsData.filter((e, idx) => idx >= eventsData.length - 3),
-    []
-  );
 
-  const navigate = useNavigate();
-  return (
-    <div className="w-full flex justify-center items-center bg-gray-100">
-      <section
-        id="events"
-        className="rounded-xl bg-slate-50 dark:bg-slate-300 p-6 max-w-[1130px] w-full my-7 mx-3 "
-      >
-        <div className="mb-6 flex items-center justify-between">
-          <h3 className="text-2xl font-semibold">Events</h3>
-          <div className="text-sm text-gray-800 font-bold">
-            Join upcoming community activities
-          </div>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {latestThreeEvents.map((e, index) => (
-            <motion.button
-              initial={{
-                opacity: 0,
-                y: 200,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.3+ (0.2 * index/2) },
-              }}
-              exit={{
-                opacity: 0,
-                y: 200,
-              }}
-              viewport={{ once: true }}
-              key={e.id}
-              onClick={() => navigate(e.eventLink)}
-              className="rounded-lg bg-gray-100 shadow-sm transition-all duration-300 hover:scale-110 overflow-hidden"
-            >
-              <div
-                className="h-44 bg-cover bg-center"
-                style={{ backgroundImage: `url('${e.image}')` }}
-                role="img"
-                aria-label={e.title}
-              />
-              <div className="p-4">
-                <div className="flex items-start flex-col justify-evenly gap-3">
-                  <h4 className="font-semibold text-lg">{e.title}</h4>
-                  <time className="text-sm text-gray-700">
-                    {formatDate(e.date)}
-                  </time>
-                </div>
-                <p className="mt-2 text-left text-sm text-gray-600">
-                  {e.description}
-                </p>
-                <div className="mt-4 flex items-center gap-3">
-                  <Calendar size={18} className="text-green-600 " />
-                  <span className="text-sm font-medium text-green-500">
-                    Learn more
-                  </span>
-                </div>
-              </div>
-            </motion.button>
-          ))}
-        </div>
-      </section>
-    </div>
-  );
-}
 
 // Prayer Tools Section
 function PrayerTools({currentTime}) {
@@ -194,7 +122,7 @@ function PrayerTools({currentTime}) {
   const prayerTimes = useSelector((state) => state.prayerTimes.prayerTimes);
 
   return (
-    <div className="w-full bg-gray-100/90 ">
+    <div className="w-full bg-gray-100/90 dark:bg-gradient-to-l from-black/85 via-black/90 to-black/75 ">
       <motion.section
         initial={{
           opacity: 0,
@@ -214,7 +142,7 @@ function PrayerTools({currentTime}) {
         className="container mx-auto w-full max-w-6xl px-4 py-16 "
       >
         <header className="mb-10 text-center">
-          <h3 className="text-3xl font-bold">Prayer Tools</h3>
+          <h3 className="text-3xl font-bold dark:text-white">Prayer Tools</h3>
         </header>
 
         {/* Tabs */}
@@ -252,8 +180,8 @@ function PrayerTools({currentTime}) {
                 aria-labelledby={tablistId}
                 className="p-2 md:p-4"
               >
-                <div className="bg-white rounded-xl p-6 shadow">
-                  <h3 className="text-lg font-semibold mb-3">
+                <div className="bg-white dark:bg-black/85 rounded-xl p-6 shadow">
+                  <h3 className="text-lg font-semibold mb-3 dark:text-white/95">
                     Today's Prayer Times
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -287,28 +215,14 @@ function PrayerTools({currentTime}) {
                 className="grid gap-4 p-6"
               >
                 <HijriCalendar />
-                {/* <div className="grid grid-cols-7 gap-1 rounded-xl bg-gray-200 p-3 text-center text-sm">
-                  {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
-                    <span key={d} className="py-1 font-semibold text-gray-600">
-                      {d}
-                    </span>
-                  ))}
-                  {Array.from({ length: 31 }).map((_, i) => (
-                    <button
-                      key={i}
-                      className="rounded-md bg-white py-2 hover:scale-105 text-gray-700 ring-1 ring-gray-200 transition hover:bg-green-300/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-bg-green-500/50"
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div> */}
+                
               </div>
             )}
 
             {tab === "qibla" && (
               <div role="tabpanel" aria-labelledby={tablistId} className="p-6">
                 <div className="grid items-center justify-items-center gap-4 text-center">
-                  <div className="relative aspect-square w-48 rounded-full border-8 border-gray-100 bg-white shadow-inner">
+                  <div className="relative aspect-square w-48 rounded-full border-8 border-gray-100 bg-white dark:bg-black shadow-inner">
                     <div className="absolute inset-0 grid place-items-center">
                       <div className="size-1.5 rounded-full bg-green-500" />
                     </div>
@@ -338,7 +252,7 @@ function TabButton({ active, onClick, label }) {
         "whitespace-nowrap rounded-t-lg border-b-2 px-3 py-3 text-sm font-medium outline-none transition",
         active
           ? "border-b-green-400 text-green-500"
-          : "border-b-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+          : "border-b-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-white/85 dark:hover:text-white",
         "focus-visible:ring-2 focus-visible:ring-green-500/40",
       ].join(" ")}
     >
@@ -379,7 +293,7 @@ function Resources() {
   const dispatch = useDispatch();
 
   return (
-    <section id="resources" className="bg-gray-200 py-16">
+    <section id="resources" className="bg-gray-200 dark:bg-gray-600 py-16">
       <motion.div
         initial={{
           opacity: 0,
@@ -398,14 +312,13 @@ function Resources() {
         className="container mx-auto max-w-6xl px-4"
       >
         <header className="mb-10 text-center">
-          <h3 className="text-3xl font-bold">
+          <h3 className="text-3xl font-bold dark:text-white/85">
             Resources &amp; Educational Content
           </h3>
         </header>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
           {cards.map((c, index) => (
             <button
-              
               viewport={{ once: true }}
               key={c.title}
               onClick={() =>
@@ -434,6 +347,80 @@ function Resources() {
         </div>
       </motion.div>
     </section>
+  );
+}
+
+// Events Section
+function Events() {
+  const formatDate = (iso) => new Date(iso).toLocaleDateString();
+  const { eventsData } = useSelector((state) => state.eventsAndNews);
+  const latestThreeEvents = useMemo(
+    () => eventsData.filter((e, idx) => idx >= eventsData.length - 3),
+    []
+  );
+
+  const navigate = useNavigate();
+  return (
+    <div className="w-full flex justify-center items-center bg-gray-100 dark:bg-gray-500">
+      <section
+        id="events"
+        className="rounded-xl bg-slate-50 dark:bg-slate-200 p-6 max-w-[1130px] w-full my-7 mx-3 "
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <h3 className="text-2xl font-semibold dark:text-gray-700">Events</h3>
+          <div className="text-sm text-gray-800 font-bold dark:text-gray-600">
+            Join upcoming community activities
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {latestThreeEvents.map((e, index) => (
+            <motion.button
+              initial={{
+                opacity: 0,
+                y: 200,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.3 + (0.2 * index) / 2 },
+              }}
+              exit={{
+                opacity: 0,
+                y: 200,
+              }}
+              viewport={{ once: true }}
+              key={e.id}
+              onClick={() => navigate(e.eventLink)}
+              className="rounded-lg bg-gray-100 dark:bg-gray-300 shadow-sm transition-all duration-300 hover:scale-110 overflow-hidden"
+            >
+              <div
+                className="h-44 bg-cover bg-center"
+                style={{ backgroundImage: `url('${e.image}')` }}
+                role="img"
+                aria-label={e.title}
+              />
+              <div className="p-4">
+                <div className="flex items-start flex-col justify-evenly gap-3">
+                  <h4 className="font-semibold text-lg">{e.title}</h4>
+                  <time className="text-sm text-gray-700">
+                    {formatDate(e.date)}
+                  </time>
+                </div>
+                <p className="mt-2 text-left text-sm text-gray-600">
+                  {e.description}
+                </p>
+                <div className="mt-4 flex items-center gap-3">
+                  <Calendar size={18} className="text-green-600 " />
+                  <span className="text-sm font-medium text-green-500">
+                    Learn more
+                  </span>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
 

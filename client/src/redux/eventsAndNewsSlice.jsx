@@ -114,7 +114,7 @@ const initialState = {
       featured: true,
       registrationRequired: true,
       image:
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop&crop=center",
+        "duid",
       description:
         "Annual charity gala supporting local families and international relief efforts.",
     },
