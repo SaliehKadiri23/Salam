@@ -54,9 +54,9 @@ const Footer = () => {
   const dispatch = useDispatch();
 
   return (
-    <footer className="relative bg-gradient-to-br from-emerald-300 via-emerald-800 to-emerald-900 text-white overflow-hidden">
+    <footer className="relative bg-gradient-to-br from-emerald-300 via-emerald-800 to-emerald-900 dark:from-emerald-700 dark:via-emerald-900 dark:to-black text-white overflow-hidden">
       {/* Top Border */}
-      <div className="relative h-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400">
+      <div className="relative h-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 dark:from-yellow-700 dark dark:via-yellow-800 dark:to-yellow-700">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300 to-transparent animate-pulse"></div>
       </div>
 
@@ -83,7 +83,10 @@ const Footer = () => {
             </div>
 
             {/* Prayer Times Widget */}
-              <button onClick={()=>navigate("/prayer_times")} className="bg-emerald-800/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-yellow-400/20 rounded-2xl p-6 shadow-2xl">
+            <button
+              onClick={() => navigate("/prayer_times")}
+              className="bg-emerald-800/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 border border-yellow-400/20 rounded-2xl p-6 shadow-2xl"
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="bg-yellow-400 p-2 rounded-full">
@@ -98,7 +101,10 @@ const Footer = () => {
               <div className="space-y-2 text-sm">
                 {prayerTimes.map((p, index) =>
                   p.name === "Asr" ? (
-                    <div key={index} className="flex justify-between border-l-2 border-yellow-400 pl-2">
+                    <div
+                      key={index}
+                      className="flex justify-between border-l-2 border-yellow-400 pl-2"
+                    >
                       <span className="text-yellow-400">{p.name}</span>
                       <span className="text-yellow-400 font-medium">
                         {p.iqama}
@@ -276,7 +282,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Border */}
-      <div className="h-3 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400"></div>
+      <div className="h-3 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 dark:from-yellow-700 dark dark:via-yellow-800 dark:to-yellow-700"></div>
     </footer>
   );
 };

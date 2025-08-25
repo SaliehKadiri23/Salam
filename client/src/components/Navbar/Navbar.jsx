@@ -43,7 +43,7 @@ const Navbar = () => {
   const { selectedLanguage, languages } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   return (
-    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black/90 dark:border-gray-400/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black/85 dark:border-gray-400/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
