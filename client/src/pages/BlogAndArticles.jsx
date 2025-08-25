@@ -144,7 +144,7 @@ const BlogAndArticles = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 dark:from-gray-800 dark:to-gray-900 font-sans">
       <QuranicVerse verse={quranicVerseOfTheDay} />
 
       {/* Main Content */}

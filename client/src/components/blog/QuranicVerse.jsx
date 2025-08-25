@@ -3,7 +3,7 @@ import { Star } from 'lucide-react';
 
 const QuranicVerse = ({ verse }) => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 py-7">
+    <div className="relative overflow-hidden bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 dark:from-green-950 dark:via-green-800 dark:to-emerald-950 py-7">
       <div className="absolute inset-0 bg-black/10"></div>
       <div className="absolute inset-0 bg-islamic-pattern-light"></div>
 
@@ -11,9 +11,7 @@ const QuranicVerse = ({ verse }) => {
         <div className="backdrop-blur-sm bg-white/10 rounded-2xl p-8 max-w-4xl mx-auto border border-white/20 shadow-2xl">
           <div className="flex items-center justify-center mb-6">
             <Star className="text-yellow-300 w-8 h-8 mr-2" />
-            <h2 className="text-2xl font-bold text-white">
-              Verse of the Day
-            </h2>
+            <h2 className="text-2xl font-bold text-white">Verse of the Day</h2>
             <Star className="text-yellow-300 w-8 h-8 ml-2" />
           </div>
 
@@ -31,9 +29,7 @@ const QuranicVerse = ({ verse }) => {
             <p className="text-xl text-white font-medium">
               "{verse.translation}"
             </p>
-            <p className="text-green-200 font-semibold">
-              {verse.reference}
-            </p>
+            <p className="text-green-200 font-semibold">{verse.reference}</p>
           </div>
         </div>
       </div>

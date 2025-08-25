@@ -14,19 +14,19 @@ const FilterControls = ({
       {/* Search Bar */}
       <div className="relative max-w-2xl mx-auto">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Search className="h-6 w-6 text-gray-400" />
+          <Search className="h-6 w-6 text-gray-400 dark:text-gray-100" />
         </div>
         <input
           type="text"
           placeholder="Search articles, authors, or topics..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 text-lg border-2 border-gray-200 rounded-2xl focus:border-green-500 focus:ring-4 focus:ring-green-200 transition-all duration-300 bg-white shadow-lg"
+          className="w-full dark:bg-black/40 dark:text-gray-100  dark:placeholder:text-gray-300 pl-12 pr-4 py-3 text-lg border-2 outline-none border-gray-200 rounded-2xl focus:border-green-500 focus:ring-2 focus:ring-green-600 transition-all duration-300 bg-white shadow-lg"
         />
       </div>
 
       {/* Category Filters */}
-      <div className="flex flex-wrap justify-center gap-3 overflow-hidden">
+      <div className="flex flex-wrap justify-center gap-3 py-1 overflow-hidden">
         {categories.map((category, index) => (
           <motion.div
             initial={{
@@ -51,7 +51,7 @@ const FilterControls = ({
               className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
                 selectedCategory === category
                   ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-green-50 border-2 border-gray-200 hover:border-green-300"
+                  : "bg-white dark:bg-black/70 dark:text-gray-100 text-gray-700 hover:bg-green-50 border-2 border-gray-200 dark:border-emerald-600 hover:border-green-300"
               }`}
             >
               {category}

@@ -91,10 +91,10 @@ const ArticlesGrid = ({
       {filteredArticles.length === 0 && !isLoading && (
         <div className="text-center py-20 col-span-full">
           <div className="text-6xl mb-4">📚</div>
-          <h3 className="text-2xl font-bold text-gray-700 mb-2">
+          <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-100 mb-2">
             No articles found
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-300">
             Try adjusting your search terms or filters
           </p>
         </div>

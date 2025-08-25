@@ -13,7 +13,7 @@ const initialState = {
       author: "Dr. Ahmad Hassan",
       publishDate: "2025-08-15",
       image:
-        "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=400&h=250&fit=crop",
+        "iuuu",
       isBookmarked: false,
       likes: 142,
       readTime: 1,
@@ -61,7 +61,7 @@ const initialState = {
       author: "Aisha Rahman",
       publishDate: "2025-08-13",
       image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=250&fit=crop",
+        "iu",
       isBookmarked: false,
       likes: 73,
       readTime: 1,
@@ -125,7 +125,7 @@ const initialState = {
       author: "Dr. Amina Khatoon",
       publishDate: "2025-08-09",
       image:
-        "https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&h=250&fit=crop",
+        "uvfufeuheri",
       isBookmarked: true,
       likes: 145,
       readTime: 1,
@@ -157,7 +157,7 @@ const initialState = {
       author: "Sister Zaynab Ahmed",
       publishDate: "2025-08-07",
       image:
-        "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&h=250&fit=crop",
+        "f439934",
       isBookmarked: false,
       likes: 176,
       readTime: 1,
@@ -189,7 +189,7 @@ const initialState = {
       author: "Dr. Rashid Al-Hakim",
       publishDate: "2025-08-05",
       image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
+        "feiuuuuuu",
       isBookmarked: true,
       likes: 267,
       readTime: 1,
@@ -221,7 +221,7 @@ const initialState = {
       author: "Hajj Guide Muhammad Ali",
       publishDate: "2025-08-03",
       image:
-        "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=400&h=250&fit=crop",
+        "uiweewuuewyue",
       isBookmarked: false,
       likes: 345,
       readTime: 1,
@@ -237,7 +237,7 @@ const initialState = {
       author: "Family Counselor Umm Yusuf",
       publishDate: "2025-08-02",
       image:
-        "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&h=250&fit=crop",
+        "rure90ed",
       isBookmarked: true,
       likes: 189,
       readTime: 1,
@@ -253,7 +253,7 @@ const initialState = {
       author: "Sheikh Hamza Ibn Ahmad",
       publishDate: "2025-08-01",
       image:
-        "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400&h=250&fit=crop",
+        "uruqhrirrf",
       isBookmarked: false,
       likes: 201,
       readTime: 1,
@@ -285,7 +285,7 @@ const initialState = {
       author: "Sister Jennifer Martinez",
       publishDate: "2025-07-30",
       image:
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop",
+        "hh5ireuiherq",
       isBookmarked: true,
       likes: 178,
       readTime: 1,
@@ -317,7 +317,7 @@ const initialState = {
       author: "Imam Talib Washington",
       publishDate: "2025-07-28",
       image:
-        "https://images.unsplash.com/photo-1564769625905-50e93615e769?w=400&h=250&fit=crop",
+        "nuiruqhpqry",
       isBookmarked: false,
       likes: 167,
       readTime: 1,
@@ -381,7 +381,7 @@ const initialState = {
       author: "Community Leader Ahmed Jackson",
       publishDate: "2025-07-24",
       image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=250&fit=crop",
+        "her39qr",
       isBookmarked: false,
       likes: 167,
       readTime: 1,
@@ -397,7 +397,7 @@ const initialState = {
       author: "Digital Scholar Dr. Tech Imam",
       publishDate: "2025-07-23",
       image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
+        "r9efeuir",
       isBookmarked: true,
       likes: 278,
       readTime: 1,
