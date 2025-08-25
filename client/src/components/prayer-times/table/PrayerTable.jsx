@@ -19,24 +19,24 @@ const PrayerTable = ({ currentTime }) => {
   const duas = useSelector((state) => state.islamicUtilities.duas);
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white dark:bg-black/70 rounded-2xl shadow-xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gradient-to-r from-emerald-50 to-amber-50">
+          <thead className="bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-emerald-500 dark:to-amber-500">
             <tr>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
                 Prayer
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
                 Begins (IQAMA)
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
                 Iqama
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
                 Time Left
               </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
                 Dua
               </th>
             </tr>
@@ -51,8 +51,8 @@ const PrayerTable = ({ currentTime }) => {
                   key={prayer.name}
                   className={`transition-all duration-200 ${
                     prayer.next
-                      ? "bg-gradient-to-r from-emerald-50 to-amber-50 border-l-4 border-emerald-500"
-                      : "hover:bg-gray-50"
+                      ? "bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-emerald-200 dark:to-amber-200 border-l-4 border-emerald-500"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-600"
                   }`}
                 >
                   <td className="px-6 py-4">
@@ -61,14 +61,16 @@ const PrayerTable = ({ currentTime }) => {
                         className={`p-2 rounded-full ${
                           prayer.next
                             ? "bg-emerald-100 text-emerald-600"
-                            : "bg-gray-100 text-gray-600"
+                            : "bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-100"
                         }`}
                       >
                         <IconComponent className="h-5 w-5" />
                       </div>
                       <span
                         className={`font-semibold ${
-                          prayer.next ? "text-emerald-700" : "text-gray-700"
+                          prayer.next
+                            ? "text-emerald-700"
+                            : "text-gray-700 dark:text-gray-100"
                         }`}
                       >
                         {prayer.name}
@@ -77,14 +79,18 @@ const PrayerTable = ({ currentTime }) => {
                   </td>
                   <td
                     className={`px-6 py-4 text-lg font-bold ${
-                      prayer.next ? "text-emerald-600" : "text-gray-700"
+                      prayer.next
+                        ? "text-emerald-600"
+                        : "text-gray-700 dark:text-gray-100"
                     }`}
                   >
                     {prayer.begins}
                   </td>
                   <td
                     className={`px-6 py-4 text-lg font-bold ${
-                      prayer.next ? "text-emerald-600" : "text-gray-700"
+                      prayer.next
+                        ? "text-emerald-600"
+                        : "text-gray-700 dark:text-gray-100"
                     }`}
                   >
                     {prayer.iqama}
@@ -93,7 +99,7 @@ const PrayerTable = ({ currentTime }) => {
                     className={`px-6 py-4 text-sm font-mono ${
                       prayer.next
                         ? "text-emerald-600 font-bold"
-                        : "text-gray-500"
+                        : "text-gray-500 dark:text-gray-100"
                     }`}
                   >
                     {timeLeft}

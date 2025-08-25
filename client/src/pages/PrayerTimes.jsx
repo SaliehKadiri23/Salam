@@ -89,7 +89,7 @@ export default function PrayerTimes() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-emerald-50 dark:from-gray-500 dark:via-gray-700 dark:to-gray-600">
       <main className="pb-12">
         <Hero
           currentTime={currentTime}
@@ -107,14 +107,14 @@ export default function PrayerTimes() {
           />
 
           {/* Tabs */}
-          <div className="bg-white rounded-2xl shadow-xl sm:p-6 py-6 px-3 mb-8">
+          <div className="bg-white dark:bg-black/75 rounded-2xl shadow-xl sm:p-6 py-6 px-3 mb-8">
             <div className="flex space-x-4 mb-6">
               <button
                 onClick={() => dispatch(setActiveTab(0))}
                 className={`px-6 py-3 rounded-xl font-medium transition-all ${
                   activeTab === 0
-                    ? "bg-gradient-to-r from-emerald-500 to-amber-500 text-white shadow-lg"
-                    : "text-gray-600 hover:bg-gray-100"
+                    ? "bg-gradient-to-r from-emerald-500 to-amber-500 text-white dark:text-black shadow-lg"
+                    : "text-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500 "
                 }`}
               >
                 Prayer Times
@@ -123,8 +123,8 @@ export default function PrayerTimes() {
                 onClick={() => dispatch(setActiveTab(1))}
                 className={`px-6 py-3 rounded-xl font-medium transition-all ${
                   activeTab === 1
-                    ? "bg-gradient-to-r from-emerald-500 to-amber-500 text-white shadow-lg"
-                    : "text-gray-600 hover:bg-gray-100"
+                    ? "bg-gradient-to-r from-emerald-500 to-amber-500 text-white shadow-lg dark:text-black"
+                    : "text-gray-600 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-500 "
                 }`}
               >
                 Hijri Calendar

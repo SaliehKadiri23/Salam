@@ -7,23 +7,23 @@ const Hero = ({ currentTime, location, currentQuote }) => {
   const { islamicQuotes } = useSelector((state) => state.islamicUtilities);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-amber-50">
+    <section className="relative overflow-hidden ">
       <div className="relative mx-auto max-w-6xl px-4 py-12">
         {/* Location & Time */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg mb-4">
+          <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg mb-4">
             <MapPin className="h-4 w-4 text-emerald-600" />
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
               {location}
             </span>
           </div>
-          <div className="text-4xl md:text-5xl font-bold text-gray-800 mb-2">
+          <div className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 mb-2">
             {currentTime.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             })}
           </div>
-          <div className="text-lg text-gray-600">
+          <div className="text-lg text-gray-600 dark:text-gray-100">
             {currentTime.toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",

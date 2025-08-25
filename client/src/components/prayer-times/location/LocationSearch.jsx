@@ -38,7 +38,7 @@ const LocationSearch = () => {
     <div className="mx-auto max-w-4xl px-4 mb-8">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none z-10" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-100 pointer-events-none z-10" />
           <input
             ref={inputRef}
             type="text"
@@ -50,12 +50,12 @@ const LocationSearch = () => {
                 handleSearchSubmit(e);
               }
             }}
-            className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm outline-none transition-all duration-200 relative z-0"
+            className="w-full pl-10 pr-10 py-3 dark:bg-black dark:placeholder:text-white/80 dark:text-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm outline-none transition-all duration-200 relative z-0"
           />
           {searchQuery && (
             <button
               onClick={handleClearSearch}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors z-10"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-white hover:text-gray-600 transition-colors z-10"
               type="button"
             >
               <X className="h-4 w-4" />
@@ -65,10 +65,10 @@ const LocationSearch = () => {
         <button
           onClick={handleUseMyLocation}
           disabled={location === "Detecting location..."}
-          className="bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white px-6 py-3 rounded-xl font-medium flex items-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none whitespace-nowrap"
+          className="flex justify-center bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white px-6 py-3 rounded-xl font-medium flex items-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none whitespace-nowrap"
         >
           <MapPin className="h-5 w-5" />
-          <span>
+          <span className="">
             {location === "Detecting location..."
               ? "Detecting..."
               : "Use My IP Address"}

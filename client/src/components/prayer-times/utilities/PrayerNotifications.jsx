@@ -39,7 +39,7 @@ const PrayerNotifications = () => {
         y: 300,
       }}
       viewport={{ once: true }}
-      className="bg-white rounded-2xl shadow-xl p-6 text-center"
+      className="bg-white dark:bg-black/90 rounded-2xl shadow-xl p-6 text-center"
     >
       <div
         className={`w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center ${
@@ -52,7 +52,9 @@ const PrayerNotifications = () => {
           }`}
         />
       </div>
-      <h3 className="font-semibold text-gray-800 mb-2">Prayer Alerts</h3>
+      <h3 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
+        Prayer Alerts
+      </h3>
       <button
         onClick={handleEnableNotifications}
         disabled={notificationsEnabled}
