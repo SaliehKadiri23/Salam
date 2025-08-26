@@ -34,6 +34,13 @@ const initialState = {
   errors: {},
   fieldValidation: {},
   
+  // Notification State
+  notification: {
+    show: false,
+    type: "",
+    message: "",
+  },
+  
   // Auth State
   isAuthenticated: false,
   authProvider: null,
@@ -83,6 +90,10 @@ const signupSlice = createSlice({
       if (!state.completedSections.includes('authentication')) {
         state.completedSections.push('authentication');
       }
+    },
+    
+    goBackToAuth: (state) => {
+      state.currentStep = 'selectAuth';
     },
     
     setAuthMethod: (state, action) => {
@@ -168,6 +179,24 @@ const signupSlice = createSlice({
     completeSignup: (state) => {
       state.currentSection = 'completed';
       state.completedSections.push('registration');
+    },
+    
+    // Notification Actions
+    showNotification: (state, action) => {
+      const { type, message } = action.payload;
+      state.notification = {
+        show: true,
+        type,
+        message,
+      };
+    },
+    
+    hideNotification: (state) => {
+      state.notification = {
+        show: false,
+        type: "",
+        message: "",
+      };
     }
   },
 });
@@ -177,6 +206,7 @@ export const {
   goBackToRoleSelection,
   selectAuthMethod,
   proceedToProfile,
+  goBackToAuth,
   updateAuthCredentials,
   updateProfileInfo,
   updateRoleSpecificData,
@@ -190,7 +220,9 @@ export const {
   setAgreements,
   updateCanProceed,
   resetSignup,
-  completeSignup
+  completeSignup,
+  showNotification,
+  hideNotification
 } = signupSlice.actions;
 
 // Selectors - cleaner naming
@@ -205,5 +237,6 @@ export const selectRoleSpecificData = (state) => state.signup.roleSpecificData;
 export const selectErrors = (state) => state.signup.errors;
 export const selectLoading = (state) => state.signup.loading;
 export const selectCanProceed = (state) => state.signup.canProceed;
+export const selectNotification = (state) => state.signup.notification;
 
 export default signupSlice.reducer;
