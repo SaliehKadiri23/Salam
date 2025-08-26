@@ -4,8 +4,8 @@ import { TRUST_STATS } from "../constants/rolesData";
 
 const TrustIndicators = () => {
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20">
-      <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
+    <div className="bg-white/80 dark:bg-black/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 dark:border-emerald-600">
+      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
         Join Our Community
       </h3>
 
@@ -16,19 +16,25 @@ const TrustIndicators = () => {
               <Icon className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-gray-800">{value}</div>
-              <div className="text-sm text-gray-600">{label}</div>
+              <div className="font-semibold text-gray-800 dark:text-gray-100">
+                {value}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-200">
+                {label}
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl border border-green-200">
+      <div className="mt-8 p-4 bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-800 dark:to-teal-700 rounded-2xl border border-green-200">
         <div className="flex items-center space-x-3 mb-2">
-          <FaGlobe className="text-green-600 w-5 h-5" />
-          <span className="font-semibold text-green-800">Global Reach</span>
+          <FaGlobe className="text-green-600 dark:text-gray-100 w-5 h-5" />
+          <span className="font-semibold text-green-800 dark:text-gray-100">
+            Global Reach
+          </span>
         </div>
-        <p className="text-sm text-green-700">
+        <p className="text-sm text-green-700 dark:text-gray-100">
           Connecting Muslims across 50+ countries worldwide
         </p>
       </div>

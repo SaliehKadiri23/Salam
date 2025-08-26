@@ -55,10 +55,10 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
         message: `${provider} authentication successful! Please complete your profile.`
       }));
 
-      // Advance to step 3 (Profile Completion) with a slight delay
+      // Advance to step 3 (Profile Completion)
       setTimeout(() => {
         dispatch(proceedToProfile());
-      }, 1000);
+      }, 2000);
     } catch (error) {
       dispatch(showNotification({
         type: "error",
@@ -86,24 +86,24 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
   return (
     <div
       ref={stepRefs ? (el) => (stepRefs.current[1] = el) : null}
-      className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20"
+      className="bg-white/80 dark:bg-black/40 backdrop-blur-sm flex flex-col justify-center rounded-3xl p-8 shadow-xl border border-white/20 dark:border-emerald-600"
     >
       {/* Back Button */}
       <button
         onClick={handleBackToRoleSelection}
-        className="flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors mb-6"
+        className="flex items-center gap-2 text-green-600 dark:text-green-400 hover:text-green-700 transition-colors mb-6"
       >
         <FaChevronLeft className="w-4 h-4" />
-        <span className="text-sm">Change Account Type</span>
+        <span className="text-sm ">Change Account Type</span>
       </button>
 
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
         Choose Authentication Method
       </h2>
 
       {/* Current Role Indicator */}
       {currentRole && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
+        <div className="bg-green-50 w-full sm:w-[80%] md:w-[50%] self-center dark:bg-blue-800 border border-green-200 dark:border-emerald-600 rounded-xl p-4 mb-6">
           <div className="flex items-center justify-center gap-3">
             <div
               className={`w-8 h-8 rounded-full bg-gradient-to-r ${currentRole.color} flex items-center justify-center`}
@@ -111,10 +111,10 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
               <currentRole.icon className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm text-green-700">
+              <p className="text-sm text-green-700 dark:text-gray-100">
                 Creating account as:
               </p>
-              <p className="font-semibold text-green-800">
+              <p className="font-semibold text-green-800 dark:text-gray-100">
                 {currentRole.title}
               </p>
             </div>
@@ -129,33 +129,29 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
             type="button"
             onClick={() => handleSocialAuth("Google")}
             disabled={isLoading}
-            className="w-full flex items-center justify-center space-x-3 p-4 border-2 border-gray-200 rounded-2xl hover:border-red-400 hover:bg-red-50 transition-all duration-300 disabled:opacity-50"
+            className="w-full flex items-center justify-center space-x-3 p-4 border-2 text-gray-700 dark:text-gray-100 dark:hover:text-gray-800 border-gray-200 dark:border-red-600 rounded-2xl hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-300 transition-all duration-300 disabled:opacity-50"
           >
             <FaGoogle className="text-red-500 w-5 h-5" />
-            <span className="font-semibold text-gray-700">
-              Continue with Google
-            </span>
+            <span className="font-semibold">Continue with Google</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleSocialAuth("Facebook")}
             disabled={isLoading}
-            className="w-full flex items-center justify-center space-x-3 p-4 border-2 border-gray-200 rounded-2xl hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 disabled:opacity-50"
+            className="w-full flex items-center justify-center space-x-3 p-4 border-2 text-gray-700 dark:text-gray-100  dark:hover:text-gray-800 border-gray-200 dark:border-blue-600 rounded-2xl hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-300 transition-all duration-300 disabled:opacity-50"
           >
             <FaFacebook className="text-blue-500 w-5 h-5" />
-            <span className="font-semibold text-gray-700">
-              Continue with Facebook
-            </span>
+            <span className="font-semibold">Continue with Facebook</span>
           </button>
         </div>
 
         <div className="flex items-center my-6">
-          <hr className="flex-1 border-gray-300" />
-          <span className="px-4 text-gray-500 font-medium">
+          <hr className="flex-1 border-gray-300 dark:border-emerald-600" />
+          <span className="px-4 text-gray-500 dark:text-gray-100 font-medium">
             or
           </span>
-          <hr className="flex-1 border-gray-300" />
+          <hr className="flex-1 border-gray-300 dark:border-emerald-600" />
         </div>
 
         {/* Email Authentication */}
@@ -167,7 +163,7 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
             ${
               selectedAuthMethod === "email"
                 ? "border-green-500 bg-green-50 text-green-700"
-                : "border-gray-200 hover:border-green-300 hover:bg-green-50 text-gray-700"
+                : "border-gray-200 hover:border-green-300 dark:border-emerald-600 hover:bg-green-50 text-gray-700 dark:text-gray-100 dark:hover:text-gray-800"
             }
           `}
         >
@@ -179,7 +175,7 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
         <button
           type="button"
           onClick={handleBackToRoleSelection}
-          className="px-8 py-3 rounded-full border-2 border-gray-300 text-gray-700 font-semibold hover:border-gray-400 transition-all duration-300"
+          className="px-8 py-3 rounded-full border-2 border-gray-300 text-gray-700 dark:text-gray-100 font-semibold hover:border-gray-400 transition-all duration-300"
         >
           Back
         </button>

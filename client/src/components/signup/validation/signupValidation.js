@@ -3,7 +3,7 @@ import * as Yup from "yup";
 export const getSignupValidationSchema = (selectedRole, authMethod) => {
   const baseSchema = {
     fullName: Yup.string()
-      .min(2, "Name must be at least 2 characters")
+      .min(3, "Name must be at least 3 characters")
       .required("Full name is required"),
     email: Yup.string()
       .email("Invalid email address")
@@ -17,7 +17,7 @@ export const getSignupValidationSchema = (selectedRole, authMethod) => {
 
   if (authMethod === "email") {
     baseSchema.password = Yup.string()
-      .min(8, "Password must be at least 8 characters")
+      .min(6, "Password must be at least 6 characters")
       .matches(/(?=.*[a-z])/, "Password must contain lowercase letter")
       .matches(/(?=.*[A-Z])/, "Password must contain uppercase letter")
       .matches(/(?=.*\d)/, "Password must contain a number")

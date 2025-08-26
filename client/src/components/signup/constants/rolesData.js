@@ -5,6 +5,7 @@ import {
   FaStar,
   FaShieldAlt,
 } from "react-icons/fa";
+import {Stars} from "lucide-react"
 
 export const SIGNUP_ROLES = [
   {
@@ -12,7 +13,7 @@ export const SIGNUP_ROLES = [
     title: "Community Member",
     description:
       "Join our Islamic community to access resources, participate in discussions, and connect with fellow Muslims.",
-    icon: FaUsers,
+    icon: Stars,
     color: "from-green-400 to-green-600",
     permissions: [
       "Access Islamic resources and articles",
@@ -58,7 +59,7 @@ export const SIGNUP_ROLES = [
 
 export const TRUST_STATS = [
   {
-    icon: FaUsers,
+    icon: Stars,
     label: "Active Members",
     value: "50,000+",
     color: "text-green-600",

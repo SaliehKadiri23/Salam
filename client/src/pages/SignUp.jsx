@@ -90,15 +90,12 @@ const SignUp = () => {
       };
       console.log("Submitting signup data:", submitData);
 
-      // API integration placeholder
-      // const response = await signUpUser(submitData);
-
       dispatch(showNotification({
         type: "success",
         message: "Account created successfully! Welcome to our community."
       }));
 
-      // Redirect or show success state
+      // Redirect
       setTimeout(() => {
         // navigate('/dashboard');
       }, 2000);
@@ -127,17 +124,17 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 relative overflow-hidden">
       <IslamicPattern />
       <NotificationBanner />
 
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 container mx-auto px-4 py-5">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+        <div className="text-center mb-5">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
             Join Our Islamic Community
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 dark:text-gray-200 text-lg">
             Connect, learn, and grow together in faith
           </p>
         </div>
@@ -150,8 +147,8 @@ const SignUp = () => {
             <Formik
               initialValues={getInitialValues()}
               validationSchema={
-                currentStep === "completeProfile" 
-                  ? getSignupValidationSchema(selectedRole, selectedAuthMethod) 
+                currentStep === "completeProfile"
+                  ? getSignupValidationSchema(selectedRole, selectedAuthMethod)
                   : null
               }
               onSubmit={handleSubmit}
@@ -161,8 +158,8 @@ const SignUp = () => {
                 <Form className="space-y-8">
                   <RoleSelectionStep stepRefs={stepRefs} />
                   <AuthMethodSelectionStep stepRefs={stepRefs} />
-                  <ProfileCompletionStep 
-                    stepRefs={stepRefs} 
+                  <ProfileCompletionStep
+                    stepRefs={stepRefs}
                     onSubmit={handleSubmit}
                     onPrevStep={handleBackToAuth}
                   />
@@ -178,23 +175,23 @@ const SignUp = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-center text-gray-600">
+        <div className="mt-12 text-center text-gray-600 dark:text-gray-100">
           <p className="mb-4">
             Already have an account?{" "}
             <Link
               to="/login"
-              className="text-green-600 hover:text-green-700 font-semibold"
+              className="text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400 font-semibold"
             >
               Sign in here
             </Link>
           </p>
           <p className="text-sm">
             By creating an account, you agree to our{" "}
-            <Link to="/terms" className="text-green-600 hover:text-green-700">
+            <Link to="/terms" className="text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400">
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link to="/privacy" className="text-green-600 hover:text-green-700">
+            <Link to="/privacy" className="text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400">
               Privacy Policy
             </Link>
           </p>

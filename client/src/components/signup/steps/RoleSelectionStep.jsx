@@ -15,7 +15,10 @@ const RoleSelectionStep = ({ stepRefs }) => {
   const currentStep = useSelector(selectCurrentStep);
 
   const handleRoleSelect = (roleId) => {
-    dispatch(selectRole(roleId));
+    setTimeout(()=>{
+       dispatch(selectRole(roleId));
+    }, 1000)
+   
   };
 
   if (currentStep !== "selectRole") return null;
@@ -23,9 +26,9 @@ const RoleSelectionStep = ({ stepRefs }) => {
   return (
     <div
       ref={stepRefs ? (el) => (stepRefs.current[0] = el) : null}
-      className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20"
+      className="bg-white/80  dark:bg-black/40 backdrop-blur-sm rounded-3xl p-5 sm:p-8  shadow-xl border border-white/20 dark:border-emerald-600"
     >
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
         Choose Your Role
       </h2>
 
@@ -35,11 +38,11 @@ const RoleSelectionStep = ({ stepRefs }) => {
             key={role.id}
             onClick={() => handleRoleSelect(role.id)}
             className={`
-              cursor-pointer p-6 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg relative overflow-hidden
+              cursor-pointer dark:bg-black/70 p-6 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg relative overflow-hidden
               ${
                 selectedRole === role.id
                   ? "border-green-500 bg-green-50 shadow-lg scale-105"
-                  : "border-gray-200 bg-white hover:border-green-300"
+                  : "border-gray-200 dark:border-emerald-600 bg-white hover:border-green-300"
               }
             `}
           >
@@ -57,22 +60,22 @@ const RoleSelectionStep = ({ stepRefs }) => {
               >
                 <role.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-bold text-lg text-gray-800 ml-3">
+              <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100 ml-3">
                 {role.title}
               </h3>
             </div>
 
             {/* Description */}
-            <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-200 text-sm mb-4 leading-relaxed">
               {role.description}
             </p>
 
             {/* Permissions Preview */}
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-gray-700">
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-100">
                 What you can do:
               </p>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <ul className="text-sm text-gray-600 dark:text-gray-200 space-y-1">
                 {role.permissions.map((permission, index) => (
                   <li key={index} className="flex items-start">
                     <FaCheck className="w-3 h-3 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
@@ -86,7 +89,7 @@ const RoleSelectionStep = ({ stepRefs }) => {
       </div>
 
       <div className="flex justify-center items-center">
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-100">
           Already have an account?{" "}
           <Link
             className="text-green-600 font-bold hover:underline"

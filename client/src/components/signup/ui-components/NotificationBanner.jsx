@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectNotification } from "../../../redux/signupSlice";
 
 const NotificationBanner = () => {
+  const [hideNotification, setHideNotification] = useState(false)
+
   const notification = useSelector(selectNotification);
 
+
   if (!notification?.show) return null;
+
+  setTimeout(() => {
+    setHideNotification(true)
+  }, 10000);
 
   return (
     <div
@@ -13,7 +20,7 @@ const NotificationBanner = () => {
         notification.type === "success"
           ? "bg-green-500 text-white"
           : "bg-red-500 text-white"
-      }`}
+      } ${hideNotification ? "hidden" : ""}`}
     >
       {notification.message}
     </div>

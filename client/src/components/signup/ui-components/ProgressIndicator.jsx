@@ -21,7 +21,7 @@ const ProgressIndicator = ({ currentStep }) => {
                   ? "bg-green-500 border-green-500 text-white"
                   : completed
                   ? "bg-green-500 border-green-500 text-white"
-                  : "bg-white border-gray-300 text-gray-400"
+                  : "bg-white border-gray-300 text-gray-400 dark:text-gray-800"
               }
             `}
             >
@@ -29,7 +29,9 @@ const ProgressIndicator = ({ currentStep }) => {
             </div>
             <span
               className={`ml-2 text-sm font-medium ${
-                currentStep === step ? "text-green-600" : "text-gray-500"
+                currentStep === step
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-gray-500 dark:text-gray-100"
               }`}
             >
               {label}

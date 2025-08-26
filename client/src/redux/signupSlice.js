@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  // Flow State - cleaner naming
-  currentStep: 'selectRole', // selectRole -> selectAuth -> completeProfile
+  
+  currentStep: 'selectRole',
   selectedRole: null,
   selectedAuthMethod: null,
   showRoleSelection: true,
@@ -14,7 +14,7 @@ const initialState = {
     confirmPassword: '',
   },
   
-  // Step 3: Profile Data (no email/password)
+  // Step 3: Profile Data 
   profileInfo: {
     fullName: '',
     location: '',
@@ -225,7 +225,7 @@ export const {
   hideNotification
 } = signupSlice.actions;
 
-// Selectors - cleaner naming
+// Selectors
 export const selectSignupState = (state) => state.signup;
 export const selectCurrentStep = (state) => state.signup.currentStep;
 export const selectSelectedRole = (state) => state.signup.selectedRole;

@@ -82,25 +82,26 @@ const ProfileCompletionStep = ({ stepRefs, onSubmit, onPrevStep }) => {
   return (
     <div
       ref={stepRefs ? (el) => (stepRefs.current[2] = el) : null}
-      className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20"
+      className="bg-white/80 dark:bg-black/40 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 dark:border-emerald-600"
     >
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
         Complete Your Profile
       </h2>
 
       {/* Social Auth Indicator */}
       {isSocialAuth && (
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+        <div className="bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-blue-600 rounded-xl p-4 mb-6">
           <div className="flex items-center justify-center gap-3">
             {selectedAuthMethod === "google" ? (
-              <FaGoogle className="text-red-500 w-5 h-5" />
+              <FaGoogle className="text-red-500 size-10" />
             ) : (
-              <FaFacebook className="text-blue-500 w-5 h-5" />
+              <FaFacebook className="text-blue-500  size-10" />
             )}
             <div className="text-center">
-              <p className="text-sm text-blue-700 font-medium">
+              <p className="text-sm text-blue-700 dark:text-blue-400 font-medium">
                 Great! We've pre-filled some details from your{" "}
-                {selectedAuthMethod === "google" ? "Google" : "Facebook"} account
+                {selectedAuthMethod === "google" ? "Google" : "Facebook"}{" "}
+                account
               </p>
             </div>
           </div>
@@ -171,6 +172,7 @@ const ProfileCompletionStep = ({ stepRefs, onSubmit, onPrevStep }) => {
             <FormField
               name="experience"
               label="Years of Experience"
+              type="number"
               placeholder="Years of experience"
               required
             />
@@ -218,12 +220,12 @@ const ProfileCompletionStep = ({ stepRefs, onSubmit, onPrevStep }) => {
           <button
             type="button"
             onClick={handlePrevStep}
-            className="px-8 py-3 rounded-full border-2 border-gray-300 text-gray-700 font-semibold hover:border-gray-400 transition-all duration-300"
+            className="px-8 py-3 rounded-full border-2 border-gray-300 text-gray-700 dark:text-gray-100 font-semibold hover:border-gray-400 transition-all duration-300"
           >
             Back
           </button>
         ) : (
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="flex items-center text-sm text-gray-500 dark:text-gray-100">
             <FaShieldAlt className="w-4 h-4 mr-2" />
             <span>
               Secured with{" "}
