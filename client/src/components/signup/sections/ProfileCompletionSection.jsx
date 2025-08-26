@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Info, Shield, Star } from 'lucide-react';
+import { Crown, Info, Shield, Star } from 'lucide-react';
 import IslamicPattern from '../../utility/IslamicPattern';
 import ProfileForm from '../forms/ProfileForm';
 import AgreementsSection from '../forms/AgreementsSection';
@@ -31,7 +31,7 @@ const ProfileCompletionSection = ({
       'chiefImam': {
         label: 'Chief Imam',
         color: 'bg-gradient-to-r from-islamic-100 to-islamic-teal-100 text-islamic-800 border-islamic-300',
-        icon: <Star className="w-3 h-3 fill-current" />
+        icon: <Crown className="w-3 h-3 fill-current" />
       }
     };
 
@@ -64,7 +64,7 @@ const ProfileCompletionSection = ({
           </div>
 
           <div className="text-center mb-8">
-            <IslamicPattern variant="divider" className="w-24 h-6 mx-auto text-islamic-300 mb-6" />
+            {/* <IslamicPattern variant="divider" className="w-24 h-6 mx-auto text-islamic-300 " /> */}
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
               Complete Your Profile
             </h2>

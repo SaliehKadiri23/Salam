@@ -1,3 +1,9 @@
+
+.active {
+  color: #13ad4d;
+  border-bottom: 2px solid #fdc700;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,10 +45,6 @@
 } */
 
 
-.active {
-  color: #13ad4d;
-  border-bottom: 2px solid #fdc700;
-}
 
 /* Hide scrollbars for category pills */
 .hide-scrollbar {

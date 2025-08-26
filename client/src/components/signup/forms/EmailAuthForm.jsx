@@ -24,13 +24,13 @@ const EmailAuthForm = ({
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Mail className="w-5 h-5 text-gray-400" />
+            <Mail className="w-5 h-5 text-gray-900" />
           </div>
           <input
             type="email"
             value={authCredentials.email}
             onChange={(e) => onCredentialChange('email', e.target.value)}
-            className="w-full pl-12 pr-4 py-4 border-2 rounded-xl transition-all duration-300 focus:ring-2 focus:ring-islamic-500 focus:border-islamic-500 hover:border-islamic-300 bg-white/70 backdrop-blur-sm border-gray-300"
+            className="w-full pl-12 pr-4 py-4 border-2 outline-none rounded-xl transition-all duration-300 focus:ring-2 focus:ring-islamic-500 focus:border-islamic-500 hover:border-islamic-300 bg-white/70 backdrop-blur-sm border-gray-300"
             placeholder="Enter your email address"
           />
         </div>
@@ -42,13 +42,13 @@ const EmailAuthForm = ({
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Lock className="w-5 h-5 text-gray-400" />
+            <Lock className="w-5 h-5 text-gray-900" />
           </div>
           <input
             type="password"
             value={authCredentials.password}
             onChange={(e) => onCredentialChange('password', e.target.value)}
-            className="w-full pl-12 pr-4 py-4 border-2 rounded-xl transition-all duration-300 focus:ring-2 focus:ring-islamic-500 focus:border-islamic-500 hover:border-islamic-300 bg-white/70 backdrop-blur-sm border-gray-300"
+            className="w-full pl-12 pr-4 py-4 outline-none border-2 rounded-xl transition-all duration-300 focus:ring-2 focus:ring-islamic-500 focus:border-islamic-500 hover:border-islamic-300 bg-white/70 backdrop-blur-sm border-gray-300"
             placeholder="Create a strong password"
           />
         </div>
@@ -60,13 +60,13 @@ const EmailAuthForm = ({
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Lock className="w-5 h-5 text-gray-400" />
+            <Lock className="w-5 h-5 text-gray-900" />
           </div>
           <input
             type="password"
             value={authCredentials.confirmPassword}
             onChange={(e) => onCredentialChange('confirmPassword', e.target.value)}
-            className="w-full pl-12 pr-4 py-4 border-2 rounded-xl transition-all duration-300 focus:ring-2 focus:ring-islamic-500 focus:border-islamic-500 hover:border-islamic-300 bg-white/70 backdrop-blur-sm border-gray-300"
+            className="w-full pl-12 pr-4 py-4 outline-none border-2 rounded-xl transition-all duration-300 focus:ring-2 focus:ring-islamic-500 focus:border-islamic-500 hover:border-islamic-300 bg-white/70 backdrop-blur-sm border-gray-300"
             placeholder="Confirm your password"
           />
         </div>

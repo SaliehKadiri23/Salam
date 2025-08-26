@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 const ProgressIndicator = ({ selectedRole, selectedAuthMethod, currentStep }) => {
   return (
     <motion.div
-      className="flex justify-center items-center space-x-4 mb-8"
+      className="flex justify-center items-center space-x-4 mb-2"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.6 }}

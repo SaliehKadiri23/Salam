@@ -12,7 +12,7 @@ const RoleSelectionSection = ({ selectedRole, onRoleSelect, showRoleSelection = 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 relative overflow-hidden"
+          className="bg-white/80 w-full backdrop-blur-sm rounded-3xl p-8 pt-0 shadow-2xl border border-white/20 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
             <IslamicPattern variant="corner-decoration" className="w-full h-full text-islamic-500" />
@@ -28,7 +28,7 @@ const RoleSelectionSection = ({ selectedRole, onRoleSelect, showRoleSelection = 
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
             {Object.entries(roleConfig).map(([roleKey, config]) => (
               <RoleCard
                 key={roleKey}

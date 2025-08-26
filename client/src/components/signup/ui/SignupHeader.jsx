@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const SignupHeader = () => {
   return (
     <motion.header 
-      className="relative z-10 text-center py-12 px-4"
+      className="relative z-10 text-center py-1 px-4"
       initial={{ opacity: 0, y: -30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
@@ -18,8 +18,6 @@ const SignupHeader = () => {
           className="mb-6"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            <span className="text-islamic-600">Assalamu Alaykum!</span>
-            <br />
             Welcome to Our Community
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">

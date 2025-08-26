@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Info, Shield, Star } from 'lucide-react';
+import { ArrowLeft, Crown, Info, Shield, Star } from 'lucide-react';
 import IslamicPattern from '../../utility/IslamicPattern';
 import AuthMethodSelector from '../ui/AuthMethodSelector';
 import EmailAuthForm from '../forms/EmailAuthForm';
@@ -32,7 +32,7 @@ const AuthenticationSection = ({
       'chiefImam': {
         label: 'Chief Imam',
         color: 'bg-gradient-to-r from-islamic-100 to-islamic-teal-100 text-islamic-800 border-islamic-300',
-        icon: <Star className="w-3 h-3 fill-current" />
+        icon: <Crown className="w-3 h-3 fill-current" />
       }
     };
 
@@ -58,7 +58,7 @@ const AuthenticationSection = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
           transition={{ duration: 0.6 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 relative overflow-hidden"
+          className="bg-white/80 backdrop-blur-sm rounded-3xl p-8  shadow-2xl border border-white/20 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
             <IslamicPattern variant="corner-decoration" className="w-full h-full text-islamic-500" />
@@ -66,14 +66,14 @@ const AuthenticationSection = ({
 
           <button
             onClick={onBackToRoleSelection}
-            className="flex items-center gap-2 text-islamic-600 hover:text-islamic-700 transition-colors mb-6"
+            className="flex items-center gap-2 text-islamic-600 hover:text-islamic-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm">Change Account Type</span>
           </button>
 
-          <div className="text-center mb-8">
-            <IslamicPattern variant="divider" className="w-24 h-6 mx-auto text-islamic-300 mb-6" />
+          <div className="text-center mb-6">
+            <IslamicPattern variant="divider" className="w-24 h-6 mx-auto text-islamic-300 " />
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
               How would you like to sign up?
             </h2>

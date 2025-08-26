@@ -51,11 +51,13 @@ const StatCard = ({ icon: Icon, value, label, suffix = "" }) => (
     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl mb-6 group-hover:rotate-12 transition-transform duration-300">
       <Icon className="h-8 w-8 text-white" />
     </div>
-    <div className="text-4xl font-bold text-slate-800 mb-2">
+    <div className="text-4xl font-bold text-slate-800 dark:text-slate-100 mb-2">
       {value.toLocaleString()}
       {suffix}
     </div>
-    <div className="text-slate-600 font-medium">{label}</div>
+    <div className="text-slate-600 dark:text-slate-200 font-medium">
+      {label}
+    </div>
   </GlassmorphismCard>
 );
 
@@ -63,7 +65,7 @@ const StatCard = ({ icon: Icon, value, label, suffix = "" }) => (
 const SocialIcon = ({ icon: Icon, href, hoverColor }) => (
   <a
     href={href}
-    className={`group bg-white/25 backdrop-blur-xl border border-white/20 shadow-lg w-14 h-14 rounded-2xl flex items-center justify-center text-slate-600 ${hoverColor} transform hover:scale-110 transition-all duration-300 hover:shadow-xl`}
+    className={`group bg-white/25 backdrop-blur-xl border border-white/20 dark:border-emerald-600 shadow-lg w-14 h-14 rounded-2xl flex items-center justify-center text-slate-600 dark:text-slate-100 ${hoverColor} transform hover:scale-110 transition-all duration-300 hover:shadow-xl`}
   >
     <Icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
   </a>
@@ -126,10 +128,26 @@ const AboutUs = () => {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: "#", hoverColor: "hover:text-blue-600" },
-    { icon: Youtube, href: "#", hoverColor: "hover:text-red-500" },
-    { icon: TbBrandTelegram, href: "#", hoverColor: "hover:text-blue-500" },
-    { icon: TbBrandLinkedin, href: "#", hoverColor: "hover:text-blue-800" },
+    {
+      icon: Facebook,
+      href: "#",
+      hoverColor: "hover:text-blue-600 dark:hover:text-blue-700",
+    },
+    {
+      icon: Youtube,
+      href: "#",
+      hoverColor: "hover:text-red-500 dark:hover:text-red-600",
+    },
+    {
+      icon: TbBrandTelegram,
+      href: "#",
+      hoverColor: "hover:text-blue-500 dark:hover:text-blue-600",
+    },
+    {
+      icon: TbBrandLinkedin,
+      href: "#",
+      hoverColor: "hover:text-blue-800 dark:hover:text-blue-800",
+    },
   ];
 
   const handleFormSubmit = (e) => {
@@ -138,7 +156,7 @@ const AboutUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-blue-50/30 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-700 dark:to-slate-500 relative overflow-hidden">
       {/* Background Islamic Pattern */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <svg className="w-full h-full" viewBox="0 0 200 200">
@@ -175,12 +193,12 @@ const AboutUs = () => {
       {/* Main Content */}
       <main className="relative z-10">
         {/* Hero Section */}
-        <section className="py-20 text-center">
+        <section className="py-7 text-center">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-emerald-600 via-blue-600 to-amber-600 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-emerald-600 via-blue-600 to-amber-600 dark:from-emerald-300 dark:via-blue-600 dark:to-emerald-300 bg-clip-text text-transparent">
               About Us
             </h1>
-            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-200 max-w-3xl mx-auto leading-relaxed">
               At Salam, we are dedicated to fostering a vibrant online community
               for Muslims worldwide. Our mission is to provide a platform that
               supports spiritual growth, facilitates meaningful connections, and
@@ -190,7 +208,7 @@ const AboutUs = () => {
         </section>
 
         {/* Mission Section */}
-        <section className="py-16">
+        <section className="py-7">
           <motion.div
             initial={{
               opacity: 0,
@@ -211,11 +229,11 @@ const AboutUs = () => {
             <GlassmorphismCard className="rounded-3xl p-8 md:p-12">
               <div className="text-center mb-8">
                 <IconWrapper icon={Home} />
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">
                   Our Mission
                 </h2>
               </div>
-              <p className="text-lg text-slate-600 text-center max-w-4xl mx-auto leading-relaxed">
+              <p className="text-lg text-slate-600 dark:text-slate-200 text-center max-w-4xl mx-auto leading-relaxed">
                 Our mission is to create a safe and inclusive space where
                 Muslims can connect, learn, and grow together. We aim to provide
                 resources and tools that support spiritual development, foster
@@ -227,7 +245,7 @@ const AboutUs = () => {
         </section>
 
         {/* Values Section */}
-        <section className="py-16">
+        <section className="py-10">
           <motion.div
             initial={{
               opacity: 0,
@@ -251,11 +269,11 @@ const AboutUs = () => {
                   icon={Heart}
                   gradient="from-blue-500 to-purple-500"
                 />
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">
                   Our Values
                 </h2>
               </div>
-              <p className="text-lg text-slate-600 text-center max-w-4xl mx-auto leading-relaxed">
+              <p className="text-lg text-slate-600 dark:text-slate-200 text-center max-w-4xl mx-auto leading-relaxed">
                 We are guided by core Islamic values, including compassion,
                 respect, integrity, and community. These principles shape our
                 content, interactions, and the overall experience we offer to
@@ -266,13 +284,13 @@ const AboutUs = () => {
         </section>
 
         {/* Vision & Impact Section */}
-        <section className="py-20">
+        <section className="py-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-6">
                 Our Vision & Impact
               </h2>
-              <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              <p className="text-lg text-slate-600 dark:text-slate-200 max-w-3xl mx-auto">
                 Building bridges across cultures and generations, creating
                 lasting positive change in the Muslim community worldwide.
               </p>
@@ -311,7 +329,7 @@ const AboutUs = () => {
         </section>
 
         {/* Newsletter Section */}
-        <section className="py-20">
+        <section className="py-10">
           <motion.div
             initial={{
               opacity: 0,
@@ -334,10 +352,10 @@ const AboutUs = () => {
                 icon={Mail}
                 gradient="from-amber-500 to-emerald-500"
               />
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">
                 Stay Connected
               </h2>
-              <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg text-slate-600 dark:text-slate-200 mb-8 max-w-2xl mx-auto">
                 Subscribe to our newsletter for daily inspiration, community
                 updates, and spiritual guidance delivered to your inbox.
               </p>
@@ -361,7 +379,7 @@ const AboutUs = () => {
         </section>
 
         {/* Contact Section */}
-        <section className="py-20">
+        <section className="py-10">
           <motion.div
             initial={{
               opacity: 0,
@@ -385,10 +403,10 @@ const AboutUs = () => {
                   icon={MessageCircle}
                   gradient="from-purple-500 to-pink-500"
                 />
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">
                   Contact Us
                 </h2>
-                <p className="text-lg text-slate-600 mb-8 max-w-3xl mx-auto">
+                <p className="text-lg text-slate-600 dark:text-slate-200 mb-8 max-w-3xl mx-auto">
                   We value your feedback and are here to assist you. Please
                   reach out to us with any questions, suggestions, or concerns.
                 </p>
@@ -428,10 +446,10 @@ const AboutUs = () => {
         <section className="py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
             <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100 mb-6">
                 Connect With Us
               </h2>
-              <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg text-slate-600 dark:text-slate-200 mb-8 max-w-2xl mx-auto">
                 Follow us on social media for daily inspiration, community
                 stories, and updates.
               </p>

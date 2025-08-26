@@ -304,6 +304,7 @@ const Navbar = () => {
             <div className="flex flex-row my-1 gap-4 sm:gap-8 justify-center items-center md:justify-between px-7 mb-5 ">
               <NavLink
                 to={`/sign_up`}
+                onClick={() => setIsMenuOpen(false)}
                 className={"w-full flex justify-center items-center"}
               >
                 <motion.p
@@ -320,13 +321,14 @@ const Navbar = () => {
                     opacity: 0,
                     x: 150,
                   }}
-                  className="px-2 text-center w-full  rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-400 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110"
+                  className="px-2 text-center w-full border-b-0 rounded-md py-2 lg:py-2 bg-gradient-to-r from-green-400 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110"
                 >
                   Sign Up
                 </motion.p>
               </NavLink>
               <NavLink
                 to={`/login`}
+                onClick={() => setIsMenuOpen(false)}
                 className={"w-full flex justify-center items-center"}
               >
                 <motion.p

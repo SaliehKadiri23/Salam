@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, User, BookOpen, Crown } from 'lucide-react';
+import { Check, User, BookOpen, Crown, Star } from 'lucide-react';
 import IslamicPattern from '../utility/IslamicPattern';
 
 const RoleCard = ({ 
@@ -40,7 +40,7 @@ const RoleCard = ({
       {/* Role Icon and Title */}
       <div className="flex items-center mb-4 relative z-10">
         <div className={`
-          w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300
+          w-12 h-12 rounded-xl p-3 bg-green-100 flex items-center justify-center transition-colors duration-300
           ${selected ? 'bg-islamic-500 text-white' : 'bg-gray-100 text-gray-600'}
         `}>
           {icon}
@@ -96,48 +96,63 @@ const RoleCard = ({
 export const roleConfig = {
   user: {
     title: "Community Member",
-    description: "Join our Islamic community to access resources, participate in discussions, and connect with fellow Muslims.",
+    description:
+      "Join our Islamic community to access resources, participate in discussions, and connect with fellow Muslims.",
     permissions: [
       "Access Islamic resources and articles",
       "Join community discussions",
       "Request duas and spiritual support",
       "Attend virtual events",
-      "Edit your personal profile"
+      "Edit your personal profile",
     ],
-    icon: <User className="w-6 h-6" />,
+    icon: <Star className="w-6 h-6 text-yellow-400" />,
     color: "islamic-teal",
-    additionalFields: []
+    additionalFields: [],
   },
   imam: {
     title: "Imam",
-    description: "Lead and guide the community with Islamic knowledge, organize events, and provide spiritual guidance.",
+    description:
+      "Lead and guide the community with Islamic knowledge, organize events, and provide spiritual guidance.",
     permissions: [
       "All Community Member privileges",
       "Create and manage community events",
       "Write and publish articles",
       "Moderate community discussions",
       "Remove inappropriate content",
-      "Access imam resources and tools"
+      "Access imam resources and tools",
     ],
-    icon: <BookOpen className="w-6 h-6" />,
+    icon: <BookOpen className="w-6 h-6 text-blue-400" />,
     color: "islamic",
-    additionalFields: ['mosque', 'certification', 'experience', 'specialization']
+    additionalFields: [
+      "mosque",
+      "certification",
+      "experience",
+      "specialization",
+    ],
   },
   chiefImam: {
     title: "Chief Imam",
-    description: "Provide administrative oversight, manage imam community, and ensure Islamic authenticity across the platform.",
+    description:
+      "Provide administrative oversight, manage imam community, and ensure Islamic authenticity across the platform.",
     permissions: [
       "All Imam privileges",
       "Manage imam accounts and permissions",
       "Access administrative dashboard",
       "Review and approve imam applications",
       "Moderate platform-wide content",
-      "Access detailed community analytics"
+      "Access detailed community analytics",
     ],
-    icon: <Crown className="w-6 h-6" />,
+    icon: <Crown className="w-6 h-6 text-gold-400" />,
     color: "gold",
-    additionalFields: ['mosque', 'certification', 'experience', 'specialization', 'references', 'adminExperience']
-  }
+    additionalFields: [
+      "mosque",
+      "certification",
+      "experience",
+      "specialization",
+      "references",
+      "adminExperience",
+    ],
+  },
 };
 
 export default RoleCard;

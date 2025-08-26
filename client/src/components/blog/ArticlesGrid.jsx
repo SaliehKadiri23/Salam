@@ -94,7 +94,7 @@ const ArticlesGrid = ({
           <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-100 mb-2">
             No articles found
           </h3>
-          <p className="text-gray-500 dark:text-gray-300">
+          <p className="text-gray-500 dark:text-gray-3\00">
             Try adjusting your search terms or filters
           </p>
         </div>
