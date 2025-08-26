@@ -15,6 +15,7 @@ import hijriCalendarReducer from './hijriCalendarSlice';
 import islamicUtilitiesReducer from './islamicUtilitiesSlice';
 import signupReducer from './signupSlice';
 import authReducer from './authSlice';
+import loginUiReducer from './loginUiSlice';
 
 export const store = configureStore({
   reducer: {
@@ -34,5 +35,6 @@ export const store = configureStore({
     islamicUtilities: islamicUtilitiesReducer,
     signup: signupReducer,
     auth: authReducer,
+    loginUi: loginUiReducer,
   },
 });

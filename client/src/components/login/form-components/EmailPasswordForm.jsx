@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Form } from 'formik';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDispatch } from 'react-redux';
-import { 
-  Mail, 
-  Lock, 
-  Eye, 
-  EyeOff, 
-  Check, 
-  AlertCircle, 
-  ArrowRight, 
-  ArrowLeft 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Check,
+  AlertCircle,
+  ArrowRight,
+  ArrowLeft
 } from 'lucide-react';
 import { clearAllErrors } from '../../../redux/authSlice';
+import { selectShowPassword, togglePasswordVisibility, hideEmailForm } from '../../../redux/loginUiSlice';
 import {
   getFieldLabel,
   getFieldPlaceholder,
@@ -21,35 +22,23 @@ import {
   checkEmailInRememberedUsers
 } from '../loginValidationSchema';
 
-/**
- * EmailPasswordForm Component
- * 
- * Complete email/password form with validation, styling, and state management
- * 
- * @param {Object} props - Component props
- * @param {Object} props.initialValues - Initial form values
- * @param {Object} props.validationSchema - Yup validation schema
- * @param {Function} props.onSubmit - Form submission handler
- * @param {Function} props.onFormChange - Form change handler
- * @param {Function} props.onBack - Back button handler
- * @param {Function} props.onForgotPassword - Forgot password handler
- * @param {boolean} props.isLoading - Whether form is submitting
- * @param {Object} props.errors - Form errors
- * @param {Object} props.savedCredentials - Saved credentials from Redux
- */
-const EmailPasswordForm = ({ 
-  initialValues, 
-  validationSchema, 
-  onSubmit, 
-  onFormChange, 
-  onBack, 
+
+const EmailPasswordForm = ({
+  initialValues,
+  validationSchema,
+  onSubmit,
+  onFormChange,
   onForgotPassword,
   isLoading,
   errors,
-  savedCredentials 
+  savedCredentials
 }) => {
   const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
+  const showPassword = useSelector(selectShowPassword);
+
+  const handleBackToOptions = () => {
+    dispatch(hideEmailForm());
+  };
 
   return (
     <Formik
@@ -64,7 +53,7 @@ const EmailPasswordForm = ({
           {/* Back to Options Button */}
           <button
             type="button"
-            onClick={onBack}
+            onClick={handleBackToOptions}
             className="flex items-center gap-2 text-islamic-600 hover:text-islamic-700 transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -182,7 +171,7 @@ const EmailPasswordForm = ({
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => dispatch(togglePasswordVisibility())}
                 className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-islamic-500 transition-colors"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
