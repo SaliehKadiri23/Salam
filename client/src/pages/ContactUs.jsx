@@ -95,13 +95,13 @@ const ContactForm = () => {
         y: 70,
       }}
       viewport={{ once: true }}
-      className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-all duration-500"
+      className="bg-white/70 dark:bg-black/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 dark:border-emerald-600 p-8 hover:shadow-2xl transition-all duration-500"
     >
       <div className="mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4">
+        <h1 className="text-4xl font-bold dark:text-slate-100 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4">
           Contact Us
         </h1>
-        <p className="text-gray-600 text-lg leading-relaxed">
+        <p className="text-gray-600 dark:text-slate-200 text-lg leading-relaxed">
           We're here to help and answer any questions you may have. We look
           forward to hearing from you.
         </p>
@@ -118,7 +118,7 @@ const ContactForm = () => {
             onChange={handleInputChange}
             onFocus={() => setFocusedField("name")}
             onBlur={() => setFocusedField("")}
-            className="w-full px-4 py-4 bg-white/50 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer"
+            className="w-full px-4 py-4 bg-white/50 dark:bg-black/50 dark:text-slate-100 dark:placeholder:text-slate-100 dark:border-emerald-600 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer"
             placeholder="Your Name"
             required
           />
@@ -126,8 +126,8 @@ const ContactForm = () => {
             htmlFor="name"
             className={`absolute left-4 transition-all duration-300 pointer-events-none ${
               focusedField === "name" || formData.name
-                ? "-top-2 text-sm bg-white px-2 text-emerald-600"
-                : "top-4 text-gray-500"
+                ? "-top-2 flex text-sm bg-white dark:bg-black/95 dark:text-emerald-500 px-2 text-emerald-600 "
+                : "top-4 dark:opacity-0 text-gray-500 dark:text-slate-300"
             }`}
           >
             Your Name
@@ -144,7 +144,7 @@ const ContactForm = () => {
             onChange={handleInputChange}
             onFocus={() => setFocusedField("email")}
             onBlur={() => setFocusedField("")}
-            className="w-full px-4 py-4 bg-white/50 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer"
+            className="w-full px-4 py-4 bg-white/50 dark:bg-black/50 dark:text-slate-100 dark:placeholder:text-slate-100 dark:border-emerald-600 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer"
             placeholder="Your Email"
             required
           />
@@ -152,8 +152,8 @@ const ContactForm = () => {
             htmlFor="email"
             className={`absolute left-4 transition-all duration-300 pointer-events-none ${
               focusedField === "email" || formData.email
-                ? "-top-2 text-sm bg-white px-2 text-emerald-600"
-                : "top-4 text-gray-500"
+                ? "-top-2 text-sm bg-white dark:bg-black/95 dark:text-emerald-500 px-2 text-emerald-600"
+                : "top-4 dark:opacity-0 text-gray-500 dark:text-slate-300"
             }`}
           >
             Your Email
@@ -170,7 +170,7 @@ const ContactForm = () => {
             onChange={handleInputChange}
             onFocus={() => setFocusedField("subject")}
             onBlur={() => setFocusedField("")}
-            className="w-full px-4 py-4 bg-white/50 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer"
+            className="w-full px-4 py-4 bg-white/50 dark:bg-black/50 dark:text-slate-100 dark:placeholder:text-slate-100 dark:border-emerald-600 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer"
             placeholder="Subject"
             required
           />
@@ -178,8 +178,8 @@ const ContactForm = () => {
             htmlFor="subject"
             className={`absolute left-4 transition-all duration-300 pointer-events-none ${
               focusedField === "subject" || formData.subject
-                ? "-top-2 text-sm bg-white px-2 text-emerald-600"
-                : "top-4 text-gray-500"
+                ? "-top-2 text-sm bg-white dark:bg-black/95 dark:text-emerald-500 px-2 text-emerald-600"
+                : "top-4 dark:opacity-0 text-gray-500 dark:text-slate-300"
             }`}
           >
             Subject
@@ -196,7 +196,7 @@ const ContactForm = () => {
             onFocus={() => setFocusedField("message")}
             onBlur={() => setFocusedField("")}
             rows={5}
-            className="w-full px-4 py-4 bg-white/50 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer resize-none"
+            className="w-full px-4 py-4 bg-white/50 dark:bg-black/50 dark:text-slate-100 dark:placeholder:text-slate-100 dark:border-emerald-600 border border-gray-200/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-300 backdrop-blur-sm placeholder-transparent peer resize-none"
             placeholder="Your Message"
             required
           />
@@ -204,8 +204,8 @@ const ContactForm = () => {
             htmlFor="message"
             className={`absolute left-4 transition-all duration-300 pointer-events-none ${
               focusedField === "message" || formData.message
-                ? "-top-2 text-sm bg-white px-2 text-emerald-600"
-                : "top-4 text-gray-500"
+                ? "-top-2 text-sm bg-white dark:bg-black/95 dark:text-emerald-500 px-2 text-emerald-600"
+                : "top-4 dark:opacity-0 text-gray-500 dark:text-slate-300"
             }`}
           >
             Your Message
@@ -236,8 +236,8 @@ const ContactForm = () => {
         </button>
 
         {/* Social Media Row */}
-        <div className="pt-6 border-t border-gray-200/50">
-          <p className="text-sm text-gray-600 mb-4 text-center">
+        <div className="pt-6 border-t border-gray-200/50 dark:border-emerald-600 ">
+          <p className="text-sm text-gray-600 dark:text-slate-200 mb-4 text-center">
             Follow us on social media
           </p>
           <div className="flex justify-center space-x-6 ">
@@ -247,7 +247,7 @@ const ContactForm = () => {
                 href={href}
                 initial={{
                   opacity: 0,
-                  y: 20 + (10 * index) ,
+                  y: 20 + 10 * index,
                 }}
                 whileInView={{
                   opacity: 1,
@@ -275,7 +275,7 @@ const ContactForm = () => {
   );
 };
 
-// Contact Information Component - Clean, modern info cards
+// Contact Information Component
 const ContactInfo = () => {
   const contactMethods = [
     {
@@ -309,9 +309,11 @@ const ContactInfo = () => {
           x: 70,
         }}
         viewport={{ once: true }}
-        className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-500"
+        className="bg-white/70 dark:bg-black/70  backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 p-8 hover:shadow-xl transition-all duration-500"
       >
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Get In Touch</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-6">
+          Get In Touch
+        </h2>
         <div className="space-y-6">
           {contactMethods.map(({ icon: Icon, title, info, subtitle }) => (
             <div key={title} className="flex items-start gap-4 group">
@@ -319,11 +321,15 @@ const ContactInfo = () => {
                 <Icon className="h-6 w-6 text-emerald-600" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-slate-100 mb-1">
                   {title}
                 </h3>
-                <p className="text-gray-700 font-medium">{info}</p>
-                <p className="text-sm text-gray-500">{subtitle}</p>
+                <p className="text-gray-700 dark:text-slate-200 font-medium">
+                  {info}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-slate-200">
+                  {subtitle}
+                </p>
               </div>
             </div>
           ))}
@@ -333,7 +339,7 @@ const ContactInfo = () => {
   );
 };
 
-// Community Actions Component - Interactive buttons for different community features
+// Community Actions Component 
 const CommunityActions = () => {
   const actions = useMemo(
     () => [
@@ -387,60 +393,62 @@ const CommunityActions = () => {
   return (
     <div className="mt-16">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-800 dark:text-slate-100 to-gray-600 bg-clip-text text-transparent mb-4">
           Community Hub
         </h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-600 dark:text-slate-200 text-lg max-w-2xl mx-auto">
           Explore more ways to connect, contribute, and grow with our community
         </p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {actions.map(({ icon: Icon, title, description, gradient, href }, index) => (
-          <motion.button
-            initial={{
-              opacity: 0,
-              y: 30 + (index * 15),
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.55 + 0.2 * index },
-            }}
-            exit={{
-              opacity: 0,
-              y: 30,
-            }}
-            viewport={{ once: true }}
-            key={title}
-            onClick={() => navigate(href)}
-            className="group flex flex-col justify-center items-center bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-6 hover:shadow-xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
-          >
-            <div
-              className={`w-12 h-12 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+        {actions.map(
+          ({ icon: Icon, title, description, gradient, href }, index) => (
+            <motion.button
+              initial={{
+                opacity: 0,
+                y: 30 + index * 15,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.55 + 0.2 * index },
+              }}
+              exit={{
+                opacity: 0,
+                y: 30,
+              }}
+              viewport={{ once: true }}
+              key={title}
+              onClick={() => navigate(href)}
+              className="group flex flex-col justify-center items-center bg-white/70 dark:bg-black/70  backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 p-6 hover:shadow-xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
             >
-              <Icon className="h-6 w-6 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2 group-hover:text-gray-900">
-              {title}
-            </h3>
-            <p className="text-gray-600 text-sm group-hover:text-gray-700">
-              {description}
-            </p>
-            <div className="mt-4 flex items-center text-emerald-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300">
-              Learn more →
-            </div>
-          </motion.button>
-        ))}
+              <div
+                className={`w-12 h-12 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+              >
+                <Icon className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-slate-100 mb-2 group-hover:text-gray-900 dark:group-hover:text-gray-300">
+                {title}
+              </h3>
+              <p className="text-gray-600 dark:text-slate-300 text-sm group-hover:text-gray-700 dark:group-hover:text-gray-400">
+                {description}
+              </p>
+              <div className="mt-4 flex items-center text-emerald-600 dark:text-emerald-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300">
+                Learn more →
+              </div>
+            </motion.button>
+          )
+        )}
       </div>
     </div>
   );
 };
 
-// Main Contact Page Component - Orchestrates all components
+// Main Contact Page Component
 const ContactUsPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-green-50/20 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50/20 dark:from-gray-800 dark:to-gray-700 overflow-hidden">
       <main className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
         {/* Hero Section with Contact Form and Info */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
@@ -472,16 +480,16 @@ const ContactUsPage = () => {
               y: 70,
             }}
             viewport={{ once: true }}
-            className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-500"
+            className="bg-white/70 dark:bg-black/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20 dark:border-emerald-600 p-8 hover:shadow-xl transition-all duration-500"
           >
             <div className="flex justify-center mb-4">
               <Star className="h-8 w-8 text-yellow-500 fill-current" />
             </div>
-            <blockquote className="text-xl text-gray-700 italic mb-4">
+            <blockquote className="text-xl text-gray-700 dark:text-slate-100 italic mb-4">
               "A place where everyone feels welcomed and valued. The community
               here truly embodies the spirit of unity and compassion."
             </blockquote>
-            <p className="text-gray-600">- Community Member</p>
+            <p className="text-gray-600 dark:text-slate-300">- Community Member</p>
           </motion.div>
         </div>
       </main>
