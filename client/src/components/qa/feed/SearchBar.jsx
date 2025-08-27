@@ -13,13 +13,13 @@ function SearchBar() {
 
   return (
     <div className="relative flex-1">
-      <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+      <Search className="w-5 h-5 text-gray-400 dark:text-gray-100 absolute left-3 top-1/2 transform -translate-y-1/2" />
       <input
         type="text"
         placeholder="Search questions..."
         value={searchQuery}
         onChange={handleSearchChange}
-        className="w-full pl-10 pr-4 py-3 bg-white bg-opacity-90 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
+        className="w-full pl-10 dark:text-gray-100 dark:placeholder:text-gray-200 pr-4 py-3 bg-white dark:bg-black/40 outline-none bg-opacity-90 border border-gray-200 dark:border-emerald-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
       />
     </div>
   );

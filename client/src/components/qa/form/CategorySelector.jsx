@@ -15,7 +15,7 @@ function CategorySelector() {
 
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-2">
+      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-100 mb-2">
         Question Category
       </label>
       <CustomDropdown

@@ -74,10 +74,12 @@ function QAList() {
   // Empty state
   if (filteredQuestions.length === 0) {
     return (
-      <div className="backdrop-blur-xl bg-white bg-opacity-80 rounded-2xl border border-white border-opacity-50 shadow-xl p-8 text-center">
-        <div className="text-gray-500">
+      <div className="backdrop-blur-xl bg-white dark:bg-black/40 bg-opacity-80 rounded-2xl border border-white dark:border-emerald-600 border-opacity-50 shadow-xl p-8 text-center">
+        <div className="text-gray-500 dark:text-gray-100">
           <p className="font-semibold mb-2">No questions found</p>
-          <p className="text-sm">Try adjusting your search or filter criteria.</p>
+          <p className="text-sm">
+            Try adjusting your search or filter criteria.
+          </p>
         </div>
       </div>
     );

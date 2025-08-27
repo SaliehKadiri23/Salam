@@ -7,7 +7,7 @@ import QAFeed from "../components/qa/feed/QAFeed";
 // Main App Component - now using refactored components with Redux
 export default function IslamicQAApp() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 relative">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50 dark:from-gray-800 dark:to-gray-800 relative">
       {/* Islamic Pattern Background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div

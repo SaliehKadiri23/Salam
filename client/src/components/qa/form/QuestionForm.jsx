@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MessageCircle, Send } from "lucide-react";
-import { 
-  selectQuestionForm, 
-  selectFormValidation, 
+import {
+  selectQuestionForm,
+  selectFormValidation,
   submitQuestion,
   resetQuestionForm,
-  clearFormSuccess
+  clearFormSuccess,
 } from "../../../redux/qaSlice";
 import CategorySelector from "./CategorySelector";
 import QuestionInput from "./QuestionInput";
@@ -14,7 +14,12 @@ import ContactFields from "./ContactFields";
 
 function QuestionForm() {
   const dispatch = useDispatch();
-  const { data: formData, isSubmitting, errors, submitSuccess } = useSelector(selectQuestionForm);
+  const {
+    data: formData,
+    isSubmitting,
+    errors,
+    submitSuccess,
+  } = useSelector(selectQuestionForm);
   const { canSubmit } = useSelector(selectFormValidation);
 
   // Handle successful submission
@@ -25,7 +30,7 @@ function QuestionForm() {
         dispatch(resetQuestionForm());
         dispatch(clearFormSuccess());
       }, 2000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [submitSuccess, dispatch]);
@@ -37,12 +42,12 @@ function QuestionForm() {
   };
 
   return (
-    <div className="backdrop-blur-xl bg-white bg-opacity-80 rounded-2xl border border-white border-opacity-50 p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300 mb-8">
+    <div className="backdrop-blur-xl bg-white dark:bg-black/40 bg-opacity-80 rounded-2xl border border-white dark:border-emerald-600 border-opacity-50 p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300 mb-8">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
           <MessageCircle className="w-5 h-5 text-white" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-800">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
           Submit Your Question
         </h2>
       </div>
@@ -78,7 +83,9 @@ function QuestionForm() {
           onClick={handleSubmit}
           disabled={!canSubmit || isSubmitting}
           className={`w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-102 transition-all duration-200 flex items-center justify-center gap-2 select-none ${
-            (!canSubmit || isSubmitting) ? "opacity-50 cursor-not-allowed transform-none" : "cursor-pointer"
+            !canSubmit || isSubmitting
+              ? "opacity-50 cursor-not-allowed transform-none"
+              : "cursor-pointer"
           }`}
         >
           {isSubmitting ? (
@@ -96,7 +103,7 @@ function QuestionForm() {
 
         {/* Form Validation Help */}
         {!canSubmit && !isSubmitting && (
-          <p className="text-sm text-gray-500 text-center">
+          <p className="text-sm text-gray-500 dark:text-gray-100 text-center">
             Please fill in all required fields to submit your question.
           </p>
         )}

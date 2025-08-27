@@ -38,8 +38,10 @@ function QAStats() {
 
   if (fetchingQuestions) {
     return (
-      <div className="backdrop-blur-xl bg-white bg-opacity-80 rounded-2xl border border-white border-opacity-50 p-6 shadow-xl">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">Community Stats</h3>
+      <div className="backdrop-blur-xl bg-white dark:bg-black/40 bg-opacity-80 rounded-2xl border border-white border-opacity-50 p-6 shadow-xl">
+        <h3 className="text-lg font-bold text-gray-800 mb-4">
+          Community Stats
+        </h3>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="flex items-center gap-4">
@@ -56,8 +58,10 @@ function QAStats() {
   }
 
   return (
-    <div className="backdrop-blur-xl bg-white bg-opacity-80 rounded-2xl border border-white border-opacity-50 p-6 shadow-xl">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Community Stats</h3>
+    <div className="backdrop-blur-xl bg-white dark:bg-black/40 bg-opacity-80 rounded-2xl border border-white dark:border-emerald-600 border-opacity-50 p-6 shadow-xl">
+      <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">
+        Community Stats
+      </h3>
       <div className="space-y-4">
         {statsConfig.map((stat) => (
           <div key={stat.label} className="flex items-center gap-4">
@@ -67,8 +71,12 @@ function QAStats() {
               <stat.icon className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
-              <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
-              <p className="text-sm text-gray-600">{stat.label}</p>
+              <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                {stat.value}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-100">
+                {stat.label}
+              </p>
             </div>
           </div>
         ))}
