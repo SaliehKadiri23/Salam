@@ -12,26 +12,25 @@ const ProfileHeader = ({ user, onEditClick }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg px-8 md:py-8 border border-gray-200">
+    <div className="bg-white dark:bg-black/40  rounded-2xl shadow-lg px-8 md:py-8 border border-gray-200 dark:border-emerald-600">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-        
-       
-
         {/* User Info */}
         <div className="flex-grow md:ml-8 text-center pt-8 md:pt-0 md:text-left">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             {user.fullName}
           </h1>
-          <p className="text-xl text-gray-600 mb-4">
+          <p className="text-xl text-gray-600 dark:text-gray-200 mb-4">
             @{user.username}
           </p>
-          
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-gray-600">
+
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-gray-600 dark:text-gray-200">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
-              <span className="text-sm">Joined {formatJoinDate(user.joinDate)}</span>
+              <span className="text-sm">
+                Joined {formatJoinDate(user.joinDate)}
+              </span>
             </div>
-            
+
             {user.location && (
               <>
                 <span className="hidden md:block text-gray-300">•</span>
@@ -41,7 +40,7 @@ const ProfileHeader = ({ user, onEditClick }) => {
                 </div>
               </>
             )}
-            
+
             <span className="hidden md:block text-gray-300">•</span>
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
@@ -52,7 +51,7 @@ const ProfileHeader = ({ user, onEditClick }) => {
           </div>
 
           {user.bio && (
-            <p className="mt-4 text-gray-700 max-w-md">
+            <p className="mt-4 text-gray-700 dark:text-gray-100 max-w-md">
               {user.bio}
             </p>
           )}
@@ -60,10 +59,7 @@ const ProfileHeader = ({ user, onEditClick }) => {
 
         {/* Actions */}
         <div className="flex-shrink-0">
-          <ProfileActions 
-            onEditClick={onEditClick}
-            userId={user.id}
-          />
+          <ProfileActions onEditClick={onEditClick} userId={user.id} />
         </div>
       </div>
     </div>

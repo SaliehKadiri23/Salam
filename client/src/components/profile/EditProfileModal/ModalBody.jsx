@@ -11,12 +11,9 @@ const ModalBody = ({
   userData
 }) => {
   return (
-    <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-white">
+    <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-white dark:bg-black/90 ">
       {/* Basic Information */}
-      <BasicInfoSection
-        formData={formData}
-        onInputChange={onInputChange}
-      />
+      <BasicInfoSection formData={formData} onInputChange={onInputChange} />
 
       {/* Personal Details */}
       <PersonalDetailsSection
@@ -25,10 +22,7 @@ const ModalBody = ({
       />
 
       {/* Community Information */}
-      <CommunitySection
-        formData={formData}
-        onInputChange={onInputChange}
-      />
+      <CommunitySection formData={formData} onInputChange={onInputChange} />
 
       {/* Privacy Settings */}
       <PrivacySection

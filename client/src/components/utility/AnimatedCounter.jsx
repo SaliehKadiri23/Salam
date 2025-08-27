@@ -26,11 +26,7 @@ const AnimatedCounter = ({
     return () => clearInterval(timer);
   }, [target, duration]);
 
-  return (
-    <span>
-      {count.toLocaleString()}
-    </span>
-  );
+  return <span className="dark:text-gray-100">{count.toLocaleString()}</span>;
 };
 
 export default AnimatedCounter;

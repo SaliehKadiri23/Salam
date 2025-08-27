@@ -16,14 +16,14 @@ const PrivacySection = ({ formData, onNestedInputChange }) => {
     onChange,
     icon: Icon,
   }) => (
-    <div className="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200">
+    <div className="flex items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-emerald-600 hover:bg-gray-50 dark:hover:bg-gray-500 transition-all duration-200">
       <div className="flex items-start gap-3 flex-1 min-w-0">
         <div className="p-2 rounded-lg bg-islamic-100 flex-shrink-0">
           <Icon className="w-4 h-4 text-islamic-600" />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="font-medium text-gray-900">{label}</div>
-          <div className="text-sm text-gray-600 mt-1 break-words">
+          <div className="font-medium text-gray-900 dark:text-gray-100">{label}</div>
+          <div className="text-sm text-gray-600 dark:text-gray-100 mt-1 break-words">
             {description}
           </div>
         </div>
@@ -52,9 +52,9 @@ const PrivacySection = ({ formData, onNestedInputChange }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 border-b border-gray-200 pb-2">
+      <div className="flex items-center gap-2 border-b border-gray-200 dark:border-emerald-600 pb-2">
         <Shield className="w-5 h-5 text-red-500" />
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           Privacy & Security
         </h3>
       </div>
@@ -102,8 +102,8 @@ const PrivacySection = ({ formData, onNestedInputChange }) => {
                     p-4 rounded-xl border-2 transition-all duration-200 text-left
                     ${
                       isSelected
-                        ? "border-islamic-500 bg-islamic-50 shadow-md"
-                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                        ? "border-islamic-500 bg-islamic-50 dark:bg-islamic-600 shadow-md"
+                        : "border-gray-200 dark:border-emerald-600 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-500"
                     }
                   `}
                 >
@@ -112,12 +112,14 @@ const PrivacySection = ({ formData, onNestedInputChange }) => {
                     <div>
                       <div
                         className={`font-medium ${
-                          isSelected ? "text-islamic-700" : "text-gray-900"
+                          isSelected
+                            ? "text-islamic-700 dark:text-gray-100"
+                            : "text-gray-900 dark:text-gray-100"
                         }`}
                       >
                         {option.label}
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
+                      <div className="text-sm text-gray-600 dark:text-gray-100 mt-1">
                         {option.description}
                       </div>
                     </div>
@@ -156,14 +158,14 @@ const PrivacySection = ({ formData, onNestedInputChange }) => {
         </div>
 
         {/* Additional Privacy Information */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div className="bg-blue-50 dark:bg-black/40  border border-blue-200 dark:border-emerald-600 rounded-xl p-4">
           <div className="flex items-start gap-3">
-            <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
+            <Shield className="w-5 h-5 text-blue-600 dark:text-gray-100 mt-0.5" />
             <div>
-              <h4 className="font-medium text-blue-900 mb-2">
+              <h4 className="font-medium text-blue-900 dark:text-gray-100 mb-2">
                 Your Privacy Matters
               </h4>
-              <p className="text-sm text-blue-800 leading-relaxed">
+              <p className="text-sm text-blue-800 dark:text-gray-100 leading-relaxed">
                 We respect your privacy and follow Islamic principles of
                 discretion. Your personal information is never shared without
                 your consent, and you have full control over your visibility
@@ -174,18 +176,20 @@ const PrivacySection = ({ formData, onNestedInputChange }) => {
         </div>
 
         {/* Data Export & Account */}
-        <div className="pt-4 border-t border-gray-200">
-          <h4 className="font-medium text-gray-900 mb-3">Account Management</h4>
+        <div className="pt-4 border-t border-gray-200 dark:border-emerald-600">
+          <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3">
+            Account Management
+          </h4>
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
-              className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              className="px-4 py-2 dark:text-gray-100 dark:hover:text-green-800 font-bold text-sm border border-gray-300 dark:border-emerald-600 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               Export My Data
             </button>
             <button
               type="button"
-              className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              className="px-4 py-2 dark:text-gray-100 dark:hover:text-green-800 font-bold text-sm border border-gray-300 dark:border-emerald-600 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               Account Settings
             </button>

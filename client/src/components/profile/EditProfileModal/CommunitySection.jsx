@@ -39,9 +39,9 @@ const CommunitySection = ({ formData, onInputChange }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 border-b border-gray-200 pb-2">
+      <div className="flex items-center gap-2 border-b border-gray-200 dark:border-emerald-600 pb-2">
         <Stars className="w-5 h-5 text-islamic-purple-500" />
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           Community Information
         </h3>
       </div>
@@ -80,7 +80,7 @@ const CommunitySection = ({ formData, onInputChange }) => {
               );
             })}
           </div>
-          <div className="text-xs text-gray-500 mt-2 flex items-center gap-2">
+          <div className="text-xs text-gray-500 dark:text-gray-100 mt-2 flex items-center gap-2">
             <span>Selected: {(formData.interests || []).length} interests</span>
             {(formData.interests || []).length >= 5 && (
               <span className="text-islamic-600 font-medium">
@@ -105,11 +105,11 @@ const CommunitySection = ({ formData, onInputChange }) => {
                   type="button"
                   onClick={() => onInputChange("communityRole", role.value)}
                   className={`
-                    p-4 rounded-xl border-2 transition-all duration-200 text-left group
+                    p-4 rounded-xl border-2 dark:text-gray-100 transition-all duration-200 text-left group
                     ${
                       isSelected
-                        ? "border-islamic-500 bg-islamic-50 shadow-md transform scale-105"
-                        : "border-gray-200 hover:border-islamic-300 hover:bg-islamic-50/30 hover:shadow-sm"
+                        ? "border-islamic-500 bg-islamic-50 dark:bg-islamic-200 shadow-md transform scale-105"
+                        : "border-gray-200 dark:border-emerald-600 hover:border-islamic-300 hover:bg-islamic-50/30 hover:shadow-sm"
                     }
                   `}
                 >
@@ -118,7 +118,7 @@ const CommunitySection = ({ formData, onInputChange }) => {
                       className={`w-5 h-5 transition-colors duration-200 ${
                         isSelected
                           ? "text-islamic-600"
-                          : "text-gray-400 group-hover:text-islamic-500"
+                          : "text-gray-400 dark:text-gray-100 group-hover:text-islamic-500"
                       }`}
                     />
                     <div>
@@ -126,7 +126,7 @@ const CommunitySection = ({ formData, onInputChange }) => {
                         className={`font-medium transition-colors duration-200 ${
                           isSelected
                             ? "text-islamic-700"
-                            : "text-gray-900 group-hover:text-islamic-600"
+                            : "text-gray-900 dark:text-gray-100 group-hover:text-islamic-600"
                         }`}
                       >
                         {role.label}
@@ -175,22 +175,26 @@ const CommunitySection = ({ formData, onInputChange }) => {
                   type="button"
                   onClick={() => onInputChange("availability", option.value)}
                   className={`
-                    p-4 rounded-xl border-2 transition-all duration-200 text-left
+                    p-4 rounded-xl group border-2 transition-all duration-200 text-left
                     ${
                       isSelected
-                        ? "border-islamic-500 bg-islamic-50 shadow-md"
-                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                        ? "border-islamic-500 bg-islamic-50 dark:bg-islamic-700 shadow-md"
+                        : "border-gray-200 dark:border-emerald-600 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-500"
                     }
                   `}
                 >
                   <div
                     className={`font-medium ${
-                      isSelected ? "text-islamic-700" : "text-gray-900"
+                      isSelected
+                        ? "text-islamic-700 dark:text-gray-100"
+                        : "text-gray-900 dark:text-gray-100"
                     }`}
                   >
                     {option.label}
                   </div>
-                  <div className="text-sm text-gray-600 mt-1">
+                  <div
+                    className={`text-sm text-gray-800 dark:text-gray-200 mt-1 `}
+                  >
                     {option.desc}
                   </div>
                 </button>

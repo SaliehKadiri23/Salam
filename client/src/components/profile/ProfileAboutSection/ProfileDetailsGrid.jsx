@@ -8,13 +8,14 @@ import {
   Calendar, 
   Star,
   BookOpen,
-  Coffee
+  Coffee,
+  Stars
 } from 'lucide-react';
 
 const ProfileDetailsGrid = ({ details }) => {
   const getIcon = (iconName) => {
     const icons = {
-      User: User,
+      User: Stars,
       MapPin: MapPin,
       Heart: Heart,
       Globe: Globe,
@@ -48,7 +49,7 @@ const ProfileDetailsGrid = ({ details }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {details.map((detail, index) => (
-        <div 
+        <div
           key={index}
           className="
             group
@@ -56,6 +57,7 @@ const ProfileDetailsGrid = ({ details }) => {
             rounded-xl 
             border 
             border-gray-100 
+            dark:border-emerald-600
             hover:border-islamic-200
             hover:shadow-sm
             transition-all 
@@ -64,7 +66,8 @@ const ProfileDetailsGrid = ({ details }) => {
           "
         >
           <div className="flex items-start gap-3">
-            <div className={`
+            <div
+              className={`
               p-2 
               rounded-lg 
               bg-gray-50 
@@ -72,32 +75,41 @@ const ProfileDetailsGrid = ({ details }) => {
               transition-all 
               duration-300
               ${getIconColor(detail.icon)}
-            `}>
+            `}
+            >
               {getIcon(detail.icon)}
             </div>
-            
+
             <div className="flex-grow min-w-0">
-              <h3 className="
+              <h3
+                className="
                 text-sm 
                 font-medium 
-                text-gray-500 
+                text-gray-500
+                dark:text-gray-100 
                 mb-1
                 group-hover:text-islamic-600
+                dark:group-hover:text-islamic-400
                 transition-colors
                 duration-300
-              ">
+              "
+              >
                 {detail.label}
               </h3>
-              <p className="
+              <p
+                className="
                 text-base 
                 font-medium 
                 text-gray-900 
+                dark:text-gray-200
                 break-words
                 group-hover:text-islamic-700
+                dark:group-hover:text-islamic-500
                 transition-colors
                 duration-300
-              ">
-                {detail.value || 'Not specified'}
+              "
+              >
+                {detail.value || "Not specified"}
               </p>
             </div>
           </div>

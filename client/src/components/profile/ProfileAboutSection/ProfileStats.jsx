@@ -65,7 +65,8 @@ const ProfileStats = ({ stats }) => {
           >
             <div className="text-center space-y-4">
               {/* Icon */}
-              <div className={`
+              <div
+                className={`
                 inline-flex 
                 items-center 
                 justify-center 
@@ -80,29 +81,27 @@ const ProfileStats = ({ stats }) => {
                 transition-all 
                 duration-300
                 ${colorClasses.icon}
-              `}>
+              `}
+              >
                 {getIcon(stat.icon)}
               </div>
 
               {/* Value */}
               <div>
                 <div className="text-3xl font-bold text-gray-900 mb-1">
-                  <AnimatedCounter 
-                    target={stat.value} 
-                    duration={2000}
-                  />
+                  <AnimatedCounter target={stat.value} duration={2000} />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-1">
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-100 mb-1">
                   {stat.label}
                 </h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-300">
                   {stat.description}
                 </p>
               </div>
 
-              {/* Progress Bar (Optional) */}
+              {/* Progress Bar */}
               <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                <div 
+                <div
                   className={`
                     bg-gradient-to-r 
                     ${colorClasses.gradient}
@@ -112,14 +111,14 @@ const ProfileStats = ({ stats }) => {
                     duration-1000 
                     ease-out
                   `}
-                  style={{ 
-                    width: `${Math.min((stat.value / 100) * 100, 100)}%` 
+                  style={{
+                    width: `${Math.min((stat.value / 100) * 100, 100)}%`,
                   }}
                 />
               </div>
 
               {/* Trend Indicator (Optional) */}
-              <div className="flex items-center justify-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center justify-center gap-1 text-xs text-gray-500 dark:text-gray-100">
                 <TrendingUp className="w-3 h-3 text-green-500" />
                 <span>+12% this month</span>
               </div>

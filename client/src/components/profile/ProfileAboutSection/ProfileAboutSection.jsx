@@ -69,13 +69,16 @@ const ProfileAboutSection = ({ user }) => {
       {/* About Details */}
       <GlassmorphicCard>
         <div className="space-y-6">
-          <div className="border-b border-gray-100 pb-4">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">About</h2>
-            <p className="text-gray-600">
-              {user.bio || "Learn more about this community member's journey and interests."}
+          <div className="border-b border-gray-100 dark:border-emerald-600 pb-4">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+              About
+            </h2>
+            <p className="text-gray-600 dark:text-gray-200 ">
+              {user.bio ||
+                "Learn more about this community member's journey and interests."}
             </p>
           </div>
-          
+
           <ProfileDetailsGrid details={profileDetails} />
         </div>
       </GlassmorphicCard>

@@ -4,11 +4,11 @@ import IslamicPattern from '../../utility/IslamicPattern';
 
 const ModalHeader = ({ onClose, hasChanges, title }) => {
   return (
-    <div className="relative bg-gradient-to-r from-islamic-500 to-islamic-600 text-white p-6 rounded-t-2xl">
+    <div className="relative bg-gradient-to-r from-islamic-500 to-islamic-600 dark:from-islamic-700 dark:to-islamic-800 text-white p-6 dark:border dark:border-emerald-600 rounded-t-2xl">
       {/* Background Pattern */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-t-2xl">
-        <IslamicPattern 
-          className="w-full h-full text-white" 
+        <IslamicPattern
+          className="w-full h-full text-white"
           opacity="opacity-10"
           variant="moroccan"
         />
@@ -19,7 +19,7 @@ const ModalHeader = ({ onClose, hasChanges, title }) => {
           <h2 className="text-2xl font-bold">{title}</h2>
           <p className="text-white/80 mt-1">Update your profile information</p>
         </div>
-        
+
         <div className="flex items-center gap-3">
           {/* Unsaved Changes Indicator */}
           {hasChanges && (
@@ -28,7 +28,7 @@ const ModalHeader = ({ onClose, hasChanges, title }) => {
               <span>Unsaved changes</span>
             </div>
           )}
-          
+
           {/* Close Button */}
           <button
             onClick={onClose}

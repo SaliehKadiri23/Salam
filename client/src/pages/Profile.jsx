@@ -5,7 +5,7 @@ import IslamicPattern from '../components/utility/IslamicPattern';
 import AnimatedCounter from '../components/utility/AnimatedCounter';
 import { ProfileHeaderSkeleton, ProfileCardSkeleton, StatCardSkeleton } from '../components/shared/LoadingSkeleton';
 
-// Sub-components will be created separately
+
 import ProfileHeader from '../components/profile/ProfileHeader/ProfileHeader';
 import ProfileAboutSection from '../components/profile/ProfileAboutSection/ProfileAboutSection';
 import EditProfileModal from '../components/profile/EditProfileModal/EditProfileModal';
@@ -15,15 +15,15 @@ const ProfilePage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [userData, setUserData] = useState(null);
 
-  // Mock user data - use redux
+  // Mock user data
   const mockUserData = {
     id: "user123",
-    username: "aisha.k",
-    preferredName: "Aisha",
-    fullName: "Aisha Khan",
+    username: "muhammad",
+    preferredName: "Muhammad",
+    fullName: "Muhammad Ahmad",
     email: "aisha@example.com",
     bio: "Seeking knowledge and serving the community. May Allah guide us all.",
-    location: "Toronto, Canada",
+    location: "Kano, Nigeria",
     joinDate: "2022-03-15",
     lastActive: "2024-01-15T10:30:00Z",
     isOnline: true,
@@ -77,6 +77,7 @@ const ProfilePage = () => {
     // In real app, this would make API call to save data
   };
 
+  // Loading Skeleton
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -107,7 +108,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800 relative overflow-hidden">
       {/* Background Islamic Pattern */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <IslamicPattern
@@ -130,17 +131,13 @@ const ProfilePage = () => {
           Skip to main content
         </a>
         <div className="space-y-8">
-          
           {/* Profile Header */}
           <div className="animate-fade-in">
-            <ProfileHeader
-              user={userData}
-              onEditClick={handleEditProfile}
-            />
+            <ProfileHeader user={userData} onEditClick={handleEditProfile} />
           </div>
 
           {/* About Section */}
-          <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
             <ProfileAboutSection user={userData} />
           </div>
         </div>

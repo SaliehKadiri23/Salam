@@ -28,9 +28,9 @@ const PersonalDetailsSection = ({ formData, onInputChange }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 border-b border-gray-200 pb-2">
+      <div className="flex items-center gap-2 border-b border-gray-200 dark:border-emerald-600 pb-2">
         <Globe className="w-5 h-5 text-islamic-teal-500" />
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           Personal Details
         </h3>
       </div>
@@ -43,7 +43,7 @@ const PersonalDetailsSection = ({ formData, onInputChange }) => {
           useFormik={false}
         >
           <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-100" />
             <input
               type="text"
               value={formData.location || ""}
@@ -51,12 +51,16 @@ const PersonalDetailsSection = ({ formData, onInputChange }) => {
               className="
                 w-full pl-10 pr-4 py-3 
                 border border-gray-300 
+                dark:border-emerald-600
                 rounded-xl 
                 focus:ring-2 
                 focus:ring-islamic-500 
                 focus:border-islamic-500
                 transition-all
                 duration-200
+                outline-none
+                dark:bg-black/40 
+                dark:text-gray-100
               "
               placeholder="e.g., Toronto, Canada"
             />
@@ -91,7 +95,7 @@ const PersonalDetailsSection = ({ formData, onInputChange }) => {
               );
             })}
           </div>
-          <div className="text-xs text-gray-500 mt-2">
+          <div className="text-xs text-gray-500 dark:text-gray-100 mt-2">
             Selected: {(formData.languages || []).length} languages
           </div>
         </FormField>

@@ -44,8 +44,8 @@ const ProfileActions = ({ onEditClick, userId, isOwnProfile = true }) => {
           Edit Profile
         </Button>
 
-        {/* Quick Stats Preview (Optional) */}
-        <div className="text-center text-white/80 text-xs space-y-1">
+        {/* Quick Stats Preview */}
+        <div className="text-center font-semibold text-gray-800 dark:text-white/80 mb-2 text-xs space-y-1">
           <div className="flex items-center gap-4">
             <div>
               <div className="font-semibold">120</div>
@@ -65,68 +65,7 @@ const ProfileActions = ({ onEditClick, userId, isOwnProfile = true }) => {
     );
   }
 
-  // Actions for viewing other user's profile
-  return (
-    <div className="flex flex-col gap-3 items-center md:items-end">
-      <div className="flex gap-2">
-        <Button
-          onClick={handleMessage}
-          variant="secondary"
-          size="sm"
-          className="
-            bg-white/20 
-            hover:bg-white/30 
-            text-white 
-            border-white/30 
-            hover:border-white/50
-            backdrop-blur-sm
-          "
-        >
-          <MessageCircle className="w-4 h-4" />
-          Message
-        </Button>
 
-        <Button
-          onClick={handleFollow}
-          variant="primary"
-          size="sm"
-          className="
-            bg-islamic-400 
-            hover:bg-islamic-500 
-            text-white
-            shadow-lg
-          "
-        >
-          <UserPlus className="w-4 h-4" />
-          Follow
-        </Button>
-
-        <Button
-          onClick={handleMore}
-          variant="secondary"
-          size="sm"
-          className="
-            bg-white/20 
-            hover:bg-white/30 
-            text-white 
-            border-white/30 
-            hover:border-white/50
-            backdrop-blur-sm
-          "
-        >
-          <MoreHorizontal className="w-4 h-4" />
-        </Button>
-      </div>
-
-      {/* Connection Status */}
-      <div className="text-center text-white/80 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-          <span>Connected</span>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 export default ProfileActions;

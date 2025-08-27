@@ -15,10 +15,10 @@ const Button = ({
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1',
+      "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 dark:hover:from-emerald-400 dark:hover:to-green-500 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1",
     secondary:
-      'bg-gray-100 dark:bg-gray-200 hover:bg-gray-200 text-gray-700 border border-gray-200',
-    outline: 'border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50',
+      "bg-gray-100 dark:bg-gray-50  hover:bg-gray-100 text-gray-700 border border-gray-200 dark:border-emerald-600",
+    outline: "border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50",
   };
 
   const sizes = {

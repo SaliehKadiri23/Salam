@@ -33,7 +33,11 @@ const FormField = ({
             )}
           </ErrorMessage>
         )}
-        {helper && <p className="text-gray-500 text-sm mt-1">{helper}</p>}
+        {helper && (
+          <p className="text-gray-500 dark:text-gray-100 text-sm mt-1">
+            {helper}
+          </p>
+        )}
       </div>
     );
   }

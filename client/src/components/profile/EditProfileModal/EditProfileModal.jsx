@@ -80,28 +80,28 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
         <div className="relative overflow-hidden shadow-2xl bg-white rounded-2xl">
           {/* Background Pattern */}
           <div className="absolute inset-0 pointer-events-none">
-            <IslamicPattern 
-              className="w-full h-full text-islamic-500" 
+            <IslamicPattern
+              className="w-full h-full text-islamic-500"
               opacity="opacity-[0.02]"
               variant="geometric"
             />
           </div>
 
-          <div className="relative z-10 flex flex-col max-h-[90vh]">
-            <ModalHeader 
+          <div className="relative z-10 flex flex-col max-h-[90vh] dark:border dark:border-emerald-600">
+            <ModalHeader
               onClose={handleClose}
               hasChanges={hasChanges}
               title="Edit Profile"
             />
-            
-            <ModalBody 
+
+            <ModalBody
               formData={formData}
               onInputChange={handleInputChange}
               onNestedInputChange={handleNestedInputChange}
               userData={userData}
             />
-            
-            <ModalFooter 
+
+            <ModalFooter
               onCancel={handleClose}
               onSave={handleSave}
               loading={loading}
