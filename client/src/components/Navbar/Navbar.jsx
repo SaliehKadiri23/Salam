@@ -10,7 +10,7 @@ import {
   Globe,
   ChevronDown,
 } from "lucide-react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLanguage } from "../../redux/userSlice";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,6 +42,8 @@ const Navbar = () => {
 
   const { selectedLanguage, languages } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate()
   return (
     <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black/85 dark:border-gray-400/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -243,16 +245,16 @@ const Navbar = () => {
 
           {/* Sign Up / Log In */}
           <div className="hidden md:flex flex-col my-1 gap-1 justify-center items-center lg:flex-row lg:gap-4 md:justify-between ">
-            <NavLink to={`/sign_up`}>
+            <button onClick={() => navigate("/sign_up")}>
               <p className="px-2  rounded-md py-1 lg:py-2 bg-gradient-to-r from-green-400 to-green-600 grow-1 font-bold text-white transition-all duration-300 hover:bg-gradient-to-l hover:scale-110">
                 Sign Up
               </p>
-            </NavLink>
-            <NavLink to={`/login`}>
+            </button>
+            <button onClick={() => navigate("/login")}>
               <p className="px-3  rounded-md py-1 lg:py-2 grow-1 bg-white  font-bold text-green-600 ring-1 ring-green-600 transition-all duration-300 hover:bg-gradient-to-r hover:scale-110">
                 Log In
               </p>
-            </NavLink>
+            </button>
           </div>
         </div>
       </div>
@@ -302,9 +304,10 @@ const Navbar = () => {
 
             {/* Sign Up / Log In */}
             <div className="flex flex-row my-1 gap-4 sm:gap-8 justify-center items-center md:justify-between px-7 mb-5 ">
-              <NavLink
-                to={`/sign_up`}
-                onClick={() => setIsMenuOpen(false)}
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false), navigate("/sign_up");
+                }}
                 className={"w-full flex justify-center items-center"}
               >
                 <motion.p
@@ -325,10 +328,11 @@ const Navbar = () => {
                 >
                   Sign Up
                 </motion.p>
-              </NavLink>
-              <NavLink
-                to={`/login`}
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false), navigate("/login");
+                }}
                 className={"w-full flex justify-center items-center"}
               >
                 <motion.p
@@ -349,7 +353,7 @@ const Navbar = () => {
                 >
                   Log In
                 </motion.p>
-              </NavLink>
+              </button>
             </div>
           </motion.div>
         </AnimatePresence>
