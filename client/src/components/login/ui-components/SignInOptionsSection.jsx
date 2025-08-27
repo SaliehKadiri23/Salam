@@ -6,12 +6,6 @@ import { selectShouldShowLoginOptions } from '../../../redux/loginUiSlice';
 import { selectAuthLoading } from '../../../redux/authSlice';
 import { showEmailForm } from '../../../redux/loginUiSlice';
 
-/**
- * SignInOptionsSection Component
- * 
- * Displays sign-in options including social login and email form button
- * Handles the initial sign-in method selection
- */
 const SignInOptionsSection = ({ onSocialAuth }) => {
   const dispatch = useDispatch();
   const shouldShowLoginOptions = useSelector(selectShouldShowLoginOptions);
@@ -36,12 +30,12 @@ const SignInOptionsSection = ({ onSocialAuth }) => {
       <motion.button
         onClick={() => onSocialAuth("Google")}
         disabled={authLoading}
-        className="w-full flex items-center justify-center space-x-3 p-4 border-2 border-gray-200 rounded-2xl hover:border-red-400 hover:bg-red-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center text-gray-700  dark:text-gray-100 dark:hover:text-gray-800 justify-center space-x-3 p-4 border-2 border-gray-200 dark:border-emerald-600 rounded-2xl hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         whileHover={!authLoading ? { scale: 1.02 } : {}}
         whileTap={!authLoading ? { scale: 0.98 } : {}}
       >
         <FaGoogle className="text-red-500 w-5 h-5" />
-        <span className="font-semibold text-gray-700">
+        <span className="font-semibold">
           {authLoading ? "Connecting..." : "Continue with Google"}
         </span>
       </motion.button>
@@ -49,21 +43,23 @@ const SignInOptionsSection = ({ onSocialAuth }) => {
       <motion.button
         onClick={() => onSocialAuth("Facebook")}
         disabled={authLoading}
-        className="w-full flex items-center justify-center space-x-3 p-4 border-2 border-gray-200 rounded-2xl hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center text-gray-700  dark:text-gray-100 dark:hover:text-gray-800 justify-center space-x-3 p-4 border-2 border-gray-200 dark:border-emerald-600 rounded-2xl hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         whileHover={!authLoading ? { scale: 1.02 } : {}}
         whileTap={!authLoading ? { scale: 0.98 } : {}}
       >
-        <FaFacebook className="text-blue-500 w-5 h-5" />
-        <span className="font-semibold text-gray-700">
+        <FaFacebook className="text-blue-600 w-5 h-5" />
+        <span className="font-semibold ">
           {authLoading ? "Connecting..." : "Continue with Facebook"}
         </span>
       </motion.button>
 
       {/* Divider */}
       <div className="flex items-center my-6">
-        <hr className="flex-1 border-gray-300" />
-        <span className="px-4 text-gray-500 font-medium">or</span>
-        <hr className="flex-1 border-gray-300" />
+        <hr className="flex-1 border-gray-300 dark:border-emerald-600" />
+        <span className="px-4 text-gray-500 dark:text-gray-100 font-medium">
+          or
+        </span>
+        <hr className="flex-1 border-gray-300 dark:border-emerald-600" />
       </div>
 
       {/* Email Sign In Button */}

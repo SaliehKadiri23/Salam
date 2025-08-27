@@ -218,7 +218,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-teal-50 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 dark:from-gray-900 dark:to-teal-700 relative overflow-">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <IslamicPattern />
@@ -262,24 +262,13 @@ const Login = () => {
                   />
                 )}
 
-                {/* Sign Up Link */}
-                <div className="text-center pt-6 border-t border-gray-200 mt-8">
-                  <p className="text-gray-600">
-                    New to Salam?{" "}
-                    <Link
-                      to={"/signup"}
-                      className="text-green-600 hover:text-green-700 font-semibold transition-colors hover:underline"
-                    >
-                      Create an account
-                    </Link>
-                  </p>
-                </div>
+                
               </LoginFormContainer>
             )}
           </div>
 
           {/* Trust Indicators Sidebar */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 overflow-hidden">
             <TrustIndicators />
           </div>
         </div>

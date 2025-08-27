@@ -28,7 +28,8 @@ import {
   selectForgotPasswordModal,
   selectForgotPasswordLoading,
   selectForgotPasswordStatus,
-  selectAuthErrors
+  selectAuthErrors,
+  showForgotPasswordModal
 } from '../../redux/authSlice';
 
 const ForgotPasswordModal = () => {
@@ -89,12 +90,6 @@ const ForgotPasswordModal = () => {
     setIsSubmitting(true);
     dispatch(forgotPasswordStart());
     
-    // TODO: Replace with actual API call
-    // const response = await fetch('/api/auth/forgot-password', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email })
-    // });
     
     // Simulate API call
     setTimeout(() => {
@@ -166,6 +161,8 @@ const ForgotPasswordModal = () => {
     setEmailError('');
     setTouched(false);
     setIsSubmitting(false);
+     dispatch(hideForgotPasswordModal());
+      dispatch(showForgotPasswordModal());
   };
 
   const handleBackToLogin = () => {
@@ -226,7 +223,7 @@ const ForgotPasswordModal = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="text-center py-4"
+      className="text-center py-4 max-h-[45vh]"
     >
       <motion.div
         initial={{ scale: 0 }}
@@ -236,22 +233,23 @@ const ForgotPasswordModal = () => {
       >
         <Check className="w-8 h-8 text-islamic-600" />
       </motion.div>
-      
-      <h3 className="text-xl font-bold text-gray-800 mb-2">
+
+      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
         Check Your Email
       </h3>
-      
-      <p className="text-gray-600 mb-6 leading-relaxed">
+
+      <p className="text-gray-600 dark:text-gray-200 mb-6 leading-relaxed">
         We've sent password reset instructions to your email, In sha Allah.
       </p>
-      
+
       <div className="bg-islamic-50 border border-islamic-200 rounded-xl p-4 mb-6">
         <p className="text-islamic-700 text-sm">
-          <span className="font-semibold">Didn't receive the email?</span><br />
+          <span className="font-semibold">Didn't receive the email?</span>
+          <br />
           Check your spam folder or try again with a different email address.
         </p>
       </div>
-      
+
       <div className="space-y-3">
         <button
           onClick={handleBackToLogin}
@@ -260,10 +258,10 @@ const ForgotPasswordModal = () => {
           <ChevronLeft className="w-4 h-4" />
           Back to Login
         </button>
-        
+
         <button
           onClick={handleRetry}
-          className="w-full text-islamic-600 hover:text-islamic-700 transition-colors text-sm py-2"
+          className="w-full text-islamic-600 hover:text-islamic-700 transition-colors mb-4 text-sm py-2"
         >
           Try with different email
         </button>
@@ -286,15 +284,15 @@ const ForgotPasswordModal = () => {
       >
         <AlertCircle className="w-8 h-8 text-red-600" />
       </motion.div>
-      
-      <h3 className="text-xl font-bold text-gray-800 mb-2">
+
+      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
         Unable to Send Email
       </h3>
-      
-      <p className="text-gray-600 mb-6 leading-relaxed">
-        {error || 'Something went wrong. Please try again.'}
+
+      <p className="text-gray-600 dark:text-gray-200 mb-6 leading-relaxed">
+        {error || "Something went wrong. Please try again."}
       </p>
-      
+
       <div className="space-y-3">
         <button
           onClick={handleRetry}
@@ -303,7 +301,7 @@ const ForgotPasswordModal = () => {
           <RefreshCw className="w-4 h-4" />
           Try Again
         </button>
-        
+
         <button
           onClick={handleBackToLogin}
           className="w-full text-islamic-600 hover:text-islamic-700 transition-colors text-sm py-2"
@@ -333,9 +331,9 @@ const ForgotPasswordModal = () => {
         {/* Background overlay with Islamic pattern */}
         <div className="absolute inset-0 bg-black/40">
           <div className="absolute inset-0 opacity-10">
-            <IslamicPattern 
-              variant="eight-pointed-star" 
-              className="w-full h-full text-white" 
+            <IslamicPattern
+              variant="eight-pointed-star"
+              className="w-full h-full text-white"
             />
           </div>
         </div>
@@ -349,12 +347,12 @@ const ForgotPasswordModal = () => {
           className="relative w-full max-w-md mx-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+          <div className="bg-white/90 dark:bg-black/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-x-hidden overflow-y-scroll">
             {/* Background Pattern */}
             <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
-              <IslamicPattern 
-                variant="corner-decoration" 
-                className="w-full h-full text-islamic-500" 
+              <IslamicPattern
+                variant="corner-decoration"
+                className="w-full h-full text-islamic-500"
               />
             </div>
 
@@ -379,45 +377,52 @@ const ForgotPasswordModal = () => {
                 >
                   <Star className="w-6 h-6 text-islamic-600" />
                 </motion.div>
-                
-                <IslamicPattern 
-                  variant="divider" 
-                  className="w-24 h-6 mx-auto text-islamic-300 mb-4" 
+
+                <IslamicPattern
+                  variant="divider"
+                  className="w-24 h-6 mx-auto text-islamic-300 mb-4"
                 />
-                
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                   Forgot Password
                 </h2>
-                
-                <p className="text-gray-600 leading-relaxed">
-                  Don't worry, it happens to the best of us. We'll help you reset it, In sha Allah.
+
+                <p className="text-gray-600 dark:text-gray-200 leading-relaxed">
+                  Don't worry, it happens to the best of us. We'll help you
+                  reset it, In sha Allah.
                 </p>
               </div>
             </div>
 
             {/* Content */}
             <div className="px-8 pb-8">
-              {status === 'success' && <SuccessState />}
-              {status === 'error' && <ErrorState error={errors.forgotPassword} />}
-              {(status === 'idle' || status === 'loading') && (
+              {status === "success" && <SuccessState />}
+              {status === "error" && (
+                <ErrorState error={errors.forgotPassword} />
+              )}
+              {(status === "idle" || status === "loading") && (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Email Field */}
                   <div className="space-y-2">
-                    <label 
+                    <label
                       htmlFor="forgot-password-email"
-                      className="block text-gray-700 font-semibold text-sm"
+                      className="block text-gray-700 dark:text-gray-100 font-semibold text-sm"
                     >
                       Email Address
                       <span className="text-red-500 ml-1">*</span>
                     </label>
-                    
+
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Mail className={`w-5 h-5 transition-colors ${
-                          touched ? 'text-islamic-500' : 'text-gray-400'
-                        }`} />
+                        <Mail
+                          className={`w-5 h-5 dark:text-gray-100 transition-colors ${
+                            touched
+                              ? "text-islamic-500"
+                              : "text-gray-400 dark:text-gray-100"
+                          }`}
+                        />
                       </div>
-                      
+
                       <input
                         ref={emailInputRef}
                         id="forgot-password-email"
@@ -426,20 +431,21 @@ const ForgotPasswordModal = () => {
                         value={email}
                         onChange={handleEmailChange}
                         onBlur={handleEmailBlur}
-                        className={`
+                        className={`dark:text-gray-100 border-green-300
                           w-full pl-12 pr-12 py-4 border-2 rounded-xl transition-all duration-300
                           focus:ring-2 focus:ring-islamic-500 focus:border-islamic-500
-                          hover:border-islamic-300 bg-white/70 backdrop-blur-sm
-                          ${touched && emailError
-                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-                            : touched && !emailError && email
-                            ? 'border-green-300 focus:border-green-500 focus:ring-green-500'
-                            : 'border-gray-300'
+                          hover:border-islamic-300 bg-white/70 dark:bg-black/70 backdrop-blur-sm
+                          ${
+                            touched && emailError
+                              ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                              : touched && !emailError && email
+                              ? " dark:border-emerald-600 focus:border-green-500 focus:ring-green-500"
+                              : "border-gray-300"
                           }
                         `}
                         placeholder="Enter your email address"
                       />
-                      
+
                       {/* Success indicator */}
                       {touched && !emailError && email && (
                         <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
@@ -447,7 +453,7 @@ const ForgotPasswordModal = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Error message */}
                     {touched && emailError && (
                       <motion.p
@@ -458,7 +464,7 @@ const ForgotPasswordModal = () => {
                         <AlertCircle className="w-4 h-4" /> {emailError}
                       </motion.p>
                     )}
-                    
+
                     {/* Helper text */}
                     {!emailError && (
                       <p className="text-islamic-600 text-sm">
@@ -477,7 +483,9 @@ const ForgotPasswordModal = () => {
                         className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3"
                       >
                         <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                        <p className="text-red-700 text-sm">{errors.forgotPassword}</p>
+                        <p className="text-red-700 text-sm">
+                          {errors.forgotPassword}
+                        </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -489,13 +497,22 @@ const ForgotPasswordModal = () => {
                     className={`
                       w-full py-4 px-6 rounded-xl font-semibold text-lg
                       transition-all duration-300 transform
-                      ${isSubmitting || emailError || !email
-                        ? 'bg-gray-400 text-white cursor-not-allowed'
-                        : 'bg-islamic-500 text-white hover:bg-islamic-600 hover:scale-105 shadow-lg'
+                      ${
+                        isSubmitting || emailError || !email
+                          ? "bg-gray-400 text-white cursor-not-allowed"
+                          : "bg-islamic-500 text-white hover:bg-islamic-600 hover:scale-105 shadow-lg"
                       }
                     `}
-                    whileHover={!isSubmitting && !emailError && email ? { scale: 1.02 } : {}}
-                    whileTap={!isSubmitting && !emailError && email ? { scale: 0.98 } : {}}
+                    whileHover={
+                      !isSubmitting && !emailError && email
+                        ? { scale: 1.02 }
+                        : {}
+                    }
+                    whileTap={
+                      !isSubmitting && !emailError && email
+                        ? { scale: 0.98 }
+                        : {}
+                    }
                   >
                     {isSubmitting ? (
                       <div className="flex items-center justify-center gap-3">

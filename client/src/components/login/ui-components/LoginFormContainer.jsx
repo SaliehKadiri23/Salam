@@ -53,12 +53,12 @@ const LoginFormContainer = ({ children }) => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20"
+      className="bg-white/80 dark:bg-black/40 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 dark:border-emerald-600"
     >
       {/* Back Button */}
       <button
         onClick={handleBackToRoleSelection}
-        className="flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors mb-6"
+        className="flex items-center gap-2 text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400 transition-colors mb-4"
       >
         <FaChevronLeft className="w-4 h-4" />
         <span className="text-sm">Change Account Type</span>
@@ -66,10 +66,10 @@ const LoginFormContainer = ({ children }) => {
 
       {/* Header */}
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
           Sign In to Your Account
         </h2>
-        <p className="text-gray-600 mb-4">
+        <p className="text-gray-600 dark:text-gray-200 mb-4">
           Access your Islamic community dashboard
         </p>
 
@@ -79,10 +79,10 @@ const LoginFormContainer = ({ children }) => {
 
       {/* Error Display */}
       {errors.login && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3"
+          className="bg-red-50 dark:bg-red-200 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3"
         >
           <div className="w-5 h-5 text-red-500 flex-shrink-0">⚠️</div>
           <p className="text-red-700 text-sm">{errors.login}</p>

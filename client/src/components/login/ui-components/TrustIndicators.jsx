@@ -7,17 +7,13 @@ import {
   FaShieldAlt, 
   FaGlobe 
 } from 'react-icons/fa';
+import { Stars } from 'lucide-react';
 
-/**
- * TrustIndicators Component
- * 
- * Displays trust and credibility indicators in the sidebar
- * Shows community statistics and security features
- */
+
 const TrustIndicators = () => {
   const trustMetrics = [
     { 
-      icon: FaUsers, 
+      icon: Stars, 
       label: 'Active Members', 
       value: '50,000+', 
       color: 'text-green-600' 
@@ -45,36 +41,42 @@ const TrustIndicators = () => {
   return (
     <motion.aside
       initial={{ opacity: 0, x: 30 }}
-      animate={{ opacity: 1, x: 0 }}
+      whileInView={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.6, duration: 0.6 }}
-      className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20"
+      viewport={{ once: true }}
+      className="bg-white/80 dark:bg-black/40 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 dark:border-emerald-600"
     >
       {/* Header */}
-      <motion.h3 
-        className="text-xl font-bold text-gray-800 mb-6 text-center"
+      <motion.h3
+        className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.5 }}
       >
         Trusted by the Community
       </motion.h3>
-      
+
       {/* Trust Metrics */}
       <div className="space-y-6">
         {trustMetrics.map(({ icon: Icon, label, value, color }, index) => (
           <motion.div
             key={label}
             initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.9 + (index * 0.1), duration: 0.5 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.9 + index * 0.1, duration: 0.5 }}
+            viewport={{ once: true }}
             className="flex items-center space-x-4"
           >
             <div className={`p-3 rounded-full bg-gray-100 ${color}`}>
               <Icon className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-gray-800">{value}</div>
-              <div className="text-sm text-gray-600">{label}</div>
+              <div className="font-semibold text-gray-800 dark:text-gray-100">
+                {value}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-200">
+                {label}
+              </div>
             </div>
           </motion.div>
         ))}
@@ -85,13 +87,15 @@ const TrustIndicators = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.3, duration: 0.6 }}
-        className="mt-8 p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl border border-green-200"
+        className="mt-8 p-4 bg-gradient-to-r from-green-50 to-teal-50 dark:from-gray-900 dark:to-teal-900  rounded-2xl border border-green-200 dark:border-emerald-600"
       >
         <div className="flex items-center space-x-3 mb-2">
-          <FaGlobe className="text-green-600 w-5 h-5" />
-          <span className="font-semibold text-green-800">Secure Access</span>
+          <FaGlobe className="text-green-600 dark:text-green-400 size-5" />
+          <span className="font-semibold text-green-800 dark:text-green-400">
+            Secure Access
+          </span>
         </div>
-        <p className="text-sm text-green-700">
+        <p className="text-sm text-green-700 dark:text-green-500">
           Your account is protected with enterprise-grade security
         </p>
       </motion.div>
