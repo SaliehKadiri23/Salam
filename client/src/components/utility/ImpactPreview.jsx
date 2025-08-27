@@ -60,19 +60,21 @@ const ImpactPreview = ({ amount, donationType, detailed = false }) => {
 
   return (
     <div
-      className={`grid gap-3 ${detailed ? 'md:grid-cols-2' : 'grid-cols-1'}`}
+      className={`grid gap-3 ${detailed ? "md:grid-cols-2" : "grid-cols-1"}`}
     >
       {impacts.map((impact, index) => (
         <div
           key={index}
-          className="flex items-center gap-3 bg-white rounded-lg p-3"
+          className="flex items-center gap-3 bg-white dark:bg-gray-900 rounded-lg p-3"
         >
           <span className="text-2xl">{impact.icon}</span>
           <div>
-            <p className="text-lg font-bold text-emerald-600">
+            <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
               {impact.metric}
             </p>
-            <p className="text-sm text-gray-600">{impact.label}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-100">
+              {impact.label}
+            </p>
           </div>
         </div>
       ))}

@@ -38,13 +38,13 @@ const DonationForm = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-black/100 ">
       {/* Islamic Pattern Background */}
       <div className="fixed inset-0">
         <IslamicPattern className="absolute inset-0 text-emerald-500" />
       </div>
 
-      <div className="relative z-10 px-6 py-12">
+      <div className="relative z-10 px-6 py-6">
         <div className="max-w-2xl mx-auto">
           {/* Progress Indicator */}
           {currentStep < 4 && (
@@ -52,14 +52,14 @@ const DonationForm = () => {
           )}
 
           {/* Form Container */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
+          <div className="bg-white dark:bg-gray-950  rounded-3xl shadow-2xl p-8 border border-gray-100 dark:border-emerald-600">
             {steps[currentStep]}
           </div>
 
           {/* Trust Indicators */}
           {currentStep < 4 && (
             <div className="mt-8 text-center">
-              <div className="flex justify-center items-center gap-6 text-sm text-gray-500">
+              <div className="flex justify-center items-center gap-6 text-sm text-gray-500 dark:text-gray-100">
                 <div className="flex items-center gap-2">
                   <Shield className="w-4 h-4 text-emerald-600" />
                   <span>Secure & Encrypted</span>

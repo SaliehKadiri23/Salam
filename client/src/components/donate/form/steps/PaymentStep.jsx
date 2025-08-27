@@ -38,10 +38,12 @@ const PaymentStep = () => {
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
           Payment Method
         </h2>
-        <p className="text-gray-600">Choose your preferred payment method</p>
+        <p className="text-gray-600 dark:text-gray-200">
+          Choose your preferred payment method
+        </p>
       </div>
 
       {/* Payment Method Selection */}
@@ -49,23 +51,27 @@ const PaymentStep = () => {
         {paymentMethods.map((method) => (
           <button
             key={method.id}
-            onClick={() => dispatch(updateFormData({ paymentMethod: method.id }))}
+            onClick={() =>
+              dispatch(updateFormData({ paymentMethod: method.id }))
+            }
             className={`w-full p-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-4 ${
               formData.paymentMethod === method.id
-                ? 'border-emerald-500 bg-emerald-50'
-                : 'border-gray-200 hover:border-emerald-300'
+                ? "border-emerald-500 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-700"
+                : "border-gray-200  dark:border-emerald-600 hover:border-emerald-300"
             }`}
           >
             <div
               className={`p-2 rounded-lg ${
                 formData.paymentMethod === method.id
-                  ? 'bg-emerald-500 text-white'
-                  : 'bg-gray-100 text-gray-600'
+                  ? "bg-emerald-500 text-white"
+                  : "bg-gray-100 text-gray-600"
               }`}
             >
               {method.icon}
             </div>
-            <span className="font-semibold text-gray-800">{method.title}</span>
+            <span className="font-semibold text-gray-800 dark:text-gray-100">
+              {method.title}
+            </span>
             {formData.paymentMethod === method.id && (
               <CheckCircle className="w-5 h-5 text-emerald-500 ml-auto" />
             )}
@@ -74,12 +80,12 @@ const PaymentStep = () => {
       </div>
 
       {/* Security Indicators */}
-      <div className="bg-gray-50 rounded-xl p-6">
-        <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+        <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
           <Shield className="w-5 h-5 text-emerald-600" />
           Secure Payment
         </h3>
-        <div className="grid gap-3 text-sm text-gray-600">
+        <div className="grid gap-3 text-sm text-gray-600 dark:text-gray-200">
           <div className="flex items-center gap-2">
             <Lock className="w-4 h-4 text-emerald-600" />
             256-bit SSL encryption

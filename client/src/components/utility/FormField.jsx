@@ -19,11 +19,13 @@ const FormField = ({
   if (children) {
     return (
       <div className="mb-6">
-        <label className="block text-gray-700 font-semibold mb-2">{label}</label>
+        <label className="block text-gray-700 dark:text-gray-100 font-semibold mb-2">
+          {label}
+        </label>
         {children}
         {useFormik && (
           <ErrorMessage name={name}>
-            {msg => (
+            {(msg) => (
               <p className="text-red-500 text-sm mt-1 flex items-center">
                 <span className="mr-1">⚠</span>
                 {msg}

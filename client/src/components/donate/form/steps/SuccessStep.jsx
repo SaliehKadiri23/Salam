@@ -14,15 +14,21 @@ const SuccessStep = () => {
       </div>
 
       <div>
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">Thank You!</h2>
-        <p className="text-xl text-gray-600 mb-2">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+          Thank You!
+        </h2>
+        <p className="text-xl text-gray-600 dark:text-gray-200 mb-2">
           Your donation of ${formData.amount} has been processed
         </p>
-        <p className="text-gray-500">May Allah reward you for your generosity</p>
+        <p className="text-gray-500 dark:text-gray-100">
+          May Allah reward you for your generosity
+        </p>
       </div>
 
-      <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200">
-        <h3 className="font-bold text-emerald-800 mb-3">Your Impact</h3>
+      <div className="bg-emerald-50 dark:bg-gray-800 rounded-xl p-6 border border-emerald-200">
+        <h3 className="font-bold text-emerald-800 dark:text-gray-100 mb-3">
+          Your Impact
+        </h3>
         <ImpactPreview
           amount={formData.amount}
           donationType={formData.donationType}
@@ -34,7 +40,7 @@ const SuccessStep = () => {
         <Button
           fullWidth
           size="lg"
-          onClick={() => (window.location.href = '/')}
+          onClick={() => (window.location.href = "/")}
         >
           Return to Home
         </Button>

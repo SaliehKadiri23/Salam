@@ -26,45 +26,49 @@ const ReviewStep = () => {
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
           Review Your Donation
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-200">
           Please review your donation details before proceeding
         </p>
       </div>
 
       {/* Donation Summary Card */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-200 dark:border-emerald-600 overflow-hidden">
         <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white p-6">
           <h3 className="text-2xl font-bold">Donation Summary</h3>
         </div>
 
-        <div className="p-6 space-y-4">
-          <div className="flex justify-between items-center py-3 border-b border-gray-100">
-            <span className="text-gray-600">Donation Type</span>
-            <span className="font-semibold text-gray-800">
+        <div className="p-6 space-y-4 dark:bg-gray-950">
+          <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-emerald-600">
+            <span className="text-gray-600 dark:text-gray-100">
+              Donation Type
+            </span>
+            <span className="font-semibold text-gray-800 dark:text-gray-100">
               {getDonationTypeDisplay(formData.donationType)}
             </span>
           </div>
 
-          <div className="flex justify-between items-center py-3 border-b border-gray-100">
-            <span className="text-gray-600">Amount</span>
+          <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-emerald-600">
+            <span className="text-gray-600 dark:text-gray-100">Amount</span>
             <span className="text-2xl font-bold text-emerald-600">
               ${formData.amount}
             </span>
           </div>
 
-          <div className="flex justify-between items-center py-3 border-b border-gray-100">
-            <span className="text-gray-600">Frequency</span>
-            <span className="font-semibold text-gray-800">
+          <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-emerald-600">
+            <span className="text-gray-600 dark:text-gray-100">Frequency</span>
+            <span className="font-semibold text-gray-800 dark:text-gray-100">
               {formData.frequency}
             </span>
           </div>
 
           <div className="flex justify-between items-center py-3">
-            <span className="text-gray-600">Payment Method</span>
-            <span className="font-semibold text-gray-800 capitalize">
+            <span className="text-gray-600 dark:text-gray-100">
+              Payment Method
+            </span>
+            <span className="font-semibold text-gray-800 dark:text-gray-100 capitalize">
               {formData.paymentMethod}
             </span>
           </div>
@@ -72,8 +76,10 @@ const ReviewStep = () => {
       </div>
 
       {/* Impact Preview */}
-      <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200">
-        <h3 className="font-bold text-emerald-800 mb-4">Your Impact</h3>
+      <div className="bg-emerald-50 dark:bg-gray-800 rounded-xl p-6 border border-emerald-200 dark:border-emerald-600">
+        <h3 className="font-bold text-emerald-800 dark:text-gray-100 mb-4">
+          Your Impact
+        </h3>
         <ImpactPreview
           amount={formData.amount}
           donationType={formData.donationType}
@@ -82,12 +88,12 @@ const ReviewStep = () => {
       </div>
 
       {/* Receipt Preview */}
-      <div className="bg-gray-50 rounded-xl p-6">
-        <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+      <div className="bg-gray-50 dark:bg-gray-950 rounded-xl p-6 border dark:border-emerald-600">
+        <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-3 flex items-center gap-2">
           <CheckCircle className="w-5 h-5 text-emerald-600" />
           What happens next?
         </h3>
-        <ul className="space-y-2 text-gray-600 text-sm">
+        <ul className="space-y-2 text-gray-600 dark:text-gray-200 text-sm">
           <li>• You'll receive an instant email confirmation</li>
           <li>• Tax-deductible receipt will be sent within 24 hours</li>
           <li>• Updates on how your donation is being used</li>

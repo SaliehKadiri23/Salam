@@ -6,12 +6,12 @@ const StepIndicator = ({ currentStep, totalSteps }) => (
     {Array.from({ length: totalSteps }, (_, i) => (
       <div key={i} className="flex items-center">
         <div
-          className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${
+          className={`size-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${
             i < currentStep
-              ? 'bg-emerald-500 text-white'
+              ? "bg-emerald-500 text-white"
               : i === currentStep
-              ? 'bg-emerald-100 text-emerald-600 border-2 border-emerald-500'
-              : 'bg-gray-100 text-gray-400'
+              ? "bg-emerald-100 dark:bg-black/100  text-emerald-600 border-2 border-emerald-500"
+              : "bg-gray-100 dark:bg-black/100 dark:border-2  text-gray-400"
           }`}
         >
           {i < currentStep ? <CheckCircle className="w-5 h-5" /> : i + 1}
@@ -19,7 +19,7 @@ const StepIndicator = ({ currentStep, totalSteps }) => (
         {i < totalSteps - 1 && (
           <div
             className={`w-12 h-1 mx-2 transition-all duration-300 ${
-              i < currentStep ? 'bg-emerald-500' : 'bg-gray-200'
+              i < currentStep ? "bg-emerald-500" : "bg-gray-200 dark:bg-gray-300 "
             }`}
           />
         )}
