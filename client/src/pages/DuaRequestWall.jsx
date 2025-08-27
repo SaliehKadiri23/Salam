@@ -184,16 +184,16 @@ const DuaRequestWall = () => {
   }, [isDropdownOpen]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-800">
       <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             Dua Request Wall
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            A space to share and support each other through prayer. 
-            Join our community in lifting each other up through dua.
+          <p className="text-lg text-gray-600 dark:text-gray-200 max-w-2xl mx-auto">
+            A space to share and support each other through prayer. Join our
+            community in lifting each other up through dua.
           </p>
         </div>
 
@@ -210,41 +210,50 @@ const DuaRequestWall = () => {
             </button>
 
             {/* Search and Filter */}
-            <div className="flex gap-3 w-full sm:w-auto">
+            <div className="flex gap-3 w-full sm:w-auto ">
               {/* Search */}
               <div className="relative flex-1 sm:w-64">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-100" />
                 <input
                   type="text"
                   placeholder="Search requests..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                  className="w-full pl-10 pr-4 py-2 dark:bg-black/40 dark:text-gray-100 border border-gray-200 dark:border-emerald-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                 />
               </div>
 
-              {/* Modern Category Filter Dropdown */}
+              {/* Category Filter Dropdown */}
               <div className="relative dropdown-container">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="bg-white border border-gray-200 rounded-xl px-4 py-2 pr-10 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 cursor-pointer hover:border-gray-300 hover:shadow-sm flex items-center gap-2 min-w-[140px]"
+                  className="bg-white dark:bg-black/70 dark:border-emerald-600 border border-gray-200 rounded-xl px-4 py-2 pr-10 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 cursor-pointer hover:border-gray-300 hover:shadow-sm flex items-center gap-2 min-w-[140px]"
                 >
-                  <Filter className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">
-                    {categories.find(cat => cat.value === selectedCategory)?.label}
+                  <Filter className="w-4 h-4 text-gray-500  dark:text-gray-300" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {
+                      categories.find((cat) => cat.value === selectedCategory)
+                        ?.label
+                    }
                   </span>
-                  <ChevronDown className={`w-4 h-4 text-gray-500 absolute right-2 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`w-4 h-4 text-gray-500 dark:text-gray-300 absolute right-2 transition-transform duration-200 ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
-                
+
                 {/* Dropdown Menu */}
                 {isDropdownOpen && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-2 max-h-64 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-black/90  border border-gray-200 dark:border-emerald-600 rounded-xl shadow-lg z-50 py-2 max-h-64 overflow-y-auto">
                     {categories.map((category) => (
                       <button
                         key={category.value}
                         onClick={() => handleCategoryFilter(category.value)}
-                        className={`w-full py-2 text-left hover:bg-gray-50 transition-colors text-sm font-medium ${
-                          selectedCategory === category.value ? 'bg-emerald-50 text-emerald-700' : 'text-gray-700'
+                        className={`w-full py-2 text-left hover:bg-gray-50 dark:hover:bg-emerald-700 transition-colors text-sm font-medium ${
+                          selectedCategory === category.value
+                            ? "bg-emerald-50 dark:bg-emerald-800 text-emerald-700 dark:text-gray-100"
+                            : "text-gray-700 dark:text-gray-100"
                         }`}
                       >
                         <span className="block px-4">{category.label}</span>
@@ -263,10 +272,10 @@ const DuaRequestWall = () => {
             {/* Left Arrow */}
             {showLeftArrow && (
               <button
-                onClick={() => scrollCategories('left')}
-                className="absolute left-0 z-10 w-10 h-10 bg-white border border-gray-200 rounded-full shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-50"
+                onClick={() => scrollCategories("left")}
+                className="absolute left-0 z-10 w-10 h-10 bg-white dark:bg-black/90  border border-gray-200 dark:border-emerald-600 rounded-full shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-50"
               >
-                <ChevronLeft className="w-7 h-7 text-gray-600" />
+                <ChevronLeft className="w-7 h-7 text-gray-600 dark:text-gray-100" />
               </button>
             )}
 
@@ -281,9 +290,10 @@ const DuaRequestWall = () => {
                   onClick={() => handleCategoryFilter(category.value)}
                   className={`
                     flex-shrink-0 px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 whitespace-nowrap
-                    ${selectedCategory === category.value
-                      ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-200 shadow-sm'
-                      : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm'
+                    ${
+                      selectedCategory === category.value
+                        ? "bg-emerald-100 text-emerald-700 border-2 border-emerald-200 dark:border-emerald-600 shadow-sm"
+                        : "bg-white dark:bg-black/40  text-gray-600 dark:text-gray-100 border border-gray-200 hover:border-gray-300 dark:border-emerald-600 hover:bg-gray-50 hover:shadow-sm"
                     }
                   `}
                 >
@@ -295,10 +305,10 @@ const DuaRequestWall = () => {
             {/* Right Arrow */}
             {showRightArrow && (
               <button
-                onClick={() => scrollCategories('right')}
-                className="absolute right-0 z-10 w-10 h-10 bg-white border border-gray-200 rounded-full shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-50"
+                onClick={() => scrollCategories("right")}
+                className="absolute right-0 z-10 w-10 h-10 bg-white dark:bg-black/90 border border-gray-200 dark:border-emerald-600 rounded-full shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-200 hover:bg-gray-50"
               >
-                <ChevronRight className="w-7 h-7 text-gray-600" />
+                <ChevronRight className="w-7 h-7 text-gray-600 dark:text-gray-100" />
               </button>
             )}
           </div>
@@ -306,25 +316,31 @@ const DuaRequestWall = () => {
 
         {/* Stats - Responsive Grid: 2 cols mobile, 3 cols tablet+ */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-            <div className="text-2xl font-bold text-emerald-600">
+          <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
+            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-500">
               {filteredRequests.length}
             </div>
-            <div className="text-sm text-gray-600">
-              {selectedCategory === 'all' ? 'Total Requests' : `${selectedCategory} Requests`}
+            <div className="text-sm text-gray-600 dark:text-gray-100">
+              {selectedCategory === "all"
+                ? "Total Requests"
+                : `${selectedCategory} Requests`}
             </div>
           </div>
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
             <div className="text-2xl font-bold text-blue-600">
               {filteredRequests.reduce((sum, req) => sum + req.prayerCount, 0)}
             </div>
-            <div className="text-sm text-gray-600">Total Prayers</div>
+            <div className="text-sm text-gray-600 dark:text-gray-100">
+              Total Prayers
+            </div>
           </div>
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+          <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
             <div className="text-2xl font-bold text-purple-600">
               {filteredRequests.reduce((sum, req) => sum + req.comments, 0)}
             </div>
-            <div className="text-sm text-gray-600">Community Support</div>
+            <div className="text-sm text-gray-600 dark:text-gray-100">
+              Community Support
+            </div>
           </div>
         </div>
 
@@ -337,15 +353,17 @@ const DuaRequestWall = () => {
           ) : (
             <div className="text-center py-12">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="w-8 h-8 text-gray-400" />
+                <Search className="w-8 h-8 text-gray-400 dark:text-gray-800" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No requests found</h3>
-              <p className="text-gray-600 mb-4">
-                {searchTerm || selectedCategory !== 'all'
-                  ? 'Try adjusting your search or filter criteria.'
-                  : 'Be the first to share a dua request with the community.'}
+              <h3 className="text-lg font-medium dark:text-gray-100 mb-2">
+                No requests found
+              </h3>
+              <p className="text-gray-600 dark:text-gray-200 mb-4">
+                {searchTerm || selectedCategory !== "all"
+                  ? "Try adjusting your search or filter criteria."
+                  : "Be the first to share a dua request with the community."}
               </p>
-              {!searchTerm && selectedCategory === 'all' && (
+              {!searchTerm && selectedCategory === "all" && (
                 <button
                   onClick={() => setIsFormOpen(true)}
                   className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-xl transition-colors"
@@ -360,7 +378,7 @@ const DuaRequestWall = () => {
         {/* Load More Button (for future pagination) */}
         {filteredRequests.length > 0 && (
           <div className="text-center mt-12">
-            <button className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-6 py-3 rounded-xl transition-colors">
+            <button className="bg-white dark:bg-black/40  hover:bg-gray-50 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-emerald-600 px-6 py-3 rounded-xl transition-colors">
               Load More Duas
             </button>
           </div>
