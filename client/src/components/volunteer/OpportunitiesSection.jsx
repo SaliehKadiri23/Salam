@@ -1,19 +1,19 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import VolunteerCard from './VolunteerCard';
-import VolunteerCardSkeleton from './VolunteerCardSkeleton';
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import VolunteerCard from "./VolunteerCard";
+import VolunteerCardSkeleton from "./VolunteerCardSkeleton";
 
 const OpportunitiesSection = ({ onApply }) => {
   const { opportunities } = useSelector((state) => state.opportunities);
   const filters = useSelector((state) => state.filters);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
-  const filteredOpportunities = React.useMemo(() => {
+  const filteredOpportunities = useMemo(() => {
     return opportunities.filter((opportunity) => {
       const matchesSearch =
         filters.search === "" ||
@@ -54,7 +54,7 @@ const OpportunitiesSection = ({ onApply }) => {
     });
   }, [filters, opportunities]);
 
-  const groupedOpportunities = React.useMemo(() => {
+  const groupedOpportunities = useMemo(() => {
     return filteredOpportunities.reduce((acc, opportunity) => {
       if (!acc[opportunity.category]) {
         acc[opportunity.category] = [];
@@ -69,7 +69,7 @@ const OpportunitiesSection = ({ onApply }) => {
       <div className="space-y-12">
         {[1, 2, 3].map((section) => (
           <div key={section}>
-            <div className="h-8 bg-slate-200 rounded w-64 mb-8 animate-pulse"></div>
+            <div className="h-8 bg-slate-200  rounded w-64 mb-8 animate-pulse"></div>
             <div className="space-y-6">
               {[1, 2].map((card) => (
                 <VolunteerCardSkeleton key={card} />
@@ -86,9 +86,11 @@ const OpportunitiesSection = ({ onApply }) => {
       {Object.entries(groupedOpportunities).map(([category, opportunities]) => (
         <section key={category} className="scroll-mt-8">
           <div className="flex items-center gap-4 mb-8">
-            <h2 className="text-3xl font-bold text-slate-800">{category}</h2>
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-gray-100">
+              {category}
+            </h2>
             <div className="flex-1 h-px bg-gradient-to-r from-slate-300 to-transparent"></div>
-            <span className="text-slate-500 text-sm font-medium">
+            <span className="text-slate-500 dark:text-gray-200 text-sm font-medium">
               {opportunities.length}{" "}
               {opportunities.length === 1 ? "opportunity" : "opportunities"}
             </span>

@@ -54,7 +54,7 @@ const Resources = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100  dark:from-gray-400 dark:via-gray-700 dark:to-gray-500">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100  dark:from-gray-800 dark:via-gray-900 dark:to-gray-700">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <PageHeader userStats={userStats} />
         <SearchAndFilters />

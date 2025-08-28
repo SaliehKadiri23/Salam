@@ -139,7 +139,7 @@ export const EventCard = ({ event }) => {
             onClick={() => dispatch(toggleEventRegistration(event.id))}
             className={`w-full py-2 px-4 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
               registeredEvents.includes(event.id)
-                ? "bg-green-100 text-green-700 border border-green-200"
+                ? "bg-green-100 dark:bg-black/40 text-green-700 dark:text-green-400 border border-green-200 dark:border-emerald-600"
                 : "bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:shadow-lg"
             }`}
           >
@@ -205,7 +205,7 @@ export const EventListItem = ({ event }) => {
                 onClick={() => dispatch(toggleEventRegistration(event.id))}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
                   registeredEvents.includes(event.id)
-                    ? "bg-green-100 text-green-700"
+                    ? "bg-green-100 dark:bg-black/40 dark:border dark:border-emerald-600 text-green-700 dark:text-green-400"
                     : "bg-gradient-to-r from-emerald-500 to-green-600 text-white"
                 }`}
               >

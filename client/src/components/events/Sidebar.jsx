@@ -226,14 +226,14 @@ const UpcomingEvents = ({ upcomingEvents }) => (
           upcomingEvents.map((event) => (
             <div
               key={event.id}
-              className="group p-3 rounded-xl hover:bg-emerald-50/50 transition-all duration-300 cursor-pointer border border-transparent hover:border-emerald-200"
+              className="group p-3 rounded-xl hover:bg-emerald-50/50 dark:hover:bg-emerald-800 transition-all duration-300 cursor-pointer border border-transparent hover:border-emerald-200 dark:hover:border-emerald-600"
             >
               <div className="flex items-start space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Calendar className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-slate-800 dark:text-gray-100 truncate group-hover:text-emerald-700 transition-colors">
+                  <p className="font-medium text-slate-800 dark:text-gray-100 truncate group-hover:text-emerald-700 dark:group-hover:text-emerald-200 transition-colors">
                     {event.title}
                   </p>
                   <p className="text-sm text-slate-600 dark:text-gray-300">

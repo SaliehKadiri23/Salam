@@ -18,7 +18,7 @@ const VolunteerCard = ({ opportunity, onApply }) => {
 
   return (
     <div
-      className="group bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:shadow-2xl hover:border-teal-200/80 transition-all duration-500 hover:-translate-y-1"
+      className="group bg-white/80 dark:bg-black/40 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-slate-200/60 dark:border-emerald-600 hover:shadow-2xl hover:border-teal-200/80 transition-all duration-500 hover:-translate-y-1"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -50,29 +50,29 @@ const VolunteerCard = ({ opportunity, onApply }) => {
         {/* Content */}
         <div className="flex-grow space-y-4">
           <div>
-            <p className="text-slate-600 text-sm font-medium mb-1">
+            <p className="text-slate-600 dark:text-gray-50 text-sm font-medium mb-1">
               {opportunity.organization}
             </p>
-            <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-teal-700 transition-colors duration-300">
+            <h3 className="text-xl font-bold text-slate-800 dark:text-gray-100 mb-2 group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors duration-300">
               {opportunity.title}
             </h3>
-            <p className="text-slate-600 leading-relaxed line-clamp-3">
+            <p className="text-slate-600 dark:text-gray-100 leading-relaxed line-clamp-3">
               {opportunity.description}
             </p>
           </div>
 
           {/* Metadata */}
           <div className="flex flex-wrap gap-3 text-sm">
-            <div className="flex items-center gap-1 text-slate-600">
-              <MapPin className="w-4 h-4 text-teal-600" />
+            <div className="flex items-center gap-1 text-slate-600 dark:text-gray-100">
+              <MapPin className="w-4 h-4 text-teal-600 dark:text-teal-400" />
               {opportunity.location}
             </div>
-            <div className="flex items-center gap-1 text-slate-600">
-              <Clock className="w-4 h-4 text-teal-600" />
+            <div className="flex items-center gap-1 text-slate-600 dark:text-gray-100">
+              <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
               {opportunity.timeCommitment}
             </div>
-            <div className="flex items-center gap-1 text-slate-600">
-              <Medal className="w-4 h-4 text-teal-600" />
+            <div className="flex items-center gap-1 text-slate-600 dark:text-gray-100">
+              <Medal className="w-4 h-4 text-teal-600 dark:text-teal-400" />
               {opportunity.spotsAvailable} spots
             </div>
           </div>

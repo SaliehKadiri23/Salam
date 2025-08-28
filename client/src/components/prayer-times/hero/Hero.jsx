@@ -11,7 +11,7 @@ const Hero = ({ currentTime, location, currentQuote }) => {
       <div className="relative mx-auto max-w-6xl px-4 py-12">
         {/* Location & Time */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg mb-4">
+          <div className="inline-flex items-center space-x-2 bg-white/80 dark:bg-black/80 dark:border dark:border-emerald-600 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg mb-4">
             <MapPin className="h-4 w-4 text-emerald-600" />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
               {location}

@@ -22,7 +22,7 @@ const ReviewForm = ({ onSubmit, onClose }) => {
   };
 
   return (
-    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+    <div className=" p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
       <h4 className="text-sm font-medium text-gray-900 dark:text-gray-50 mb-3 ">
         Write a Review
       </h4>
@@ -60,7 +60,7 @@ const ReviewForm = ({ onSubmit, onClose }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="Share your experience with this resource..."
-            className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none"
+            className="w-full px-3 py-2 dark:bg-black/40 dark:text-gray-100 text-sm border border-gray-200 dark:border-emerald-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none"
             rows="3"
           />
         </div>
@@ -76,7 +76,7 @@ const ReviewForm = ({ onSubmit, onClose }) => {
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-2 border border-gray-200 text-gray-600 dark:text-gray-100 dark:hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+            className="px-3 py-2 border border-gray-200 dark:border-emerald-600 text-gray-600 dark:text-gray-100 dark:hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm"
           >
             Cancel
           </button>

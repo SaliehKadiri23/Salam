@@ -276,7 +276,7 @@ const ResourceCard = ({ resource }) => {
           <div className="mt-2">
             <button
               onClick={() => setShowReviewForm(!showReviewForm)}
-              className="w-full px-4 py-2 border border-gray-200 text-gray-600 dark:text-gray-100 dark:hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center justify-center space-x-2"
+              className="w-full px-4 py-2 border border-gray-200 dark:border-emerald-600  text-gray-600 dark:text-gray-100 dark:hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center justify-center space-x-2"
             >
               <Star className="w-4 h-4" />
               <span>Write a Review</span>
@@ -290,7 +290,7 @@ const ResourceCard = ({ resource }) => {
           />
         )}
         {showDetails && (
-          <div className="mt-4 pt-4 border-t border-gray-100 animate-fadeIn">
+          <div className="mt-4 pt-4 border-t border-gray-100 dark:border-emerald-600 animate-fadeIn">
             <div className="space-y-3">
               <div>
                 <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">

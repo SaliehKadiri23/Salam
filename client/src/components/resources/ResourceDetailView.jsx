@@ -56,18 +56,18 @@ const ResourceDetailView = () => {
   const recommendedResources = getRecommendedResources(resource);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-800 dark:to-gray-900">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button
           onClick={() => dispatch(closeResourceDetail())}
-          className="flex items-center space-x-2 text-emerald-600 hover:text-emerald-700 mb-6 transition-colors"
+          className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-500 hover:text-emerald-700 mb-6 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Resources</span>
         </button>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-sm border border-emerald-100 overflow-hidden mb-6">
+            <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 overflow-hidden mb-6">
               <div className="aspect-video bg-gray-100 relative">
                 <img
                   src={resource.image}
@@ -98,7 +98,7 @@ const ResourceDetailView = () => {
               </div>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-4 text-sm text-gray-600">
+                  <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-100">
                     <div className="flex items-center space-x-1">
                       <Eye className="w-4 h-4" />
                       <span>{resource.views} views</span>
@@ -106,7 +106,7 @@ const ResourceDetailView = () => {
                     <div className="flex items-center space-x-1">
                       <Star className="w-4 h-4 fill-current text-amber-400" />
                       <span>
-                        {averageRating.toFixed(1)} ({resourceReviews.length}{' '}
+                        {averageRating.toFixed(1)} ({resourceReviews.length}{" "}
                         reviews)
                       </span>
                     </div>
@@ -117,24 +117,24 @@ const ResourceDetailView = () => {
                   </div>
                   <button
                     onClick={() => dispatch(toggleBookmark(resource.id))}
-                    className="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center space-x-2 px-4 py-2 border border-gray-200 dark:border-emerald-600 rounded-lg hover:bg-gray-50 dark:hover:bg-green-700 transition-colors"
                   >
                     {isBookmarked ? (
                       <BookmarkCheck className="w-4 h-4 text-amber-500" />
                     ) : (
-                      <Bookmark className="w-4 h-4 text-gray-600" />
+                      <Bookmark className="w-4 h-4 text-gray-600 dark:text-gray-100" />
                     )}
-                    <span className="text-sm">
-                      {isBookmarked ? 'Bookmarked' : 'Bookmark'}
+                    <span className="text-sm dark:text-gray-100">
+                      {isBookmarked ? "Bookmarked" : "Bookmark"}
                     </span>
                   </button>
                 </div>
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-100">
                       Progress
                     </span>
-                    <span className="text-sm text-emerald-600">
+                    <span className="text-sm text-emerald-600 dark:text-emerald-400">
                       {progress}%
                     </span>
                   </div>
@@ -145,7 +145,9 @@ const ResourceDetailView = () => {
                     ></div>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-6">{resource.description}</p>
+                <p className="text-gray-600 dark:text-gray-100 mb-6">
+                  {resource.description}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {resource.tags.map((tag) => (
                     <span
@@ -158,9 +160,9 @@ const ResourceDetailView = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-emerald-100 mb-6">
+            <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 mb-6">
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                   Content Structure
                 </h2>
                 <div className="space-y-2">
@@ -170,14 +172,14 @@ const ResourceDetailView = () => {
                       onClick={() => setActiveChapter(index)}
                       className={`w-full text-left p-4 rounded-lg transition-colors ${
                         activeChapter === index
-                          ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                          : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
-                      } border`}
+                          ? "bg-emerald-50 dark:bg-emerald-700 dark:text-gray-100 border-emerald-200 text-emerald-700"
+                          : "bg-gray-50 dark:bg-black/40 dark:text-gray-100 hover:bg-gray-100 text-gray-700"
+                      } border dark:border-emerald-600`}
                     >
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="font-medium">{chapter.title}</h3>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-gray-500 dark:text-gray-200">
                             {chapter.duration} minutes
                           </p>
                         </div>
@@ -196,38 +198,38 @@ const ResourceDetailView = () => {
             <CommentsSection resourceId={resource.id} />
           </div>
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-sm border border-emerald-100 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Downloads
               </h3>
               <div className="space-y-3">
                 {resource.downloads.map((download, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    className="flex items-center justify-between p-3 dark:border dark:border-emerald-600 bg-gray-50 dark:bg-black/40 rounded-lg"
                   >
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
                         <FileText className="w-4 h-4 text-emerald-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                           {download.name}
                         </p>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-gray-600 dark:text-gray-100">
                           {download.size}
                         </p>
                       </div>
                     </div>
-                    <button className="p-2 text-gray-400 hover:text-emerald-600 transition-colors">
+                    <button className="p-2 text-gray-400 dark:text-gray-100 hover:text-emerald-600 transition-colors">
                       <Download className="w-4 h-4" />
                     </button>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-emerald-100 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Recommended
               </h3>
               <div className="space-y-4">
@@ -235,18 +237,18 @@ const ResourceDetailView = () => {
                   <button
                     key={rec.id}
                     onClick={() => dispatch(openResourceDetail(rec))}
-                    className="w-full text-left p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="w-full text-left p-3 bg-gray-50 dark:bg-black/40 dark:border dark:border-emerald-600 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <div className="flex space-x-3">
                       <div className="w-16 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded flex-shrink-0"></div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-gray-900 mb-1 truncate">
+                        <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1 truncate">
                           {rec.title}
                         </h4>
-                        <p className="text-xs text-gray-600 mb-1">
+                        <p className="text-xs text-gray-600 dark:text-gray-200 mb-1">
                           {rec.author}
                         </p>
-                        <div className="flex items-center space-x-2 text-xs text-gray-500">
+                        <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-100">
                           <Clock className="w-3 h-3" />
                           <span>{rec.duration}</span>
                           <Star className="w-3 h-3 fill-current text-amber-400" />

@@ -41,7 +41,7 @@ const PrayerTable = ({ currentTime }) => {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 dark:divide-emerald-600">
             {prayerTimes.map((prayer, index) => {
               const IconComponent = iconMap[prayer.icon] || Sun;
               const timeLeft = calculateTimeLeft(prayer.begins, currentTime);

@@ -22,7 +22,7 @@ const QiblaCompass = () => {
         y: 200,
       }}
       viewport={{ once: true }}
-      className="bg-white dark:bg-black/90 rounded-2xl shadow-xl p-6 text-center"
+      className="bg-white dark:bg-black/90 dark:border dark:border-emerald-600 rounded-2xl shadow-xl p-6 text-center"
     >
       <div className="relative w-24 h-24 mx-auto mb-4">
         <div

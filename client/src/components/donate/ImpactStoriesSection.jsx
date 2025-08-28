@@ -25,7 +25,7 @@ const ImpactCard = ({ story, index }) => (
     </h3>
     <p className="text-gray-600 dark:text-gray-300 mb-6">{story.description}</p>
 
-    <div className="border-t border-gray-100 pt-6">
+    <div className="border-t border-gray-100 dark:border-emerald-600 pt-6">
       <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-500 mb-1">
         {story.number}
       </p>

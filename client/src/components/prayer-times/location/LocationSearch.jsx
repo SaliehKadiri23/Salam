@@ -50,7 +50,7 @@ const LocationSearch = () => {
                 handleSearchSubmit(e);
               }
             }}
-            className="w-full pl-10 pr-10 py-3 dark:bg-black dark:placeholder:text-white/80 dark:text-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm outline-none transition-all duration-200 relative z-0"
+            className="w-full pl-10 pr-10 py-3 dark:bg-black dark:placeholder:text-white/80 dark:text-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm dark:border-emerald-600 outline-none transition-all duration-200 relative z-0"
           />
           {searchQuery && (
             <button

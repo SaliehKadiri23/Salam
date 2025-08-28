@@ -16,10 +16,10 @@ const CommentsSection = ({ resourceId }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-emerald-100">
+    <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600">
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Reviews ({resourceReviews.length})
           </h2>
           <button
@@ -31,7 +31,7 @@ const CommentsSection = ({ resourceId }) => {
           </button>
         </div>
         {showReviewForm && (
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <div className="mb-6 dark:border dark:border-emerald-600 bg-gray-50 rounded-lg">
             <ReviewForm
               onSubmit={handleAddReview}
               onClose={() => setShowReviewForm(false)}
@@ -42,15 +42,15 @@ const CommentsSection = ({ resourceId }) => {
           {resourceReviews.map((review) => (
             <div
               key={review.id}
-              className="border-b border-gray-100 last:border-b-0 pb-4 last:pb-0"
+              className="border-b border-gray-100 dark:border-emerald-600 last:border-b-0 pb-4 last:pb-0"
             >
               <div className="flex items-start space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 text-white" />
+                  <Star className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-gray-900 dark:text-gray-100">
                       {review.author}
                     </span>
                     <div className="flex space-x-1">
@@ -59,20 +59,20 @@ const CommentsSection = ({ resourceId }) => {
                           key={i}
                           className={`w-3 h-3 ${
                             i < review.rating
-                              ? 'fill-amber-400 text-amber-400'
-                              : 'text-gray-300'
+                              ? "fill-amber-400 text-amber-400"
+                              : "text-gray-300"
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-gray-500  dark:text-gray-100">
                       {review.date}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm mb-2">
+                  <p className="text-gray-600 dark:text-gray-100 text-sm mb-2">
                     {review.comment}
                   </p>
-                  <button className="flex items-center space-x-1 text-xs text-gray-500 hover:text-emerald-600 transition-colors">
+                  <button className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-100 hover:text-emerald-600 transition-colors">
                     <ThumbsUp className="w-3 h-3" />
                     <span>{review.likes}</span>
                   </button>
@@ -82,8 +82,8 @@ const CommentsSection = ({ resourceId }) => {
           ))}
         </div>
         {resourceReviews.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            <MessageCircle className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+          <div className="text-center py-8 text-gray-500 dark:text-gray-100">
+            <MessageCircle className="w-8 h-8 mx-auto mb-2 text-gray-400 dark:text-gray-100" />
             <p>No reviews yet. Be the first to share your thoughts!</p>
           </div>
         )}

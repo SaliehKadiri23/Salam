@@ -13,12 +13,12 @@ const NoResults = () => {
   return (
     <div className="text-center py-16">
       <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-        <Search className="w-8 h-8 text-slate-400" />
+        <Search className="w-8 h-8 text-slate-400 dark:text-gray-900" />
       </div>
-      <h3 className="text-xl font-semibold text-slate-800 mb-2">
+      <h3 className="text-xl font-semibold text-slate-800 dark:text-gray-100 mb-2">
         No opportunities found
       </h3>
-      <p className="text-slate-600 mb-6">
+      <p className="text-slate-600 dark:text-gray-200 mb-6">
         Try adjusting your filters or search terms
       </p>
       <button

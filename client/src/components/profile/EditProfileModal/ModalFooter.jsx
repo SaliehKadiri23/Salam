@@ -8,11 +8,11 @@ const ModalFooter = ({ onCancel, onSave, loading, hasChanges }) => {
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-500">
           {hasChanges ? (
-            <span className="text-amber-600 dark:text-gray-100 font-medium">
+            <span className="text-white dark:text-gray-100 font-medium">
               • You have unsaved changes
             </span>
           ) : (
-            <span className="dark:text-gray-100">All changes saved</span>
+            <span className="dark:text-gray-100 text-white">All changes saved</span>
           )}
         </div>
 

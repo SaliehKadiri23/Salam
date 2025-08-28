@@ -38,7 +38,7 @@ const HijriCalendar = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-black/85 rounded-2xl shadow-xl p-6">
+    <div className="bg-white dark:bg-black/85 rounded-2xl dark:border dark:border-emerald-600 shadow-xl p-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Calendar */}
         <div>

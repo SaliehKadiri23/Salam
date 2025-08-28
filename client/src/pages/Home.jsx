@@ -137,7 +137,7 @@ function PrayerTools({currentTime}) {
           opacity: 0,
           y: 300,
         }}
-        viewport={{once:true}}
+        viewport={{ once: true }}
         id="prayer-tools"
         className="container mx-auto w-full max-w-6xl px-4 py-16 "
       >
@@ -173,7 +173,7 @@ function PrayerTools({currentTime}) {
           </div>
 
           {/* Panels */}
-          <div className="mt-8 divide-y divide-gray-200 rounded-2xl bg-white/80 shadow-sm ring-1 ring-gray-200 backdrop-blur">
+          <div className="mt-8 divide-y divide-gray-200 rounded-2xl bg-white/80 dark:bg-emerald-600 shadow-sm ring-1 ring-gray-200 dark:ring-emerald-600 backdrop-blur">
             {tab === "times" && (
               <div
                 role="tabpanel"
@@ -191,13 +191,15 @@ function PrayerTools({currentTime}) {
                       return (
                         <div
                           key={p.name}
-                          className="flex flex-col transition-all duration-300 hover:scale-110 items-center p-3 rounded-md bg-gray-50"
+                          className="flex flex-col transition-all duration-300 hover:scale-110 items-center p-3 rounded-md bg-gray-50 dark:bg-black/40 dark:border dark:border-emerald-600"
                         >
-                          <div className="text-sm text-gray-500">{p.name}</div>
-                          <div className="text-lg font-bold">
+                          <div className="text-sm text-gray-500 dark:text-gray-100">
+                            {p.name}
+                          </div>
+                          <div className="text-lg font-bold dark:text-gray-100">
                             {p.name === "Sunrise" ? p.begins : p.iqama}
                           </div>
-                          <div className="text-xs font-bold text-green-600">
+                          <div className="text-xs font-bold text-green-600 dark:text-green-400">
                             {timeLeft}
                           </div>
                         </div>
@@ -212,10 +214,9 @@ function PrayerTools({currentTime}) {
               <div
                 role="tabpanel"
                 aria-labelledby={tablistId}
-                className="grid gap-4 p-6"
+                className="grid gap-4 p-3"
               >
                 <HijriCalendar />
-                
               </div>
             )}
 
@@ -228,7 +229,7 @@ function PrayerTools({currentTime}) {
                     </div>
                     <div className="absolute inset-0 animate-spin rounded-full border-t-8 border-t-green-500 border-transparent" />
                   </div>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-gray-700 dark:text-gray-100">
                     Replace with device orientation & geo logic as soon IN SHA
                     ALLAH.
                   </p>
@@ -328,7 +329,7 @@ function Resources() {
                     : dispatch(setSelectedCategory(c.category)) && "/resources"
                 )
               }
-              className="group text-left overflow-hidden rounded-2xl bg-white/80 shadow-sm ring-1 ring-gray-200 transition duration-300 hover:-translate-y-1 hover:shadow-md backdrop-blur"
+              className="group text-left overflow-hidden rounded-2xl bg-white/80 dark:bg-black/40 shadow-sm ring-1 ring-gray-200 dark:ring-emerald-600 transition duration-300 hover:-translate-y-1 hover:shadow-md backdrop-blur"
             >
               <div
                 className="md:h-48 h-44 mt-[-10px] w-full bg-cover bg-center"
@@ -336,9 +337,9 @@ function Resources() {
                 aria-hidden
               />
               <div className="p-6">
-                <h4 className="text-xl font-semibold">{c.title}</h4>
-                <p className="mt-2 text-sm text-gray-500">{c.desc}</p>
-                <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-green-500">
+                <h4 className="text-xl font-semibold dark:text-gray-100">{c.title}</h4>
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-200">{c.desc}</p>
+                <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-green-500 dark:text-green-400">
                   Learn more <ExternalLink className="size-4" aria-hidden />
                 </span>
               </div>
@@ -364,11 +365,11 @@ function Events() {
     <div className="w-full flex justify-center items-center bg-gray-100 dark:bg-gray-500">
       <section
         id="events"
-        className="rounded-xl bg-slate-50 dark:bg-slate-200 p-6 max-w-[1130px] w-full my-7 mx-3 "
+        className="rounded-xl bg-slate-50 dark:bg-slate-700 p-6 max-w-[1130px] w-full my-7 mx-3 "
       >
         <div className="mb-6 flex items-center justify-between">
-          <h3 className="text-2xl font-semibold dark:text-gray-700">Events</h3>
-          <div className="text-sm text-gray-800 font-bold dark:text-gray-600">
+          <h3 className="text-2xl font-semibold dark:text-gray-100">Events</h3>
+          <div className="text-sm text-gray-800 font-bold dark:text-gray-200">
             Join upcoming community activities
           </div>
         </div>
@@ -391,7 +392,7 @@ function Events() {
               viewport={{ once: true }}
               key={e.id}
               onClick={() => navigate(e.eventLink)}
-              className="rounded-lg bg-gray-100 dark:bg-gray-300 shadow-sm transition-all duration-300 hover:scale-110 overflow-hidden"
+              className="rounded-lg bg-gray-100 dark:bg-black/40 dark:border dark:border-emerald-600 shadow-sm transition-all duration-300 hover:scale-110 overflow-hidden"
             >
               <div
                 className="h-44 bg-cover bg-center"
@@ -401,16 +402,16 @@ function Events() {
               />
               <div className="p-4">
                 <div className="flex items-start flex-col justify-evenly gap-3">
-                  <h4 className="font-semibold text-lg">{e.title}</h4>
-                  <time className="text-sm text-gray-700">
+                  <h4 className="font-semibold text-lg dark:text-gray-100">{e.title}</h4>
+                  <time className="text-sm text-gray-700 dark:text-gray-200">
                     {formatDate(e.date)}
                   </time>
                 </div>
-                <p className="mt-2 text-left text-sm text-gray-600">
+                <p className="mt-2 text-left text-sm text-gray-600 dark:text-gray-200">
                   {e.description}
                 </p>
                 <div className="mt-4 flex items-center gap-3">
-                  <Calendar size={18} className="text-green-600 " />
+                  <Calendar size={18} className="text-green-600 dark:text-green-400" />
                   <span className="text-sm font-medium text-green-500">
                     Learn more
                   </span>

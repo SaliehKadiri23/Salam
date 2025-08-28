@@ -15,7 +15,7 @@ const AdvancedFilters = ({ opportunitiesCount }) => {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm relative z-20 rounded-2xl p-6 shadow-lg border border-slate-200/60">
+    <div className="bg-white/80 dark:bg-black/70 backdrop-blur-sm relative z-20 rounded-2xl p-6 p shadow-lg border border-slate-200/60 dark:border-emerald-600">
       <SearchBar
         value={search}
         onChange={(value) => handleFilterChange({ search: value })}
@@ -24,7 +24,7 @@ const AdvancedFilters = ({ opportunitiesCount }) => {
 
       <button
         onClick={() => setIsFilterOpen(!isFilterOpen)}
-        className="flex items-center gap-2 text-slate-600 hover:text-teal-600 transition-colors duration-300 mb-4"
+        className="flex items-center gap-2 text-slate-600 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors duration-300 mb-4"
       >
         <Filter className="w-4 h-4" />
         Advanced Filters
@@ -35,18 +35,16 @@ const AdvancedFilters = ({ opportunitiesCount }) => {
         />
       </button>
 
-      <div className="mb-4 text-sm text-slate-600">
+      <div className="mb-4 text-sm text-slate-600 dark:text-gray-100">
         Showing {opportunitiesCount} opportunities
       </div>
 
       {isFilterOpen && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 pt-4 border-t border-slate-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 pt-4 border-t border-slate-200 dark:border-emerald-600">
           <CustomSelect
             label="Category"
             value={category}
-            onChange={(value) =>
-              handleFilterChange({ category: value })
-            }
+            onChange={(value) => handleFilterChange({ category: value })}
             options={filterOptions.categories}
             placeholder="Select category"
           />
@@ -54,9 +52,7 @@ const AdvancedFilters = ({ opportunitiesCount }) => {
           <CustomSelect
             label="Location"
             value={location}
-            onChange={(value) =>
-              handleFilterChange({ location: value })
-            }
+            onChange={(value) => handleFilterChange({ location: value })}
             options={filterOptions.locations}
             placeholder="Select location"
           />
@@ -72,9 +68,7 @@ const AdvancedFilters = ({ opportunitiesCount }) => {
           <CustomSelect
             label="Time Commitment"
             value={timeCommitment}
-            onChange={(value) =>
-              handleFilterChange({ timeCommitment: value })
-            }
+            onChange={(value) => handleFilterChange({ timeCommitment: value })}
             options={filterOptions.timeCommitments}
             placeholder="Select time"
           />
@@ -82,9 +76,7 @@ const AdvancedFilters = ({ opportunitiesCount }) => {
           <CustomSelect
             label="Skill Level"
             value={skillLevel}
-            onChange={(value) =>
-              handleFilterChange({ skillLevel: value })
-            }
+            onChange={(value) => handleFilterChange({ skillLevel: value })}
             options={filterOptions.skillLevels}
             placeholder="Select level"
           />
