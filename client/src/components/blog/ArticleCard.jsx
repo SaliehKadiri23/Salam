@@ -85,7 +85,7 @@ const ArticleCard = ({ article, onBookmark, onShare }) => {
                       },
                     ].map(({ platform, icon: Icon, color }) => (
                       <button
-                        key={platform} // Fix #5
+                        key={platform} 
                         onClick={() => {
                           onShare(article, platform);
                           setShowShareMenu(false);
@@ -188,7 +188,7 @@ const ArticleCard = ({ article, onBookmark, onShare }) => {
           </div>
         </div>
 
-        {/* Read More Button (Fix #6 - now a semantic anchor tag) */}
+        {/* Read More Button */}
         <div className="pt-2">
           <a
             href={`/articles/${article.id}`}

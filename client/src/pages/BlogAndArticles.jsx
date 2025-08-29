@@ -6,7 +6,10 @@ import FilterControls from '../components/blog/FilterControls';
 import ArticlesGrid from '../components/blog/ArticlesGrid';
 import { setSearchTerm, setSelectedCategory, setPage, toggleBookmark } from '../redux/blogSlice';
 
-// Custom Hook for Debouncing (Fix #4)
+// RTK QUERY
+import { useGetArticlesQuery } from '../services/apiSlice';
+
+// Custom Hook for Debouncing
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -55,21 +58,25 @@ const shareArticle = (article, platform) => {
 // Main Component
 const BlogAndArticles = () => {
   const dispatch = useDispatch();
-  const { articles, searchTerm, selectedCategory, page } = useSelector((state) => state.blog);
+  const { searchTerm, selectedCategory, page } = useSelector((state) => state.blog);
   const {quranicVerseOfTheDay} = useSelector((state) => state.islamicUtilities)
 
   const [isLoading, setIsLoading] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const articlesPerPage = 9;
-  
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  // Get Articles Hook
+  const {data : articles = [], isLoading : isArticlesLoading, isSuccess, isError, error} = useGetArticlesQuery()
+
+  console.log(articles, isArticlesLoading, isSuccess, isError, error);
 
   
   // Categories
   const categories = useMemo(() => {
     const allArticles = articles; // Uses a fresh copy to derive categories
-    return ['All', 'Latest', ...new Set(allArticles.map(article => article.category))];
-  }, []);
+    return ['All', 'Latest', ...new Set(allArticles?.map(article => article.category))];
+  }, [articles]);
 
   // Filter articles based on search and category
   const filteredArticles = useMemo(() => {
@@ -94,7 +101,7 @@ const BlogAndArticles = () => {
   
   const hasMore = page * articlesPerPage < filteredArticles.length;
 
-  // Sliced articles for display (Fix #3)
+  // Sliced articles for display
   const articlesToDisplay = useMemo(() => {
     return filteredArticles.slice(0, page * articlesPerPage);
   }, [filteredArticles, page]);
@@ -115,7 +122,7 @@ const BlogAndArticles = () => {
     }, 500);
   }, [isLoading, hasMore, dispatch, page]);
   
-  // Intersection Observer for infinite scroll (Fix #2)
+  // Intersection Observer for infinite scroll 
   const observer = useRef();
   const lastArticleElementRef = useCallback(node => {
     if (isLoading) return;
@@ -129,7 +136,7 @@ const BlogAndArticles = () => {
   }, [isLoading, hasMore, loadMoreArticles]);
 
 
-  // Toggle bookmark (Fix #3 - this now works correctly)
+  // Toggle bookmark 
   const handleToggleBookmark = useCallback((articleId) => {
     dispatch(toggleBookmark(articleId));
   }, [dispatch]);

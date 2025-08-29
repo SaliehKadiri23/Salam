@@ -35,7 +35,7 @@ const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
     setIsSubmitting(true);
     
     try {
-      // Create the request object
+      // Create the request object (Dua Request)
       const newRequest = {
         id: Date.now().toString(),
         content: formData.content.trim(),

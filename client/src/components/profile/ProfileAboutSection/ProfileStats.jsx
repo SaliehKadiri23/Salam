@@ -117,7 +117,7 @@ const ProfileStats = ({ stats }) => {
                 />
               </div>
 
-              {/* Trend Indicator (Optional) */}
+              {/* Trend Indicator */}
               <div className="flex items-center justify-center gap-1 text-xs text-gray-500 dark:text-gray-100">
                 <TrendingUp className="w-3 h-3 text-green-500" />
                 <span>+12% this month</span>

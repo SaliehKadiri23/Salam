@@ -1,11 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-/**
- * LoginFooter Component
- * 
- * Displays the footer section of the login page with help links and policies
- */
+
 const LoginFooter = () => {
   return (
     <footer className="relative z-10 py-8 text-center">

@@ -35,7 +35,7 @@ const Navbar = () => {
     { title: "Community", link: "community" },
     { title: "Donate", link: "donate" },
     { title: "Events & News", link: "events_and_news" },
-    { title: "Blog", link: "blog" },
+    { title: "Blog & Articles", link: "blog" },
     { title: "About Us", link: "about_us" },
     { title: "Contact Us", link: "contact_us" },
   ];
@@ -122,7 +122,7 @@ const Navbar = () => {
                       >
                         <div className="py-2 px-3 flex flex-col gap-2">
                           {[
-                            { title: "Blog", link: "blog" },
+                            { title: "Blog & Articles", link: "blog" },
                             { title: "Events & News", link: "events_and_news" },
                             { title: "About Us", link: "about_us" },
                             { title: "Contact Us", link: "contact_us" },

@@ -21,7 +21,7 @@ const FilterControls = ({
           placeholder="Search articles, authors, or topics..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full dark:bg-black/40 dark:text-gray-100  dark:placeholder:text-gray-300 pl-12 pr-4 py-3 text-lg border-2 outline-none border-gray-200 rounded-2xl focus:border-green-500 focus:ring-2 focus:ring-green-600 transition-all duration-300 bg-white shadow-lg"
+          className="w-full dark:bg-black/40 dark:text-gray-100 dark:border-emerald-600  dark:placeholder:text-gray-300 pl-12 pr-4 py-3 text-lg border-2 outline-none border-gray-200 rounded-2xl focus:border-green-500 focus:ring-2 focus:ring-green-600 transition-all duration-300 bg-white shadow-lg"
         />
       </div>
 

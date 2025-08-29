@@ -3,15 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import IslamicPattern from '../../utility/IslamicPattern';
 
-/**
- * LoginHeader Component
- * 
- * Displays the main header for the login page with welcome message,
- * Islamic greeting, and progress indicator
- * 
- * @param {Object} props - Component props
- * @param {string|null} props.selectedRole - Currently selected user role
- */
+
 const LoginHeader = ({ selectedRole }) => {
   return (
     <motion.header 

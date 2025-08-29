@@ -5,12 +5,7 @@ import {FaMosque, FaCrown } from 'react-icons/fa';
 import { selectSelectedRole } from '../../../redux/loginUiSlice';
 import { Stars } from 'lucide-react';
 
-/**
- * RoleIndicatorBadge Component
- * 
- * Displays the currently selected role with icon and styling
- * Shows role information in a badge format
- */
+
 const RoleIndicatorBadge = () => {
   const selectedRole = useSelector(selectSelectedRole);
 

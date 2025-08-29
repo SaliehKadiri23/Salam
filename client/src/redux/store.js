@@ -1,4 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query'; 
+import { apiSlice } from '../services/apiSlice.js'; 
 import uiReducer from './uiSlice';
 import resourcesReducer from './resourcesSlice';
 import userReducer from './userSlice';
@@ -36,5 +38,14 @@ export const store = configureStore({
     signup: signupReducer,
     auth: authReducer,
     loginUi: loginUiReducer,
+
+    // RTK QUERY
+    [apiSlice.reducerPath] : apiSlice.reducer
   },
+
+  // RTK QUERY CACHING MIDDLEWARE
+  middleware: (getDefaultMiddleware)=> getDefaultMiddleware().concat(apiSlice.middleware)
 });
+
+// Listeners
+setupListeners(store.dispatch)

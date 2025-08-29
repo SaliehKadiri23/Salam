@@ -33,7 +33,12 @@ const Home = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="pointer-events-none absolute inset-0 from-black/50 to-transparent " />
+        {/*  overlay for dark mode */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/50 to-transparent dark:from-black/70 dark:to-black/40" />
+
+        
+        <div className="pointer-events-none absolute inset-0 bg-black/0 dark:bg-black/30" />
+
         <motion.div
           initial={{
             opacity: 0,
@@ -48,12 +53,12 @@ const Home = () => {
             opacity: 0,
             y: -300,
           }}
-          className="relative z-10 mx-auto max-w-4xl px-4 text-center "
+          className="relative z-10 mx-auto max-w-4xl px-4 text-center"
         >
-          <h2 className="text-balance text-4xl font-black tracking-tight md:text-6xl">
+          <h2 className="text-balance text-4xl font-black bg-gradient-to-r tracking-tight md:text-6xl">
             Empowering the Ummah Worldwide
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg font-light text-white md:text-xl">
+          <p className="mx-auto mt-4 max-w-2xl text-pretty text-lg font-light text-white/90 dark:text-white/95 md:text-xl">
             Our mission is to provide a comprehensive online platform for
             Muslims to connect, learn, and grow in their faith.
           </p>
@@ -73,7 +78,7 @@ const Home = () => {
                 y: 200,
               }}
               href="#resources"
-              className="inline-flex items-center justify-center rounded-xl bg-green-500 px-6 py-3 text-base font-bold text-white shadow-lg shadow-green-600/10 transition-transform hover:-translate-y-0.5 hover:bg-green-600 focus:outline-none "
+              className="inline-flex items-center justify-center rounded-xl bg-green-500 dark:bg-green-700 dark:hover:bg-green-600 px-6 py-3 text-base font-bold text-white shadow-lg shadow-green-600/10 transition-transform hover:-translate-y-0.5 hover:bg-green-600 focus:outline-none"
             >
               Explore Resources
             </motion.a>
@@ -92,7 +97,7 @@ const Home = () => {
                 y: 300,
               }}
               href="#events"
-              className="inline-flex items-center justify-center rounded-xl bg-white/10 px-6 py-3  font-semibold text-white ring-1 ring-inset ring-white/30 backdrop-blur transition-all hover:bg-white/15 focus:outline-none focus-visible:ring-2 hover:-translate-y-0.5 "
+              className="inline-flex items-center justify-center rounded-xl bg-white/10 dark:bg-white/5 px-6 py-3 dark:ring-emerald-600 font-semibold text-white ring-1 ring-inset ring-white/30 dark:ring-white/20 backdrop-blur transition-all hover:bg-white/15 dark:hover:bg-white/10 focus:outline-none focus-visible:ring-2 hover:-translate-y-0.5"
             >
               Upcoming Events
             </motion.a>
@@ -173,7 +178,7 @@ function PrayerTools({currentTime}) {
           </div>
 
           {/* Panels */}
-          <div className="mt-8 divide-y divide-gray-200 rounded-2xl bg-white/80 dark:bg-emerald-600 shadow-sm ring-1 ring-gray-200 dark:ring-emerald-600 backdrop-blur">
+          <div className="mt-8 divide-y divide-gray-200 rounded-2xl bg-white/80 dark:bg-emerald-900 shadow-sm ring-1 ring-gray-200 dark:ring-emerald-600 backdrop-blur">
             {tab === "times" && (
               <div
                 role="tabpanel"

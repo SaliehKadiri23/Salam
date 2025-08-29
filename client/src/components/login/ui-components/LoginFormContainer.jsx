@@ -6,12 +6,7 @@ import { selectSelectedRole, selectIsScrollingToForm, backToRoleSelection, setSc
 import { selectAuthErrors } from '../../../redux/authSlice';
 import RoleIndicatorBadge from './RoleIndicatorBadge';
 
-/**
- * LoginFormContainer Component
- * 
- * Container wrapper for the login form section
- * Handles scrolling behavior and back navigation
- */
+
 const LoginFormContainer = ({ children }) => {
   const dispatch = useDispatch();
   const selectedRole = useSelector(selectSelectedRole);

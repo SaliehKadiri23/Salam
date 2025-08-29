@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-// Login validation schema with Islamic-friendly error messages
+// Login validation schema 
 export const getLoginValidationSchema = () => {
   return Yup.object().shape({
     email: Yup.string()
@@ -120,8 +120,7 @@ export const customValidationMessages = {
   serverError: 'We\'re experiencing technical difficulties. Please try again in a few moments, insha\'Allah.'
 };
 
-// Note: Remember Me functionality will be handled server-side with sessions and Passport.js
-// These are just helper functions for the UI state
+
 export const handleRememberMeToggle = (currentValue, setFieldValue) => {
   setFieldValue('rememberMe', !currentValue);
 };

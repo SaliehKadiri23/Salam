@@ -27,7 +27,7 @@ import { motion } from "framer-motion";
 // Glassmorphism Card
 const GlassmorphismCard = ({ children, className = "" }) => (
   <div
-    className={`bg-white/25 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black/5 ${className}`}
+    className={`bg-white/25 dark:bg-white/5 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black/5 ${className}`}
   >
     {children}
   </div>
@@ -156,7 +156,7 @@ const AboutUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-700 dark:to-slate-500 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-gray-800 dark:to-slate-900 relative overflow-hidden">
       {/* Background Islamic Pattern */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <svg className="w-full h-full" viewBox="0 0 200 200">

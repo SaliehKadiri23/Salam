@@ -93,7 +93,7 @@ const ForgotPasswordModal = () => {
     
     // Simulate API call
     setTimeout(() => {
-      // Mock success response
+      // Mock success message
       if (email.includes('@')) {
         dispatch(forgotPasswordSuccess({
           message: "We've sent password reset instructions to your email, In sha Allah.",

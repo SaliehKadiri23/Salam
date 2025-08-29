@@ -148,7 +148,7 @@ const Community = () => {
       id="DiscussionForums"
       className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
-      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700 dark:to-white/40">
+      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-gray-50 to-white dark:from-gray-900 dark:text-gray-700/40">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-emerald-100 rounded-xl">
             <MessageSquare className="text-emerald-600" size={20} />
@@ -168,7 +168,7 @@ const Community = () => {
           return (
             <div
               key={index}
-              className={`group/item p-4 rounded-xl border-2 bg-gradient-to-r ${category.color} dark:from-gray-600 dark:to-gray-500  hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer`}
+              className={`group/item p-4 rounded-xl border-2 dark:border-emerald-600 bg-gradient-to-r from-green-100 via-emerald-100 to-blue-200 dark:from-gray-800 dark:to-gray-800  hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer`}
             >
               <div className="flex items-start gap-4">
                 <div className="p-2 bg-white rounded-lg shadow-sm">
@@ -193,7 +193,7 @@ const Community = () => {
                 </div>
                 <ArrowRight
                   size={16}
-                  className="text-slate-400 dark:text-slate-100 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 group-hover/item:translate-x-1 transition-all"
+                  className="text-slate-900 dark:text-slate-100 group-hover/item:text-emerald-600 dark:group-hover/item:text-emerald-400 group-hover/item:translate-x-1 transition-all"
                 />
               </div>
             </div>
@@ -227,7 +227,7 @@ const Community = () => {
       id="Q&A"
       className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
-      <div className="p-6 border-b border-gray-100 bg-gradient-to-r dark:border-emerald-600 from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-white/40">
+      <div className="p-6 border-b border-gray-100 bg-gradient-to-r dark:border-emerald-600 from-blue-50 to-indigo-50  dark:from-gray-900 dark:text-gray-700/40">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-blue-100 rounded-xl">
             <HelpCircle className="text-blue-600" size={20} />
@@ -246,7 +246,7 @@ const Community = () => {
           {scholarQA.map((qa, index) => (
             <div
               key={index}
-              className="p-4 border border-gray-200 dark:border-emerald-600 rounded-xl dark:bg-gray-600 hover:border-blue-200 dark:hover:border-blue-600 dark:hover:bg-blue-50/20 hover:bg-blue-50/30 transition-all duration-200"
+              className="p-4 border border-gray-200 dark:border-emerald-600 rounded-xl dark:bg-gray-800 hover:border-blue-200 dark:hover:border-blue-600 dark:hover:bg-blue-50/20 hover:bg-blue-50/30 transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
@@ -306,7 +306,7 @@ const Community = () => {
       viewport={{ once: true }}
       className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
     >
-      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-purple-50 to-violet-50 dark:from-gray-700 dark:to-white/40">
+      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-purple-50 to-violet-50  dark:from-gray-900 dark:text-gray-700/40">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-purple-100 rounded-xl">
             <Heart className="text-purple-600" size={20} />
@@ -325,7 +325,7 @@ const Community = () => {
           {duaRequests.map((dua, index) => (
             <div
               key={index}
-              className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-600 dark:to-gray-600 rounded-xl border border-green-100 hover:shadow-sm transition-all duration-200"
+              className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 rounded-xl border border-green-100 dark:border-emerald-600 hover:shadow-sm transition-all duration-200"
             >
               <p className="text-sm text-slate-700 dark:text-slate-100 mb-3 leading-relaxed">
                 "{dua.text}"
@@ -454,7 +454,7 @@ const Community = () => {
         x: 200,
       }}
       viewport={{ once: true }}
-      className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-600 dark:to-gray-500 rounded-2xl p-6 border border-gray-200 dark:border-emerald-600"
+      className="bg-gradient-to-br from-slate-50 to-gray-50  dark:from-gray-900 dark:text-gray-700/40 rounded-2xl p-6 border border-gray-200 dark:border-emerald-600"
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 bg-slate-100 rounded-xl">
@@ -482,7 +482,7 @@ const Community = () => {
   );
 
   return (
-    <div className="bg-gray-50 dark:bg-black/35">
+    <div className="bg-gray-50 dark:bg-black/95">
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;

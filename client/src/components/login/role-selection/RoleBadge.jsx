@@ -2,14 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Star } from 'lucide-react';
 
-/**
- * RoleBadge Component
- * 
- * Displays a styled badge indicating the user's role with appropriate colors and icons
- * 
- * @param {Object} props - Component props
- * @param {'community' | 'imam' | 'chief-imam'} props.role - The user role to display
- */
+
 const RoleBadge = ({ role }) => {
   const roleBadgeConfig = {
     'community': { 

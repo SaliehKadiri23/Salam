@@ -83,7 +83,7 @@ const ProfileInfo = ({
         </div>
       </div>
 
-      {/* Bio Preview (if you want to add it later) */}
+      {/* Bio Preview  */}
       <div className="text-white/80 text-sm max-w-md">
         <p className="line-clamp-2">
           Seeking knowledge and serving the community. May Allah guide us all on the straight path.

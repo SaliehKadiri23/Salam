@@ -22,7 +22,7 @@ const ArticlesGrid = ({
         {articlesToDisplay.map((article, index) => {
           if (articlesToDisplay.length === index + 1) {
             return (
-              <div ref={lastArticleElementRef} key={article.id}>
+              <div ref={lastArticleElementRef} key={article._id}>
                 <ArticleCard
                   article={article}
                   onBookmark={() => toggleBookmark(article.id)}
@@ -33,7 +33,7 @@ const ArticlesGrid = ({
           } else {
             return (
               <ArticleCard
-                key={article.id}
+                key={article._id}
                 article={article}
                 onBookmark={() => toggleBookmark(article.id)}
                 onShare={shareArticle}

@@ -1,19 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  MessageSquare,
-  HelpCircle,
-  Users,
-  Heart,
-  HandHeart,
-  BookOpen,
-  Calendar,
-  Star,
-  ArrowRight,
-  Globe,
-  Clock,
-  MapPin,
-  Stars
-} from "lucide-react";
+
 
 
 const initialState = {
@@ -23,21 +9,19 @@ const initialState = {
       description: "A welcoming space for those new to Islam",
       icon: 'Heart',
       posts: 234,
-      color: "from-emerald-50 to-green-50 border-emerald-200",
+     
     },
     {
       title: "Parenting & Family",
       description: "Share advice on raising a Muslim family",
       icon: 'Stars',
       posts: 567,
-      color: "from-blue-50 to-indigo-50 border-blue-200",
     },
     {
       title: "Youth Corner",
       description: "Discussions for the younger generation",
       icon: 'Star',
       posts: 432,
-      color: "from-purple-50 to-violet-50 border-purple-200",
     },
   ],
   scholarQA: [

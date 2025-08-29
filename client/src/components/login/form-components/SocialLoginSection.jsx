@@ -1,17 +1,7 @@
 import React from 'react';
 import SocialAuthButton from '../../signup/SocialAuthButton';
 
-/**
- * SocialLoginSection Component
- * 
- * Displays social authentication options (Google, Facebook)
- * with divider and loading states
- * 
- * @param {Object} props - Component props
- * @param {Function} props.onSocialAuth - Callback when social auth is initiated
- * @param {boolean} props.authLoading - Whether auth is currently loading
- * @param {boolean} props.loginLoading - Whether login is currently loading
- */
+
 const SocialLoginSection = ({ onSocialAuth, authLoading, loginLoading }) => {
   return (
     <div className="mt-8">

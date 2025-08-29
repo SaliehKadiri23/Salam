@@ -4,12 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 import { selectNotification, hideNotification } from '../../../redux/loginUiSlice';
 
-/**
- * NotificationBanner Component
- * 
- * Displays notification messages with auto-hide functionality
- * Integrates with Redux for state management
- */
+
 const NotificationBanner = () => {
   const dispatch = useDispatch();
   const notification = useSelector(selectNotification);

@@ -27,11 +27,7 @@ export const roleConfig = {
   }
 };
 
-/**
- * RoleCard Component
- * 
- * Displays a role selection card with icon, title, description and permissions
- */
+
 const RoleCard = ({
   role,
   title,

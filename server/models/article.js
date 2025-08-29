@@ -40,7 +40,7 @@ const articleSchema = new mongoose.Schema({
   readTime: { type: Number, default: 0 },
 });
 
-// Model / MongoDB Collection (Articles)
+
 const Article = mongoose.model("Article", articleSchema);
 
 module.exports = Article;
