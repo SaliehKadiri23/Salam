@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 
-// Mock data that matches the current structure
+// Mock data 
 const mockQAData = [
   {
     id: 1,
