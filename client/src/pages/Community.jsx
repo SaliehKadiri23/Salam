@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
+import { useGetForumsQuery } from "../services/apiSlice";
 
 const iconComponents = {
   Heart,
@@ -28,10 +29,14 @@ const iconComponents = {
   Calendar,
 };
 
+
 const Community = () => {
   const navigate = useNavigate();
-  const { forumCategories, scholarQA, duaRequests, volunteerOpportunities } =
+  const { scholarQA, duaRequests, volunteerOpportunities } =
     useSelector((state) => state.community);
+
+    const {data: forumCategories = [], isLoading, isSuccess, isError} = useGetForumsQuery()
+    
 
   // Hero Section Component
   const HeroSection = () => (
@@ -167,7 +172,7 @@ const Community = () => {
           const IconComponent = iconComponents[category.icon];
           return (
             <div
-              key={index}
+              key={category?._id}
               className={`group/item p-4 rounded-xl border-2 dark:border-emerald-600 bg-gradient-to-r from-green-100 via-emerald-100 to-blue-200 dark:from-gray-800 dark:to-gray-800  hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer`}
             >
               <div className="flex items-start gap-4">
@@ -176,14 +181,14 @@ const Community = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-slate-800 dark:text-slate-100 mb-1 group-hover/item:text-emerald-700 dark:group-hover/item:text-emerald-400 transition-colors">
-                    {category.title}
+                    {category?.name}
                   </h3>
                   <p className="text-sm text-slate-600 dark:text-slate-300 mb-2">
-                    {category.description}
+                    {category?.description}
                   </p>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-slate-500 dark:text-slate-300">
-                      {category.posts} discussions
+                      {category?.posts.length} discussions
                     </span>
                     <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
                     <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">

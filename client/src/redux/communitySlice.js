@@ -3,28 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-  forumCategories: [
-    {
-      title: "New Muslims & Converts",
-      description: "A welcoming space for those new to Islam",
-      icon: 'Heart',
-      posts: 234,
-     
-    },
-    {
-      title: "Parenting & Family",
-      description: "Share advice on raising a Muslim family",
-      icon: 'Stars',
-      posts: 567,
-    },
-    {
-      title: "Youth Corner",
-      description: "Discussions for the younger generation",
-      icon: 'Star',
-      posts: 432,
-    },
-  ],
-  scholarQA: [
+    scholarQA: [
     {
       question: "What is the ruling on fasting while traveling?",
       askedBy: "Omar H.",
