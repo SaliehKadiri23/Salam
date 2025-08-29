@@ -109,7 +109,7 @@ const communitySlice = createSlice({
   name: 'community',
   initialState,
   reducers: {
-    // In the future, you can add reducers here to handle actions like adding a new forum post, submitting a Q&A question, etc.
+    
   },
 });
 

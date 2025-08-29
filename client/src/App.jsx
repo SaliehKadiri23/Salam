@@ -23,6 +23,7 @@ import ContactUs from "./pages/ContactUs";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
+import Test from "./pages/Test";
 
 const App = () => {
   // const [response, setResponse] = useState("")
@@ -80,6 +81,8 @@ const App = () => {
         <Route path="sign_up" element={<SignUp />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<Login />} />
+        <Route path="test" element={<Test />} />
+
       </Route>
     )
   );

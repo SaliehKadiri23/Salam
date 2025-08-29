@@ -5,35 +5,30 @@ const mockQAData = [
   {
     id: 1,
     user: "Fatima Khan",
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b829?w=100&h=100&fit=crop&crop=face",
     question: "What are the key principles of Islamic finance, and how do they differ from conventional finance?",
     category: "finance",
     timeAgo: "2 days ago",
     likes: 24,
     hasAnswer: true,
     scholar: "Scholar Ahmed",
-    scholarAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
     answer: "Islamic finance is based on principles such as the prohibition of interest (riba), risk-sharing, and ethical investing. It differs from conventional finance by avoiding interest-based transactions and promoting fairness and social responsibility.",
     answerTime: "1 day ago",
   },
   {
     id: 2,
     user: "Omar Hassan",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
     question: "How can I balance my professional career with my religious obligations as a Muslim?",
     category: "daily-life",
     timeAgo: "3 days ago",
     likes: 18,
     hasAnswer: true,
     scholar: "Scholar Ahmed",
-    scholarAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
     answer: "Balancing your career and religious obligations involves time management, prioritizing prayers and religious duties, and seeking opportunities to integrate your faith into your work life. It's about finding harmony between your professional and spiritual commitments.",
     answerTime: "2 days ago",
   },
   {
     id: 3,
     user: "Aisha Abdullah",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
     question: "What is the proper etiquette for making dua during prayer?",
     category: "worship",
     timeAgo: "1 day ago",
@@ -65,7 +60,6 @@ const filterOptions = [
   { value: "worship", label: "Worship" },
 ];
 
-// API-ready async thunks (currently using mock data)
 export const fetchQuestions = createAsyncThunk(
   'qa/fetchQuestions',
   async (_, { rejectWithValue }) => {
@@ -73,9 +67,6 @@ export const fetchQuestions = createAsyncThunk(
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 800));
       
-      // In real implementation, this would be:
-      // const response = await api.get('/api/questions');
-      // return response.data;
       
       return {
         questions: mockQAData,
@@ -91,12 +82,9 @@ export const submitQuestion = createAsyncThunk(
   'qa/submitQuestion',
   async (questionData, { rejectWithValue }) => {
     try {
-      // Simulate form submission
+      
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // In real implementation, this would be:
-      // const response = await api.post('/api/questions', questionData);
-      // return response.data;
       
       // For now, just return success
       return { success: true, message: 'Question submitted successfully' };
@@ -112,10 +100,6 @@ export const toggleQuestionLike = createAsyncThunk(
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 300));
-      
-      // In real implementation, this would be:
-      // const response = await api.post(`/api/questions/${questionId}/like`);
-      // return response.data;
       
       return {
         questionId,

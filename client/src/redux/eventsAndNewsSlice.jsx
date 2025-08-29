@@ -7,9 +7,12 @@ const initialState = {
   viewDate: new Date().toISOString(),
   selectedDate: null,
   hoveredDate: null,
+
+  // NOTE: Each event mush have an author
   eventsData: [
     {
       id: 1,
+      author: "Author's Name",
       eventLink: "/eventslink",
       title: "Jummah Prayer & Khutbah",
       date: new Date(2020, 9, 25).toISOString(),

@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Each Opportunity must have an author
 const volunteerOpportunities = [
   {
     id: 1,
     category: "Mosque Events",
+    author: "Author's Name",
     title: "Event Coordinator",
     organization: "Islamic Center of Al-Madinah",
     description:

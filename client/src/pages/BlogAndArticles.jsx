@@ -67,7 +67,7 @@ const BlogAndArticles = () => {
   
   // Categories
   const categories = useMemo(() => {
-    const allArticles = articles; // Use a fresh copy to derive categories
+    const allArticles = articles; // Uses a fresh copy to derive categories
     return ['All', 'Latest', ...new Set(allArticles.map(article => article.category))];
   }, []);
 
