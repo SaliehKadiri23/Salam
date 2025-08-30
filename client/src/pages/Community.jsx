@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
-import { useGetForumsQuery } from "../services/apiSlice";
+import { useGetForumsQuery, useGetQuestionsAndAnswersQuery } from "../services/apiSlice";
 
 const iconComponents = {
   Heart,
@@ -36,6 +36,7 @@ const Community = () => {
     useSelector((state) => state.community);
 
     const {data: forumCategories = [], isLoading, isSuccess, isError} = useGetForumsQuery()
+    
     
 
   // Hero Section Component
@@ -213,7 +214,14 @@ const Community = () => {
   );
 
   // Q&A Section Component
-  const ScholarQA = () => (
+const ScholarQA = () => {
+  const {
+    data: QuestionsAndAnswers = [],
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetQuestionsAndAnswersQuery();
+  return (
     <motion.div
       initial={{
         opacity: 0,
@@ -248,7 +256,7 @@ const Community = () => {
 
       <div className="p-6">
         <div className="space-y-4 mb-6">
-          {scholarQA.map((qa, index) => (
+          {QuestionsAndAnswers.filter((e, idx) => idx >= QuestionsAndAnswers.length - 3).map((qa, index) => (
             <div
               key={index}
               className="p-4 border border-gray-200 dark:border-emerald-600 rounded-xl dark:bg-gray-800 hover:border-blue-200 dark:hover:border-blue-600 dark:hover:bg-blue-50/20 hover:bg-blue-50/30 transition-all duration-200"
@@ -264,12 +272,12 @@ const Community = () => {
                     </p>
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        qa.status === "answered"
+                        qa.isAnswered
                           ? "bg-green-100 text-green-700"
                           : "bg-amber-100 text-amber-700"
                       }`}
                     >
-                      {qa.status}
+                      {qa.isAnswered ? "Answered" : "Pending"}
                     </span>
                   </div>
                 </div>
@@ -290,7 +298,9 @@ const Community = () => {
         </button>
       </div>
     </motion.div>
-  );
+  );};
+
+
 
   // Dua Wall Component
   const DuaWall = () => (

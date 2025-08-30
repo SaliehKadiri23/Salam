@@ -3,23 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-    scholarQA: [
-    {
-      question: "What is the ruling on fasting while traveling?",
-      askedBy: "Omar H.",
-      status: "answered",
-    },
-    {
-      question: "How can I improve my focus during Salah?",
-      askedBy: "Fatima A.",
-      status: "pending",
-    },
-    {
-      question: "Is it permissible to use a prayer app for Qibla direction?",
-      askedBy: "Ahmed M.",
-      status: "answered",
-    },
-  ],
+    
   duaRequests: [
     {
       text: "Please make dua for my mother's health and speedy recovery",

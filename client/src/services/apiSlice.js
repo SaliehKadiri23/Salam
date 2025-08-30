@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 export const apiSlice = createApi({
   reducerPath: "salam",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:7000" }),
-  tagTypes: ["Articles", "Forums"],
+  tagTypes: ["Articles", "Forums", "QuestionsAndAnswers"],
   endpoints: (builder) => ({
     // ! ARTICLES
     //  Getting All Articles
@@ -47,12 +47,19 @@ export const apiSlice = createApi({
     }),
 
     // ! FORUMS
+    // Getting all Articles
     getForums: builder.query({
       query: () => "/forums",
       providesTags: ["Forums"],
     }),
-    
+
+    // ! QuestionsAndAnswers
+    // Getting all "Questions And Answers
+    getQuestionsAndAnswers: builder.query({
+      query: () => "/questions_and_answers",
+      providesTags: ["QuestionsAndAnswers"],
+    }),
   }),
 });
 
-export const {useGetArticlesQuery, useAddNewArticleMutation, useUpdateArticleMutation, useDeleteArticleMutation, useGetForumsQuery} = apiSlice
+export const {useGetArticlesQuery, useAddNewArticleMutation, useUpdateArticleMutation, useDeleteArticleMutation, useGetForumsQuery, useGetQuestionsAndAnswersQuery} = apiSlice
