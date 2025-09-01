@@ -7,16 +7,16 @@ import {
   initializeQuestionState
 } from "../../../redux/qaSlice";
 import { getTimeAgo } from "../../../utils/timeUtils";
-import { useDeleteQuestionAndAnswerMutation } from "../../../services/apiSlice";
+import { useDeleteQuestionAndAnswerMutation, useToggleQuestionAndAnswerLikeMutation } from "../../../services/apiSlice";
 
 function QACard({ qa }) {
   const dispatch = useDispatch();
   const questionStates = useSelector(selectQuestionStates);
-  const { updatingLike } = useSelector(selectLoading);
+  const [liked, setLiked] = useState(false);
   const [deleteQuestionAndAnswer] = useDeleteQuestionAndAnswerMutation();
   
   const questionState = questionStates[qa._id];
-  const isUpdatingLike = updatingLike[qa._id] || false;
+  
 
   // Initialize question state if it does not exists
   useEffect(() => {
@@ -28,10 +28,17 @@ function QACard({ qa }) {
     }
   }, [dispatch, qa._id, qa.likes, questionState]);
 
-  const handleLikeToggle = () => {
+  const [
+    toggleQuestionAndAnswerLike,
+    { isLoading: isLikeUpdateLoading, isSuccess },
+  ] = useToggleQuestionAndAnswerLikeMutation();
+
+  const handleLikeToggle =  async (_id) => {
+    
     // TODO: Check how to implement single id invalidation tags
-    // TODO: Implement later with RTK Query mutations
-    console.log('Like functionality to be implemented with RTK Query mutations');
+    const result = await toggleQuestionAndAnswerLike(_id).unwrap();
+    setLiked(result.liked);
+    
   };
 
   const handleQuestionAndAnswerDelete = async (_id) => {
@@ -46,8 +53,8 @@ function QACard({ qa }) {
   }
 
   // Use questionState if available, otherwise fall back to original data
-  const displayLikes = questionState ? questionState.likeCount : qa.likes;
-  const isLiked = questionState ? questionState.isLiked : false;
+  const displayLikes =  qa.likes;
+
 
   return (
     <div className="w-full max-w-full backdrop-blur-xl bg-white dark:bg-black/40 bg-opacity-80 rounded-2xl border border-white dark:border-emerald-600 border-opacity-50 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group">
@@ -63,13 +70,18 @@ function QACard({ qa }) {
                 <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium capitalize whitespace-nowrap">
                   {qa.questionCategory.replace("-", " ")}
                 </span>
-                <button onClick={()=> handleQuestionAndAnswerDelete(qa._id)} className="px-3  py-2 bg-red-600 text-white rounded-full text-xs font-medium capitalize whitespace-nowrap">
+                <button
+                  onClick={() => handleQuestionAndAnswerDelete(qa._id)}
+                  className="px-3  py-2 bg-red-600 text-white rounded-full text-xs font-medium capitalize whitespace-nowrap"
+                >
                   Delete
                 </button>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-100 flex-shrink-0">
                 <Clock className="w-4 h-4" />
-                <span className="whitespace-nowrap">{getTimeAgo(qa.dateAsked)}</span>
+                <span className="whitespace-nowrap">
+                  {getTimeAgo(qa.dateAsked)}
+                </span>
               </div>
             </div>
 
@@ -80,21 +92,21 @@ function QACard({ qa }) {
             {/* Question Actions */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <button
-                onClick={handleLikeToggle}
-                disabled={isUpdatingLike}
+                onClick={()=>handleLikeToggle(qa._id)}
+                disabled={isLikeUpdateLoading}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 self-start ${
-                  isLiked
+                  liked
                     ? "bg-red-100 text-red-600"
                     : "bg-gray-100 dark:bg-gray-200 text-gray-600 hover:bg-gray-200"
                 } ${
-                  isUpdatingLike
+                  isLikeUpdateLoading
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer"
                 }`}
               >
                 <Heart
-                  className={`w-4 h-4 ${isLiked ? "fill-current" : ""} ${
-                    isUpdatingLike ? "animate-pulse" : ""
+                  className={`w-4 h-4 ${liked ? "fill-current" : ""} ${
+                    isLikeUpdateLoading ? "animate-pulse" : ""
                   }`}
                 />
                 <span className="text-sm font-medium">{displayLikes}</span>
@@ -130,7 +142,9 @@ function QACard({ qa }) {
                 </h4>
                 <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-200 flex-shrink-0">
                   <Clock className="w-4 h-4" />
-                  <span className="whitespace-nowrap">{getTimeAgo(qa.dateAnswered)}</span>
+                  <span className="whitespace-nowrap">
+                    {getTimeAgo(qa.dateAnswered)}
+                  </span>
                 </div>
               </div>
 

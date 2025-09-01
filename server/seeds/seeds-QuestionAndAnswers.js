@@ -17,217 +17,205 @@ mongoose.connection.once("open", () => {
 
 const questionsAndAnswers = [
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-15T10:30:00Z"),
-    dateAnswered: new Date("2025-08-16T14:45:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a101",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-01T09:00:00Z"),
+    dateAnswered: new Date("2025-07-02T10:30:00Z"),
+    questionCategory: "general",
+    isAnswered: true,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a201", "64f1abf1a2b4c3d4e5f6a202"],
+    likes: 2,
+    question: "What do Muslims believe about the Last Day and resurrection?",
+    answer:
+      "Muslims believe that on the Last Day all humans will be resurrected and judged by Allah based on their deeds, and rewarded or punished accordingly.",
+  },
+  {
+    askedBy: "64f1abf1a2b4c3d4e5f6a102",
+    dateAsked: new Date("2025-07-03T11:15:00Z"),
+    questionCategory: "worship",
+    isAnswered: false,
+    question: "How should one perform Wudu correctly according to the Sunnah?",
+  },
+  {
+    askedBy: "64f1abf1a2b4c3d4e5f6a103",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-05T14:00:00Z"),
+    dateAnswered: new Date("2025-07-05T18:00:00Z"),
     questionCategory: "fiqh",
     isAnswered: true,
-    likes: 34,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a203"],
+    likes: 1,
     question:
-      "What is the ruling on delaying the Maghrib prayer intentionally, and under what circumstances might this be permissible or discouraged according to fiqh?",
+      "If a person forgets to pray due to genuine forgetfulness, what is the ruling?",
     answer:
-      "Intentionally delaying Maghrib beyond its prescribed time without valid excuse is considered disliked (makruh) in most schools. However, it may be permitted if one falls asleep, forgets, or is genuinely uncertain about the prayer time, in which case it should be prayed as soon as one remembers.",
+      "If one misses a prayer out of genuine forgetfulness, the correct action is to perform it as soon as one remembers (Qada), and it will be accepted by Allah.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-17T09:00:00Z"),
-    questionCategory: "general",
-    isAnswered: false,
-    likes: 5,
-    question:
-      "How does one reconcile differences between interpretation of Quranic verses among various scholars while maintaining unity in faith?",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-18T13:20:00Z"),
-    dateAnswered: new Date("2025-08-19T11:30:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a104",
+    dateAsked: new Date("2025-07-07T08:30:00Z"),
     questionCategory: "daily-life",
-    isAnswered: true,
-    likes: 22,
+    isAnswered: false,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a204"],
+    likes: 1,
     question:
-      "What are the recommended etiquettes when visiting someone’s home in Islam, particularly regarding entering, greeting, and interacting respectfully?",
-    answer:
-      "When entering a home, it is recommended to say 'Assalamu Alaikum', ask permission before entering, remove one’s shoes if customary, greet with kindness, respect the household’s privacy, accept or politely decline refreshment, and leave with a similar greeting and gratitude. These actions uphold good character and mutual respect.",
+      "What is the Islamic perspective on environmental stewardship and caring for nature?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-19T15:45:00Z"),
-    dateAnswered: new Date("2025-08-20T12:00:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a105",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-08T16:45:00Z"),
+    dateAnswered: new Date("2025-07-09T09:00:00Z"),
     questionCategory: "finance",
     isAnswered: true,
-    likes: 47,
-    question:
-      "Could you explain how profit-sharing contracts (like Mudarabah and Musharakah) comply with Islamic finance principles, especially in comparison to conventional interest-based systems?",
+    likedBy: ["64f1abf1a2b4c3d4e5f6a205", "64f1abf1a2b4c3d4e5f6a206"],
+    likes: 2,
+    question: "How do Islamic finance principles handle loans and interest?",
     answer:
-      "Mudarabah and Musharakah are based on risk-sharing and joint venture principles: in Mudarabah, one party provides capital while the other manages, sharing profits as agreed. In Musharakah, both parties contribute capital (and possibly skill), share profits proportionally, and carry losses according to investment. This aligns with Islamic prohibitions against Riba (interest), as no fixed return is guaranteed—profit is earned through genuine trade or investment, not time or capital alone.",
+      "Islamic finance prohibits Riba (interest). Instead, profit-based instruments like Murabaha and Musharakah are used to ensure fairness and shared risk.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-21T08:15:00Z"),
-    questionCategory: "worship",
-    isAnswered: false,
-    likes: 8,
-    question:
-      "What steps can a person take to improve concentration (khushu') in their daily prayers, especially when distracted by worldly thoughts?",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-22T17:30:00Z"),
-    dateAnswered: new Date("2025-08-23T09:50:00Z"),
-    questionCategory: "fiqh",
-    isAnswered: true,
-    likes: 29,
-    question:
-      "If a traveler combines prayers while still within the city limits (not a journey by definition), under what conditions is this allowed according to fiqh, and what definitions of 'travel' apply?",
-    answer:
-      "Combining prayers like Dhuhr-Asr or Maghrib-Isha is generally permitted only when traveling upon reaching the minimum distance (e.g., ~48 miles) from home. However, fiqh exceptions allow combining within the city in cases of rain, illness, etc., even if not traveling. Intent and hardship are key; the traveler status is defined by distance, but excuses can permit combining regardless.",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-24T10:00:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a106",
+    dateAsked: new Date("2025-07-10T12:10:00Z"),
     questionCategory: "general",
     isAnswered: false,
-    likes: 3,
     question:
-      "How can Muslims engage with interfaith dialogue in a way that preserves Islamic integrity while showing respect to others?",
+      "Can you explain the concept of Taqwa in Islam and how one can cultivate it?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-25T14:10:00Z"),
-    dateAnswered: new Date("2025-08-26T16:25:00Z"),
-    questionCategory: "daily-life",
-    isAnswered: true,
-    likes: 31,
-    question:
-      "What guidance does Islam provide regarding financial transparency in marriage, such as discussing debts, expenses, and mutual financial responsibilities?",
-    answer:
-      "Islam emphasizes honesty and mutual consultation (Shura). Couples should disclose debts, agree on household expenses, and ensure fairness and cooperation. Financial transparency fosters trust, avoids misunderstandings, and aligns with Islamic values of integrity and responsibility.",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-27T11:05:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a107",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-11T13:20:00Z"),
+    dateAnswered: new Date("2025-07-12T14:00:00Z"),
     questionCategory: "worship",
-    isAnswered: false,
-    likes: 6,
+    isAnswered: true,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a207"],
+    likes: 1,
     question:
-      "Is it permissible to attend a gathering focused on spiritual chanting or ritual remembrance (dhikr), and what etiquettes should one observe in such settings?",
+      "What is the importance of Sadaqah and how does it differ from Zakat?",
+    answer:
+      "Sadaqah is voluntary charity given at any time, while Zakat is obligatory and calculated on eligible wealth annually.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-28T09:30:00Z"),
-    dateAnswered: new Date("2025-08-29T10:40:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a108",
+    dateAsked: new Date("2025-07-13T09:00:00Z"),
+    questionCategory: "daily-life",
+    isAnswered: false,
+    question:
+      "What Islamic etiquette should one observe when entering a mosque?",
+  },
+  {
+    askedBy: "64f1abf1a2b4c3d4e5f6a109",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-14T10:30:00Z"),
+    dateAnswered: new Date("2025-07-15T11:45:00Z"),
     questionCategory: "fiqh",
     isAnswered: true,
-    likes: 27,
     question:
-      "When does impurity (najasah) invalidate wudu, and how are different types of impurities treated in terms of purification?",
+      "Is Wudu invalidated by touching a non-mahram, and what nullifies it?",
     answer:
-      "Contact with impure substances like urine or blood invalidates wudu. If impurity is dry and removed before washing, wudu can still be valid if cleanliness is ensured. Types like urine, feces, and alcohol differ: physical removal and ritual washing (wudu or ghusl) as appropriate restores purity. Persistent impurities require proper cleaning before prayer.",
+      "Most schools agree that mere contact without desire doesn’t invalidate Wudu; bodily fluids, deep sleep, or loss of consciousness do.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-29T13:45:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a110",
+    dateAsked: new Date("2025-07-16T14:15:00Z"),
     questionCategory: "finance",
     isAnswered: false,
-    likes: 4,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a208"],
+    likes: 1,
     question:
-      "How does Islamic finance view modern derivative contracts (e.g., futures or options), and what criteria determine their permissibility?",
+      "How should a Muslim approach modern insurance while avoiding Riba and uncertainty (gharar)?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-30T07:20:00Z"),
-    dateAnswered: new Date("2025-08-31T08:55:00Z"),
-    questionCategory: "worship",
+    askedBy: "64f1abf1a2b4c3d4e5f6a111",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-17T12:00:00Z"),
+    dateAnswered: new Date("2025-07-18T08:30:00Z"),
+    questionCategory: "general",
     isAnswered: true,
-    likes: 18,
-    question:
-      "What is the significance of reciting Surah Al-Fatiha in every rak’ah, and why is it considered a pillar of the prayer?",
-    answer:
-      "Surah Al-Fatiha is known as the essence of the Qur’an. It is a pillar (arkān) of prayer because it is a direct address to Allah, seeking guidance, mercy, and affirming His sovereignty. Without its recitation, a prayer is considered invalid according to consensus.",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-09-01T06:50:00Z"),
-    questionCategory: "daily-life",
-    isAnswered: false,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a209", "64f1abf1a2b4c3d4e5f6a210"],
     likes: 2,
     question:
-      "What does Islam teach about handling grievances within the family, especially when emotions are high and reconciliation seems difficult?",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-14T12:15:00Z"),
-    dateAnswered: new Date("2025-08-15T09:30:00Z"),
-    questionCategory: "fiqh",
-    isAnswered: true,
-    likes: 25,
-    question:
-      "If someone inadvertently eats something haram and then fasts during Ramadan, is their fast valid, and what are the steps they should take afterward?",
+      "What does Islam teach about religious tolerance and peaceful coexistence with other faiths?",
     answer:
-      "If one unintentionally consumes haram, the fast remains valid if repentance is sincere. They should continue fasting, seek forgiveness, and avoid repeating the act. If it was deliberate, repentance, making up the fast (qada), and possibly offering expiation (kaffara) if occurred frequently, may be required.",
+      "Islam emphasizes justice and peaceful coexistence. The Quran states 'there is no compulsion in religion' and advocates respectful dialogue.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-12T14:00:00Z"),
-    questionCategory: "general",
-    isAnswered: false,
-    likes: 10,
-    question:
-      "How can one maintain Islamic values in a secular workplace without causing conflict, especially when cultural norms among colleagues differ significantly?",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-11T16:20:00Z"),
-    dateAnswered: new Date("2025-08-12T10:15:00Z"),
-    questionCategory: "finance",
-    isAnswered: true,
-    likes: 19,
-    question:
-      "What is Zakat al-Fitr, how is its rate determined, and why is it required before Eid prayer?",
-    answer:
-      "Zakat al-Fitr is obligatory charity given to the needy before Eid prayer. It purifies the fasting person’s shortcomings and ensures the poor can celebrate. Its rate is typically one saa’ of staple food (about 2.5–3 kg) or its cash equivalent, based on local value.",
-  },
-  {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-10T11:30:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a112",
+    dateAsked: new Date("2025-07-19T15:20:00Z"),
     questionCategory: "worship",
     isAnswered: false,
-    likes: 7,
     question:
-      "What role does intention (niyyah) play in worship, and how should a person ensure their deeds are accepted and sincere?",
+      "Is listening to the Qur’an while fasting allowed, and does it affect the fast?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    answeredBy: "64f1ac01a2b4c3d4e5f6a702",
-    dateAsked: new Date("2025-08-09T09:10:00Z"),
-    dateAnswered: new Date("2025-08-10T07:45:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a113",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-20T09:45:00Z"),
+    dateAnswered: new Date("2025-07-20T13:10:00Z"),
     questionCategory: "daily-life",
     isAnswered: true,
-    likes: 23,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a211"],
+    likes: 1,
     question:
-      "Is it permissible to travel for leisure with the family, and what Islamic guidelines should be considered to strike a balance between enjoyment and spiritual purpose?",
+      "What is the Islamic ruling on eating halal meat if there's doubt about how it was slaughtered?",
     answer:
-      "Travel for leisure with family is permissible if halal means are used and it doesn’t distract from obligations. One should maintain prayer, modest behavior, avoid extravagance, and seek opportunities for learning or community benefit.",
+      "If there’s genuine uncertainty, one should avoid it unless no alternatives exist and necessity demands it.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a701",
-    dateAsked: new Date("2025-08-08T08:25:00Z"),
+    askedBy: "64f1abf1a2b4c3d4e5f6a114",
+    dateAsked: new Date("2025-07-21T10:00:00Z"),
+    questionCategory: "fiqh",
+    isAnswered: false,
+    question:
+      "Can someone intentionally break their fast during Ramadan and make it up later?",
+  },
+  {
+    askedBy: "64f1abf1a2b4c3d4e5f6a115",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-22T11:10:00Z"),
+    dateAnswered: new Date("2025-07-23T12:25:00Z"),
+    questionCategory: "general",
+    isAnswered: true,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a212", "64f1abf1a2b4c3d4e5f6a213"],
+    likes: 2,
+    question:
+      "What is the significance of prophets in Islam and how are they distinguished from Allah?",
+    answer:
+      "Prophets are honored messengers chosen by Allah. Muslims deeply respect them but never attribute divine status to them; worship is for Allah alone.",
+  },
+  {
+    askedBy: "64f1abf1a2b4c3d4e5f6a116",
+    dateAsked: new Date("2025-07-23T13:30:00Z"),
     questionCategory: "finance",
     isAnswered: false,
-    likes: 11,
     question:
-      "How can one ensure that their savings and investments are halal—what checks should they perform on companies or funds before investing?",
+      "Is cryptocurrency considered halal in Islam, and under what conditions?",
+  },
+  {
+    askedBy: "64f1abf1a2b4c3d4e5f6a117",
+    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    dateAsked: new Date("2025-07-24T14:45:00Z"),
+    dateAnswered: new Date("2025-07-25T09:05:00Z"),
+    questionCategory: "worship",
+    isAnswered: true,
+    likedBy: ["64f1abf1a2b4c3d4e5f6a214"],
+    likes: 1,
+    question:
+      "What is the reward for reading parts of the Qur’an, and how often should one read?",
+    answer:
+      "Every letter of the Qur’an has ten rewards. Even reading a few verses daily fosters consistency and reflection, yielding multiplied blessings.",
+  },
+  {
+    askedBy: "64f1abf1a2b4c3d4e5f6a118",
+    dateAsked: new Date("2025-07-25T16:00:00Z"),
+    questionCategory: "daily-life",
+    isAnswered: false,
+    question:
+      "How should one maintain Islamic ethics in the workplace, especially when facing unfair treatment?",
   },
 ];
+;
+;
 ;
 
 async function seedQuestionsAndAnswers() {

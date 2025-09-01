@@ -95,6 +95,18 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
     }),
+
+    // Liking / Un-Liking a QuestionsAndAnswer
+    toggleQuestionAndAnswerLike: builder.mutation({
+      query: (_id ) => ({
+        url: `/questions_and_answers/${_id}/like`,
+        method: "POST",
+        // headers: { "Content-Type": "application/json" },
+        // body: _id,
+      }),
+      // TODO : Implement individual QA invalidation
+      invalidatesTags: ["QuestionsAndAnswers"],
+    }),
   }),
 });
 
@@ -113,4 +125,5 @@ export const {
   useAddNewQuestionAndAnswerMutation,
   useUpdateQuestionAndAnswerMutation,
   useDeleteQuestionAndAnswerMutation,
+  useToggleQuestionAndAnswerLikeMutation
 } = apiSlice;

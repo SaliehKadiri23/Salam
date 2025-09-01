@@ -85,7 +85,24 @@ app.get("/forums", async (req, res)=>{
        console.log(`Deleted QA with id : ${id}`);
        res.send(result);
     } catch (error) {
-      console.log("Deleted Successfully!!!")
+      console.log("Error : ", error)
+    }
+   
+    
+  });
+
+  // Liking/Un-liking a QuestionsAndAnswer
+  app.post("/questions_and_answers/:id/like", async (req, res) => {
+    try {
+       let {id} = req.params
+       const result = await QuestionAndAnswer.toggleLike(
+         id,
+         "64f1abf1a2b4c3d4e5f6a111"
+         // TODO : IN SHA ALLAH - Replace with req.user._id when auth done
+       );
+       res.json(result);
+    } catch (error) {
+      console.log("Error!!!", error)
     }
    
     
