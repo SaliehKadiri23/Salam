@@ -20,9 +20,9 @@ const questionAndAnswerSchema = new mongoose.Schema({
     type: Date,
   },
   questionCategory: {
-    type: ObjectId,
+    type: String,
     required: true,
-    ref: "QuestionAndAnswerCategory"
+    enum: ["general", "fiqh", "finance", "daily-life", "worship"],
   },
   isAnswered: {
     type: Boolean,
@@ -40,7 +40,7 @@ const questionAndAnswerSchema = new mongoose.Schema({
   answer: {
     type: String,
     minLength: 3,
-  }
+  },
 });
 
 const QuestionAndAnswer = mongoose.model("QuestionAndAnswer", questionAndAnswerSchema);

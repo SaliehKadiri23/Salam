@@ -30,7 +30,7 @@ function FilterDropdown() {
   };
 
   return (
-    <div className="w-full md:w-64">
+    <div className="w-full relative z-100 md:w-64">
       <CustomDropdown
         options={filterOptionsWithIcons}
         value={selectedFilter}

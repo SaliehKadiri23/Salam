@@ -54,6 +54,23 @@ app.get("/forums", async (req, res)=>{
 
     res.json(questionAndAnswer);
   });
+
+  // Adding a QuestionsAndAnswer
+  app.post("/questions_and_answers", async (req, res) => {
+    res.send("New QA received");
+  });
+
+  // Updating a QuestionsAndAnswer
+  app.patch("/questions_and_answers/:id", async (req, res) => {
+    let {id} = req.params
+    res.send(`Updated QA with id : ${id}`);
+  });
+
+  // Deleting a QuestionsAndAnswer
+  app.delete("/questions_and_answers/:id", async (req, res) => {
+    let {id} = req.params
+    res.send(`Deleted QA with id : ${id}`);
+  });
 }
 
 app.listen(7000, () => {

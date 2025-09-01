@@ -1,16 +1,13 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useFormikContext, ErrorMessage } from "formik";
 import { Filter } from "lucide-react";
 import CustomDropdown from "../../utility/CustomDropdown";
-import { selectQuestionForm, selectFilters, updateQuestionForm } from "../../../redux/qaSlice";
 
-function CategorySelector() {
-  const dispatch = useDispatch();
-  const { data: formData } = useSelector(selectQuestionForm);
-  const { categories } = useSelector(selectFilters);
+function CategorySelector({ categories }) {
+  const { values, setFieldValue } = useFormikContext();
 
   const handleCategoryChange = (value) => {
-    dispatch(updateQuestionForm({ field: 'category', value }));
+    setFieldValue('category', value);
   };
 
   return (
@@ -20,10 +17,15 @@ function CategorySelector() {
       </label>
       <CustomDropdown
         options={categories}
-        value={formData.category}
+        value={values.category}
         onChange={handleCategoryChange}
         placeholder="Select a category"
         icon={Filter}
+      />
+      <ErrorMessage
+        name="category"
+        component="div"
+        className="text-red-500 text-sm mt-1"
       />
     </div>
   );

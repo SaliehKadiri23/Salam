@@ -19,10 +19,10 @@ function CustomDropdown({ options, value, onChange, placeholder, icon: Icon }) {
   const selectedOption = options.find((option) => option.value === value);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative" style={{ zIndex: 99999 }} ref={dropdownRef}>
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 bg-white dark:bg-black/40 bg-opacity-90 backdrop-blur-sm border border-gray-200 dark:border-emerald-600 rounded-xl cursor-pointer transition-all duration-200 hover:border-emerald-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 flex items-center justify-between group"
+        className="w-full  px-4 py-3 bg-white dark:bg-black/40 bg-opacity-90 backdrop-blur-sm border border-gray-200 dark:border-emerald-600 rounded-xl cursor-pointer transition-all duration-200 hover:border-emerald-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 flex items-center justify-between group"
       >
         <div className="flex items-center gap-3">
           {Icon && (
@@ -46,7 +46,7 @@ function CustomDropdown({ options, value, onChange, placeholder, icon: Icon }) {
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 py-2 bg-white dark:bg-black/90 backdrop-blur-xl bg-opacity-95 border border-gray-200 dark:border-emerald-600 rounded-xl shadow-2xl z-50 overflow-hidden">
+        <div className="absolute top-full left-0 right-0 mt-2 py-2 bg-white dark:bg-black/90 backdrop-blur-xl bg-opacity-95 border border-gray-200 dark:border-emerald-600 rounded-xl shadow-2xl overflow-hidden" style={{ zIndex: 999999 }}>
           {options.map((option) => (
             <div
               key={option.value}

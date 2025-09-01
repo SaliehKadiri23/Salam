@@ -19,14 +19,14 @@ export default function IslamicQAApp() {
         />
       </div>
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
+      <div className="container mx-auto px-4 py-8 relative z-10 overflow-x-hidden">
         <HeroSection />
-        <div className="grid lg:grid-cols-3 gap-8 mt-12">
-          <div className="lg:col-span-1">
+        <div className="grid lg:grid-cols-3 gap-8 mt-12 w-full">
+          <div className="lg:col-span-1 space-y-8 min-w-0">
             <QuestionForm />
             <QAStats />
           </div>
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 min-w-0">
             <QAFeed />
           </div>
         </div>

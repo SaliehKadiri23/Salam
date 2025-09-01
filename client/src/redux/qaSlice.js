@@ -1,47 +1,6 @@
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 
-// Mock data 
-const mockQAData = [
-  {
-    id: 1,
-    user: "Fatima Khan",
-    question: "What are the key principles of Islamic finance, and how do they differ from conventional finance?",
-    category: "finance",
-    timeAgo: "2 days ago",
-    likes: 24,
-    hasAnswer: true,
-    scholar: "Scholar Ahmed",
-    answer: "Islamic finance is based on principles such as the prohibition of interest (riba), risk-sharing, and ethical investing. It differs from conventional finance by avoiding interest-based transactions and promoting fairness and social responsibility.",
-    answerTime: "1 day ago",
-  },
-  {
-    id: 2,
-    user: "Omar Hassan",
-    question: "How can I balance my professional career with my religious obligations as a Muslim?",
-    category: "daily-life",
-    timeAgo: "3 days ago",
-    likes: 18,
-    hasAnswer: true,
-    scholar: "Scholar Ahmed",
-    answer: "Balancing your career and religious obligations involves time management, prioritizing prayers and religious duties, and seeking opportunities to integrate your faith into your work life. It's about finding harmony between your professional and spiritual commitments.",
-    answerTime: "2 days ago",
-  },
-  {
-    id: 3,
-    user: "Aisha Abdullah",
-    question: "What is the proper etiquette for making dua during prayer?",
-    category: "worship",
-    timeAgo: "1 day ago",
-    likes: 12,
-    hasAnswer: false,
-  },
-];
 
-const mockStats = {
-  questionsAnswered: "2,847",
-  activeScholars: "23",
-  thisMonth: "156",
-};
 
 const categories = [
   { value: "general", label: "General Questions" },
@@ -60,59 +19,8 @@ const filterOptions = [
   { value: "worship", label: "Worship" },
 ];
 
-export const fetchQuestions = createAsyncThunk(
-  'qa/fetchQuestions',
-  async (_, { rejectWithValue }) => {
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      
-      return {
-        questions: mockQAData,
-        stats: mockStats
-      };
-    } catch (error) {
-      return rejectWithValue('Failed to fetch questions');
-    }
-  }
-);
 
-export const submitQuestion = createAsyncThunk(
-  'qa/submitQuestion',
-  async (questionData, { rejectWithValue }) => {
-    try {
-      
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      
-      // For now, just return success
-      return { success: true, message: 'Question submitted successfully' };
-    } catch (error) {
-      return rejectWithValue('Failed to submit question');
-    }
-  }
-);
 
-export const toggleQuestionLike = createAsyncThunk(
-  'qa/toggleQuestionLike',
-  async ({ questionId, currentLikeState }, { rejectWithValue }) => {
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 300));
-      
-      return {
-        questionId,
-        isLiked: !currentLikeState.isLiked,
-        likeCount: currentLikeState.isLiked 
-          ? currentLikeState.likeCount - 1 
-          : currentLikeState.likeCount + 1
-      };
-    } catch (error) {
-      return rejectWithValue('Failed to update like status');
-    }
-  }
-);
 
 const initialState = {
   // Q&A Data
@@ -127,8 +35,7 @@ const initialState = {
   questionForm: {
     data: {
       question: "",
-      name: "",
-      email: "",
+      
       category: "general"
     },
     isSubmitting: false,
@@ -144,7 +51,7 @@ const initialState = {
     filterOptions
   },
   
-  // Individual Question States (for likes, etc.)
+  // Individual Question States
   questionStates: {},
   
   // Loading States
@@ -175,8 +82,7 @@ const qaSlice = createSlice({
     resetQuestionForm: (state) => {
       state.questionForm.data = {
         question: "",
-        name: "",
-        email: "",
+        
         category: "general"
       };
       state.questionForm.errors = null;
@@ -213,70 +119,9 @@ const qaSlice = createSlice({
     }
   },
   
-  extraReducers: (builder) => {
-    builder
-      // Fetch Questions
-      .addCase(fetchQuestions.pending, (state) => {
-        state.loading.fetchingQuestions = true;
-        state.error = null;
-      })
-      .addCase(fetchQuestions.fulfilled, (state, action) => {
-        state.loading.fetchingQuestions = false;
-        state.questions = action.payload.questions;
-        state.stats = action.payload.stats;
-        
-        // Initialize question states for likes
-        action.payload.questions.forEach(question => {
-          if (!state.questionStates[question.id]) {
-            state.questionStates[question.id] = {
-              isLiked: false,
-              likeCount: question.likes
-            };
-          }
-        });
-      })
-      .addCase(fetchQuestions.rejected, (state, action) => {
-        state.loading.fetchingQuestions = false;
-        state.error = action.payload || 'Failed to fetch questions';
-      })
-      
-      // Submit Question
-      .addCase(submitQuestion.pending, (state) => {
-        state.questionForm.isSubmitting = true;
-        state.questionForm.errors = null;
-      })
-      .addCase(submitQuestion.fulfilled, (state) => {
-        state.questionForm.isSubmitting = false;
-        state.questionForm.submitSuccess = true;
-        // Form will be reset by component after showing success message
-      })
-      .addCase(submitQuestion.rejected, (state, action) => {
-        state.questionForm.isSubmitting = false;
-        state.questionForm.errors = action.payload || 'Failed to submit question';
-      })
-      
-      // Toggle Question Like
-      .addCase(toggleQuestionLike.pending, (state, action) => {
-        const questionId = action.meta.arg.questionId;
-        state.loading.updatingLike[questionId] = true;
-      })
-      .addCase(toggleQuestionLike.fulfilled, (state, action) => {
-        const { questionId, isLiked, likeCount } = action.payload;
-        state.questionStates[questionId] = {
-          isLiked,
-          likeCount
-        };
-        delete state.loading.updatingLike[questionId];
-      })
-      .addCase(toggleQuestionLike.rejected, (state, action) => {
-        const questionId = action.meta.arg.questionId;
-        delete state.loading.updatingLike[questionId];
-        // Could add error handling here
-      });
-  }
 });
 
-// Action creators
+// Actions
 export const {
   updateQuestionForm,
   resetQuestionForm,
@@ -287,63 +132,27 @@ export const {
   clearError
 } = qaSlice.actions;
 
-// Selectors
-export const selectQAData = (state) => state.qa.questions;
-export const selectQAStats = (state) => state.qa.stats;
+// Selectors - Updated for RTK Query usage
+// Note: Data fetching is now handled by RTK Query hooks
 export const selectQuestionForm = (state) => state.qa.questionForm;
 export const selectFilters = (state) => state.qa.filters;
 export const selectQuestionStates = (state) => state.qa.questionStates;
 export const selectLoading = (state) => state.qa.loading;
 export const selectError = (state) => state.qa.error;
 
-// Memoized selectors for performance
-export const selectFilteredQuestions = createSelector(
-  [selectQAData, selectFilters],
-  (questions, filters) => {
-    const { searchQuery, selectedFilter } = filters;
-    
-    return questions.filter((qa) => {
-      // Search filter
-      const matchesSearch = searchQuery === "" || 
-        qa.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        qa.user.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      if (!matchesSearch) return false;
-      
-      // Category filter
-      if (selectedFilter === "all") return true;
-      if (selectedFilter === "answered") return qa.hasAnswer;
-      if (selectedFilter === "pending") return !qa.hasAnswer;
-      return qa.category === selectedFilter;
-    });
-  }
-);
+// Note: selectFilteredQuestions is now handled in components using useMemo
+// with RTK Query data transformation
 
 export const selectFormValidation = createSelector(
   [selectQuestionForm],
   (form) => {
-    const { question, name, email } = form.data;
+    const { question  } = form.data;
     return {
-      isValid: question.trim() && name.trim() && email.trim(),
-      canSubmit: question.trim() && name.trim() && email.trim() && !form.isSubmitting
+      isValid: question.trim(),
+      canSubmit: question.trim() && !form.isSubmitting
     };
   }
 );
 
-export const selectQuestionById = (questionId) => createSelector(
-  [selectQAData, selectQuestionStates],
-  (questions, questionStates) => {
-    const question = questions.find(q => q.id === questionId);
-    const state = questionStates[questionId];
-    
-    if (!question) return null;
-    
-    return {
-      ...question,
-      isLiked: state?.isLiked || false,
-      displayLikes: state?.likeCount ?? question.likes
-    };
-  }
-);
 
 export default qaSlice.reducer;

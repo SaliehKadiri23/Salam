@@ -1,4 +1,4 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   reducerPath: "salam",
@@ -47,19 +47,64 @@ export const apiSlice = createApi({
     }),
 
     // ! FORUMS
-    // Getting all Articles
+    // Getting all Forums
     getForums: builder.query({
       query: () => "/forums",
       providesTags: ["Forums"],
     }),
 
     // ! QuestionsAndAnswers
-    // Getting all "Questions And Answers
+    // Getting all "Questions And Answers"
     getQuestionsAndAnswers: builder.query({
       query: () => "/questions_and_answers",
       providesTags: ["QuestionsAndAnswers"],
     }),
+
+    // Adding a QuestionsAndAnswer
+    addNewQuestionAndAnswer: builder.mutation({
+      query: (newQuestionAndAnswer) => ({
+        url: "/questions_and_answers",
+        method: "POST",
+        body: newQuestionAndAnswer,
+      }),
+      invalidatesTags: ["QuestionsAndAnswers"],
+    }),
+
+    // Updating a QuestionsAndAnswer
+    updateQuestionAndAnswer: builder.mutation({
+      query: (questionAndAnswerToUpdate) => ({
+        url: `/questions_and_answers/${questionAndAnswerToUpdate._id}`,
+        method: "PATCH",
+        body: questionAndAnswerToUpdate,
+      }),
+      invalidatesTags: ["QuestionsAndAnswers"],
+    }),
+
+    // Deleting a QuestionsAndAnswer
+    deleteQuestionAndAnswer: builder.mutation({
+      query: ({ _id }) => ({
+        url: `/questions_and_answers/${_id}`,
+        method: "DELETE",
+        body: _id,
+      }),
+      invalidatesTags: ["QuestionsAndAnswers"],
+    }),
   }),
 });
 
-export const {useGetArticlesQuery, useAddNewArticleMutation, useUpdateArticleMutation, useDeleteArticleMutation, useGetForumsQuery, useGetQuestionsAndAnswersQuery} = apiSlice
+export const {
+  // Articles
+  useGetArticlesQuery,
+  useAddNewArticleMutation,
+  useUpdateArticleMutation,
+  useDeleteArticleMutation,
+
+  // Forums
+  useGetForumsQuery,
+
+  // QuestionsAndAnswers
+  useGetQuestionsAndAnswersQuery,
+  useAddNewQuestionAndAnswerMutation,
+  useUpdateQuestionAndAnswerMutation,
+  useDeleteQuestionAndAnswerMutation,
+} = apiSlice;
