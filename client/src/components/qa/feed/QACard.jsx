@@ -23,10 +23,9 @@ function QACard({ qa }) {
     if (!questionState) {
       dispatch(initializeQuestionState({
         questionId: qa._id,
-        initialLikes: qa.likes
-      }));
+        }));
     }
-  }, [dispatch, qa._id, qa.likes, questionState]);
+  }, [dispatch, qa._id, liked, qa.likes, questionState]);
 
   const [
     toggleQuestionAndAnswerLike,
