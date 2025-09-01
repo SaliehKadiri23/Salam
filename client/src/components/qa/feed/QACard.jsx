@@ -7,11 +7,13 @@ import {
   initializeQuestionState
 } from "../../../redux/qaSlice";
 import { getTimeAgo } from "../../../utils/timeUtils";
+import { useDeleteQuestionAndAnswerMutation } from "../../../services/apiSlice";
 
 function QACard({ qa }) {
   const dispatch = useDispatch();
   const questionStates = useSelector(selectQuestionStates);
   const { updatingLike } = useSelector(selectLoading);
+  const [deleteQuestionAndAnswer] = useDeleteQuestionAndAnswerMutation();
   
   const questionState = questionStates[qa._id];
   const isUpdatingLike = updatingLike[qa._id] || false;
@@ -32,6 +34,17 @@ function QACard({ qa }) {
     console.log('Like functionality to be implemented with RTK Query mutations');
   };
 
+  const handleQuestionAndAnswerDelete = async (_id) => {
+    try {
+      await deleteQuestionAndAnswer(_id)
+      alert(`Deleted Qa with id : ${_id}`)
+      // TODO :  Add Toast Notifications
+    } catch (error) {
+      console.log("Error : ", error)
+    }
+    
+  }
+
   // Use questionState if available, otherwise fall back to original data
   const displayLikes = questionState ? questionState.likeCount : qa.likes;
   const isLiked = questionState ? questionState.isLiked : false;
@@ -43,13 +56,16 @@ function QACard({ qa }) {
         <div className="flex items-start gap-4 w-full">
           <div className="flex-1 min-w-0">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-              <div className="flex items-center gap-3 min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-100 truncate">
+              <div className="flex items-center justify-around gap-3 min-w-0 flex-1">
+                <h3 className="font-semibold text-left text-gray-800 dark:text-gray-100 truncate">
                   {qa.askedBy}
                 </h3>
                 <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium capitalize whitespace-nowrap">
                   {qa.questionCategory.replace("-", " ")}
                 </span>
+                <button onClick={()=> handleQuestionAndAnswerDelete(qa._id)} className="px-3  py-2 bg-red-600 text-white rounded-full text-xs font-medium capitalize whitespace-nowrap">
+                  Delete
+                </button>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-100 flex-shrink-0">
                 <Clock className="w-4 h-4" />

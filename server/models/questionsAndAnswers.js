@@ -26,7 +26,7 @@ const questionAndAnswerSchema = new mongoose.Schema({
   },
   isAnswered: {
     type: Boolean,
-    required: true,
+    default: false,
   },
   likes: {
     type: Number,

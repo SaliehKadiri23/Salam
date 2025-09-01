@@ -25,6 +25,7 @@ mongoose.connection.once("open", () => {
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 // ! Articles
 {
@@ -50,26 +51,44 @@ app.get("/forums", async (req, res)=>{
 {
   //  Getting All Questions And Answers
   app.get("/questions_and_answers", async (req, res) => {
-    let questionAndAnswer = await QuestionAndAnswer.find({});
+    let questionsAndAnswers = await QuestionAndAnswer.find({});
 
-    res.json(questionAndAnswer);
+    res.json(questionsAndAnswers);
   });
 
   // Adding a QuestionsAndAnswer
   app.post("/questions_and_answers", async (req, res) => {
-    res.send("New QA received");
+    try {
+      let newQuestion = req.body
+    
+    await QuestionAndAnswer.insertOne(newQuestion).then(res => console.log(res))
+    res.send("Question Added Successfully")
+    } catch (error) {
+      throw new Error("Error : ", error);
+      
+    }
+    
+
   });
 
   // Updating a QuestionsAndAnswer
   app.patch("/questions_and_answers/:id", async (req, res) => {
-    let {id} = req.params
+    let {id} = req.body
     res.send(`Updated QA with id : ${id}`);
   });
 
   // Deleting a QuestionsAndAnswer
   app.delete("/questions_and_answers/:id", async (req, res) => {
-    let {id} = req.params
-    res.send(`Deleted QA with id : ${id}`);
+    try {
+       let {id} = req.params
+       const result = await QuestionAndAnswer.findByIdAndDelete(id)
+       console.log(`Deleted QA with id : ${id}`);
+       res.send(result);
+    } catch (error) {
+      console.log("Deleted Successfully!!!")
+    }
+   
+    
   });
 }
 

@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { MessageCircle, Send } from "lucide-react";
 import CategorySelector from "./CategorySelector";
 import QuestionInput from "./QuestionInput";
+import { useAddNewQuestionAndAnswerMutation } from "../../../services/apiSlice";
 
 // Categories data - moved from Redux slice
 const categories = [
@@ -29,6 +30,9 @@ function QuestionForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
+   const [addNewQuestionAndAnswer, { data, error, isSuccess }] =
+     useAddNewQuestionAndAnswerMutation();
+
   // Initial form values
   const initialValues = {
     question: "",
@@ -39,13 +43,19 @@ function QuestionForm() {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       setSubmitError(null);
-      
-      // TODO: Implement actual API call here
-      console.log('Submit question:', values);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
+      const newQuestionAndAnswer = {
+        askedBy: "64f1abf1a2b4c3d4e5f6a701",
+        dateAsked: new Date(),
+        questionCategory: values.category,
+        question: values.question,
+      };
+
+      console.log('Submit question:', newQuestionAndAnswer);
+
+      await addNewQuestionAndAnswer(newQuestionAndAnswer)
+
+
       // Show success message
       setSubmitSuccess(true);
       

@@ -21,6 +21,7 @@ export const apiSlice = createApi({
       query: (newArticle) => ({
         url: "/articles",
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: newArticle,
       }),
       invalidatesTags: ["Articles"],
@@ -31,6 +32,7 @@ export const apiSlice = createApi({
       query: (articleToUpdate) => ({
         url: `/articles/${articleToUpdate._id}`,
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: articleToUpdate,
       }),
       invalidatesTags: ["Articles"],
@@ -41,6 +43,7 @@ export const apiSlice = createApi({
       query: ({ _id }) => ({
         url: `/articles/${_id}`,
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
         body: _id,
       }),
       invalidatesTags: ["Articles"],
@@ -65,6 +68,7 @@ export const apiSlice = createApi({
       query: (newQuestionAndAnswer) => ({
         url: "/questions_and_answers",
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: newQuestionAndAnswer,
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
@@ -75,6 +79,7 @@ export const apiSlice = createApi({
       query: (questionAndAnswerToUpdate) => ({
         url: `/questions_and_answers/${questionAndAnswerToUpdate._id}`,
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: questionAndAnswerToUpdate,
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
@@ -82,9 +87,10 @@ export const apiSlice = createApi({
 
     // Deleting a QuestionsAndAnswer
     deleteQuestionAndAnswer: builder.mutation({
-      query: ({ _id }) => ({
+      query: (_id ) => ({
         url: `/questions_and_answers/${_id}`,
         method: "DELETE",
+        // headers: { "Content-Type": "application/json" },
         body: _id,
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
