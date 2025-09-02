@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { BookOpen, Moon, Sunrise, Sun, Sunset } from "lucide-react";
 import { calculateTimeLeft } from "../utils/timeHelpers";
+import { convertTo12HourFormat } from "../utils/timeFormat";
 
 // Map icon strings to actual icon components
 const iconMap = {
@@ -81,7 +82,11 @@ const PrayerTable = ({ currentTime }) => {
                         : "text-gray-700 dark:text-gray-100"
                     }`}
                   >
-                    {prayer.name === "Sunrise" ? prayer.begins : (prayer.iqama !== "-" ? prayer.iqama : prayer.begins)}
+                    {prayer.name === "Sunrise" 
+                      ? convertTo12HourFormat(prayer.begins) 
+                      : (prayer.iqama !== "-" 
+                          ? convertTo12HourFormat(prayer.iqama) 
+                          : convertTo12HourFormat(prayer.begins))}
                   </td>
                   <td
                     className={`px-6 py-4 text-sm font-mono ${
