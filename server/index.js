@@ -59,53 +59,63 @@ app.get("/forums", async (req, res)=>{
   // Adding a QuestionsAndAnswer
   app.post("/questions_and_answers", async (req, res) => {
     try {
-      let newQuestion = req.body
-    
-    await QuestionAndAnswer.insertOne(newQuestion).then(res => console.log(res))
-    res.send("Question Added Successfully")
+      let newQuestion = req.body;
+
+      await QuestionAndAnswer.insertOne(newQuestion).then((res) =>
+        console.log(res)
+      );
+      res.send("Question Added Successfully");
     } catch (error) {
       throw new Error("Error : ", error);
-      
     }
-    
-
   });
 
   // Updating a QuestionsAndAnswer
   app.patch("/questions_and_answers/:id", async (req, res) => {
-    let {id} = req.body
+    let { id } = req.body;
     res.send(`Updated QA with id : ${id}`);
   });
 
   // Deleting a QuestionsAndAnswer
   app.delete("/questions_and_answers/:id", async (req, res) => {
     try {
-       let {id} = req.params
-       const result = await QuestionAndAnswer.findByIdAndDelete(id)
-       console.log(`Deleted QA with id : ${id}`);
-       res.send(result);
+      let { id } = req.params;
+      const result = await QuestionAndAnswer.findByIdAndDelete(id);
+      console.log(`Deleted QA with id : ${id}`);
+      res.send(result);
     } catch (error) {
-      console.log("Error : ", error)
+      console.log("Error : ", error);
     }
-   
-    
   });
 
   // Liking/Un-liking a QuestionsAndAnswer
   app.post("/questions_and_answers/:id/like", async (req, res) => {
     try {
-       let {id} = req.params
-       const result = await QuestionAndAnswer.toggleLike(
-         id,
-         "64f1abf1a2b4c3d4e5f6a111"
-         // TODO : IN SHA ALLAH - Replace with req.user._id when auth done
-       );
-       res.json(result);
+      let { id } = req.params;
+      const result = await QuestionAndAnswer.toggleLike(
+        id,
+        "64f1abf1a2b4c3d4e5f6a111"
+        // TODO : IN SHA ALLAH - Replace with req.user._id when auth done
+      );
+      res.json(result);
     } catch (error) {
-      console.log("Error!!!", error)
+      console.log("Error!!!", error);
     }
-   
-    
+  });
+
+  // ! Newsletter SignUp
+  // Adding a Newsletter
+  app.post("/newsletter", async (req, res) => {
+    try {
+      let newQuestion = req.body;
+
+      await QuestionAndAnswer.insertOne(newQuestion).then((res) =>
+        console.log(res)
+      );
+      res.send("Question Added Successfully");
+    } catch (error) {
+      throw new Error("Error : ", error);
+    }
   });
 }
 

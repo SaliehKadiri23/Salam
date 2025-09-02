@@ -55,6 +55,7 @@ export default function PrayerTimes() {
     data: ipData,
     error: ipError,
     isLoading: ipLoading,
+    refetch: refetchIpData,
   } = useGetPrayerTimesByIPLocationQuery();
   const {
     data: locationData,
@@ -89,8 +90,7 @@ export default function PrayerTimes() {
   useEffect(() => {
     if (
       !location ||
-      location === "Location Not Found" ||
-      location === "Kano State, Nigeria"
+      location === "Location Not Found"
     ) {
       // RTK Query will automatically fetch when the component mounts
     }
@@ -98,11 +98,35 @@ export default function PrayerTimes() {
 
   // Update Redux state when IP data is fetched
   useEffect(() => {
+    let timeoutId;
+    
+    if (ipLoading) {
+      dispatch(setLocation("Detecting location..."));
+      
+      // Set a timeout to reset the location if detection takes too long
+      timeoutId = setTimeout(() => {
+        dispatch(setLocation(""));
+        dispatch(setError("Location detection timed out. Please try again."));
+      }, 15000); // 15 seconds timeout
+    }
+    
     if (ipData) {
       dispatch(setPrayerTimes(ipData.prayerTimes));
       dispatch(setLocation(ipData.location));
+      
+      // Clear timeout if data is received
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     }
-  }, [ipData, dispatch]);
+    
+    // Cleanup timeout on unmount or when dependencies change
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [ipData, ipLoading, dispatch]);
 
   // Update Redux state when location data is fetched
   useEffect(() => {
@@ -115,23 +139,119 @@ export default function PrayerTimes() {
   // Handle IP fetch errors
   useEffect(() => {
     if (ipError) {
-      dispatch(setError(ipError.message || "Failed to fetch prayer times"));
+      // TODO: USe toast notifications
+      const errorMessage = ipError.message || "Failed to detect your location automatically.";
+      dispatch(setError(errorMessage));
+      // Reset location to default when IP detection fails
+      dispatch(setLocation(""));
+      // Still show the default prayer times
+      dispatch(setPrayerTimes([
+        {
+          name: "Fajr",
+          begins: "05:30",
+          iqama: "05:45",
+          icon: "Moon",
+          next: false
+        },
+        {
+          name: "Sunrise",
+          begins: "06:45",
+          iqama: "-",
+          icon: "Sunrise",
+          next: false
+        },
+        {
+          name: "Dhuhr",
+          begins: "13:15",
+          iqama: "13:30",
+          icon: "Sun",
+          next: true
+        },
+        {
+          name: "Asr",
+          begins: "17:00",
+          iqama: "17:15",
+          icon: "Sun",
+          next: false
+        },
+        {
+          name: "Maghrib",
+          begins: "20:30",
+          iqama: "20:45",
+          icon: "Sunset",
+          next: false
+        },
+        {
+          name: "Isha",
+          begins: "22:00",
+          iqama: "22:15",
+          icon: "Moon",
+          next: false
+        }
+      ]));
     }
   }, [ipError, dispatch]);
 
   // Handle location fetch errors
   useEffect(() => {
     if (locationError) {
-      dispatch(
-        setError(locationError.message || "Failed to fetch prayer times")
-      );
+      // Show a more user-friendly error message
+      const errorMessage = locationError.message || "Failed to fetch prayer times for the specified location.";
+      dispatch(setError(errorMessage));
+      // Reset location to default when location detection fails
+      dispatch(setLocation(""));
+      // Still show the default prayer times
+      dispatch(setPrayerTimes([
+        {
+          name: "Fajr",
+          begins: "05:30",
+          iqama: "05:45",
+          icon: "Moon",
+          next: false
+        },
+        {
+          name: "Sunrise",
+          begins: "06:45",
+          iqama: "-",
+          icon: "Sunrise",
+          next: false
+        },
+        {
+          name: "Dhuhr",
+          begins: "13:15",
+          iqama: "13:30",
+          icon: "Sun",
+          next: true
+        },
+        {
+          name: "Asr",
+          begins: "17:00",
+          iqama: "17:15",
+          icon: "Sun",
+          next: false
+        },
+        {
+          name: "Maghrib",
+          begins: "20:30",
+          iqama: "20:45",
+          icon: "Sunset",
+          next: false
+        },
+        {
+          name: "Isha",
+          begins: "22:00",
+          iqama: "22:15",
+          icon: "Moon",
+          next: false
+        }
+      ]));
     }
   }, [locationError, dispatch]);
 
   // Location handler - IP-based detection
   const handleUseMyLocation = () => {
-    dispatch(setLocation("Detecting location..."));
-    // RTK Query will automatically fetch when location changes to a valid value
+    // Trigger refetch of IP-based prayer times
+    refetchIpData();
   };
 
   // Request notification permission

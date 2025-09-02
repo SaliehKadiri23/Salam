@@ -4,12 +4,39 @@ import axios from 'axios';
 // Function to get location by IP
 const getLocationByIP = async () => {
   try {
-    const response = await axios.get('https://ipapi.co/json/');
-    const { city, region, country_name } = response.data;
-    return `${city}, ${region}, ${country_name}`;
+    // First, try to get location using a more reliable service
+    try {
+      const response = await axios.get('https://ipapi.co/json/', {
+        timeout: 5000 // 5 second timeout
+      });
+      const { city, region, country_name } = response.data;
+      // Check if we have valid data
+      if (city && region && country_name) {
+        return `${city}, ${region}, ${country_name}`;
+      }
+    } catch (primaryError) {
+      console.warn('Primary IP API failed:', primaryError.message);
+    }
+    
+    // If the primary service fails, try a fallback
+    try {
+      const response = await axios.get('https://ipwho.is/', {
+        timeout: 5000 // 5 second timeout
+      });
+      const { city, region, country } = response.data;
+      // Check if we have valid data
+      if (city && region && country) {
+        return `${city}, ${region}, ${country}`;
+      }
+    } catch (fallbackError) {
+      console.warn('Fallback IP API failed:', fallbackError.message);
+    }
+    
+    // If both services fail, use the default
+    throw new Error('Unable to detect location');
   } catch (error) {
     console.error('Error fetching location by IP:', error);
-    return "Kano State, Nigeria"; // fallback
+    throw new Error('Unable to detect your location automatically');
   }
 };
 
@@ -21,7 +48,8 @@ const getPrayerTimesByAddress = async (address) => {
         address,
         method: 2, // ISNA
         school: 0  // Shafi/Maliki/Hanbali
-      }
+      },
+      timeout: 10000 
     });
     
     const { data } = response;
@@ -73,10 +101,55 @@ const getPrayerTimesByAddress = async (address) => {
         }
       ];
     }
-    throw new Error('Failed to fetch prayer times');
+    throw new Error('Invalid response from prayer times API');
   } catch (error) {
     console.error('Error fetching prayer times:', error);
-    throw error;
+    // Default prayer times as fallback
+    const defaultTimes = [
+      {
+        name: "Fajr",
+        begins: "05:30",
+        iqama: "05:45",
+        icon: "Moon",
+        next: false
+      },
+      {
+        name: "Sunrise",
+        begins: "06:45",
+        iqama: "-",
+        icon: "Sunrise",
+        next: false
+      },
+      {
+        name: "Dhuhr",
+        begins: "13:15",
+        iqama: "13:30",
+        icon: "Sun",
+        next: true
+      },
+      {
+        name: "Asr",
+        begins: "17:00",
+        iqama: "17:15",
+        icon: "Sun",
+        next: false
+      },
+      {
+        name: "Maghrib",
+        begins: "20:30",
+        iqama: "20:45",
+        icon: "Sunset",
+        next: false
+      },
+      {
+        name: "Isha",
+        begins: "22:00",
+        iqama: "22:15",
+        icon: "Moon",
+        next: false
+      }
+    ];
+    throw new Error('Unable to fetch prayer times.');
   }
 };
 
@@ -90,7 +163,7 @@ export const apiSlice = createApi({
     getArticles: builder.query({
       query: () => "/articles",
 
-      //   For sorting he Articles
+      //   For sorting the Articles
       //   transformErrorResponse: (res) =>
       //     res.sort((a, b) => new Date(a.publishDate)  - new Date(b.publishDate) ),
       providesTags: ["Articles"],
@@ -167,10 +240,10 @@ export const apiSlice = createApi({
 
     // Deleting a QuestionsAndAnswer
     deleteQuestionAndAnswer: builder.mutation({
-      query: (_id ) => ({
+      query: (_id) => ({
         url: `/questions_and_answers/${_id}`,
         method: "DELETE",
-        
+
         body: _id,
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
@@ -178,10 +251,9 @@ export const apiSlice = createApi({
 
     // Liking / Un-Liking a QuestionsAndAnswer
     toggleQuestionAndAnswerLike: builder.mutation({
-      query: (_id ) => ({
+      query: (_id) => ({
         url: `/questions_and_answers/${_id}/like`,
         method: "POST",
-       
       }),
       // TODO : Implement individual QA invalidation
       invalidatesTags: ["QuestionsAndAnswers"],
@@ -196,7 +268,7 @@ export const apiSlice = createApi({
           const prayerTimes = await getPrayerTimesByAddress(location);
           return { data: { prayerTimes, location } };
         } catch (error) {
-          return { error: { status: 'CUSTOM_ERROR', error: error.message } };
+          return { error: { status: "CUSTOM_ERROR", error: error.message } };
         }
       },
       providesTags: ["PrayerTimes"],
@@ -209,10 +281,21 @@ export const apiSlice = createApi({
           const prayerTimes = await getPrayerTimesByAddress(location);
           return { data: { prayerTimes, location } };
         } catch (error) {
-          return { error: { status: 'CUSTOM_ERROR', error: error.message } };
+          return { error: { status: "CUSTOM_ERROR", error: error.message } };
         }
       },
       providesTags: ["PrayerTimes"],
+    }),
+
+    // ! Newsletter
+    addNewNewsletter: builder.mutation({
+      query: (newQuestionAndAnswer) => ({
+        url: "/questions_and_answers",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: newQuestionAndAnswer,
+      }),
+      invalidatesTags: ["QuestionsAndAnswers"],
     }),
   }),
 });
