@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import { setSelectedCategory } from "../redux/resourcesSlice";
 import { motion } from "framer-motion";
 import { calculateTimeLeft } from "../components/prayer-times/utils/timeHelpers";
+import { convertTo12HourFormat } from "../components/prayer-times/utils/timeFormat";
 import HijriCalendar from "../components/prayer-times/calendar/HijriCalendar";
 import { useGetPrayerTimesByIPLocationQuery } from "../services/apiSlice";
 
@@ -224,7 +225,7 @@ function PrayerTools({currentTime}) {
                                 {p.name}
                               </div>
                               <div className="text-lg font-bold dark:text-gray-100">
-                                {p.name === "Sunrise" ? p.begins : p.iqama}
+                                {p.name === "Sunrise" ? convertTo12HourFormat(p.begins) : convertTo12HourFormat(p.iqama)}
                               </div>
                               <div className="text-xs font-bold text-green-600 dark:text-green-400">
                                 {timeLeft}
