@@ -16,6 +16,7 @@ import {
   setSearchQuery,
   setNotificationsEnabled,
   setAudioPlaying,
+  setError,
 } from "../redux/prayerTimesSlice";
 import { setCurrentHijriMonth } from "../redux/hijriCalendarSlice";
 import {
@@ -24,6 +25,10 @@ import {
   nextQuote,
 } from "../redux/islamicUtilitiesSlice";
 import { setActiveTab } from "../redux/uiSlice";
+import {
+  useGetPrayerTimesByIPLocationQuery,
+  useGetPrayerTimesByLocationQuery,
+} from "../services/apiSlice";
 
 // Main component
 export default function PrayerTimes() {
@@ -38,13 +43,29 @@ export default function PrayerTimes() {
     searchQuery,
     notificationsEnabled,
     audioPlaying,
+    error,
   } = useSelector((state) => state.prayerTimes);
   const { currentHijriMonth } = useSelector((state) => state.hijriCalendar);
   const { qiblaDirection, dhikrCount, currentQuote, islamicQuotes } =
     useSelector((state) => state.islamicUtilities);
   const { activeTab } = useSelector((state) => state.ui);
 
-  // Note: Initial prayer times are now handled by Redux store initialState
+  // RTK Query hooks
+  const {
+    data: ipData,
+    error: ipError,
+    isLoading: ipLoading,
+  } = useGetPrayerTimesByIPLocationQuery();
+  const {
+    data: locationData,
+    error: locationError,
+    isLoading: locationLoading,
+  } = useGetPrayerTimesByLocationQuery(location, {
+    skip:
+      !location ||
+      location === "Location Not Found" ||
+      location === "Detecting location...",
+  });
 
   // Update current time every second
   useEffect(() => {
@@ -64,13 +85,53 @@ export default function PrayerTimes() {
     return () => clearInterval(quoteTimer);
   }, [dispatch, islamicQuotes.length]);
 
-  // Location handler
+  // Fetch prayer times when component mounts
+  useEffect(() => {
+    if (
+      !location ||
+      location === "Location Not Found" ||
+      location === "Kano State, Nigeria"
+    ) {
+      // RTK Query will automatically fetch when the component mounts
+    }
+  }, [location]);
+
+  // Update Redux state when IP data is fetched
+  useEffect(() => {
+    if (ipData) {
+      dispatch(setPrayerTimes(ipData.prayerTimes));
+      dispatch(setLocation(ipData.location));
+    }
+  }, [ipData, dispatch]);
+
+  // Update Redux state when location data is fetched
+  useEffect(() => {
+    if (locationData) {
+      dispatch(setPrayerTimes(locationData.prayerTimes));
+      dispatch(setLocation(locationData.location));
+    }
+  }, [locationData, dispatch]);
+
+  // Handle IP fetch errors
+  useEffect(() => {
+    if (ipError) {
+      dispatch(setError(ipError.message || "Failed to fetch prayer times"));
+    }
+  }, [ipError, dispatch]);
+
+  // Handle location fetch errors
+  useEffect(() => {
+    if (locationError) {
+      dispatch(
+        setError(locationError.message || "Failed to fetch prayer times")
+      );
+    }
+  }, [locationError, dispatch]);
+
+  // Location handler - IP-based detection
   const handleUseMyLocation = () => {
     dispatch(setLocation("Detecting location..."));
-    // Simulate API call delay
-    setTimeout(() => {
-      dispatch(setLocation("Kano State, Nigeria"));
-    }, 2000);
+    // RTK Query will automatically fetch when location changes to a valid value
   };
 
   // Request notification permission
@@ -98,13 +159,29 @@ export default function PrayerTimes() {
         />
 
         <section className="mx-auto max-w-6xl px-4">
-          <LocationSearch
-            searchQuery={searchQuery}
-            setSearchQuery={(query) => dispatch(setSearchQuery(query))}
-            location={location}
-            setLocation={(loc) => dispatch(setLocation(loc))}
-            handleUseMyLocation={handleUseMyLocation}
-          />
+          <LocationSearch handleUseMyLocation={handleUseMyLocation} />
+
+          {/* Loading indicator */}
+          {(ipLoading || locationLoading) && (
+            <div className="text-center py-4">
+              <p className="text-emerald-600 dark:text-emerald-400 font-medium">
+                Fetching prayer times...
+              </p>
+            </div>
+          )}
+
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+              <p>Error: {error}</p>
+              <button
+                onClick={() => dispatch(setError(null))}
+                className="mt-2 text-sm underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
 
           {/* Tabs */}
           <div className="bg-white dark:bg-black/75 dark:border dark:border-emerald-600 rounded-2xl shadow-xl sm:p-6 py-6 px-3 mb-8">

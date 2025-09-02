@@ -133,15 +133,12 @@ export const {
 } = qaSlice.actions;
 
 // Selectors - Updated for RTK Query usage
-// Note: Data fetching is now handled by RTK Query hooks
+
 export const selectQuestionForm = (state) => state.qa.questionForm;
 export const selectFilters = (state) => state.qa.filters;
 export const selectQuestionStates = (state) => state.qa.questionStates;
 export const selectLoading = (state) => state.qa.loading;
 export const selectError = (state) => state.qa.error;
-
-// Note: selectFilteredQuestions is now handled in components using useMemo
-// with RTK Query data transformation
 
 export const selectFormValidation = createSelector(
   [selectQuestionForm],

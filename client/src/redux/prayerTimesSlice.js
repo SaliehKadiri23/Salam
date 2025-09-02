@@ -49,6 +49,8 @@ const initialState = {
   searchQuery: "",
   notificationsEnabled: false,
   audioPlaying: false,
+  loading: false,
+  error: null,
 };
 
 export const prayerTimesSlice = createSlice({
@@ -91,6 +93,19 @@ export const prayerTimesSlice = createSlice({
     toggleAudio: (state) => {
       state.audioPlaying = !state.audioPlaying;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
+    setPrayerTimesWithLocation: (state, action) => {
+      const { prayerTimes, location } = action.payload;
+      state.prayerTimes = prayerTimes;
+      state.location = location;
+      state.loading = false;
+      state.error = null;
+    }
   },
 });
 
@@ -104,6 +119,9 @@ export const {
   toggleNotifications,
   setAudioPlaying,
   toggleAudio,
+  setLoading,
+  setError,
+  setPrayerTimesWithLocation,
 } = prayerTimesSlice.actions;
 
 export default prayerTimesSlice.reducer;

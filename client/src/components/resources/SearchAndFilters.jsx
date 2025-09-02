@@ -31,7 +31,7 @@ export default function SearchAndFilters() {
         </div>
         <button
           onClick={() => dispatch(toggleFilters())}
-          className="flex items-center space-x-2 px-4 py-3 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-colors border border-emerald-200"
+          className="flex items-center space-x-2 px-4 py-3 bg-emerald-50 dark:bg-black/40 text-emerald-600 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 transition-colors border border-emerald-200 dark:border-emerald-600"
         >
           <Filter className="w-5 h-5" />
           <span className="font-medium">Filters</span>

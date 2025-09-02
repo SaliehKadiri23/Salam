@@ -31,9 +31,6 @@ const PrayerTable = ({ currentTime }) => {
                 Begins (IQAMA)
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
-                Iqama
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
                 Time Left
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-200 uppercase tracking-wider">
@@ -84,16 +81,7 @@ const PrayerTable = ({ currentTime }) => {
                         : "text-gray-700 dark:text-gray-100"
                     }`}
                   >
-                    {prayer.begins}
-                  </td>
-                  <td
-                    className={`px-6 py-4 text-lg font-bold ${
-                      prayer.next
-                        ? "text-emerald-600"
-                        : "text-gray-700 dark:text-gray-100"
-                    }`}
-                  >
-                    {prayer.iqama}
+                    {prayer.name === "Sunrise" ? prayer.begins : (prayer.iqama !== "-" ? prayer.iqama : prayer.begins)}
                   </td>
                   <td
                     className={`px-6 py-4 text-sm font-mono ${

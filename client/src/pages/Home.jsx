@@ -9,6 +9,7 @@ import { setSelectedCategory } from "../redux/resourcesSlice";
 import { motion } from "framer-motion";
 import { calculateTimeLeft } from "../components/prayer-times/utils/timeHelpers";
 import HijriCalendar from "../components/prayer-times/calendar/HijriCalendar";
+import { useGetPrayerTimesByIPLocationQuery } from "../services/apiSlice";
 
 const Home = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -124,7 +125,12 @@ function PrayerTools({currentTime}) {
   const [tab, setTab] = useState("times");
   const tablistId = useId();
   
-  const prayerTimes = useSelector((state) => state.prayerTimes.prayerTimes);
+  // RTK Query hook for fetching prayer times
+  const { data, error, isLoading } = useGetPrayerTimesByIPLocationQuery();
+  const prayerTimesFromStore = useSelector(
+    (state) => state.prayerTimes.prayerTimes
+  );
+  const prayerTimes = data?.prayerTimes || prayerTimesFromStore || [];
 
   return (
     <div className="w-full bg-gray-100/90 dark:bg-gradient-to-l from-black/85 via-black/90 to-black/75 ">
@@ -180,39 +186,57 @@ function PrayerTools({currentTime}) {
           {/* Panels */}
           <div className="mt-8 divide-y divide-gray-200 rounded-2xl bg-white/80 dark:bg-emerald-900 shadow-sm ring-1 ring-gray-200 dark:ring-emerald-600 backdrop-blur">
             {tab === "times" && (
-              <div
-                role="tabpanel"
-                aria-labelledby={tablistId}
-                className="p-2 md:p-4"
-              >
-                <div className="bg-white dark:bg-black/85 rounded-xl p-6 shadow">
-                  <h3 className="text-lg font-semibold mb-3 dark:text-white/95">
-                    Today's Prayer Times
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    {prayerTimes.map((p) => {
-                      const timeLeft = calculateTimeLeft(p.begins, currentTime);
-
-                      return (
-                        <div
-                          key={p.name}
-                          className="flex flex-col transition-all duration-300 hover:scale-110 items-center p-3 rounded-md bg-gray-50 dark:bg-black/40 dark:border dark:border-emerald-600"
-                        >
-                          <div className="text-sm text-gray-500 dark:text-gray-100">
-                            {p.name}
-                          </div>
-                          <div className="text-lg font-bold dark:text-gray-100">
-                            {p.name === "Sunrise" ? p.begins : p.iqama}
-                          </div>
-                          <div className="text-xs font-bold text-green-600 dark:text-green-400">
-                            {timeLeft}
-                          </div>
-                        </div>
-                      );
-                    })}
+              <>
+                {isLoading && (
+                  <div className="text-center py-4">
+                    <p className="text-emerald-600 dark:text-emerald-400 font-medium">
+                      Fetching prayer times...
+                    </p>
                   </div>
-                </div>
-              </div>
+                )}
+                
+                {error && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+                    <p>Error: {error.message || 'Failed to fetch prayer times'}</p>
+                  </div>
+                )}
+                
+                {!isLoading && !error && (
+                  <div
+                    role="tabpanel"
+                    aria-labelledby={tablistId}
+                    className="p-2 md:p-4"
+                  >
+                    <div className="bg-white dark:bg-black/85 rounded-xl p-6 shadow">
+                      <h3 className="text-lg font-semibold mb-3 dark:text-white/95">
+                        Today's Prayer Times
+                      </h3>
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                        {prayerTimes.map((p) => {
+                          const timeLeft = calculateTimeLeft(p.begins, currentTime);
+
+                          return (
+                            <div
+                              key={p.name}
+                              className="flex flex-col transition-all duration-300 hover:scale-110 items-center p-3 rounded-md bg-gray-50 dark:bg-black/40 dark:border dark:border-emerald-600"
+                            >
+                              <div className="text-sm text-gray-500 dark:text-gray-100">
+                                {p.name}
+                              </div>
+                              <div className="text-lg font-bold dark:text-gray-100">
+                                {p.name === "Sunrise" ? p.begins : p.iqama}
+                              </div>
+                              <div className="text-xs font-bold text-green-600 dark:text-green-400">
+                                {timeLeft}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
             {tab === "hijri" && (
@@ -361,8 +385,8 @@ function Events() {
   const formatDate = (iso) => new Date(iso).toLocaleDateString();
   const { eventsData } = useSelector((state) => state.eventsAndNews);
   const latestThreeEvents = useMemo(
-    () => eventsData.filter((e, idx) => idx >= eventsData.length - 3),
-    []
+    () => (eventsData || []).slice(-3),
+    [eventsData]
   );
 
   const navigate = useNavigate();
