@@ -24,23 +24,10 @@ import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Test from "./pages/Test";
+import NewsletterSubscribersDashboard from "./pages/NewsletterSubscribersDashboard";
 
 const App = () => {
-  // const [response, setResponse] = useState("")
-
-  // useEffect(() => {
-  //   async function greetBackend(){
-  //     try {
-  //       let message = await axios.get("http://localhost:7000/cow");
-  //       setResponse(message.data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   }
-
-  //   greetBackend();
-  // }, []);
-
+  
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
@@ -82,6 +69,9 @@ const App = () => {
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<Login />} />
         <Route path="test" element={<Test />} />
+        
+        {/* Newsletter Subscribers Dashboard */}
+        <Route path="newsletter_subscribers" element={<NewsletterSubscribersDashboard />} />
 
       </Route>
     )

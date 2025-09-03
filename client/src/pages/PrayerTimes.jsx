@@ -17,7 +17,6 @@ import {
   setSearchQuery,
   setNotificationsEnabled,
   setAudioPlaying,
-  setError,
 } from "../redux/prayerTimesSlice";
 import { setCurrentHijriMonth } from "../redux/hijriCalendarSlice";
 import {
@@ -45,7 +44,6 @@ export default function PrayerTimes() {
     searchQuery,
     notificationsEnabled,
     audioPlaying,
-    error,
   } = useSelector((state) => state.prayerTimes);
   const { currentHijriMonth } = useSelector((state) => state.hijriCalendar);
   const { qiblaDirection, dhikrCount, currentQuote, islamicQuotes } =
@@ -116,6 +114,17 @@ export default function PrayerTimes() {
       dispatch(setPrayerTimes(ipData.prayerTimes));
       dispatch(setLocation(ipData.location));
       
+      // Show success toast notification
+      toast.success(`Prayer times updated for ${ipData.location}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      
       // Clear timeout if data is received
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -152,9 +161,6 @@ export default function PrayerTimes() {
         progress: undefined,
       });
       
-      // Show error in UI as well
-      const errorMessage = ipError.message || "Failed to detect your location automatically.";
-      dispatch(setError(errorMessage));
       // Reset location to default when IP detection fails
       dispatch(setLocation(""));
       // Still show the default prayer times
@@ -244,7 +250,7 @@ export default function PrayerTimes() {
         />
 
         <section className="mx-auto max-w-6xl px-4">
-          <LocationSearch handleUseMyLocation={handleUseMyLocation} />
+          <LocationSearch handleUseMyLocation={handleUseMyLocation} isDetecting={isDetecting} />
 
           {/* Loading indicator */}
           {(ipLoading || locationLoading) && (
@@ -252,19 +258,6 @@ export default function PrayerTimes() {
               <p className="text-emerald-600 dark:text-emerald-400 font-medium">
                 Fetching prayer times...
               </p>
-            </div>
-          )}
-
-          {/* Error message */}
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
-              <p>Error: {error}</p>
-              <button
-                onClick={() => dispatch(setError(null))}
-                className="mt-2 text-sm underline"
-              >
-                Dismiss
-              </button>
             </div>
           )}
 

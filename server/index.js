@@ -145,6 +145,30 @@ app.get("/forums", async (req, res)=>{
       });
     }
   });
+  
+  // Getting all Newsletter Subscribers
+  app.get("/newsletter", async (req, res) => {
+    try {
+      // Import the Newsletter model
+      const Newsletter = require("./models/newsletter");
+      
+      // Fetch all newsletter subscribers, sorted by subscription date (newest first)
+      const subscribers = await Newsletter.find({ isActive: true })
+        .sort({ subscribedAt: -1 });
+      
+      res.json({
+        success: true,
+        count: subscribers.length,
+        data: subscribers
+      });
+    } catch (error) {
+      console.error("Error fetching newsletter subscribers:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while fetching subscribers. Please try again later." 
+      });
+    }
+  });
 }
 
 app.listen(7000, () => {

@@ -297,6 +297,12 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
     }),
+    
+    // Getting all Newsletter Subscribers
+    getNewsletterSubscribers: builder.query({
+      query: () => "/newsletter",
+      providesTags: ["NewsletterSubscribers"],
+    }),
   }),
 });
 
@@ -323,4 +329,5 @@ export const {
   
   // Newsletter
   useAddNewsletterSignUpMutation,
+  useGetNewsletterSubscribersQuery,
 } = apiSlice;
