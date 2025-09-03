@@ -11,6 +11,7 @@ import { calculateTimeLeft } from "../components/prayer-times/utils/timeHelpers"
 import { convertTo12HourFormat } from "../components/prayer-times/utils/timeFormat";
 import HijriCalendar from "../components/prayer-times/calendar/HijriCalendar";
 import { useGetPrayerTimesByIPLocationQuery } from "../services/apiSlice";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -132,6 +133,21 @@ function PrayerTools({currentTime}) {
     (state) => state.prayerTimes.prayerTimes
   );
   const prayerTimes = data?.prayerTimes || prayerTimesFromStore || [];
+
+  // Show toast notification when there's an error
+  useEffect(() => {
+    if (error) {
+      toast.error(`Error fetching prayer times: ${error.message || 'Failed to fetch prayer times'}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [error]);
 
   return (
     <div className="w-full bg-gray-100/90 dark:bg-gradient-to-l from-black/85 via-black/90 to-black/75 ">

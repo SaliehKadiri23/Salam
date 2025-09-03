@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Moon, Sun, Sunrise, Sunset } from "lucide-react";
+import { toast } from "react-toastify";
 
 // Import extracted components
 import Hero from "../components/prayer-times/hero/Hero";
@@ -34,6 +35,7 @@ import {
 export default function PrayerTimes() {
   // Only keep currentTime as local state (updates every second)
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isDetecting, setIsDetecting] = useState(false);
 
   // Redux state selectors
   const dispatch = useDispatch();
@@ -139,7 +141,18 @@ export default function PrayerTimes() {
   // Handle IP fetch errors
   useEffect(() => {
     if (ipError) {
-      // TODO: USe toast notifications
+      // Show error with toast notification
+      toast.error(`Error detecting your location: ${ipError.message || "Failed to detect your location automatically."}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      
+      // Show error in UI as well
       const errorMessage = ipError.message || "Failed to detect your location automatically.";
       dispatch(setError(errorMessage));
       // Reset location to default when IP detection fails
@@ -192,66 +205,18 @@ export default function PrayerTimes() {
     }
   }, [ipError, dispatch]);
 
-  // Handle location fetch errors
-  useEffect(() => {
-    if (locationError) {
-      // Show a more user-friendly error message
-      const errorMessage = locationError.message || "Failed to fetch prayer times for the specified location.";
-      dispatch(setError(errorMessage));
-      // Reset location to default when location detection fails
-      dispatch(setLocation(""));
-      // Still show the default prayer times
-      dispatch(setPrayerTimes([
-        {
-          name: "Fajr",
-          begins: "05:30",
-          iqama: "05:45",
-          icon: "Moon",
-          next: false
-        },
-        {
-          name: "Sunrise",
-          begins: "06:45",
-          iqama: "-",
-          icon: "Sunrise",
-          next: false
-        },
-        {
-          name: "Dhuhr",
-          begins: "13:15",
-          iqama: "13:30",
-          icon: "Sun",
-          next: true
-        },
-        {
-          name: "Asr",
-          begins: "17:00",
-          iqama: "17:15",
-          icon: "Sun",
-          next: false
-        },
-        {
-          name: "Maghrib",
-          begins: "20:30",
-          iqama: "20:45",
-          icon: "Sunset",
-          next: false
-        },
-        {
-          name: "Isha",
-          begins: "22:00",
-          iqama: "22:15",
-          icon: "Moon",
-          next: false
-        }
-      ]));
-    }
-  }, [locationError, dispatch]);
-
   // Location handler - IP-based detection
   const handleUseMyLocation = () => {
+    // Set detecting state to true
+    setIsDetecting(true);
+    
     // Trigger refetch of IP-based prayer times
     refetchIpData();
+    
+    // After 1500ms, set detecting state back to false
+    setTimeout(() => {
+      setIsDetecting(false);
+    }, 1500);
   };
 
   // Request notification permission

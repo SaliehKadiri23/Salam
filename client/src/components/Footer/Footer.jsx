@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import {
   Facebook,
   Youtube,
@@ -23,7 +24,7 @@ import { convertTo12HourFormat } from "../../components/prayer-times/utils/timeF
 
 const Footer = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-  const [addNewsletterSignUp, { isLoading, isSuccess, isError, error }] = useAddNewsletterSignUpMutation();
+  const [addNewsletterSignUp, { isLoading }] = useAddNewsletterSignUpMutation();
 
   // RTK Query hook for fetching prayer times
   const { data, error: prayerTimesError, isLoading: prayerTimesLoading } = useGetPrayerTimesByIPLocationQuery();
@@ -54,8 +55,10 @@ const Footer = () => {
     try {
       await addNewsletterSignUp(values.email).unwrap();
       resetForm();
+      toast.success("Thank you for subscribing to our newsletter!");
     } catch (err) {
       console.error("Failed to subscribe to newsletter:", err);
+      toast.error(err?.data?.message || "An error occurred. Please try again.");
     }
   };
 
@@ -179,12 +182,6 @@ const Footer = () => {
                       component="div"
                       className="text-red-300 text-sm"
                     />
-                    {(isSuccess || isError) && (
-                      <div className={`text-sm p-2 rounded ${isSuccess ? 'bg-green-900/50 text-green-300' : 'bg-red-900/50 text-red-300'}`}>
-                        {isSuccess ? 'Thank you for subscribing to our newsletter!' : 
-                         isError ? (error?.data?.message || 'An error occurred. Please try again.') : ''}
-                      </div>
-                    )}
                     <button
                       type="submit"
                       disabled={isSubmitting || isLoading}
