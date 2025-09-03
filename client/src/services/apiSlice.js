@@ -303,6 +303,56 @@ export const apiSlice = createApi({
       query: () => "/newsletter",
       providesTags: ["NewsletterSubscribers"],
     }),
+    
+    // ! Islamic Quotes
+    // Get all Islamic quotes
+    getIslamicQuotes: builder.query({
+      query: () => "/islamic-quotes",
+      providesTags: ["IslamicQuotes"],
+    }),
+    
+    // Get the Quote of the Day
+    getQuoteOfTheDay: builder.query({
+      query: () => "/islamic-quotes/quote-of-the-day",
+      providesTags: ["IslamicQuotes"],
+    }),
+    
+    // Get latest 7 Islamic quotes for rotation
+    getLatestIslamicQuotes: builder.query({
+      query: () => "/islamic-quotes/latest",
+      providesTags: ["IslamicQuotes"],
+    }),
+    
+    // Add a new Islamic quote
+    addIslamicQuote: builder.mutation({
+      query: (newQuote) => ({
+        url: "/islamic-quotes",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: newQuote,
+      }),
+      invalidatesTags: ["IslamicQuotes"],
+    }),
+    
+    // Update an Islamic quote
+    updateIslamicQuote: builder.mutation({
+      query: ({ id, ...updatedQuote }) => ({
+        url: `/islamic-quotes/${id}`,
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: updatedQuote,
+      }),
+      invalidatesTags: ["IslamicQuotes"],
+    }),
+    
+    // Delete an Islamic quote
+    deleteIslamicQuote: builder.mutation({
+      query: (id) => ({
+        url: `/islamic-quotes/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["IslamicQuotes"],
+    }),
   }),
 });
 
@@ -330,4 +380,12 @@ export const {
   // Newsletter
   useAddNewsletterSignUpMutation,
   useGetNewsletterSubscribersQuery,
+  
+  // Islamic Quotes
+  useGetIslamicQuotesQuery,
+  useGetQuoteOfTheDayQuery,
+  useGetLatestIslamicQuotesQuery,
+  useAddIslamicQuoteMutation,
+  useUpdateIslamicQuoteMutation,
+  useDeleteIslamicQuoteMutation,
 } = apiSlice;

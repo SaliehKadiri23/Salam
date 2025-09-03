@@ -23,11 +23,14 @@ import {
   setQiblaDirection,
   setDhikrCount,
   nextQuote,
+  setCurrentQuote,
+  setIslamicQuotes,
 } from "../redux/islamicUtilitiesSlice";
 import { setActiveTab } from "../redux/uiSlice";
 import {
   useGetPrayerTimesByIPLocationQuery,
   useGetPrayerTimesByLocationQuery,
+  useGetLatestIslamicQuotesQuery,
 } from "../services/apiSlice";
 
 // Main component
@@ -46,7 +49,7 @@ export default function PrayerTimes() {
     audioPlaying,
   } = useSelector((state) => state.prayerTimes);
   const { currentHijriMonth } = useSelector((state) => state.hijriCalendar);
-  const { qiblaDirection, dhikrCount, currentQuote, islamicQuotes } =
+  const { qiblaDirection, dhikrCount, currentQuote } =
     useSelector((state) => state.islamicUtilities);
   const { activeTab } = useSelector((state) => state.ui);
 
@@ -67,6 +70,11 @@ export default function PrayerTimes() {
       location === "Location Not Found" ||
       location === "Detecting location...",
   });
+  const {
+    data: quotesData,
+    error: quotesError,
+    isLoading: quotesLoading,
+  } = useGetLatestIslamicQuotesQuery();
 
   // Update current time every second
   useEffect(() => {
@@ -79,12 +87,19 @@ export default function PrayerTimes() {
 
   // Update current quote periodically using Redux dispatch
   useEffect(() => {
-    const quoteTimer = setInterval(() => {
-      dispatch(nextQuote(islamicQuotes.length));
-    }, 10000);
-
-    return () => clearInterval(quoteTimer);
-  }, [dispatch, islamicQuotes.length]);
+    // Only update quotes if we have data from the backend
+    if (quotesData && quotesData.data && quotesData.data.length > 0) {
+      // Update Redux state with backend quotes
+      dispatch(setIslamicQuotes(quotesData.data));
+      
+      // Set up interval to rotate quotes
+      const quoteTimer = setInterval(() => {
+        dispatch(nextQuote(quotesData.data.length));
+      }, 10000);
+      
+      return () => clearInterval(quoteTimer);
+    }
+  }, [dispatch, quotesData]);
 
   // Fetch prayer times when component mounts
   useEffect(() => {

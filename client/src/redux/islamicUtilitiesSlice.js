@@ -85,6 +85,9 @@ export const islamicUtilitiesSlice = createSlice({
       const totalQuotes = action.payload || 4; // Default fallback
       state.currentQuote = (state.currentQuote - 1 + totalQuotes) % totalQuotes;
     },
+    setIslamicQuotes: (state, action) => {
+      state.islamicQuotes = action.payload;
+    },
   },
 });
 
@@ -99,6 +102,7 @@ export const {
   setCurrentQuote,
   nextQuote,
   previousQuote,
+  setIslamicQuotes,
 } = islamicUtilitiesSlice.actions;
 
 export default islamicUtilitiesSlice.reducer;

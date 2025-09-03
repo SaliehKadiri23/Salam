@@ -25,9 +25,24 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Test from "./pages/Test";
 import NewsletterSubscribersDashboard from "./pages/NewsletterSubscribersDashboard";
+import IslamicQuotesDashboard from "./pages/IslamicQuotesDashboard";
 
 const App = () => {
-  
+  // const [response, setResponse] = useState("")
+
+  // useEffect(() => {
+  //   async function greetBackend(){
+  //     try {
+  //       let message = await axios.get("http://localhost:7000/cow");
+  //       setResponse(message.data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   }
+
+  //   greetBackend();
+  // }, []);
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
@@ -72,6 +87,9 @@ const App = () => {
         
         {/* Newsletter Subscribers Dashboard */}
         <Route path="newsletter_subscribers" element={<NewsletterSubscribersDashboard />} />
+        
+        {/* Islamic Quotes Dashboard */}
+        <Route path="islamic_quotes" element={<IslamicQuotesDashboard />} />
 
       </Route>
     )
