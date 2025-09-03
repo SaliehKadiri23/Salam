@@ -4,6 +4,7 @@ import Layout from "./layout/Layout";
 import Home from "./pages/Home";
 import PrayerTimes from "./pages/PrayerTimes";
 import Resources from "./pages/Resources";
+import ResourceDashboard from "./pages/ResourceDashboard";
 import Donate from "./pages/Donate";
 import {
   createBrowserRouter,
@@ -53,6 +54,7 @@ const App = () => {
 
         {/* Resources */}
         <Route path="resources" element={<Resources />} />
+        <Route path="resource-dashboard" element={<ResourceDashboard />} />
 
         {/* Events & News */}
         <Route path="events_and_news" element={<EventsAndNews />} />

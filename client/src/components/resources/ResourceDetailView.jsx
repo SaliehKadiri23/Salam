@@ -12,20 +12,25 @@ import {
   FileText,
   Download,
   Clock,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { closeResourceDetail, openResourceDetail } from '../../redux/uiSlice';
 import { toggleBookmark } from '../../redux/userSlice';
+import { useGetResourcesQuery } from '../../redux/resourcesSlice';
 import CommentsSection from './CommentsSection';
+import MarkdownRenderer from './MarkdownRenderer';
 
 const ResourceDetailView = () => {
   const dispatch = useDispatch();
   const { selectedResource } = useSelector((state) => state.ui);
-  const resources = useSelector((state) => state.resources);
   const { bookmarkedItems, reviews, progressItems } = useSelector(
     (state) => state.user
   );
+  const { data: resourcesData } = useGetResourcesQuery();
+  const allResources = resourcesData?.data || [];
 
-  const [activeChapter, setActiveChapter] = useState(0);
+  const [expandedSections, setExpandedSections] = useState({});
 
   if (!selectedResource) {
     return null;
@@ -43,17 +48,24 @@ const ResourceDetailView = () => {
       : resource.rating;
 
   const getRecommendedResources = (currentResource) => {
-    return resources.all
+    return allResources
       .filter(
         (res) =>
           res.id !== currentResource.id &&
           (res.category === currentResource.category ||
-            res.tags.some((tag) => currentResource.tags.includes(tag)))
+            res.tags?.some((tag) => currentResource.tags?.includes(tag)))
       )
       .slice(0, 3);
   };
 
   const recommendedResources = getRecommendedResources(resource);
+
+  const toggleSection = (sectionId) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-800 dark:to-gray-900">
@@ -145,11 +157,11 @@ const ResourceDetailView = () => {
                     ></div>
                   </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-100 mb-6">
-                  {resource.description}
-                </p>
+                <div className="mb-6">
+                  <MarkdownRenderer content={resource.description} />
+                </div>
                 <div className="flex flex-wrap gap-2">
-                  {resource.tags.map((tag) => (
+                  {resource.tags?.map((tag) => (
                     <span
                       key={tag}
                       className="px-3 py-1 bg-emerald-50 text-emerald-700 text-sm rounded-full"
@@ -160,74 +172,111 @@ const ResourceDetailView = () => {
                 </div>
               </div>
             </div>
+            
+            {/* Content Sections */}
             <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 mb-6">
               <div className="p-6">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                  Content Structure
+                  Content
                 </h2>
-                <div className="space-y-2">
-                  {resource.chapters.map((chapter, index) => (
-                    <button
-                      key={chapter.id}
-                      onClick={() => setActiveChapter(index)}
-                      className={`w-full text-left p-4 rounded-lg transition-colors ${
-                        activeChapter === index
-                          ? "bg-emerald-50 dark:bg-emerald-700 dark:text-gray-100 border-emerald-200 text-emerald-700"
-                          : "bg-gray-50 dark:bg-black/40 dark:text-gray-100 hover:bg-gray-100 text-gray-700"
-                      } border dark:border-emerald-600`}
+                <div className="space-y-4">
+                  {resource.contentSections && resource.contentSections.map((section) => (
+                    <div 
+                      key={section.id} 
+                      className="border border-gray-200 dark:border-emerald-600 rounded-lg overflow-hidden"
                     >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium">{chapter.title}</h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-200">
-                            {chapter.duration} minutes
-                          </p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {index < activeChapter && (
-                            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                      <button
+                        onClick={() => toggleSection(section.id)}
+                        className="w-full text-left p-4 bg-gray-50 dark:bg-black/40 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center justify-between"
+                      >
+                        <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                          {section.title || `Section ${section.order}`}
+                        </h3>
+                        {expandedSections[section.id] ? (
+                          <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-300" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-300" />
+                        )}
+                      </button>
+                      
+                      {expandedSections[section.id] && (
+                        <div className="p-4 bg-white dark:bg-black/20">
+                          <MarkdownRenderer content={section.content} />
+                          
+                          {/* Media Gallery */}
+                          {section.media && section.media.length > 0 && (
+                            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                              {section.media.map((media, index) => (
+                                <div key={index} className="relative group">
+                                  {media.type === 'image' ? (
+                                    <img 
+                                      src={media.url} 
+                                      alt={media.alt} 
+                                      className="w-full h-24 object-cover rounded border border-gray-200 dark:border-gray-600"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-24 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                      <span className="text-xs text-gray-500 dark:text-gray-300">
+                                        {media.type.toUpperCase()}
+                                      </span>
+                                    </div>
+                                  )}
+                                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded">
+                                    <Play className="w-6 h-6 text-white" />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
                           )}
-                          <Play className="w-4 h-4" />
                         </div>
-                      </div>
-                    </button>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
             </div>
+            
             <CommentsSection resourceId={resource.id} />
           </div>
+          
           <div className="space-y-6">
-            <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Downloads
-              </h3>
-              <div className="space-y-3">
-                {resource.downloads.map((download, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 dark:border dark:border-emerald-600 bg-gray-50 dark:bg-black/40 rounded-lg"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                        <FileText className="w-4 h-4 text-emerald-600" />
+            {/* Useful Resources Section */}
+            {resource.usefulResources && resource.usefulResources.length > 0 && (
+              <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                  Useful Resources
+                </h3>
+                <div className="space-y-3">
+                  {resource.usefulResources.map((usefulResource, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 dark:border dark:border-emerald-600 bg-gray-50 dark:bg-black/40 rounded-lg"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                          <FileText className="w-4 h-4 text-emerald-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {usefulResource.title}
+                          </p>
+                          {usefulResource.description && (
+                            <p className="text-xs text-gray-600 dark:text-gray-100 truncate max-w-[150px]">
+                              {usefulResource.description}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                          {download.name}
-                        </p>
-                        <p className="text-xs text-gray-600 dark:text-gray-100">
-                          {download.size}
-                        </p>
-                      </div>
+                      <button className="p-2 text-gray-400 dark:text-gray-100 hover:text-emerald-600 transition-colors">
+                        <Download className="w-4 h-4" />
+                      </button>
                     </div>
-                    <button className="p-2 text-gray-400 dark:text-gray-100 hover:text-emerald-600 transition-colors">
-                      <Download className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+            
+            {/* Recommended Resources Section */}
             <div className="bg-white dark:bg-black/40 rounded-xl shadow-sm border border-emerald-100 dark:border-emerald-600 p-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Recommended

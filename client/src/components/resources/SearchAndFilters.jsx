@@ -26,7 +26,7 @@ export default function SearchAndFilters() {
             placeholder="Search resources, topics, or authors..."
             value={searchQuery}
             onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-emerald-500 dark:bg-black/40 dark:text-white dark:placeholder:text-white/80 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+            className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-emerald-500 outline-none dark:bg-black/40 dark:text-white dark:placeholder:text-white/80 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
           />
         </div>
         <button

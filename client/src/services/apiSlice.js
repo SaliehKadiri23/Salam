@@ -156,7 +156,7 @@ const getPrayerTimesByAddress = async (address) => {
 export const apiSlice = createApi({
   reducerPath: "salam",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:7000" }),
-  tagTypes: ["Articles", "Forums", "QuestionsAndAnswers", "PrayerTimes"],
+  tagTypes: ["Articles", "Forums", "QuestionsAndAnswers", "PrayerTimes", "IslamicQuotes"],
   endpoints: (builder) => ({
     // ! ARTICLES
     //  Getting All Articles
@@ -308,7 +308,13 @@ export const apiSlice = createApi({
     // Get all Islamic quotes
     getIslamicQuotes: builder.query({
       query: () => "/islamic-quotes",
-      providesTags: ["IslamicQuotes"],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({ type: "IslamicQuotes", id: _id })),
+              { type: "IslamicQuotes", id: "LIST" },
+            ]
+          : [{ type: "IslamicQuotes", id: "LIST" }],
     }),
     
     // Get the Quote of the Day
@@ -331,7 +337,7 @@ export const apiSlice = createApi({
         headers: { "Content-Type": "application/json" },
         body: newQuote,
       }),
-      invalidatesTags: ["IslamicQuotes"],
+      invalidatesTags: [{ type: "IslamicQuotes", id: "LIST" }],
     }),
     
     // Update an Islamic quote
@@ -342,7 +348,10 @@ export const apiSlice = createApi({
         headers: { "Content-Type": "application/json" },
         body: updatedQuote,
       }),
-      invalidatesTags: ["IslamicQuotes"],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "IslamicQuotes", id },
+        { type: "IslamicQuotes", id: "LIST" },
+      ],
     }),
     
     // Delete an Islamic quote
@@ -351,7 +360,10 @@ export const apiSlice = createApi({
         url: `/islamic-quotes/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["IslamicQuotes"],
+      invalidatesTags: (result, error, id) => [
+        { type: "IslamicQuotes", id },
+        { type: "IslamicQuotes", id: "LIST" },
+      ],
     }),
   }),
 });

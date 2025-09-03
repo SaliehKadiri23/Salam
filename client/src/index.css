@@ -8,6 +8,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Arabic font for Islamic texts */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
+.font-arabic {
+  font-family: 'Amiri', serif;
+  text-align: right;
+  direction: rtl;
+}
+
 /* Islamic Sign Up Page Design Tokens */
 :root {
   /* Islamic Golden Ratio Spacing */
