@@ -288,12 +288,12 @@ export const apiSlice = createApi({
     }),
 
     // ! Newsletter
-    addNewNewsletter: builder.mutation({
-      query: (newQuestionAndAnswer) => ({
-        url: "/questions_and_answers",
+    addNewsletterSignUp: builder.mutation({
+      query: (email) => ({
+        url: "/newsletter",
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: newQuestionAndAnswer,
+        body: JSON.stringify({email: email}),
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
     }),
@@ -320,4 +320,7 @@ export const {
   // PrayerTimes
   useGetPrayerTimesByIPLocationQuery,
   useGetPrayerTimesByLocationQuery,
+  
+  // Newsletter
+  useAddNewsletterSignUpMutation,
 } = apiSlice;

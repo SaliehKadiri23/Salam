@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
   Facebook,
   Youtube,
@@ -16,10 +16,19 @@ import {
 import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLanguage } from "../../redux/userSlice.js";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { newsletterValidationSchema } from "./newsletterValidation.js";
+import { useAddNewsletterSignUpMutation, useGetPrayerTimesByIPLocationQuery } from "../../services/apiSlice.js";
+import { convertTo12HourFormat } from "../../components/prayer-times/utils/timeFormat.js";
 
 const Footer = () => {
-  const [email, setEmail] = useState("");
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [addNewsletterSignUp, { isLoading, isSuccess, isError, error }] = useAddNewsletterSignUpMutation();
+
+  // RTK Query hook for fetching prayer times
+  const { data, error: prayerTimesError, isLoading: prayerTimesLoading } = useGetPrayerTimesByIPLocationQuery();
+  const prayerTimesFromStore = useSelector((state) => state.prayerTimes.prayerTimes);
+  const prayerTimes = data?.prayerTimes || prayerTimesFromStore || [];
 
   const navigationLinks = [
     { name: "Home", href: "" },
@@ -39,18 +48,18 @@ const Footer = () => {
     { icon: Send, href: "#", name: "TikTok" },
   ];
 
-  const prayerTimes = useSelector((state) => state.prayerTimes.prayerTimes);
-
   const { selectedLanguage, languages } = useSelector((state) => state.user);
 
-  const handleNewsletterSubmit = () => {
-    if (email) {
-      console.log("Newsletter signup:", email);
-      setEmail("");
+  const handleNewsletterSubmit = async (values, { resetForm }) => {
+    try {
+      await addNewsletterSignUp(values.email).unwrap();
+      resetForm();
+    } catch (err) {
+      console.error("Failed to subscribe to newsletter:", err);
     }
   };
-  const navigate = useNavigate()
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return (
@@ -98,26 +107,46 @@ const Footer = () => {
                   <ArrowRight className="h-5 w-5" />
                 </span>
               </div>
-              <div className="space-y-2 text-sm">
-                {prayerTimes.map((p, index) =>
-                  p.name === "Asr" ? (
-                    <div
-                      key={index}
-                      className="flex justify-between border-l-2 border-yellow-400 pl-2"
-                    >
-                      <span className="text-yellow-400">{p.name}</span>
-                      <span className="text-yellow-400 font-medium">
-                        {p.iqama}
-                      </span>
-                    </div>
-                  ) : (
-                    <div key={index} className="flex justify-between">
-                      <span className="text-emerald-200">{p.name}</span>
-                      <span className="text-white font-medium">{p.iqama}</span>
-                    </div>
-                  )
-                )}
-              </div>
+              
+              {/* Loading indicator */}
+              {prayerTimesLoading && (
+                <div className="text-center py-2">
+                  <p className="text-emerald-200 text-sm">Loading prayer times...</p>
+                </div>
+              )}
+              
+              {/* Error message */}
+              {prayerTimesError && (
+                <div className="text-center py-2">
+                  <p className="text-red-300 text-sm">Error loading prayer times</p>
+                </div>
+              )}
+              
+              {/* Prayer times display */}
+              {!prayerTimesLoading && !prayerTimesError && prayerTimes.length > 0 && (
+                <div className="space-y-2 text-sm">
+                  {prayerTimes.map((p, index) =>
+                    p.name === "Asr" ? (
+                      <div
+                        key={index}
+                        className="flex justify-between border-l-2 border-yellow-400 pl-2"
+                      >
+                        <span className="text-yellow-400">{p.name}</span>
+                        <span className="text-yellow-400 font-medium">
+                          {p.name === "Sunrise" ? convertTo12HourFormat(p.begins) : convertTo12HourFormat(p.iqama)}
+                        </span>
+                      </div>
+                    ) : (
+                      <div key={index} className="flex justify-between">
+                        <span className="text-emerald-200">{p.name}</span>
+                        <span className="text-white font-medium">
+                          {p.name === "Sunrise" ? convertTo12HourFormat(p.begins) : convertTo12HourFormat(p.iqama)}
+                        </span>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
             </button>
 
             {/* Newsletter Signup */}
@@ -128,25 +157,44 @@ const Footer = () => {
               <p className="text-emerald-200 text-sm mb-6 text-center">
                 Receive Islamic wisdom, event updates, and community news
               </p>
-              <div className="space-y-4">
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-emerald-300" />
-                  <input
-                    type="email"
-                    value={email}
-                    id="newsletter_email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="w-full pl-12 pr-4 py-3 bg-emerald-800/50 border border-emerald-600 rounded-xl text-white placeholder-emerald-300 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
-                  />
-                </div>
-                <button
-                  onClick={handleNewsletterSubmit}
-                  className="w-full bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-emerald-900 font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                >
-                  Subscribe
-                </button>
-              </div>
+              <Formik
+                initialValues={{ email: "" }}
+                validationSchema={newsletterValidationSchema}
+                onSubmit={handleNewsletterSubmit}
+              >
+                {({ isSubmitting }) => (
+                  <Form className="space-y-4">
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-emerald-300" />
+                      <Field
+                        type="email"
+                        name="email"
+                        id="newsletter_email"
+                        placeholder="Enter your email"
+                        className="w-full pl-12 pr-4 py-3 bg-emerald-800/50 border border-emerald-600 rounded-xl text-white placeholder-emerald-300 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all"
+                      />
+                    </div>
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="text-red-300 text-sm"
+                    />
+                    {(isSuccess || isError) && (
+                      <div className={`text-sm p-2 rounded ${isSuccess ? 'bg-green-900/50 text-green-300' : 'bg-red-900/50 text-red-300'}`}>
+                        {isSuccess ? 'Thank you for subscribing to our newsletter!' : 
+                         isError ? (error?.data?.message || 'An error occurred. Please try again.') : ''}
+                      </div>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting || isLoading}
+                      className="w-full bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-emerald-900 font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50"
+                    >
+                      {isLoading ? 'Subscribing...' : 'Subscribe'}
+                    </button>
+                  </Form>
+                )}
+              </Formik>
             </div>
           </div>
         </div>

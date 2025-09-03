@@ -107,14 +107,42 @@ app.get("/forums", async (req, res)=>{
   // Adding a Newsletter
   app.post("/newsletter", async (req, res) => {
     try {
-      let newQuestion = req.body;
+      const { email } = req.body;
+      console.log("Newsletter signup request:", email);
 
-      await QuestionAndAnswer.insertOne(newQuestion).then((res) =>
-        console.log(res)
-      );
-      res.send("Question Added Successfully");
+      // Import the Newsletter model
+      const Newsletter = require("./models/newsletter");
+
+      // Check if email already exists
+      const existingSubscriber = await Newsletter.findOne({ email });
+      if (existingSubscriber) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "This email is already subscribed to our newsletter." 
+        });
+      }
+
+      // Create new newsletter subscriber
+      const newSubscriber = new Newsletter({ email });
+      await newSubscriber.save();
+
+      res.status(201).json({ 
+        success: true, 
+        message: "Thank you for subscribing to our newsletter!",
+        data: newSubscriber
+      });
     } catch (error) {
-      throw new Error("Error : ", error);
+      console.error("Newsletter signup error:", error);
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Please provide a valid email address." 
+        });
+      }
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while subscribing. Please try again later." 
+      });
     }
   });
 }
