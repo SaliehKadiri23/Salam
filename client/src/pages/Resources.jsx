@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { useGetResourcesQuery } from '../redux/resourcesSlice';
+import { useGetResourcesQuery } from '../services/apiSlice';
 import PageHeader from '../components/resources/PageHeader';
 import SearchAndFilters from '../components/resources/SearchAndFilters';
 import ResultsHeader from '../components/resources/ResultsHeader';

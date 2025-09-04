@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { closeResourceDetail, openResourceDetail } from '../../redux/uiSlice';
 import { toggleBookmark } from '../../redux/userSlice';
-import { useGetResourcesQuery } from '../../redux/resourcesSlice';
+import { useGetResourcesQuery } from '../../services/apiSlice';
 import CommentsSection from './CommentsSection';
 import MarkdownRenderer from './MarkdownRenderer';
 
@@ -180,58 +180,63 @@ const ResourceDetailView = () => {
                   Content
                 </h2>
                 <div className="space-y-4">
-                  {resource.contentSections && resource.contentSections.map((section) => (
-                    <div 
-                      key={section.id} 
-                      className="border border-gray-200 dark:border-emerald-600 rounded-lg overflow-hidden"
-                    >
-                      <button
-                        onClick={() => toggleSection(section.id)}
-                        className="w-full text-left p-4 bg-gray-50 dark:bg-black/40 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center justify-between"
+                  {resource.contentSections && resource.contentSections.map((section, index) => {
+                    // Create a unique key for each section
+                    const sectionKey = section.id || `section-${index}-${section.title || 'untitled'}`;
+                    
+                    return (
+                      <div 
+                        key={sectionKey} 
+                        className="border border-gray-200 dark:border-emerald-600 rounded-lg overflow-hidden"
                       >
-                        <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                          {section.title || `Section ${section.order}`}
-                        </h3>
-                        {expandedSections[section.id] ? (
-                          <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-300" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-300" />
-                        )}
-                      </button>
-                      
-                      {expandedSections[section.id] && (
-                        <div className="p-4 bg-white dark:bg-black/20">
-                          <MarkdownRenderer content={section.content} />
-                          
-                          {/* Media Gallery */}
-                          {section.media && section.media.length > 0 && (
-                            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                              {section.media.map((media, index) => (
-                                <div key={index} className="relative group">
-                                  {media.type === 'image' ? (
-                                    <img 
-                                      src={media.url} 
-                                      alt={media.alt} 
-                                      className="w-full h-24 object-cover rounded border border-gray-200 dark:border-gray-600"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-24 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
-                                      <span className="text-xs text-gray-500 dark:text-gray-300">
-                                        {media.type.toUpperCase()}
-                                      </span>
-                                    </div>
-                                  )}
-                                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded">
-                                    <Play className="w-6 h-6 text-white" />
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
+                        <button
+                          onClick={() => toggleSection(sectionKey)}
+                          className="w-full text-left p-4 bg-gray-50 dark:bg-black/40 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center justify-between"
+                        >
+                          <h3 className="font-medium text-gray-900 dark:text-gray-100">
+                            {section.title || `Section ${section.order || index + 1}`}
+                          </h3>
+                          {expandedSections[sectionKey] ? (
+                            <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-300" />
+                          ) : (
+                            <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-300" />
                           )}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                        </button>
+                        
+                        {expandedSections[sectionKey] && (
+                          <div className="p-4 bg-white dark:bg-black/20">
+                            <MarkdownRenderer content={section.content} />
+                            
+                            {/* Media Gallery */}
+                            {section.media && section.media.length > 0 && (
+                              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                                {section.media.map((media, mediaIndex) => (
+                                  <div key={`${sectionKey}-media-${mediaIndex}`} className="relative group">
+                                    {media.type === 'image' ? (
+                                      <img 
+                                        src={media.url} 
+                                        alt={media.alt} 
+                                        className="w-full h-24 object-cover rounded border border-gray-200 dark:border-gray-600"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-24 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                        <span className="text-xs text-gray-500 dark:text-gray-300">
+                                          {media.type.toUpperCase()}
+                                        </span>
+                                      </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded">
+                                      <Play className="w-6 h-6 text-white" />
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -247,31 +252,36 @@ const ResourceDetailView = () => {
                   Useful Resources
                 </h3>
                 <div className="space-y-3">
-                  {resource.usefulResources.map((usefulResource, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 dark:border dark:border-emerald-600 bg-gray-50 dark:bg-black/40 rounded-lg"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                          <FileText className="w-4 h-4 text-emerald-600" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                            {usefulResource.title}
-                          </p>
-                          {usefulResource.description && (
-                            <p className="text-xs text-gray-600 dark:text-gray-100 truncate max-w-[150px]">
-                              {usefulResource.description}
+                  {resource.usefulResources.map((usefulResource, index) => {
+                    // Create a unique key for each useful resource
+                    const resourceKey = usefulResource.id || `useful-resource-${index}-${usefulResource.title || 'untitled'}`;
+                    
+                    return (
+                      <div
+                        key={resourceKey}
+                        className="flex items-center justify-between p-3 dark:border dark:border-emerald-600 bg-gray-50 dark:bg-black/40 rounded-lg"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                            <FileText className="w-4 h-4 text-emerald-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              {usefulResource.title}
                             </p>
-                          )}
+                            {usefulResource.description && (
+                              <p className="text-xs text-gray-600 dark:text-gray-100 truncate max-w-[150px]">
+                                {usefulResource.description}
+                              </p>
+                            )}
+                          </div>
                         </div>
+                        <button className="p-2 text-gray-400 dark:text-gray-100 hover:text-emerald-600 transition-colors">
+                          <Download className="w-4 h-4" />
+                        </button>
                       </div>
-                      <button className="p-2 text-gray-400 dark:text-gray-100 hover:text-emerald-600 transition-colors">
-                        <Download className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -282,31 +292,36 @@ const ResourceDetailView = () => {
                 Recommended
               </h3>
               <div className="space-y-4">
-                {recommendedResources.map((rec) => (
-                  <button
-                    key={rec.id}
-                    onClick={() => dispatch(openResourceDetail(rec))}
-                    className="w-full text-left p-3 bg-gray-50 dark:bg-black/40 dark:border dark:border-emerald-600 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <div className="flex space-x-3">
-                      <div className="w-16 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded flex-shrink-0"></div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1 truncate">
-                          {rec.title}
-                        </h4>
-                        <p className="text-xs text-gray-600 dark:text-gray-200 mb-1">
-                          {rec.author}
-                        </p>
-                        <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-100">
-                          <Clock className="w-3 h-3" />
-                          <span>{rec.duration}</span>
-                          <Star className="w-3 h-3 fill-current text-amber-400" />
-                          <span>{rec.rating}</span>
+                {recommendedResources.map((rec) => {
+                  // Create a unique key for each recommended resource
+                  const recKey = rec.id || `rec-${rec.title || 'untitled'}`;
+                  
+                  return (
+                    <button
+                      key={recKey}
+                      onClick={() => dispatch(openResourceDetail(rec))}
+                      className="w-full text-left p-3 bg-gray-50 dark:bg-black/40 dark:border dark:border-emerald-600 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <div className="flex space-x-3">
+                        <div className="w-16 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded flex-shrink-0"></div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1 truncate">
+                            {rec.title}
+                          </h4>
+                          <p className="text-xs text-gray-600 dark:text-gray-200 mb-1">
+                            {rec.author}
+                          </p>
+                          <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-100">
+                            <Clock className="w-3 h-3" />
+                            <span>{rec.duration}</span>
+                            <Star className="w-3 h-3 fill-current text-amber-400" />
+                            <span>{rec.rating}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

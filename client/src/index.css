@@ -1,15 +1,18 @@
+/* Arabic font for Islamic texts */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 .active {
   color: #13ad4d;
   border-bottom: 2px solid #fdc700;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-/* Arabic font for Islamic texts */
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
+
 
 .font-arabic {
   font-family: 'Amiri', serif;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Users, Clock, FileText, RefreshCw } from "lucide-react";
+import { Users, Clock, FileText, RefreshCw, Star } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import { useGetNewsletterSubscribersQuery } from "../services/apiSlice";
 import { setSelectedLanguage } from "../redux/userSlice";
@@ -75,8 +75,7 @@ const NewsletterSubscribersDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
       <div className="container mx-auto px-4 py-8">
-        {/* Toast Container */}
-        <ToastContainer position="top-right" />
+       
         
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
@@ -105,7 +104,7 @@ const NewsletterSubscribersDashboard = () => {
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <div className="p-3 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg">
-                <Users className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <Star className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Subscribers</p>
@@ -217,7 +216,7 @@ const NewsletterSubscribersDashboard = () => {
               
               {totalSubscribers === 0 && (
                 <div className="py-12 text-center">
-                  <Users className="mx-auto h-12 w-12 text-gray-400" />
+                  <Star className="mx-auto h-12 w-12 text-gray-400" />
                   <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No subscribers</h3>
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                     No one has subscribed to your newsletter yet.

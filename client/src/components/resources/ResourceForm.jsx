@@ -590,14 +590,13 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
       publishedDate: new Date().toISOString().split('T')[0],
       contentSections: [
         { 
-          id: Date.now(), 
           title: '', 
           content: '', 
           media: [],
           order: 1
         }
       ],
-      usefulResources: [{ id: Date.now(), title: '', url: '', description: '', file: null }]
+      usefulResources: [{ title: '', url: '', description: '', file: null }]
     };
   });
   const [lastSaved, setLastSaved] = useState(null);
@@ -618,25 +617,41 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
           const formDataToSave = {
             ...formData,
             imageFile: null, // File objects can't be serialized
-            contentSections: formData.contentSections.map(section => ({
-              ...section,
-              // Media URLs from files can't be serialized, so we'll save just the metadata
-              media: section.media.map(media => ({
-                id: media.id,
-                type: media.type,
-                alt: media.alt,
-                // Note: URL will be lost on page refresh for file uploads
-              }))
-            })),
+            contentSections: formData.contentSections.map(section => {
+              const savedSection = {
+                ...section,
+                // Media URLs from files can't be serialized, so we'll save just the metadata
+                media: section.media.map(media => ({
+                  type: media.type,
+                  alt: media.alt,
+                  // Note: URL will be lost on page refresh for file uploads
+                }))
+              };
+              
+              // Only save ID if it's a MongoDB ObjectId (24-character hex string)
+              if (section.id && typeof section.id === 'string' && section.id.length === 24) {
+                savedSection.id = section.id;
+              }
+              
+              return savedSection;
+            }),
             // Ensure usefulResources is properly structured without file objects
-            usefulResources: formData.usefulResources ? formData.usefulResources.map(resource => ({
-              id: resource.id,
-              title: resource.title,
-              url: resource.url,
-              description: resource.description,
-              // File objects can't be serialized, so we exclude them
-              // On page refresh, users will need to re-upload files
-            })) : [{ id: Date.now(), title: '', url: '', description: '', file: null }]
+            usefulResources: formData.usefulResources ? formData.usefulResources.map(resource => {
+              const savedResource = {
+                title: resource.title,
+                url: resource.url,
+                description: resource.description,
+                // File objects can't be serialized, so we exclude them
+                // On page refresh, users will need to re-upload files
+              };
+              
+              // Only save ID if it's a MongoDB ObjectId (24-character hex string)
+              if (resource.id && typeof resource.id === 'string' && resource.id.length === 24) {
+                savedResource.id = resource.id;
+              }
+              
+              return savedResource;
+            }) : [{ title: '', url: '', description: '', file: null }]
           };
           
           localStorage.setItem('resourceDraft', JSON.stringify(formDataToSave));
@@ -692,14 +707,13 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
         publishedDate: resource.publishedDate || new Date().toISOString().split('T')[0],
         contentSections: resource.contentSections && resource.contentSections.length > 0 
           ? resource.contentSections.map(section => ({
-              id: section.id || Date.now() + Math.random(),
+              id: section.id, // Preserve existing ID if it exists
               title: section.title || '',
               content: section.content || '',
               media: section.media || [],
               order: section.order || 0
             }))
           : [{ 
-              id: Date.now(), 
               title: '', 
               content: '', 
               media: [],
@@ -707,13 +721,13 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
             }],
         usefulResources: resource.usefulResources && resource.usefulResources.length > 0
           ? resource.usefulResources.map(resource => ({
-              id: resource.id || Date.now() + Math.random(),
+              id: resource.id, // Preserve existing ID if it exists
               title: resource.title || '',
               url: resource.url || '',
               description: resource.description || '',
               file: null // File objects can't be serialized from existing resources
             }))
-          : [{ id: Date.now(), title: '', url: '', description: '', file: null }]
+          : [{ title: '', url: '', description: '', file: null }]
       });
     } else {
       // For new resources, set publishedDate to current date
@@ -751,7 +765,6 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
   const handleMediaUpload = (sectionIndex, file) => {
     const updatedSections = [...formData.contentSections];
     const mediaItem = {
-      id: Date.now() + Math.random(),
       type: file.type.split('/')[0], // 'image', 'video', etc.
       url: URL.createObjectURL(file),
       alt: file.name.split('.')[0]
@@ -786,7 +799,7 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
       ...prev,
       usefulResources: [
         ...prev.usefulResources,
-        { id: Date.now() + Math.random(), title: '', url: '', description: '', file: null }
+        { title: '', url: '', description: '', file: null }
       ]
     }));
   };
@@ -807,7 +820,6 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
       contentSections: [
         ...prev.contentSections,
         { 
-          id: Date.now() + Math.random(),
           title: '', 
           content: '', 
           media: [],
@@ -841,24 +853,40 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
     // Process content sections
     const contentSectionsArray = formData.contentSections
       .filter(section => section.title || section.content)
-      .map((section, index) => ({
-        id: section.id,
-        title: section.title,
-        content: section.content,
-        media: section.media,
-        order: index + 1
-      }));
+      .map((section, index) => {
+        const processedSection = {
+          title: section.title,
+          content: section.content,
+          media: section.media,
+          order: index + 1
+        };
+        
+        // Only include ID if it's a MongoDB ObjectId (24-character hex string)
+        if (section.id && typeof section.id === 'string' && section.id.length === 24) {
+          processedSection.id = section.id;
+        }
+        
+        return processedSection;
+      });
     
     // Process useful resources
     const usefulResourcesArray = formData.usefulResources
-      .filter(resource => resource.title && (resource.url || resource.file))
-      .map((resource, index) => ({
-        id: resource.id,
-        title: resource.title,
-        url: resource.url,
-        description: resource.description,
-        fileName: resource.file ? resource.file.name : null
-      }));
+      .filter(resource => resource.title && (resource.url || resource.file || resource.description))
+      .map((resource, index) => {
+        const processedResource = {
+          title: resource.title,
+          url: resource.url,
+          description: resource.description,
+          fileName: resource.file ? resource.file.name : null
+        };
+        
+        // Only include ID if it's a MongoDB ObjectId (24-character hex string)
+        if (resource.id && typeof resource.id === 'string' && resource.id.length === 24) {
+          processedResource.id = resource.id;
+        }
+        
+        return processedResource;
+      });
     
     // Automatically calculate duration and estimated time based on resource type
     let duration = '';
@@ -892,7 +920,7 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
         break;
       default:
         estimatedTime = 0;
-        duration = '';
+        duration = '0 min';
     }
     
     const resourceData = {
@@ -932,7 +960,11 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
     
     // If editing, include the resource ID
     if (resource) {
-      resourceData.id = resource.id;
+      resourceData._id = resource._id || resource.id;
+    } else {
+      // When creating a new resource, remove any ID fields to let MongoDB generate them
+      delete resourceData._id;
+      delete resourceData.id;
     }
     
     onSubmit(resourceData);
@@ -1060,7 +1092,7 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
         <div className="space-y-3">
           {formData.contentSections.map((section, index) => (
             <ContentEditor
-              key={section.id}
+              key={section.id || `content-section-${index}`}
               section={section}
               index={index}
               onChange={handleChapterChange}
@@ -1089,7 +1121,7 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
         <div className="space-y-3">
           {formData.usefulResources && formData.usefulResources.map((resource, index) => (
             <UsefulResource
-              key={resource.id}
+              key={resource.id || `useful-resource-${index}`}
               resource={resource}
               index={index}
               onChange={handleUsefulResourceChange}

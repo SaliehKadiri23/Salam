@@ -156,7 +156,14 @@ const getPrayerTimesByAddress = async (address) => {
 export const apiSlice = createApi({
   reducerPath: "salam",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:7000" }),
-  tagTypes: ["Articles", "Forums", "QuestionsAndAnswers", "PrayerTimes", "IslamicQuotes"],
+  tagTypes: [
+    "Articles",
+    "Forums",
+    "QuestionsAndAnswers",
+    "PrayerTimes",
+    "IslamicQuotes",
+    "Resources",
+  ],
   endpoints: (builder) => ({
     // ! ARTICLES
     //  Getting All Articles
@@ -293,17 +300,17 @@ export const apiSlice = createApi({
         url: "/newsletter",
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({email: email}),
+        body: JSON.stringify({ email: email }),
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
     }),
-    
+
     // Getting all Newsletter Subscribers
     getNewsletterSubscribers: builder.query({
       query: () => "/newsletter",
       providesTags: ["NewsletterSubscribers"],
     }),
-    
+
     // ! Islamic Quotes
     // Get all Islamic quotes
     getIslamicQuotes: builder.query({
@@ -311,24 +318,81 @@ export const apiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ _id }) => ({ type: "IslamicQuotes", id: _id })),
+              ...result.data.map(({ _id }) => ({
+                type: "IslamicQuotes",
+                id: _id,
+              })),
               { type: "IslamicQuotes", id: "LIST" },
             ]
           : [{ type: "IslamicQuotes", id: "LIST" }],
     }),
-    
+
+    // ! Resources
+    // Get all resources
+    getResources: builder.query({
+      query: () => "/resources",
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({ type: "Resources", id:_id })),
+              { type: "Resources", id: "LIST" },
+            ]
+          : [{ type: "Resources", id: "LIST" }],
+    }),
+
+    // Get a single resource
+    getResource: builder.query({
+      query: (id) => `/resources/${id}`,
+      providesTags: (result, error, id) => [{ type: "Resources", id }],
+    }),
+
+    // Create a new resource
+    createResource: builder.mutation({
+      query: (newResource) => ({
+        url: "/resources",
+        method: "POST",
+        body: newResource,
+      }),
+      invalidatesTags: [{ type: "Resources", id: "LIST" }],
+    }),
+
+    // Update a resource
+    updateResource: builder.mutation({
+      query: (updatedResource) => ({
+        url: `/resources/${updatedResource._id}`,
+        method: "PATCH",
+        body: updatedResource,
+      }),
+      invalidatesTags: (result, error, { _id }) => [
+        { type: "Resources", id: _id },
+        { type: "Resources", id: "LIST" },
+      ],
+    }),
+
+    // Delete a resource
+    deleteResource: builder.mutation({
+      query: (_id) => ({
+        url: `/resources/${_id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, _id) => [
+        { type: "Resources", id: _id },
+        { type: "Resources", id: "LIST" },
+      ],
+    }),
+
     // Get the Quote of the Day
     getQuoteOfTheDay: builder.query({
       query: () => "/islamic-quotes/quote-of-the-day",
       providesTags: ["IslamicQuotes"],
     }),
-    
+
     // Get latest 7 Islamic quotes for rotation
     getLatestIslamicQuotes: builder.query({
       query: () => "/islamic-quotes/latest",
       providesTags: ["IslamicQuotes"],
     }),
-    
+
     // Add a new Islamic quote
     addIslamicQuote: builder.mutation({
       query: (newQuote) => ({
@@ -339,7 +403,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: [{ type: "IslamicQuotes", id: "LIST" }],
     }),
-    
+
     // Update an Islamic quote
     updateIslamicQuote: builder.mutation({
       query: ({ id, ...updatedQuote }) => ({
@@ -353,7 +417,7 @@ export const apiSlice = createApi({
         { type: "IslamicQuotes", id: "LIST" },
       ],
     }),
-    
+
     // Delete an Islamic quote
     deleteIslamicQuote: builder.mutation({
       query: (id) => ({
@@ -400,4 +464,11 @@ export const {
   useAddIslamicQuoteMutation,
   useUpdateIslamicQuoteMutation,
   useDeleteIslamicQuoteMutation,
+  
+  // Resources
+  useGetResourcesQuery,
+  useGetResourceQuery,
+  useCreateResourceMutation,
+  useUpdateResourceMutation,
+  useDeleteResourceMutation,
 } = apiSlice;
