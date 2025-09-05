@@ -14,7 +14,7 @@ const ResourcesGrid = ({ resources }) => {
       }
     >
       {resources.map((resource) => (
-        <ResourceCard key={resource.id} resource={resource} />
+        <ResourceCard key={resource._id} resource={resource} />
       ))}
     </div>
   );

@@ -32,9 +32,9 @@ const ResourceCard = ({ resource }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const isBookmarked = bookmarkedItems.includes(resource.id);
-  const isCompleted = completedItems.includes(resource.id);
-  const progress = progressItems[resource.id] || 0;
+  const isBookmarked = bookmarkedItems.includes(resource._id);
+  const isCompleted = completedItems.includes(resource._id);
+  const progress = progressItems[resource._id] || 0;
 
   const getTypeIcon = (type) => {
     switch (type) {
@@ -61,15 +61,15 @@ const ResourceCard = ({ resource }) => {
   };
 
   const handleToggleBookmark = () => {
-    dispatch(toggleBookmark(resource.id));
+    dispatch(toggleBookmark(resource._id));
   };
 
   const handleUpdateProgress = (newProgress) => {
-    dispatch(updateProgress({ id: resource.id, progress: newProgress }));
+    dispatch(updateProgress({ id: resource._id, progress: newProgress }));
   };
 
   const handleAddReview = (review) => {
-    dispatch(addReview({ resourceId: resource.id, review }));
+    dispatch(addReview({ resourceId: resource._id, review }));
   };
 
   return (
@@ -103,12 +103,21 @@ const ResourceCard = ({ resource }) => {
           {!isListView && (
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                <button
-                  onClick={handleOpenDetail}
-                  className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
-                >
-                  <Play className="w-4 h-4 text-emerald-600" />
-                </button>
+                {(resource.type === 'video' || resource.type === 'podcast') ? (
+                  <button
+                    onClick={handleOpenDetail}
+                    className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+                  >
+                    <Play className="w-4 h-4 text-emerald-600" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleOpenDetail}
+                    className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+                  >
+                    <Eye className="w-4 h-4 text-emerald-600" />
+                  </button>
+                )}
                 <div className="flex space-x-2">
                   <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
                     <Share2 className="w-4 h-4 text-gray-600" />
@@ -245,50 +254,13 @@ const ResourceCard = ({ resource }) => {
           ))}
         </div>
         <div className="flex space-x-2">
-          {isCompleted ? null : (
-            <button
-              className="flex-1 disabled bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors font-medium text-sm"
-              onClick={() => {
-                if (progress < 100) {
-                  console.log(progress);
-                  handleUpdateProgress(Math.min(progress + 25, 100));
-                }
-              }}
-            >
-              {isCompleted
-                ? "Review"
-                : progress > 0
-                ? "Continue"
-                : "Start Learning"}
-            </button>
-          )}
-
           <button
             onClick={() => setShowDetails(!showDetails)}
-            className={`px-4 py-2 border border-emerald-200 text-emerald-600 dark:text-emerald-100 dark:hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors text-sm ${
-              isCompleted ? "w-full" : ""
-            } `}
+            className="px-4 py-2 border border-emerald-200 text-emerald-600 dark:text-emerald-100 dark:hover:text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors text-sm w-full"
           >
             Details
           </button>
         </div>
-        {isCompleted && (
-          <div className="mt-2">
-            <button
-              onClick={() => setShowReviewForm(!showReviewForm)}
-              className="w-full px-4 py-2 border border-gray-200 dark:border-emerald-600  text-gray-600 dark:text-gray-100 dark:hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm flex items-center justify-center space-x-2"
-            >
-              <Star className="w-4 h-4" />
-              <span>Write a Review</span>
-            </button>
-          </div>
-        )}
-        {showReviewForm && (
-          <ReviewForm
-            onSubmit={handleAddReview}
-            onClose={() => setShowReviewForm(false)}
-          />
-        )}
         {showDetails && (
           <div className="mt-4 pt-4 border-t border-gray-100 dark:border-emerald-600 animate-fadeIn">
             <div className="space-y-3">

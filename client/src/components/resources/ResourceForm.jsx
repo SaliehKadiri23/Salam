@@ -562,14 +562,17 @@ const UsefulResource = ({ resource, index, onChange, onRemove }) => {
 
 const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel }) => {
   const [formData, setFormData] = useState(() => {
-    // Try to load draft from localStorage
-    const savedDraft = localStorage.getItem('resourceDraft');
+    // Generate a unique identifier for this form session
+    const formId = resource ? `edit_${resource._id || resource.id}` : 'new_resource';
+    
+    // Try to load draft from localStorage for this specific resource/form
+    const savedDraft = localStorage.getItem(`resourceDraft_${formId}`);
     if (savedDraft) {
       try {
         const parsedDraft = JSON.parse(savedDraft);
         // Ensure usefulResources exists
         if (!parsedDraft.usefulResources) {
-          parsedDraft.usefulResources = [{ id: Date.now(), title: '', url: '', description: '' }];
+          parsedDraft.usefulResources = [{ title: '', url: '', description: '', file: null }];
         }
         return parsedDraft;
       } catch (e) {
@@ -577,7 +580,45 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
       }
     }
     
-    // Default form state
+    // If editing an existing resource, initialize with that data
+    if (resource) {
+      return {
+        title: resource.title || '',
+        description: resource.description || '',
+        category: resource.category || 'quran',
+        type: resource.type || 'article',
+        author: resource.author || '',
+        image: resource.image || '',
+        imageFile: null,
+        tags: resource.tags ? resource.tags.join(', ') : '',
+        publishedDate: resource.publishedDate || new Date().toISOString().split('T')[0],
+        contentSections: resource.contentSections && resource.contentSections.length > 0 
+          ? resource.contentSections.map(section => ({
+              id: section.id, // Preserve existing ID if it exists
+              title: section.title || '',
+              content: section.content || '',
+              media: section.media || [],
+              order: section.order || 0
+            }))
+          : [{ 
+              title: '', 
+              content: '', 
+              media: [],
+              order: 1
+            }],
+        usefulResources: resource.usefulResources && resource.usefulResources.length > 0
+          ? resource.usefulResources.map(resourceItem => ({
+              id: resourceItem.id, // Preserve existing ID if it exists
+              title: resourceItem.title || '',
+              url: resourceItem.url || '',
+              description: resourceItem.description || '',
+              file: null // File objects can't be serialized from existing resources
+            }))
+          : [{ title: '', url: '', description: '', file: null }]
+      };
+    }
+    
+    // For new resources, start with a clean form
     return {
       title: '',
       description: '',
@@ -599,6 +640,8 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
       usefulResources: [{ title: '', url: '', description: '', file: null }]
     };
   });
+  
+  const formId = resource ? `edit_${resource._id || resource.id}` : 'new_resource';
   const [lastSaved, setLastSaved] = useState(null);
   const autosaveTimer = useRef(null);
 
@@ -636,25 +679,25 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
               return savedSection;
             }),
             // Ensure usefulResources is properly structured without file objects
-            usefulResources: formData.usefulResources ? formData.usefulResources.map(resource => {
+            usefulResources: formData.usefulResources ? formData.usefulResources.map(resourceItem => {
               const savedResource = {
-                title: resource.title,
-                url: resource.url,
-                description: resource.description,
+                title: resourceItem.title,
+                url: resourceItem.url,
+                description: resourceItem.description,
                 // File objects can't be serialized, so we exclude them
                 // On page refresh, users will need to re-upload files
               };
               
               // Only save ID if it's a MongoDB ObjectId (24-character hex string)
-              if (resource.id && typeof resource.id === 'string' && resource.id.length === 24) {
-                savedResource.id = resource.id;
+              if (resourceItem.id && typeof resourceItem.id === 'string' && resourceItem.id.length === 24) {
+                savedResource.id = resourceItem.id;
               }
               
               return savedResource;
             }) : [{ title: '', url: '', description: '', file: null }]
           };
           
-          localStorage.setItem('resourceDraft', JSON.stringify(formDataToSave));
+          localStorage.setItem(`resourceDraft_${formId}`, JSON.stringify(formDataToSave));
           setLastSaved(new Date());
           toast.info('Draft autosaved', {
             position: "bottom-right",
@@ -680,21 +723,45 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
         clearTimeout(autosaveTimer.current);
       }
     };
-  }, [formData]);
+  }, [formData, formId]);
 
   // Clear draft when form is submitted successfully
   const handleSuccessfulSubmit = useCallback(() => {
-    localStorage.removeItem('resourceDraft');
+    localStorage.removeItem(`resourceDraft_${formId}`);
     setLastSaved(null);
     toast.success('Resource saved successfully!', {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }, []);
+  }, [formId]);
 
-  // Initialize form with existing resource data when editing
+  // Update form when resource prop changes (e.g., when switching between add/edit modes)
   useEffect(() => {
-    if (resource) {
+    // When switching to add mode (resource is null), reset to clean form
+    if (!resource) {
+      setFormData({
+        title: '',
+        description: '',
+        category: 'quran',
+        type: 'article',
+        author: '',
+        image: '',
+        imageFile: null,
+        tags: '',
+        publishedDate: new Date().toISOString().split('T')[0],
+        contentSections: [
+          { 
+            title: '', 
+            content: '', 
+            media: [],
+            order: 1
+          }
+        ],
+        usefulResources: [{ title: '', url: '', description: '', file: null }]
+      });
+    }
+    // When switching to edit mode (resource is not null), initialize with resource data
+    else {
       setFormData({
         title: resource.title || '',
         description: resource.description || '',
@@ -720,21 +787,15 @@ const ResourceForm = ({ resource, onSubmit, categories, resourceTypes, onCancel 
               order: 1
             }],
         usefulResources: resource.usefulResources && resource.usefulResources.length > 0
-          ? resource.usefulResources.map(resource => ({
-              id: resource.id, // Preserve existing ID if it exists
-              title: resource.title || '',
-              url: resource.url || '',
-              description: resource.description || '',
+          ? resource.usefulResources.map(resourceItem => ({
+              id: resourceItem.id, // Preserve existing ID if it exists
+              title: resourceItem.title || '',
+              url: resourceItem.url || '',
+              description: resourceItem.description || '',
               file: null // File objects can't be serialized from existing resources
             }))
           : [{ title: '', url: '', description: '', file: null }]
       });
-    } else {
-      // For new resources, set publishedDate to current date
-      setFormData(prev => ({
-        ...prev,
-        publishedDate: new Date().toISOString().split('T')[0]
-      }));
     }
   }, [resource]);
 
