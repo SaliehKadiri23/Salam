@@ -296,6 +296,14 @@ const ScholarQA = () => {
         >
           Ask a Question
         </button>
+        
+        {/* Temporary link for scholar dashboard - to be removed in production */}
+        <button
+          onClick={() => navigate("/scholar/qa-dashboard")}
+          className="w-full mt-3 bg-gradient-to-r from-emerald-600 to-green-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+        >
+          Scholar Dashboard
+        </button>
       </div>
     </motion.div>
   );};

@@ -236,12 +236,17 @@ export const apiSlice = createApi({
 
     // Updating a QuestionsAndAnswer
     updateQuestionAndAnswer: builder.mutation({
-      query: (questionAndAnswerToUpdate) => ({
-        url: `/questions_and_answers/${questionAndAnswerToUpdate._id}`,
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: questionAndAnswerToUpdate,
-      }),
+      query: (questionAndAnswerToUpdate) => {
+        // Create a clean update object without the _id field
+        const { _id, ...updateData } = questionAndAnswerToUpdate;
+        
+        return {
+          url: `/questions_and_answers/${_id}`,
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: updateData,
+        };
+      },
       invalidatesTags: ["QuestionsAndAnswers"],
     }),
 
@@ -250,8 +255,6 @@ export const apiSlice = createApi({
       query: (_id) => ({
         url: `/questions_and_answers/${_id}`,
         method: "DELETE",
-
-        body: _id,
       }),
       invalidatesTags: ["QuestionsAndAnswers"],
     }),

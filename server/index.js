@@ -61,21 +61,39 @@ app.get("/forums", async (req, res)=>{
   // Adding a QuestionsAndAnswer
   app.post("/questions_and_answers", async (req, res) => {
     try {
-      let newQuestion = req.body;
-
-      await QuestionAndAnswer.insertOne(newQuestion).then((res) =>
-        console.log(res)
-      );
-      res.send("Question Added Successfully");
+      const newQuestion = new QuestionAndAnswer(req.body);
+      await newQuestion.save();
+      res.status(201).json(newQuestion);
     } catch (error) {
-      throw new Error("Error : ", error);
+      console.error("Error adding question:", error);
+      res.status(500).json({ message: "Error adding question", error: error.message });
     }
   });
 
   // Updating a QuestionsAndAnswer
   app.patch("/questions_and_answers/:id", async (req, res) => {
-    let { id } = req.body;
-    res.send(`Updated QA with id : ${id}`);
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+      
+      // Remove the _id from update data to avoid MongoDB error
+      delete updateData._id;
+      
+      const updatedQuestion = await QuestionAndAnswer.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true, runValidators: true }
+      );
+      
+      if (!updatedQuestion) {
+        return res.status(404).json({ message: "Question not found" });
+      }
+      
+      res.json(updatedQuestion);
+    } catch (error) {
+      console.error("Error updating question:", error);
+      res.status(500).json({ message: "Error updating question", error: error.message });
+    }
   });
 
   // Deleting a QuestionsAndAnswer

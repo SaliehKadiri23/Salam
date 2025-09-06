@@ -27,6 +27,7 @@ import Login from "./pages/Login";
 import Test from "./pages/Test";
 import NewsletterSubscribersDashboard from "./pages/NewsletterSubscribersDashboard";
 import IslamicQuotesDashboard from "./pages/IslamicQuotesDashboard";
+import ScholarQADashboard from "./pages/scholar/ScholarQADashboard";
 
 const App = () => {
   // const [response, setResponse] = useState("")
@@ -92,6 +93,9 @@ const App = () => {
         
         {/* Islamic Quotes Dashboard */}
         <Route path="islamic_quotes" element={<IslamicQuotesDashboard />} />
+
+        {/* Scholar QA Dashboard */}
+        <Route path="scholar/qa-dashboard" element={<ScholarQADashboard />} />
 
       </Route>
     )
