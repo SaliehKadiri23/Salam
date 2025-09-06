@@ -256,38 +256,42 @@ const ScholarQA = () => {
 
       <div className="p-6">
         <div className="space-y-4 mb-6">
-          {QuestionsAndAnswers.filter((e, idx) => idx >= QuestionsAndAnswers.length - 3).map((qa, index) => (
-            <div
-              key={index}
-              className="p-4 border border-gray-200 dark:border-emerald-600 rounded-xl dark:bg-gray-800 hover:border-blue-200 dark:hover:border-blue-600 dark:hover:bg-blue-50/20 hover:bg-blue-50/30 transition-all duration-200"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <p className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                    Q: {qa.question}
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <p className="text-sm text-slate-500 dark:text-slate-300">
-                      Asked by {qa.askedBy}
+          {QuestionsAndAnswers.filter((qa) => qa.isAnswered)
+            .slice(-3) // take the last 3 answered questions
+            .map((qa, index) => (
+              <button
+                key={index}
+                
+                onClick={() => navigate(`/questions_and_answers#${qa._id}`)}
+                className="p-4 border w-full text-left border-gray-200 dark:border-emerald-600 rounded-xl dark:bg-gray-800 hover:border-blue-200 dark:hover:border-blue-600 dark:hover:bg-blue-50/20 hover:bg-blue-50/30 transition-all duration-200"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-800 dark:text-slate-100 mb-2 text-wrap">
+                      Q: {qa.question}
                     </p>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        qa.isAnswered
-                          ? "bg-green-100 text-green-700"
-                          : "bg-amber-100 text-amber-700"
-                      }`}
-                    >
-                      {qa.isAnswered ? "Answered" : "Pending"}
-                    </span>
+                    <div className="flex items-center gap-3 md:grid md:grid-cols-1">
+                      <p className="text-sm text-slate-500 dark:text-slate-300">
+                        Asked by {qa.askedBy}
+                      </p>
+                      <span
+                        className={`px-2 md:mx-auto md:ml-0 py-1 rounded-full text-xs font-medium ${
+                          qa.isAnswered
+                            ? "bg-green-100 text-green-700"
+                            : "bg-amber-100 text-amber-700"
+                        }`}
+                      >
+                        {qa.isAnswered ? "Answered" : "Pending"}
+                      </span>
+                    </div>
                   </div>
+                  <BookOpen
+                    size={16}
+                    className="text-slate-400 dark:text-slate-100 mt-1"
+                  />
                 </div>
-                <BookOpen
-                  size={16}
-                  className="text-slate-400 dark:text-slate-100 mt-1"
-                />
-              </div>
-            </div>
-          ))}
+              </button>
+            ))}
         </div>
 
         <button
@@ -295,14 +299,6 @@ const ScholarQA = () => {
           className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
         >
           Ask a Question
-        </button>
-        
-        {/* Temporary link for scholar dashboard - to be removed in production */}
-        <button
-          onClick={() => navigate("/scholar/qa-dashboard")}
-          className="w-full mt-3 bg-gradient-to-r from-emerald-600 to-green-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-        >
-          Scholar Dashboard
         </button>
       </div>
     </motion.div>
@@ -526,15 +522,15 @@ const ScholarQA = () => {
       <main>
         <HeroSection />
 
-        <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 ">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <div className="lg:col-span-1">
+        <div className="mx-auto py-12 px-4 sm:px-6 lg:px-8 ">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8  mb-12">
+            <div className="lg:col-span-1 w-full">
               <DiscussionForums />
             </div>
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 w-full">
               <ScholarQA />
             </div>
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 w-full">
               <DuaWall />
             </div>
           </div>

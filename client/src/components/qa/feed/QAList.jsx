@@ -107,7 +107,7 @@ function QAList() {
   return (
     <div className="space-y-6 w-full">
       {filteredQuestions.map((qa) => (
-        <div key={qa._id} className="w-full">
+        <div id={`${qa._id}`} key={qa._id} className="w-full">
           <QACard qa={qa} />
         </div>
       ))}

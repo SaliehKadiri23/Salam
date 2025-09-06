@@ -56,7 +56,7 @@ function FilterDropdown({ value, onChange }) {
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 py-2 bg-white dark:bg-black/90 backdrop-blur-xl bg-opacity-95 border border-gray-200 dark:border-emerald-600 rounded-xl shadow-2xl overflow-hidden z-50">
+        <div className="absolute min-w-[160px] top-full left-0 right-0 mt-2 py-2 bg-white dark:bg-black/90 backdrop-blur-xl bg-opacity-95 border border-gray-200 dark:border-emerald-600 rounded-xl shadow-2xl overflow-hidden z-50">
           {filterOptions.map((option) => {
             const IconComponent = option.icon;
             return (
