@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { MessageCircle, Send } from "lucide-react";
+import { toast } from "react-toastify";
 import CategorySelector from "./CategorySelector";
 import QuestionInput from "./QuestionInput";
 import { useAddNewQuestionAndAnswerMutation } from "../../../services/apiSlice";
@@ -55,7 +56,9 @@ function QuestionForm() {
 
       await addNewQuestionAndAnswer(newQuestionAndAnswer)
 
-
+      // Show success toast notification
+      toast.success("Question submitted successfully! Our scholars will review and respond soon.");
+      
       // Show success message
       setSubmitSuccess(true);
       
@@ -68,7 +71,9 @@ function QuestionForm() {
       }, 3000);
       
     } catch (error) {
-      setSubmitError(error.message || "An error occurred while submitting your question");
+      const errorMessage = error.message || "An error occurred while submitting your question";
+      setSubmitError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setSubmitting(false);
     }
