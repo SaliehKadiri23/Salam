@@ -25,7 +25,7 @@ mongoose.connection.once("open", async () => {
     // Create sample questions
     const sampleQuestions = [
       {
-        askedBy: new mongoose.Types.ObjectId(), // Random user ID for testing
+        askedBy: "64f1abf1a2b4c3d4e5f6a701", // Hardcoded user ID for testing
         dateAsked: new Date(Date.now() - 86400000), // 1 day ago
         questionCategory: "fiqh",
         question: "What is the proper way to perform wudu (ablution) according to the Sunnah?",
@@ -37,12 +37,12 @@ mongoose.connection.once("open", async () => {
         questionCategory: "worship",
         question: "How many rak'ahs are there in each of the five daily prayers?",
         isAnswered: true,
-        answeredBy: new mongoose.Types.ObjectId(), // Random scholar ID for testing
+        answeredBy: "68bc42e761037ccd9005230b", // Hardcoded scholar ID for testing
         dateAnswered: new Date(Date.now() - 86400000), // 1 day ago
         answer: "There are specific numbers of rak'ahs for each prayer: Fajr has 2 rak'ahs, Dhuhr has 4 rak'ahs, Asr has 4 rak'ahs, Maghrib has 3 rak'ahs, and Isha has 4 rak'ahs. These are the obligatory rak'ahs. There are also additional voluntary rak'ahs that can be performed before or after the obligatory ones."
       },
       {
-        askedBy: new mongoose.Types.ObjectId(), // Random user ID for testing
+        askedBy: "64f1abf1a2b4c3d4e5f6a701", // Hardcoded user ID for testing
         dateAsked: new Date(Date.now() - 259200000), // 3 days ago
         questionCategory: "daily-life",
         question: "Is it permissible to work in a bank that deals with interest-based transactions?",
@@ -54,7 +54,7 @@ mongoose.connection.once("open", async () => {
         questionCategory: "finance",
         question: "What is the Islamic ruling on cryptocurrency investments?",
         isAnswered: true,
-        answeredBy: new mongoose.Types.ObjectId(), // Random scholar ID for testing
+        answeredBy: "68bc42e761037ccd9005230b", // Hardcoded scholar ID for testing
         dateAnswered: new Date(Date.now() - 172800000), // 2 days ago
         answer: "The ruling on cryptocurrency investments varies among scholars. Some consider them permissible if they are used for legitimate trade and not for speculation. Others are cautious due to their volatile nature and potential for misuse. It is recommended to consult with a knowledgeable scholar who can provide guidance based on your specific circumstances and the particular cryptocurrency in question."
       }

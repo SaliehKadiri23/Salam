@@ -76,18 +76,43 @@ app.get("/forums", async (req, res)=>{
       const { id } = req.params;
       const updateData = req.body;
       
+      // Find the existing question
+      const existingQuestion = await QuestionAndAnswer.findById(id);
+      
+      if (!existingQuestion) {
+        return res.status(404).json({ message: "Question not found" });
+      }
+      
       // Remove the _id from update data to avoid MongoDB error
       delete updateData._id;
+      
+      // Check if we're adding/updating an answer (scholar action)
+      if (updateData.answer !== undefined) {
+        // This is a scholar answering/updating the question
+        // TODO: Replace with actual scholar authentication when implemented
+        updateData.answeredBy = "68bc42e761037ccd9005230b"; // Hardcoded scholar ID
+        updateData.dateAnswered = new Date();
+        updateData.isAnswered = true;
+      } else {
+        // This is a user editing their question
+        // Check if question is already answered
+        if (existingQuestion.isAnswered) {
+          return res.status(403).json({ message: "Cannot edit a question that has already been answered" });
+        }
+        
+        // Check if the current user is the owner of the question
+        // TODO: Replace with actual user authentication when implemented
+        const currentUserId = "64f1abf1a2b4c3d4e5f6a701"; // Hardcoded for now
+        if (existingQuestion.askedBy.toString() !== currentUserId) {
+          return res.status(403).json({ message: "You are not authorized to edit this question" });
+        }
+      }
       
       const updatedQuestion = await QuestionAndAnswer.findByIdAndUpdate(
         id,
         updateData,
         { new: true, runValidators: true }
       );
-      
-      if (!updatedQuestion) {
-        return res.status(404).json({ message: "Question not found" });
-      }
       
       res.json(updatedQuestion);
     } catch (error) {
@@ -100,11 +125,38 @@ app.get("/forums", async (req, res)=>{
   app.delete("/questions_and_answers/:id", async (req, res) => {
     try {
       let { id } = req.params;
+      
+      // Find the existing question
+      const existingQuestion = await QuestionAndAnswer.findById(id);
+      
+      if (!existingQuestion) {
+        return res.status(404).json({ message: "Question not found" });
+      }
+      
+      // Check if the current user is either the owner of the question or a scholar
+      // TODO: Replace with actual user authentication when implemented
+      const currentUserId = "64f1abf1a2b4c3d4e5f6a701"; // Hardcoded user ID
+      const currentScholarId = "68bc42e761037ccd9005230b"; // Hardcoded scholar ID
+      
+      const isQuestionOwner = existingQuestion.askedBy.toString() === currentUserId;
+      const isScholar = currentScholarId === "68bc42e761037ccd9005230b"; // In a real app, this would check if the user is a scholar
+      
+      // If user is not the owner and not a scholar, deny access
+      if (!isQuestionOwner && !isScholar) {
+        return res.status(403).json({ message: "You are not authorized to delete this question" });
+      }
+      
+      // If question is answered and user is not a scholar, deny access
+      if (existingQuestion.isAnswered && !isScholar) {
+        return res.status(403).json({ message: "Cannot delete a question that has already been answered" });
+      }
+      
       const result = await QuestionAndAnswer.findByIdAndDelete(id);
       console.log(`Deleted QA with id : ${id}`);
       res.send(result);
     } catch (error) {
       console.log("Error : ", error);
+      res.status(500).json({ message: "Error deleting question", error: error.message });
     }
   });
 
