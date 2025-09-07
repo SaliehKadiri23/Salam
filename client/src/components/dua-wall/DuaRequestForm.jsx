@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { X, Send, User, Lock, Medal } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Send, User, Lock, Medal, Edit3 } from 'lucide-react';
 import CategoryBadge from './CategoryBadge';
 
-const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
+const DuaRequestForm = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     content: '',
     category: 'guidance',
@@ -10,6 +10,7 @@ const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
     author: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const categories = [
     { value: 'health', label: 'Health' },
@@ -18,6 +19,28 @@ const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
     { value: 'family', label: 'Family' },
     { value: 'community', label: 'Community' }
   ];
+
+  // Set initial data when editing
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        content: initialData.content || '',
+        category: initialData.category || 'guidance',
+        isAnonymous: initialData.isAnonymous || false,
+        author: initialData.author || ''
+      });
+      setIsEditing(true);
+    } else {
+      // Reset form when not editing
+      setFormData({
+        content: '',
+        category: 'guidance',
+        isAnonymous: false,
+        author: ''
+      });
+      setIsEditing(false);
+    }
+  }, [initialData, isOpen]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -36,20 +59,27 @@ const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
     
     try {
       // Create the request object (Dua Request)
-      const newRequest = {
-        id: Date.now().toString(),
+      const requestData = {
         content: formData.content.trim(),
         category: formData.category,
-        isAnonymous: formData.isAnonymous,
-        author: formData.isAnonymous ? null : formData.author.trim(),
-        timeAgo: 'Just now',
+        // Preserve original anonymity setting when editing
+        isAnonymous: isEditing ? initialData.isAnonymous : formData.isAnonymous,
+        // Only include author if not anonymous
+        author: (isEditing ? initialData.isAnonymous : formData.isAnonymous) ? null : formData.author.trim(),
+        // These will be set on the server
         likes: 0,
-        comments: 0,
+        likedBy: [],
         prayerCount: 0,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
 
-      await onSubmit(newRequest);
+      // If editing, include the ID
+      if (initialData) {
+        requestData._id = initialData._id;
+      }
+
+      await onSubmit(requestData);
       
       // Reset form
       setFormData({
@@ -75,7 +105,18 @@ const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-emerald-600">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Share Your Dua Request
+            {initialData ? (
+              <>
+                Edit Dua Request
+                {initialData.isAnonymous ? (
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2">(Posted Anonymously)</span>
+                ) : (
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2">(Posted With Name)</span>
+                )}
+              </>
+            ) : (
+              'Share Your Dua Request'
+            )}
           </h2>
           <button
             onClick={onClose}
@@ -136,52 +177,78 @@ const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
               <Lock className="w-5 h-5 text-gray-500" />
               <div>
                 <h3 className="font-medium text-gray-900 dark:text-gray-100">
-                  Post Anonymously
+                  {isEditing ? (
+                    formData.isAnonymous ? 'Posted Anonymously' : 'Posted With Name'
+                  ) : (
+                    'Post Anonymously'
+                  )}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Your identity will be hidden
+                  {isEditing ? (
+                    formData.isAnonymous ? 
+                      'You posted this anonymously. This cannot be changed.' : 
+                      'You posted this with your name. This cannot be changed.'
+                  ) : (
+                    'Your identity will be hidden'
+                  )}
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() =>
-                handleInputChange("isAnonymous", !formData.isAnonymous)
-              }
-              className={`
-                relative inline-flex h-6 w-11 items-center rounded-full outline-none transition-colors focus:outline-none focus:ring-2 dark:focus:border-none  focus:ring-emerald-500 focus:ring-offset-2
-                ${
-                  formData.isAnonymous
-                    ? "bg-emerald-600 outline-none border-none ring-0"
-                    : "bg-gray-200 dark:bg-black/40 dark:border dark:border-emerald-600"
-                }
-              `}
-            >
-              <span
-                className={`
+            {isEditing ? (
+              // Display static indicator when editing
+              <div className={`
+                relative inline-flex h-6 w-11 items-center rounded-full
+                ${formData.isAnonymous ? "bg-emerald-600" : "bg-gray-200 dark:bg-black/40 dark:border dark:border-emerald-600"}
+              `}>
+                <span className={`
                   inline-block h-4 w-4 transform rounded-full bg-white transition-transform
                   ${formData.isAnonymous ? "translate-x-6" : "translate-x-1"}
+                `} />
+              </div>
+            ) : (
+              // Interactive toggle when creating new post
+              <button
+                type="button"
+                onClick={() => handleInputChange("isAnonymous", !formData.isAnonymous)}
+                className={`
+                  relative inline-flex h-6 w-11 items-center rounded-full outline-none transition-colors focus:outline-none focus:ring-2 dark:focus:border-none focus:ring-emerald-500 focus:ring-offset-2
+                  ${formData.isAnonymous ? "bg-emerald-600 outline-none border-none ring-0" : "bg-gray-200 dark:bg-black/40 dark:border dark:border-emerald-600"}
                 `}
-              />
-            </button>
+              >
+                <span
+                  className={`
+                    inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+                    ${formData.isAnonymous ? "translate-x-6" : "translate-x-1"}
+                  `}
+                />
+              </button>
+            )}
           </div>
 
           {/* Author Name (if not anonymous) */}
           {!formData.isAnonymous && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
-                Your Name
+                {isEditing ? 'Posted By' : 'Your Name'}
               </label>
               <div className="relative">
                 <Medal className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-200" />
-                <input
-                  type="text"
-                  value={formData.author}
-                  onChange={(e) => handleInputChange("author", e.target.value)}
-                  placeholder="Enter your name"
-                  className="w-full pl-10 pr-4 dark:text-gray-100 dark:bg-black/40 dark:placeholder:text-gray-300 py-3 border border-gray-200 dark:border-emerald-600 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                  required={!formData.isAnonymous}
-                />
+                {isEditing ? (
+                  // Display static author name when editing
+                  <div className="w-full pl-10 pr-4 dark:text-gray-100 dark:bg-black/40 py-3 border border-gray-200 dark:border-emerald-600 rounded-xl">
+                    {formData.author}
+                  </div>
+                ) : (
+                  // Editable input when creating new post
+                  <input
+                    type="text"
+                    value={formData.author}
+                    onChange={(e) => handleInputChange("author", e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full pl-10 pr-4 dark:text-gray-100 dark:bg-black/40 dark:placeholder:text-gray-300 py-3 border border-gray-200 dark:border-emerald-600 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                    required={!formData.isAnonymous}
+                  />
+                )}
               </div>
             </div>
           )}
@@ -216,12 +283,12 @@ const DuaRequestForm = ({ isOpen, onClose, onSubmit }) => {
               {isSubmitting ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Submitting...
+                  {initialData ? 'Updating...' : 'Submitting...'}
                 </>
               ) : (
                 <>
-                  <Send className="w-5 h-5" />
-                  Submit Request
+                  {initialData ? <Edit3 className="w-5 h-5" /> : <Send className="w-5 h-5" />}
+                  {initialData ? 'Update Request' : 'Submit Request'}
                 </>
               )}
             </button>

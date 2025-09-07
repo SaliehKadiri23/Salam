@@ -14,7 +14,7 @@ function ScrollController() {
       setTimeout(() => {
         const el = document.getElementById(lastHash.current);
         if (el) {
-          const navbarHeight = 80; 
+          const navbarHeight = 5; 
           const y =
             el.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
           window.scrollTo({ top: y, behavior: "smooth" });

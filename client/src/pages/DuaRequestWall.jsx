@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Filter, Search, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { toast } from 'react-toastify';
+import { Plus, Filter, Search, ChevronDown, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-react';
+import { useGetDuaRequestsQuery, useCreateDuaRequestMutation, useUpdateDuaRequestMutation, useDeleteDuaRequestMutation, useToggleDuaRequestLikeMutation, useIncrementDuaRequestPrayerCountMutation } from '../services/apiSlice';
 import DuaRequestCard from '../components/dua-wall/DuaRequestCard';
 import DuaRequestForm from '../components/dua-wall/DuaRequestForm';
 import CategoryBadge from '../components/dua-wall/CategoryBadge';
+import { getTimeAgo } from '../utils/timeUtils';
 
 const DuaRequestWall = () => {
-  const [requests, setRequests] = useState([]);
-  const [filteredRequests, setFilteredRequests] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingRequest, setEditingRequest] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   
   // Modern dropdown state
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,69 +23,15 @@ const DuaRequestWall = () => {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
-  // Mock data for initial requests
-  const mockRequests = [
-    {
-      id: '1',
-      content: 'Please make dua for my family\'s health and well-being during this challenging time. May Allah grant us strength and patience.',
-      category: 'health',
-      isAnonymous: true,
-      author: null,
-      timeAgo: '2 hours ago',
-      likes: 12,
-      comments: 3,
-      prayerCount: 45,
-      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: '2',
-      content: 'I\'m seeking guidance in making a significant life decision. Please pray that I choose the path that is most pleasing to Allah.',
-      category: 'guidance',
-      isAnonymous: false,
-      author: 'Fatima',
-      timeAgo: '5 hours ago',
-      likes: 8,
-      comments: 5,
-      prayerCount: 23,
-      createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: '3',
-      content: 'Please make dua for my success in my upcoming exams. May Allah grant me knowledge and understanding.',
-      category: 'success',
-      isAnonymous: true,
-      author: null,
-      timeAgo: '1 day ago',
-      likes: 15,
-      comments: 2,
-      prayerCount: 67,
-      createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: '4',
-      content: 'I\'m facing financial difficulties. Please pray that Allah provides for me and my family.',
-      category: 'family',
-      isAnonymous: false,
-      author: 'Omar',
-      timeAgo: '2 days ago',
-      likes: 20,
-      comments: 7,
-      prayerCount: 89,
-      createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: '5',
-      content: 'Please make dua for the safety and well-being of all those affected by the recent events in the region.',
-      category: 'community',
-      isAnonymous: true,
-      author: null,
-      timeAgo: '3 days ago',
-      likes: 35,
-      comments: 12,
-      prayerCount: 156,
-      createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
-    }
-  ];
+  // RTK Query hooks
+  const { data, error, isLoading, refetch } = useGetDuaRequestsQuery();
+  const [createDuaRequest] = useCreateDuaRequestMutation();
+  const [updateDuaRequest] = useUpdateDuaRequestMutation();
+  const [deleteDuaRequest] = useDeleteDuaRequestMutation();
+  const [toggleLike] = useToggleDuaRequestLikeMutation();
+  const [incrementPrayerCount] = useIncrementDuaRequestPrayerCountMutation();
+
+  const duaRequests = data?.data || [];
 
   const categories = [
     { value: 'all', label: 'All Requests' },
@@ -92,34 +42,96 @@ const DuaRequestWall = () => {
     { value: 'community', label: 'Community' }
   ];
 
-  // Initialize requests on component mount
-  useEffect(() => {
-    setRequests(mockRequests);
-    setFilteredRequests(mockRequests);
-  }, []);
-
   // Filter requests based on category and search term
-  useEffect(() => {
-    let filtered = requests;
-
+  const filteredRequests = duaRequests.filter(request => {
     // Filter by category
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(request => request.category === selectedCategory);
+    if (selectedCategory !== 'all' && request.category !== selectedCategory) {
+      return false;
     }
 
     // Filter by search term
     if (searchTerm.trim()) {
-      filtered = filtered.filter(request =>
-        request.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (request.author && request.author.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
+      const contentMatch = request.content.toLowerCase().includes(searchTerm.toLowerCase());
+      const authorMatch = request.author && request.author.toLowerCase().includes(searchTerm.toLowerCase());
+      return contentMatch || authorMatch;
     }
 
-    setFilteredRequests(filtered);
-  }, [requests, selectedCategory, searchTerm]);
+    return true;
+  });
 
-  const handleNewRequest = (newRequest) => {
-    setRequests(prev => [newRequest, ...prev]);
+  const itemsPerPage = 10;
+  const hasMore = page * itemsPerPage < filteredRequests.length;
+
+  // Sliced requests for display
+  const requestsToDisplay = filteredRequests.slice(0, page * itemsPerPage);
+
+  // Load more requests function (for Intersection Observer)
+  const loadMoreRequests = useCallback(() => {
+    if (isLoadingMore || !hasMore) return;
+    setIsLoadingMore(true);
+    setTimeout(() => { // Simulate network delay
+      setPage(prevPage => prevPage + 1);
+      setIsLoadingMore(false);
+    }, 500);
+  }, [isLoadingMore, hasMore]);
+
+  // Intersection Observer for infinite scroll 
+  const observer = useRef();
+  const lastRequestElementRef = useCallback(node => {
+    if (isLoadingMore) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMoreRequests();
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [isLoadingMore, hasMore, loadMoreRequests]);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, selectedCategory]);
+
+  const handleNewRequest = async (newRequest) => {
+    try {
+      await createDuaRequest(newRequest).unwrap();
+      toast.success('Dua request posted successfully!');
+      setIsFormOpen(false);
+      refetch();
+    } catch (error) {
+      toast.error('Failed to post dua request. Please try again.');
+      console.error('Error posting dua request:', error);
+    }
+  };
+
+  const handleUpdateRequest = async (updatedRequest) => {
+    try {
+      await updateDuaRequest(updatedRequest).unwrap();
+      toast.success('Dua request updated successfully!');
+      setIsFormOpen(false);
+      setEditingRequest(null);
+      refetch();
+    } catch (error) {
+      toast.error('Failed to update dua request. Please try again.');
+      console.error('Error updating dua request:', error);
+    }
+  };
+
+  const handleDeleteRequest = async (requestId) => {
+    try {
+      await deleteDuaRequest(requestId).unwrap();
+      toast.success('Dua request deleted successfully!');
+      refetch();
+    } catch (error) {
+      toast.error('Failed to delete dua request. Please try again.');
+      console.error('Error deleting dua request:', error);
+    }
+  };
+
+  const handleEditRequest = (request) => {
+    setEditingRequest(request);
+    setIsFormOpen(true);
   };
 
   const handleCategoryFilter = (category) => {
@@ -183,6 +195,65 @@ const DuaRequestWall = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDropdownOpen]);
 
+  // Handle like functionality
+  const handleLike = async (requestId) => {
+    try {
+      await toggleLike(requestId).unwrap();
+      refetch();
+    } catch (error) {
+      toast.error('Failed to like dua request. Please try again.');
+      console.error('Error liking dua request:', error);
+    }
+  };
+
+  // Handle prayer functionality
+  const handlePray = async (requestId) => {
+    try {
+      await incrementPrayerCount(requestId).unwrap();
+      refetch();
+      
+      toast.success('Thank you for making dua!');
+    } catch (error) {
+      toast.error('Failed to record your prayer. Please try again.');
+      console.error('Error incrementing prayer count:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-200">Loading dua requests...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center max-w-md p-6 bg-white dark:bg-gray-950 rounded-xl shadow-lg border border-gray-100 dark:border-emerald-600">
+          <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Heart className="w-8 h-8 text-red-500 dark:text-red-400" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+            Error loading dua requests
+          </h3>
+          <p className="text-gray-600 dark:text-gray-200 mb-4">
+            There was a problem loading the dua requests. Please try again later.
+          </p>
+          <button
+            onClick={refetch}
+            className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-xl transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-800">
       <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -202,7 +273,10 @@ const DuaRequestWall = () => {
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
             {/* Post Button */}
             <button
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => {
+                setEditingRequest(null);
+                setIsFormOpen(true);
+              }}
               className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2"
             >
               <Plus className="w-5 h-5" />
@@ -318,17 +392,17 @@ const DuaRequestWall = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
           <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
             <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-500">
-              {filteredRequests.length}
+              {requestsToDisplay.length}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-100">
               {selectedCategory === "all"
-                ? "Total Requests"
+                ? "Displayed Requests"
                 : `${selectedCategory} Requests`}
             </div>
           </div>
           <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
             <div className="text-2xl font-bold text-blue-600">
-              {filteredRequests.reduce((sum, req) => sum + req.prayerCount, 0)}
+              {requestsToDisplay.reduce((sum, req) => sum + (req.prayerCount || 0), 0)}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-100">
               Total Prayers
@@ -336,20 +410,55 @@ const DuaRequestWall = () => {
           </div>
           <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
             <div className="text-2xl font-bold text-purple-600">
-              {filteredRequests.reduce((sum, req) => sum + req.comments, 0)}
+              {requestsToDisplay.reduce((sum, req) => sum + (req.likes || 0), 0)}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-100">
-              Community Support
+              Total Likes
             </div>
           </div>
         </div>
 
         {/* Requests List */}
         <div className="space-y-6">
-          {filteredRequests.length > 0 ? (
-            filteredRequests.map((request) => (
-              <DuaRequestCard key={request.id} request={request} />
-            ))
+          {requestsToDisplay.length > 0 ? (
+            requestsToDisplay.map((request, index) => {
+              if (requestsToDisplay.length === index + 1) {
+                return (
+                  <div ref={lastRequestElementRef} key={request._id}>
+                    <DuaRequestCard 
+                      request={{
+                        ...request,
+                        id: request._id,
+                        timeAgo: getTimeAgo(request.createdAt),
+                        likes: request.likes || 0,
+                        prayerCount: request.prayerCount || 0
+                      }} 
+                      onLike={handleLike}
+                      onPray={handlePray}
+                      onDelete={handleDeleteRequest}
+                      onEdit={handleEditRequest}
+                    />
+                  </div>
+                );
+              } else {
+                return (
+                  <DuaRequestCard 
+                    key={request._id}
+                    request={{
+                      ...request,
+                      id: request._id,
+                      timeAgo: getTimeAgo(request.createdAt),
+                      likes: request.likes || 0,
+                      prayerCount: request.prayerCount || 0
+                    }} 
+                    onLike={handleLike}
+                    onPray={handlePray}
+                    onDelete={handleDeleteRequest}
+                    onEdit={handleEditRequest}
+                  />
+                );
+              }
+            })
           ) : (
             <div className="text-center py-12">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -365,7 +474,10 @@ const DuaRequestWall = () => {
               </p>
               {!searchTerm && selectedCategory === "all" && (
                 <button
-                  onClick={() => setIsFormOpen(true)}
+                  onClick={() => {
+                    setEditingRequest(null);
+                    setIsFormOpen(true);
+                  }}
                   className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-xl transition-colors"
                 >
                   Post the First Request
@@ -375,21 +487,34 @@ const DuaRequestWall = () => {
           )}
         </div>
 
-        {/* Load More Button (for future pagination) */}
-        {filteredRequests.length > 0 && (
-          <div className="text-center mt-12">
-            <button className="bg-white dark:bg-black/40  hover:bg-gray-50 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-emerald-600 px-6 py-3 rounded-xl transition-colors">
-              Load More Duas
-            </button>
+        {/* Loading State */}
+        {isLoadingMore && (
+          <div className="flex justify-center items-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent"></div>
           </div>
         )}
+
+        {/* No More Requests */}
+        {!hasMore && requestsToDisplay.length > 0 && !isLoadingMore && (
+          <div className="text-center py-8">
+            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-full">
+              <Heart className="w-5 h-5 mr-2" />
+              You've reached the end! Thank you for your participation.
+            </div>
+          </div>
+        )}
+
       </div>
 
       {/* Dua Request Form Modal */}
       <DuaRequestForm
         isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleNewRequest}
+        onClose={() => {
+          setIsFormOpen(false);
+          setEditingRequest(null);
+        }}
+        onSubmit={editingRequest ? handleUpdateRequest : handleNewRequest}
+        initialData={editingRequest}
       />
     </div>
   );

@@ -163,6 +163,7 @@ export const apiSlice = createApi({
     "PrayerTimes",
     "IslamicQuotes",
     "Resources",
+    "DuaRequests",
   ],
   endpoints: (builder) => ({
     // ! ARTICLES
@@ -432,6 +433,74 @@ export const apiSlice = createApi({
         { type: "IslamicQuotes", id: "LIST" },
       ],
     }),
+
+    // ! Dua Requests
+    // Get all Dua Requests
+    getDuaRequests: builder.query({
+      query: () => "/dua-requests",
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({ type: "DuaRequests", id: _id })),
+              { type: "DuaRequests", id: "LIST" },
+            ]
+          : [{ type: "DuaRequests", id: "LIST" }],
+    }),
+
+    // Create a new Dua Request
+    createDuaRequest: builder.mutation({
+      query: (newDuaRequest) => ({
+        url: "/dua-requests",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: newDuaRequest,
+      }),
+      invalidatesTags: [{ type: "DuaRequests", id: "LIST" }],
+    }),
+
+    // Update a Dua Request
+    updateDuaRequest: builder.mutation({
+      query: ({ _id, ...updatedDuaRequest }) => ({
+        url: `/dua-requests/${_id}`,
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: updatedDuaRequest,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "DuaRequests", id },
+        { type: "DuaRequests", id: "LIST" },
+      ],
+    }),
+
+    // Delete a Dua Request
+    deleteDuaRequest: builder.mutation({
+      query: (id) => ({
+        url: `/dua-requests/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [
+        { type: "DuaRequests", id },
+        { type: "DuaRequests", id: "LIST" },
+      ],
+    }),
+
+    // Like/Unlike a Dua Request
+    toggleDuaRequestLike: builder.mutation({
+      query: (id) => ({
+        url: `/dua-requests/${id}/like`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "DuaRequests", id }],
+    }),
+
+    // Increment prayer count for a Dua Request
+    incrementDuaRequestPrayerCount: builder.mutation({
+      query: (id) => ({
+        url: `/dua-requests/${id}/pray`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "DuaRequests", id }],
+    }),
   }),
 });
 
@@ -474,4 +543,12 @@ export const {
   useCreateResourceMutation,
   useUpdateResourceMutation,
   useDeleteResourceMutation,
+
+  // Dua Requests
+  useGetDuaRequestsQuery,
+  useCreateDuaRequestMutation,
+  useUpdateDuaRequestMutation,
+  useDeleteDuaRequestMutation,
+  useToggleDuaRequestLikeMutation,
+  useIncrementDuaRequestPrayerCountMutation,
 } = apiSlice;
