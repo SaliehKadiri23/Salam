@@ -727,29 +727,14 @@ app.get("/forums", async (req, res)=>{
     }
   });
 
-  // Like/Unlike a Dua Request
-  app.post("/dua-requests/:id/like", async (req, res) => {
+  // Increment prayer count for a Dua Request
+  app.post("/dua-requests/:id/pray", async (req, res) => {
     try {
       const { id } = req.params;
       // TODO: Replace with req.user._id when auth is implemented
       const userId = "64f1abf1a2b4c3d4e5f6a111";
       
-      const result = await DuaRequest.toggleLike(id, userId);
-      res.json(result);
-    } catch (error) {
-      console.error("Error liking dua request:", error);
-      res.status(500).json({ 
-        success: false, 
-        message: "An error occurred while liking the dua request. Please try again later." 
-      });
-    }
-  });
-
-  // Increment prayer count for a Dua Request
-  app.post("/dua-requests/:id/pray", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const result = await DuaRequest.incrementPrayerCount(id);
+      const result = await DuaRequest.incrementPrayerCount(id, userId);
       res.json(result);
     } catch (error) {
       console.error("Error incrementing prayer count:", error);

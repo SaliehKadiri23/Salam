@@ -1,79 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Clock, User, Trash2, Edit } from 'lucide-react';
+import { Clock, User, Trash2, Edit } from 'lucide-react';
 import { toast } from 'react-toastify';
 import DuaCounter from './DuaCounter';
 import CategoryBadge from './CategoryBadge';
 
-const DuaRequestCard = ({ request, onLike, onPray, onDelete, onEdit }) => {
-  const [likeCount, setLikeCount] = useState(request.likes || 0);
-  const [isLiked, setIsLiked] = useState(false);
-  const [hasUserPrayed, setHasUserPrayed] = useState(false);
+const DuaRequestCard = ({ request, onPray, onDelete, onEdit, hasUserPrayed }) => {
   const [isOwner, setIsOwner] = useState(false);
 
   // Set initial state
   useEffect(() => {
-    setLikeCount(request.likes || 0);
+    if (!request) return;
     
     // Check if user is owner using hardcoded user ID
     const currentUserId = "64f1abf1a2b4c3d4e5f6a111"; // Hardcoded user ID
     const isRequestOwner = request.userId === currentUserId;
     setIsOwner(isRequestOwner);
-    
-    // Check if current user has liked this request
-    const likedRequests = JSON.parse(localStorage.getItem('likedRequests') || '[]');
-    setIsLiked(likedRequests.includes(request.id));
-  }, [request.likes, request.userId, request.isAnonymous, request.id]);
-
-  // Check if user has already prayed for this request
-  useEffect(() => {
-    const prayedRequests = JSON.parse(localStorage.getItem('prayedRequests') || '[]');
-    setHasUserPrayed(prayedRequests.includes(request.id));
-  }, [request.id]);
-
-  const handleLike = () => {
-    // Update local state immediately for UI feedback
-    const newLikeState = !isLiked;
-    setIsLiked(newLikeState);
-    setLikeCount(prev => newLikeState ? prev + 1 : prev - 1);
-    
-    // Update localStorage
-    const likedRequests = JSON.parse(localStorage.getItem('likedRequests') || '[]');
-    if (newLikeState) {
-      likedRequests.push(request.id);
-    } else {
-      const index = likedRequests.indexOf(request.id);
-      if (index > -1) {
-        likedRequests.splice(index, 1);
-      }
-    }
-    localStorage.setItem('likedRequests', JSON.stringify(likedRequests));
-    
-    // Call the parent's onLike function if provided
-    if (onLike) {
-      onLike(request.id);
-    }
-  };
+  }, [request]);
 
   const handlePray = () => {
+    if (!request) return;
+    
+    // Get request ID (use id if available, otherwise fallback to _id)
+    const requestId = request.id || request._id;
+    
     // Call the parent's onPray function if provided
     if (onPray && !hasUserPrayed) {
-      onPray(request.id);
+      onPray(requestId);
     }
   };
 
   const handleDelete = () => {
+    if (!request) return;
+    
+    // Get request ID (use id if available, otherwise fallback to _id)
+    const requestId = request.id || request._id;
+    
     if (window.confirm("Are you sure you want to delete this dua request?")) {
       if (onDelete) {
-        onDelete(request.id);
+        onDelete(requestId);
       }
     }
   };
 
   const handleEdit = () => {
+    if (!request) return;
+    
     if (onEdit) {
       onEdit(request);
     }
   };
+
+  if (!request) {
+    return null;
+  }
 
   return (
     <div className="bg-white dark:bg-black/50 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-emerald-600 group overflow-hidden">
@@ -123,27 +102,13 @@ const DuaRequestCard = ({ request, onLike, onPray, onDelete, onEdit }) => {
           </p>
 
           {/* Actions */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              {/* Like Button */}
-              <button
-                onClick={handleLike}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
-                  isLiked
-                    ? "bg-red-50 text-red-600"
-                    : "bg-gray-50 dark:bg-gray-100 text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
-                <span className="text-sm font-medium">{likeCount}</span>
-              </button>
-            </div>
-
+          <div className="flex items-center justify-end">
             {/* Prayer Counter */}
             <DuaCounter
               initialCount={request.prayerCount || 0}
-              requestId={request.id}
+              requestId={request.id || request._id}
               onPray={() => handlePray()}
+              hasUserPrayed={hasUserPrayed}
             />
           </div>
         </div>

@@ -484,15 +484,6 @@ export const apiSlice = createApi({
       ],
     }),
 
-    // Like/Unlike a Dua Request
-    toggleDuaRequestLike: builder.mutation({
-      query: (id) => ({
-        url: `/dua-requests/${id}/like`,
-        method: "POST",
-      }),
-      invalidatesTags: (result, error, id) => [{ type: "DuaRequests", id }],
-    }),
-
     // Increment prayer count for a Dua Request
     incrementDuaRequestPrayerCount: builder.mutation({
       query: (id) => ({
@@ -549,6 +540,5 @@ export const {
   useCreateDuaRequestMutation,
   useUpdateDuaRequestMutation,
   useDeleteDuaRequestMutation,
-  useToggleDuaRequestLikeMutation,
   useIncrementDuaRequestPrayerCountMutation,
 } = apiSlice;

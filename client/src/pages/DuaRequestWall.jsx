@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { Plus, Filter, Search, ChevronDown, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-react';
-import { useGetDuaRequestsQuery, useCreateDuaRequestMutation, useUpdateDuaRequestMutation, useDeleteDuaRequestMutation, useToggleDuaRequestLikeMutation, useIncrementDuaRequestPrayerCountMutation } from '../services/apiSlice';
+import { Plus, Filter, Search, ChevronDown, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { useGetDuaRequestsQuery, useCreateDuaRequestMutation, useUpdateDuaRequestMutation, useDeleteDuaRequestMutation, useIncrementDuaRequestPrayerCountMutation } from '../services/apiSlice';
 import DuaRequestCard from '../components/dua-wall/DuaRequestCard';
 import DuaRequestForm from '../components/dua-wall/DuaRequestForm';
 import CategoryBadge from '../components/dua-wall/CategoryBadge';
@@ -28,7 +28,6 @@ const DuaRequestWall = () => {
   const [createDuaRequest] = useCreateDuaRequestMutation();
   const [updateDuaRequest] = useUpdateDuaRequestMutation();
   const [deleteDuaRequest] = useDeleteDuaRequestMutation();
-  const [toggleLike] = useToggleDuaRequestLikeMutation();
   const [incrementPrayerCount] = useIncrementDuaRequestPrayerCountMutation();
 
   const duaRequests = data?.data || [];
@@ -194,17 +193,6 @@ const DuaRequestWall = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDropdownOpen]);
-
-  // Handle like functionality
-  const handleLike = async (requestId) => {
-    try {
-      await toggleLike(requestId).unwrap();
-      refetch();
-    } catch (error) {
-      toast.error('Failed to like dua request. Please try again.');
-      console.error('Error liking dua request:', error);
-    }
-  };
 
   // Handle prayer functionality
   const handlePray = async (requestId) => {
@@ -388,8 +376,8 @@ const DuaRequestWall = () => {
           </div>
         </div>
 
-        {/* Stats - Responsive Grid: 2 cols mobile, 3 cols tablet+ */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+        {/* Stats - Responsive Grid: 2 cols mobile, 2 cols tablet+ */}
+        <div className="grid grid-cols-2 gap-4 mb-8">
           <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
             <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-500">
               {requestsToDisplay.length}
@@ -406,14 +394,6 @@ const DuaRequestWall = () => {
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-100">
               Total Prayers
-            </div>
-          </div>
-          <div className="bg-white dark:bg-black/40  flex flex-col items-center rounded-xl p-4 shadow-sm border border-gray-100 dark:border-emerald-600">
-            <div className="text-2xl font-bold text-purple-600">
-              {requestsToDisplay.reduce((sum, req) => sum + (req.likes || 0), 0)}
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-100">
-              Total Likes
             </div>
           </div>
         </div>
@@ -433,10 +413,10 @@ const DuaRequestWall = () => {
                         likes: request.likes || 0,
                         prayerCount: request.prayerCount || 0
                       }} 
-                      onLike={handleLike}
                       onPray={handlePray}
                       onDelete={handleDeleteRequest}
                       onEdit={handleEditRequest}
+                      hasUserPrayed={request.prayedBy && request.prayedBy.includes("64f1abf1a2b4c3d4e5f6a111")}
                     />
                   </div>
                 );
@@ -451,10 +431,10 @@ const DuaRequestWall = () => {
                       likes: request.likes || 0,
                       prayerCount: request.prayerCount || 0
                     }} 
-                    onLike={handleLike}
                     onPray={handlePray}
                     onDelete={handleDeleteRequest}
                     onEdit={handleEditRequest}
+                    hasUserPrayed={request.prayedBy && request.prayedBy.includes("64f1abf1a2b4c3d4e5f6a111")}
                   />
                 );
               }

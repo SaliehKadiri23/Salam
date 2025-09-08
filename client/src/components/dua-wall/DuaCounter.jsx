@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Heart, Sparkles } from 'lucide-react';
 
-const DuaCounter = ({ initialCount = 0, requestId, onPray }) => {
+const DuaCounter = ({ initialCount = 0, requestId, onPray, hasUserPrayed }) => {
   const [count, setCount] = useState(initialCount);
-  const [hasUserPrayed, setHasUserPrayed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Check if user has already prayed for this request
-  useEffect(() => {
-    const prayedRequests = JSON.parse(localStorage.getItem('prayedRequests') || '[]');
-    setHasUserPrayed(prayedRequests.includes(requestId));
-  }, [requestId]);
-
   const handlePray = async () => {
-    if (hasUserPrayed) return;
+    if (hasUserPrayed || !requestId) return;
 
     try {
       // Animate the counter
@@ -24,12 +17,6 @@ const DuaCounter = ({ initialCount = 0, requestId, onPray }) => {
       if (onPray) {
         await onPray();
       }
-      
-      // Mark as prayed in localStorage
-      const prayedRequests = JSON.parse(localStorage.getItem('prayedRequests') || '[]');
-      prayedRequests.push(requestId);
-      localStorage.setItem('prayedRequests', JSON.stringify(prayedRequests));
-      setHasUserPrayed(true);
     } catch (error) {
       // If there's an error, revert the counter
       setCount(prev => prev - 1);

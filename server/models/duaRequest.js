@@ -28,18 +28,14 @@ const duaRequestSchema = new mongoose.Schema({
     type: ObjectId,
     ref: "User"
   },
-  likes: {
-    type: Number,
-    default: 0
-  },
-  likedBy: {
-    type: [ObjectId],
-    ref: "User",
-    default: []
-  },
   prayerCount: {
     type: Number,
     default: 0
+  },
+  prayedBy: {
+    type: [ObjectId],
+    ref: "User",
+    default: []
   },
   createdAt: {
     type: Date,
@@ -57,41 +53,24 @@ duaRequestSchema.pre("save", function(next) {
   next();
 });
 
-// Toggling Likes
-duaRequestSchema.statics.toggleLike = async function(duaId, userId) {
+// Increment prayer count and track who prayed
+duaRequestSchema.statics.incrementPrayerCount = async function(duaId, userId) {
   const dua = await this.findById(duaId);
   if (!dua) throw new Error("Dua request not found");
 
-  const alreadyLiked = dua.likedBy.includes(userId);
-
-  if (alreadyLiked) {
-    // Unlike
-    dua.likedBy.pull(userId);
-    dua.likes = dua.likedBy.length;
-  } else {
-    // Like
-    dua.likedBy.push(userId);
-    dua.likes = dua.likedBy.length;
+  // Check if user already prayed
+  const alreadyPrayed = dua.prayedBy.includes(userId);
+  
+  if (!alreadyPrayed) {
+    // Only increment if user hasn't prayed before
+    dua.prayerCount += 1;
+    dua.prayedBy.push(userId);
+    await dua.save();
   }
 
-  await dua.save();
-
   return {
-    likes: dua.likes,
-    liked: !alreadyLiked // whether user liked after this action
-  };
-};
-
-// Increment prayer count
-duaRequestSchema.statics.incrementPrayerCount = async function(duaId) {
-  const dua = await this.findById(duaId);
-  if (!dua) throw new Error("Dua request not found");
-
-  dua.prayerCount += 1;
-  await dua.save();
-
-  return {
-    prayerCount: dua.prayerCount
+    prayerCount: dua.prayerCount,
+    prayed: !alreadyPrayed // whether user prayed after this action
   };
 };
 

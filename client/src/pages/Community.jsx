@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   MessageSquare,
@@ -14,10 +14,11 @@ import {
   Clock,
   MapPin,
   Stars,
+  Sparkles,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
-import { useGetForumsQuery, useGetQuestionsAndAnswersQuery } from "../services/apiSlice";
+import { useGetForumsQuery, useGetQuestionsAndAnswersQuery, useGetDuaRequestsQuery, useIncrementDuaRequestPrayerCountMutation } from "../services/apiSlice";
 
 const iconComponents = {
   Heart,
@@ -32,7 +33,7 @@ const iconComponents = {
 
 const Community = () => {
   const navigate = useNavigate();
-  const { scholarQA, duaRequests, volunteerOpportunities } =
+  const { volunteerOpportunities } =
     useSelector((state) => state.community);
 
     const {data: forumCategories = [], isLoading, isSuccess, isError} = useGetForumsQuery()
@@ -307,72 +308,269 @@ const ScholarQA = () => {
 
 
   // Dua Wall Component
-  const DuaWall = () => (
-    <motion.div
-      initial={{
-        opacity: 0,
-        y: 100,
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.45 },
-      }}
-      exit={{
-        opacity: 0,
-        y: 100,
-      }}
-      viewport={{ once: true }}
-      className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
-    >
-      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-purple-50 to-violet-50  dark:from-gray-900 dark:text-gray-700/40">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-purple-100 rounded-xl">
-            <Heart className="text-purple-600" size={20} />
+  const DuaWall = () => {
+    const { data: duaRequestsData, isLoading, isError } = useGetDuaRequestsQuery();
+    const [incrementPrayerCount] = useIncrementDuaRequestPrayerCountMutation();
+    const duaRequests = duaRequestsData?.data || [];
+    
+    // State for tracking which requests the user has prayed for
+    const [prayedRequests, setPrayedRequests] = useState({});
+    const [prayerCounts, setPrayerCounts] = useState({});
+    
+    // Initialize prayer state from localStorage
+    useEffect(() => {
+      const savedPrayedRequests = JSON.parse(localStorage.getItem('prayedRequests') || '{}');
+      setPrayedRequests(savedPrayedRequests);
+      
+      // Initialize prayer counts
+      const initialCounts = {};
+      duaRequests.forEach(dua => {
+        initialCounts[dua._id] = dua.prayerCount || 0;
+      });
+      setPrayerCounts(initialCounts);
+    }, [duaRequests]);
+    
+    // Handle prayer functionality
+    const handlePray = async (requestId) => {
+      // Check if user has already prayed for this request
+      if (prayedRequests[requestId]) {
+        return;
+      }
+      
+      try {
+        // Update local state immediately for UI feedback
+        setPrayerCounts(prev => ({
+          ...prev,
+          [requestId]: (prev[requestId] || 0) + 1
+        }));
+        
+        // Mark as prayed in state
+        setPrayedRequests(prev => ({
+          ...prev,
+          [requestId]: true
+        }));
+        
+        // Save to localStorage
+        const updatedPrayedRequests = {
+          ...prayedRequests,
+          [requestId]: true
+        };
+        localStorage.setItem('prayedRequests', JSON.stringify(updatedPrayedRequests));
+        
+        // Call the API to increment prayer count
+        await incrementPrayerCount(requestId).unwrap();
+      } catch (error) {
+        console.error('Error recording prayer:', error);
+        // Revert the local state changes if API call fails
+        setPrayerCounts(prev => ({
+          ...prev,
+          [requestId]: Math.max(0, (prev[requestId] || 0) - 1)
+        }));
+        
+        // Remove from prayed requests
+        const revertedPrayedRequests = { ...prayedRequests };
+        delete revertedPrayedRequests[requestId];
+        setPrayedRequests(revertedPrayedRequests);
+        localStorage.setItem('prayedRequests', JSON.stringify(revertedPrayedRequests));
+      }
+    };
+    
+    // Show loading state
+    if (isLoading) {
+      return (
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 100,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.45 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 100,
+          }}
+          viewport={{ once: true }}
+          className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
+        >
+          <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-purple-50 to-violet-50  dark:from-gray-900 dark:text-gray-700/40">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-purple-100 rounded-xl">
+                <Heart className="text-purple-600" size={20} />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+                Dua Request Wall
+              </h2>
+            </div>
+            <p className="text-slate-600 dark:text-slate-200">
+              Share your supplications and pray for others
+            </p>
           </div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-            Dua Request Wall
-          </h2>
-        </div>
-        <p className="text-slate-600 dark:text-slate-200">
-          Share your supplications and pray for others
-        </p>
-      </div>
-
-      <div className="p-6">
-        <div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar mb-6">
-          {duaRequests.map((dua, index) => (
-            <div
-              key={index}
-              className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 rounded-xl border border-green-100 dark:border-emerald-600 hover:shadow-sm transition-all duration-200"
-            >
-              <p className="text-sm text-slate-700 dark:text-slate-100 mb-3 leading-relaxed">
-                "{dua.text}"
-              </p>
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-slate-500 dark:text-slate-100">
-                  - {dua.author}
-                </p>
-                <div className="flex items-center gap-1">
-                  <Heart size={12} className="text-red-400 fill-red-400" />
-                  <span className="text-xs text-slate-500 dark:text-slate-100">
-                    {dua.hearts}
-                  </span>
-                </div>
+          
+          <div className="p-6">
+            <div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar mb-6">
+              <div className="flex justify-center items-center h-20">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
               </div>
             </div>
-          ))}
+            
+            <button
+              onClick={() => navigate("/dua_request")}
+              className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+            >
+              Submit a Dua Request
+            </button>
+          </div>
+        </motion.div>
+      );
+    }
+    
+    // Show error state
+    if (isError) {
+      return (
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 100,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.45 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 100,
+          }}
+          viewport={{ once: true }}
+          className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
+        >
+          <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-purple-50 to-violet-50  dark:from-gray-900 dark:text-gray-700/40">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-purple-100 rounded-xl">
+                <Heart className="text-purple-600" size={20} />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+                Dua Request Wall
+              </h2>
+            </div>
+            <p className="text-slate-600 dark:text-slate-200">
+              Share your supplications and pray for others
+            </p>
+          </div>
+          
+          <div className="p-6">
+            <div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar mb-6">
+              <div className="text-center py-4">
+                <p className="text-red-500 dark:text-red-400">Failed to load dua requests. Please try again later.</p>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => navigate("/dua_request")}
+              className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+            >
+              Submit a Dua Request
+            </button>
+          </div>
+        </motion.div>
+      );
+    }
+
+    return (
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 100,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.45 },
+        }}
+        exit={{
+          opacity: 0,
+          y: 100,
+        }}
+        viewport={{ once: true }}
+        className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden group hover:shadow-md transition-all duration-300"
+      >
+        <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-purple-50 to-violet-50  dark:from-gray-900 dark:text-gray-700/40">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-purple-100 rounded-xl">
+              <Heart className="text-purple-600" size={20} />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+              Dua Request Wall
+            </h2>
+          </div>
+          <p className="text-slate-600 dark:text-slate-200">
+            Share your supplications and pray for others
+          </p>
         </div>
 
-        <button
-          onClick={() => navigate("/dua_request")}
-          className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-        >
-          Submit a Dua Request
-        </button>
-      </div>
-    </motion.div>
-  );
+        <div className="p-6">
+          <div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar mb-6">
+            {duaRequests.slice(0, 4).map((dua, index) => (
+              <div
+                key={dua._id || index}
+                className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 rounded-xl border border-green-100 dark:border-emerald-600 hover:shadow-sm transition-all duration-200"
+              >
+                <p className="text-sm text-slate-700 dark:text-slate-100 mb-3 leading-relaxed">
+                  "{dua.content || dua.text}"
+                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-slate-500 dark:text-slate-100">
+                    - {dua.author || "Anonymous"}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handlePray(dua._id)}
+                      disabled={prayedRequests[dua._id]}
+                      className={`flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        prayedRequests[dua._id]
+                          ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md cursor-default"
+                          : "bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 hover:from-emerald-100 hover:to-green-100 hover:shadow-md cursor-pointer"
+                      }`}
+                    >
+                      {prayedRequests[dua._id] ? (
+                        <>
+                          <Sparkles className="w-3 h-3 animate-pulse" />
+                          <span>Prayed</span>
+                        </>
+                      ) : (
+                        <>
+                          <Heart className="w-3 h-3" />
+                          <span>Make Dua</span>
+                        </>
+                      )}
+                    </button>
+                    <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-100">
+                      <span className="font-medium">
+                        {prayerCounts[dua._id] || dua.prayerCount || 0}
+                      </span>
+                      <span>
+                        {((prayerCounts[dua._id] || dua.prayerCount || 0) === 1) ? "prayer" : "prayers"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => navigate("/dua_request")}
+            className="w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+          >
+            Submit a Dua Request
+          </button>
+        </div>
+      </motion.div>
+    );
+  };
 
   // Volunteer Opportunities Component
   const VolunteerBoard = () => (
