@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { Plus, Filter, Search, ChevronDown, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { Plus, Filter, Search, ChevronDown, ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-react';
 import { useGetDuaRequestsQuery, useCreateDuaRequestMutation, useUpdateDuaRequestMutation, useDeleteDuaRequestMutation, useIncrementDuaRequestPrayerCountMutation } from '../services/apiSlice';
 import DuaRequestCard from '../components/dua-wall/DuaRequestCard';
 import DuaRequestForm from '../components/dua-wall/DuaRequestForm';

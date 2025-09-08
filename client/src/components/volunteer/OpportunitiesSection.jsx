@@ -3,8 +3,7 @@ import { useSelector } from "react-redux";
 import VolunteerCard from "./VolunteerCard";
 import VolunteerCardSkeleton from "./VolunteerCardSkeleton";
 
-const OpportunitiesSection = ({ onApply }) => {
-  const { opportunities } = useSelector((state) => state.opportunities);
+const OpportunitiesSection = ({ opportunities, onApply }) => {
   const filters = useSelector((state) => state.filters);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -14,6 +13,10 @@ const OpportunitiesSection = ({ onApply }) => {
   }, []);
 
   const filteredOpportunities = useMemo(() => {
+    if (!Array.isArray(opportunities)) {
+      return [];
+    }
+    
     return opportunities.filter((opportunity) => {
       const matchesSearch =
         filters.search === "" ||
@@ -26,16 +29,16 @@ const OpportunitiesSection = ({ onApply }) => {
         opportunity.organization
           .toLowerCase()
           .includes(filters.search.toLowerCase()) ||
-        opportunity.skills.some((skill) =>
+        (opportunity.skills && opportunity.skills.some((skill) =>
           skill.toLowerCase().includes(filters.search.toLowerCase())
-        );
+        ));
 
       const matchesCategory =
         filters.category === "All" || opportunity.category === filters.category;
       const matchesLocation =
         filters.location === "All" || opportunity.location === filters.location;
       const matchesSkills =
-        filters.skills === "All" || opportunity.skills.includes(filters.skills);
+        filters.skills === "All" || (opportunity.skills && opportunity.skills.includes(filters.skills));
       const matchesTimeCommitment =
         filters.timeCommitment === "All" ||
         opportunity.timeCommitment === filters.timeCommitment;
@@ -99,7 +102,7 @@ const OpportunitiesSection = ({ onApply }) => {
           <div className="space-y-6">
             {opportunities.map((opportunity) => (
               <VolunteerCard
-                key={opportunity.id}
+                key={opportunity._id || opportunity.id}
                 opportunity={opportunity}
                 onApply={onApply}
               />

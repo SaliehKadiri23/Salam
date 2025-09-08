@@ -6,6 +6,7 @@ const Forum = require("./models/forum")
 const QuestionAndAnswer = require("./models/questionsAndAnswers");
 const IslamicQuote = require("./models/islamicQuote");
 const DuaRequest = require("./models/duaRequest");
+const VolunteerOpportunity = require("./models/volunteerOpportunity");
 
 const dbUrl = "mongodb://127.0.0.1:27017/salam";
 
@@ -741,6 +742,142 @@ app.get("/forums", async (req, res)=>{
       res.status(500).json({ 
         success: false, 
         message: "An error occurred while processing your prayer. Please try again later." 
+      });
+    }
+  });
+
+  // ! Volunteer Opportunities
+  // Get all Volunteer Opportunities
+  app.get("/volunteer-opportunities", async (req, res) => {
+    try {
+      const opportunities = await VolunteerOpportunity.find({ isActive: true }).sort({ createdAt: -1 });
+      
+      res.json({
+        success: true,
+        count: opportunities.length,
+        data: opportunities
+      });
+    } catch (error) {
+      console.error("Error fetching volunteer opportunities:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while fetching volunteer opportunities. Please try again later." 
+      });
+    }
+  });
+
+  // Get a single Volunteer Opportunity by ID
+  app.get("/volunteer-opportunities/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const opportunity = await VolunteerOpportunity.findById(id);
+      
+      if (!opportunity) {
+        return res.status(404).json({
+          success: false,
+          message: "Volunteer opportunity not found."
+        });
+      }
+      
+      res.json({
+        success: true,
+        data: opportunity
+      });
+    } catch (error) {
+      console.error("Error fetching volunteer opportunity:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while fetching the volunteer opportunity. Please try again later." 
+      });
+    }
+  });
+
+  // Create a new Volunteer Opportunity
+  app.post("/volunteer-opportunities", async (req, res) => {
+    try {
+      const newOpportunity = new VolunteerOpportunity(req.body);
+      await newOpportunity.save();
+      
+      res.status(201).json({
+        success: true,
+        message: "Volunteer opportunity created successfully!",
+        data: newOpportunity
+      });
+    } catch (error) {
+      console.error("Error creating volunteer opportunity:", error);
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Please check your input and try again." 
+        });
+      }
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while creating the volunteer opportunity. Please try again later." 
+      });
+    }
+  });
+
+  // Update a Volunteer Opportunity
+  app.patch("/volunteer-opportunities/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const updatedOpportunity = await VolunteerOpportunity.findByIdAndUpdate(
+        id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+      
+      if (!updatedOpportunity) {
+        return res.status(404).json({
+          success: false,
+          message: "Volunteer opportunity not found."
+        });
+      }
+      
+      res.json({
+        success: true,
+        message: "Volunteer opportunity updated successfully!",
+        data: updatedOpportunity
+      });
+    } catch (error) {
+      console.error("Error updating volunteer opportunity:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while updating the volunteer opportunity. Please try again later." 
+      });
+    }
+  });
+
+  // Delete a Volunteer Opportunity (soft delete)
+  app.delete("/volunteer-opportunities/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const updatedOpportunity = await VolunteerOpportunity.findByIdAndUpdate(
+        id,
+        { isActive: false, updatedAt: new Date() },
+        { new: true }
+      );
+      
+      if (!updatedOpportunity) {
+        return res.status(404).json({
+          success: false,
+          message: "Volunteer opportunity not found."
+        });
+      }
+      
+      res.json({
+        success: true,
+        message: "Volunteer opportunity deleted successfully!",
+        data: updatedOpportunity
+      });
+    } catch (error) {
+      console.error("Error deleting volunteer opportunity:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while deleting the volunteer opportunity. Please try again later." 
       });
     }
   });

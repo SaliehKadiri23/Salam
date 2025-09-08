@@ -18,32 +18,19 @@ import DonationForm from "./pages/DonateForm";
 import BlogAndArticles from "./pages/BlogAndArticles";
 import Community from "./pages/Community";
 import VolunteerBoard from "./pages/VolunteerBoard";
+import VolunteerOpportunitiesDashboard from "./pages/VolunteerOpportunitiesDashboard";
 import QuestionsAndAnswers from "./pages/QuestionsAndAnswers";
 import DuaRequestWall from "./pages/DuaRequestWall";
 import ContactUs from "./pages/ContactUs";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
-import Test from "./pages/Test";
 import NewsletterSubscribersDashboard from "./pages/NewsletterSubscribersDashboard";
 import IslamicQuotesDashboard from "./pages/IslamicQuotesDashboard";
 import ScholarQADashboard from "./pages/scholar/ScholarQADashboard";
 
 const App = () => {
-  // const [response, setResponse] = useState("")
-
-  // useEffect(() => {
-  //   async function greetBackend(){
-  //     try {
-  //       let message = await axios.get("http://localhost:7000/cow");
-  //       setResponse(message.data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   }
-
-  //   greetBackend();
-  // }, []);
+ 
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -79,6 +66,7 @@ const App = () => {
         {/* Community */}
         <Route path="community" element={<Community />} />
         <Route path="volunteer_board" element={<VolunteerBoard />} />
+        <Route path="volunteer_opportunities" element={<VolunteerOpportunitiesDashboard />} />
         <Route path="questions_and_answers" element={<QuestionsAndAnswers />} />
         <Route path="dua_request" element={<DuaRequestWall />} />
         <Route path="contact_us" element={<ContactUs />} />
@@ -86,7 +74,6 @@ const App = () => {
         <Route path="sign_up" element={<SignUp />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<Login />} />
-        <Route path="test" element={<Test />} />
         
         {/* Newsletter Subscribers Dashboard */}
         <Route path="newsletter_subscribers" element={<NewsletterSubscribersDashboard />} />

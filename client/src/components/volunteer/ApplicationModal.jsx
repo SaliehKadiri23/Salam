@@ -1,42 +1,84 @@
 import React, { useState } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { X, CheckCircle } from 'lucide-react';
+import CustomSelect from './CustomSelect';
 
 const ApplicationModal = ({ opportunity, isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    availability: "",
-    experience: "",
-    motivation: "",
-  });
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
 
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  // Validation schema for each step
+  const validationSchemas = [
+    // Step 1: Personal Information
+    Yup.object().shape({
+      fullName: Yup.string()
+        .min(2, 'Full name must be at least 2 characters')
+        .required('Full name is required'),
+      email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is required'),
+      phone: Yup.string()
+        .matches(
+          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+          'Invalid phone number'
+        )
+        .required('Phone number is required'),
+    }),
+    // Step 2: Availability & Experience
+    Yup.object().shape({
+      availability: Yup.string()
+        .required('Please select your availability')
+        .test('is-valid', 'Please select your availability', (value) => {
+          return value && value !== 'All';
+        }),
+      experience: Yup.string(),
+    }),
+    // Step 3: Motivation
+    Yup.object().shape({
+      motivation: Yup.string()
+        .min(10, 'Motivation must be at least 10 characters')
+        .required('Motivation is required'),
+    }),
+    // Step 4: Confirmation (no validation needed)
+    Yup.object().shape({}),
+  ];
+
+  // Initial form values
+  const initialValues = {
+    fullName: '',
+    email: '',
+    phone: '',
+    availability: '',
+    experience: '',
+    motivation: '',
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData);
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      availability: "",
-      experience: "",
-      motivation: "",
+  const nextStep = (validateForm, setTouched) => {
+    // Validate current step before moving to next
+    validateForm().then((errors) => {
+      if (Object.keys(errors).length === 0) {
+        // No errors, proceed to next step
+        if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
+      } else {
+        // Mark all fields as touched to show errors
+        setTouched(
+          Object.keys(errors).reduce((acc, field) => {
+            acc[field] = true;
+            return acc;
+          }, {})
+        );
+      }
     });
-    setCurrentStep(1);
-  };
-
-  const nextStep = () => {
-    if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
   };
 
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
+  };
+
+  const handleSubmit = (values) => {
+    onSubmit(values);
+    setCurrentStep(1);
   };
 
   if (!isOpen || !opportunity) return null;
@@ -78,198 +120,222 @@ const ApplicationModal = ({ opportunity, isOpen, onClose, onSubmit }) => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          {/* Step 1: Personal Information */}
-          {currentStep === 1 && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">
-                Personal Information
-              </h3>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchemas[currentStep - 1]}
+          onSubmit={handleSubmit}
+          validateOnChange={true}
+          validateOnBlur={true}
+        >
+          {({ isSubmitting, isValid, values, validateForm, setTouched, setFieldValue }) => (
+            <Form>
+              {/* Step 1: Personal Information */}
+              {currentStep === 1 && (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                    Personal Information
+                  </h3>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.fullName}
-                  onChange={(e) =>
-                    handleInputChange("fullName", e.target.value)
-                  }
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Full Name *
+                    </label>
+                    <Field
+                      type="text"
+                      name="fullName"
+                      className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      placeholder="Enter your full name"
+                    />
+                    <ErrorMessage
+                      name="fullName"
+                      component="div"
+                      className="text-red-500 text-sm mt-1"
+                    />
+                  </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Email Address *
+                    </label>
+                    <Field
+                      type="email"
+                      name="email"
+                      className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      placeholder="Enter your email address"
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="text-red-500 text-sm mt-1"
+                    />
+                  </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Step 2: Availability & Experience */}
-          {currentStep === 2 && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">
-                Availability & Experience
-              </h3>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Your Availability *
-                </label>
-                <select
-                  required
-                  value={formData.availability}
-                  onChange={(e) =>
-                    handleInputChange("availability", e.target.value)
-                  }
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                >
-                  <option value="">Select your availability</option>
-                  <option value="weekdays">Weekdays</option>
-                  <option value="weekends">Weekends</option>
-                  <option value="evenings">Evenings</option>
-                  <option value="flexible">Flexible</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Relevant Experience
-                </label>
-                <textarea
-                  value={formData.experience}
-                  onChange={(e) =>
-                    handleInputChange("experience", e.target.value)
-                  }
-                  rows={4}
-                  placeholder="Tell us about any relevant experience you have..."
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: Motivation */}
-          {currentStep === 3 && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">
-                Your Motivation
-              </h3>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Why do you want to volunteer for this role? *
-                </label>
-                <textarea
-                  required
-                  value={formData.motivation}
-                  onChange={(e) =>
-                    handleInputChange("motivation", e.target.value)
-                  }
-                  rows={6}
-                  placeholder="Share your motivation and what you hope to contribute..."
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-
-              {/* Summary */}
-              <div className="bg-slate-50 p-4 rounded-lg">
-                <h4 className="font-medium text-slate-800 mb-2">
-                  Application Summary
-                </h4>
-                <div className="text-sm text-slate-600 space-y-1">
-                  <p>
-                    <strong>Name:</strong> {formData.fullName}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {formData.email}
-                  </p>
-                  <p>
-                    <strong>Availability:</strong> {formData.availability}
-                  </p>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Phone Number *
+                    </label>
+                    <Field
+                      type="tel"
+                      name="phone"
+                      className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      placeholder="Enter your phone number"
+                    />
+                    <ErrorMessage
+                      name="phone"
+                      component="div"
+                      className="text-red-500 text-sm mt-1"
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 4: Thank You */}
-          {currentStep === 4 && (
-            <div className="space-y-6">
-              <div className="w-full h-[40vh] flex flex-col justify-center items-center gap-5">
-                <CheckCircle
-                  size={"6em"}
-                  className="text-white bg-gradient-to-tr from-green-300 via-green-600 to-green-300 rounded-full p-3"
-                />
-                <p className="text-green-600 font-bold">
-                  Thank You for your Application
-                </p>
-                <button className="font-bold text-white bg-red-600 py-2 px-3 rounded-lg">
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Navigation Buttons */}
-          {currentStep !== totalSteps && (
-            <div className="flex justify-between mt-8">
-              {currentStep > 1 && (
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="px-6 py-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors duration-300"
-                >
-                  Previous
-                </button>
               )}
 
-              <div className="ml-auto">
-                {currentStep < totalSteps - 1 ? (
-                  <button
-                    type="button"
-                    onClick={nextStep}
-                    className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300"
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={nextStep}
-                    className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 flex items-center gap-2"
-                  >
-                    Submit Application
-                    <CheckCircle className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            </div>
+              {/* Step 2: Availability & Experience */}
+              {currentStep === 2 && (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                    Availability & Experience
+                  </h3>
+
+                  <div>
+                    <CustomSelect
+                      label="Your Availability *"
+                      value={values.availability || "All"}
+                      onChange={(value) => setFieldValue('availability', value)}
+                      options={['All', 'weekdays', 'weekends', 'evenings', 'flexible']}
+                      placeholder="Select your availability"
+                    />
+                    <ErrorMessage
+                      name="availability"
+                      component="div"
+                      className="text-red-500 text-sm mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Relevant Experience
+                    </label>
+                    <Field
+                      as="textarea"
+                      name="experience"
+                      rows={4}
+                      placeholder="Tell us about any relevant experience you have..."
+                      className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                    <ErrorMessage
+                      name="experience"
+                      component="div"
+                      className="text-red-500 text-sm mt-1"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Motivation */}
+              {currentStep === 3 && (
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                    Your Motivation
+                  </h3>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Why do you want to volunteer for this role? *
+                    </label>
+                    <Field
+                      as="textarea"
+                      name="motivation"
+                      rows={6}
+                      placeholder="Share your motivation and what you hope to contribute..."
+                      className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    />
+                    <ErrorMessage
+                      name="motivation"
+                      component="div"
+                      className="text-red-500 text-sm mt-1"
+                    />
+                  </div>
+
+                  {/* Summary */}
+                  <div className="bg-slate-50 p-4 rounded-lg">
+                    <h4 className="font-medium text-slate-800 mb-2">
+                      Application Summary
+                    </h4>
+                    <div className="text-sm text-slate-600 space-y-1">
+                      <p>
+                        <strong>Name:</strong> {values.fullName}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {values.email}
+                      </p>
+                      <p>
+                        <strong>Availability:</strong> {values.availability}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: Thank You */}
+              {currentStep === 4 && (
+                <div className="space-y-6">
+                  <div className="w-full h-[40vh] flex flex-col justify-center items-center gap-5">
+                    <CheckCircle
+                      size={'6em'}
+                      className="text-white bg-gradient-to-tr from-green-300 via-green-600 to-green-300 rounded-full p-3"
+                    />
+                    <p className="text-green-600 font-bold">
+                      Thank You for your Application
+                    </p>
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="font-bold text-white bg-red-600 py-2 px-3 rounded-lg"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation Buttons */}
+              {currentStep !== totalSteps && (
+                <div className="flex justify-between mt-8">
+                  {currentStep > 1 && (
+                    <button
+                      type="button"
+                      onClick={prevStep}
+                      className="px-6 py-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors duration-300"
+                    >
+                      Previous
+                    </button>
+                  )}
+
+                  <div className="ml-auto">
+                    {currentStep < totalSteps - 1 ? (
+                      <button
+                        type="button"
+                        onClick={() => nextStep(validateForm, setTouched)}
+                        className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300"
+                      >
+                        Next
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 flex items-center gap-2 disabled:opacity-70"
+                      >
+                        Submit Application
+                        <CheckCircle className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </Form>
           )}
-        </form>
+        </Formik>
       </div>
     </div>
   );

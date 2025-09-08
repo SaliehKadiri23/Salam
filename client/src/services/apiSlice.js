@@ -164,6 +164,7 @@ export const apiSlice = createApi({
     "IslamicQuotes",
     "Resources",
     "DuaRequests",
+    "VolunteerOpportunities",
   ],
   endpoints: (builder) => ({
     // ! ARTICLES
@@ -332,58 +333,112 @@ export const apiSlice = createApi({
     }),
 
     // ! Resources
-    // Get all resources
-    getResources: builder.query({
-      query: () => "/resources",
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.data.map(({ _id }) => ({ type: "Resources", id:_id })),
-              { type: "Resources", id: "LIST" },
-            ]
-          : [{ type: "Resources", id: "LIST" }],
-    }),
+  // Get all resources
+  getResources: builder.query({
+    query: () => "/resources",
+    providesTags: (result) =>
+      result
+        ? [
+            ...result.data.map(({ _id }) => ({ type: "Resources", id:_id })),
+            { type: "Resources", id: "LIST" },
+          ]
+        : [{ type: "Resources", id: "LIST" }],
+  }),
 
-    // Get a single resource
-    getResource: builder.query({
-      query: (id) => `/resources/${id}`,
-      providesTags: (result, error, id) => [{ type: "Resources", id }],
-    }),
+  // Get a single resource
+  getResource: builder.query({
+    query: (id) => `/resources/${id}`,
+    providesTags: (result, error, id) => [{ type: "Resources", id }],
+  }),
 
-    // Create a new resource
-    createResource: builder.mutation({
-      query: (newResource) => ({
-        url: "/resources",
-        method: "POST",
-        body: newResource,
-      }),
-      invalidatesTags: [{ type: "Resources", id: "LIST" }],
+  // Create a new resource
+  createResource: builder.mutation({
+    query: (newResource) => ({
+      url: "/resources",
+      method: "POST",
+      body: newResource,
     }),
+    invalidatesTags: [{ type: "Resources", id: "LIST" }],
+  }),
 
-    // Update a resource
-    updateResource: builder.mutation({
-      query: (updatedResource) => ({
-        url: `/resources/${updatedResource._id}`,
-        method: "PATCH",
-        body: updatedResource,
-      }),
-      invalidatesTags: (result, error, { _id }) => [
-        { type: "Resources", id: _id },
-        { type: "Resources", id: "LIST" },
-      ],
+  // Update a resource
+  updateResource: builder.mutation({
+    query: ({ _id, ...updatedResource }) => ({
+      url: `/resources/${_id}`,
+      method: "PATCH",
+      body: updatedResource,
     }),
+    invalidatesTags: (result, error, { _id }) => [
+      { type: "Resources", id: _id },
+      { type: "Resources", id: "LIST" },
+    ],
+  }),
 
-    // Delete a resource
-    deleteResource: builder.mutation({
-      query: (_id) => ({
-        url: `/resources/${_id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: (result, error, _id) => [
-        { type: "Resources", id: _id },
-        { type: "Resources", id: "LIST" },
-      ],
+  // Delete a resource
+  deleteResource: builder.mutation({
+    query: (_id) => ({
+      url: `/resources/${_id}`,
+      method: "DELETE",
     }),
+    invalidatesTags: (result, error, _id) => [
+      { type: "Resources", id: _id },
+      { type: "Resources", id: "LIST" },
+    ],
+  }),
+
+  // ! Volunteer Opportunities
+  // Get all Volunteer Opportunities
+  getVolunteerOpportunities: builder.query({
+    query: () => "/volunteer-opportunities",
+    providesTags: (result) =>
+      result && result.data
+        ? [
+            ...result.data.map(({ _id }) => ({ type: "VolunteerOpportunities", id: _id })),
+            { type: "VolunteerOpportunities", id: "LIST" },
+          ]
+        : [{ type: "VolunteerOpportunities", id: "LIST" }],
+  }),
+
+  // Get a single Volunteer Opportunity
+  getVolunteerOpportunity: builder.query({
+    query: (id) => `/volunteer-opportunities/${id}`,
+    providesTags: (result, error, id) => [{ type: "VolunteerOpportunities", id }],
+  }),
+
+  // Create a new Volunteer Opportunity
+  createVolunteerOpportunity: builder.mutation({
+    query: (newOpportunity) => ({
+      url: "/volunteer-opportunities",
+      method: "POST",
+      body: newOpportunity,
+    }),
+    invalidatesTags: [{ type: "VolunteerOpportunities", id: "LIST" }],
+  }),
+
+  // Update a Volunteer Opportunity
+  updateVolunteerOpportunity: builder.mutation({
+    query: ({ _id, ...updatedOpportunity }) => ({
+      url: `/volunteer-opportunities/${_id}`,
+      method: "PATCH",
+      body: updatedOpportunity,
+    }),
+    invalidatesTags: (result, error, { _id }) => [
+      { type: "VolunteerOpportunities", id: _id },
+      { type: "VolunteerOpportunities", id: "LIST" },
+    ],
+  }),
+
+  // Delete a Volunteer Opportunity
+  deleteVolunteerOpportunity: builder.mutation({
+    query: (_id) => ({
+      url: `/volunteer-opportunities/${_id}`,
+      method: "DELETE",
+    }),
+    invalidatesTags: (result, error, _id) => [
+      { type: "VolunteerOpportunities", id: _id },
+      { type: "VolunteerOpportunities", id: "LIST" },
+    ],
+  }),
 
     // Get the Quote of the Day
     getQuoteOfTheDay: builder.query({
@@ -541,4 +596,11 @@ export const {
   useUpdateDuaRequestMutation,
   useDeleteDuaRequestMutation,
   useIncrementDuaRequestPrayerCountMutation,
+
+  // Volunteer Opportunities
+  useGetVolunteerOpportunitiesQuery,
+  useGetVolunteerOpportunityQuery,
+  useCreateVolunteerOpportunityMutation,
+  useUpdateVolunteerOpportunityMutation,
+  useDeleteVolunteerOpportunityMutation,
 } = apiSlice;
