@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { useGetVolunteerOpportunitiesQuery } from '../services/apiSlice';
+import { useGetVolunteerOpportunitiesQuery, useCreateVolunteerApplicationMutation } from '../services/apiSlice';
 import HeroSection from '../components/volunteer/HeroSection';
 import AdvancedFilters from '../components/volunteer/AdvancedFilters';
 import OpportunitiesSection from '../components/volunteer/OpportunitiesSection';
@@ -11,16 +11,44 @@ import ApplicationModal from '../components/volunteer/ApplicationModal';
 import BackgroundPattern from '../components/volunteer/BackgroundPattern';
 import { clearFilters } from '../redux/filtersSlice';
 import { Settings } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const VolunteerBoard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedOpportunity, setSelectedOpportunity] = useState(null);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [createApplication] = useCreateVolunteerApplicationMutation();
 
   const { data: apiResponse, isLoading, isError, refetch } = useGetVolunteerOpportunitiesQuery();
   const opportunities = apiResponse?.data || [];
   const filters = useSelector((state) => state.filters);
+
+  // Handle scrolling to opportunity when data loads
+  useEffect(() => {
+    if (!isLoading && opportunities.length > 0) {
+      // Check if we need to scroll to a specific opportunity
+      const scrollToOpportunityId = sessionStorage.getItem('scrollToOpportunity');
+      if (scrollToOpportunityId) {
+        // Remove the ID from sessionStorage so we don't scroll again on refresh
+        sessionStorage.removeItem('scrollToOpportunity');
+        
+        // Wait a bit for the DOM to update, then scroll to the element
+        setTimeout(() => {
+          const element = document.getElementById(scrollToOpportunityId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Add a temporary highlight effect
+            element.style.transition = 'background-color 0.5s';
+            element.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+            setTimeout(() => {
+              element.style.backgroundColor = '';
+            }, 2000);
+          }
+        }, 100);
+      }
+    }
+  }, [isLoading, opportunities]);
 
   const filteredOpportunities = useMemo(() => {
     return opportunities.filter((opportunity) => {
@@ -63,12 +91,8 @@ const VolunteerBoard = () => {
   };
 
   const handleSubmitApplication = (formData) => {
-    console.log(
-      'Application submitted:',
-      formData,
-      'for',
-      selectedOpportunity.title
-    );
+    // The ApplicationModal component handles the actual submission
+    // This function just closes the modal after successful submission
     setIsApplicationModalOpen(false);
     setSelectedOpportunity(null);
   };

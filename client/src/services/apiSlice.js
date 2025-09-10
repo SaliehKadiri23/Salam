@@ -440,6 +440,36 @@ export const apiSlice = createApi({
     ],
   }),
 
+  // Create a new Volunteer Application
+  createVolunteerApplication: builder.mutation({
+    query: (newApplication) => ({
+      url: "/volunteer-applications",
+      method: "POST",
+      body: newApplication,
+    }),
+    invalidatesTags: [{ type: "VolunteerOpportunities", id: "LIST" }],
+  }),
+
+  // Get applicants for a Volunteer Opportunity
+  getVolunteerOpportunityApplicants: builder.query({
+    query: (opportunityId) => `/volunteer-opportunities/${opportunityId}/applicants`,
+    providesTags: (result, error, opportunityId) => [
+      { type: "VolunteerOpportunities", id: opportunityId }
+    ],
+  }),
+
+  // Update applicant status
+  updateVolunteerApplicationStatus: builder.mutation({
+    query: ({ applicationId, status }) => ({
+      url: `/volunteer-applications/${applicationId}`,
+      method: "PATCH",
+      body: { status },
+    }),
+    invalidatesTags: (result, error, { applicationId }) => [
+      { type: "VolunteerOpportunities", id: "LIST" }
+    ],
+  }),
+
     // Get the Quote of the Day
     getQuoteOfTheDay: builder.query({
       query: () => "/islamic-quotes/quote-of-the-day",
@@ -603,4 +633,7 @@ export const {
   useCreateVolunteerOpportunityMutation,
   useUpdateVolunteerOpportunityMutation,
   useDeleteVolunteerOpportunityMutation,
+  useCreateVolunteerApplicationMutation,
+  useGetVolunteerOpportunityApplicantsQuery,
+  useUpdateVolunteerApplicationStatusMutation,
 } = apiSlice;

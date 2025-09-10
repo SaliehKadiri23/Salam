@@ -3,46 +3,39 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { X, CheckCircle } from 'lucide-react';
 import CustomSelect from './CustomSelect';
+import { useCreateVolunteerApplicationMutation } from '../../services/apiSlice';
+import { toast } from 'react-toastify';
 
 const ApplicationModal = ({ opportunity, isOpen, onClose, onSubmit }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
+  const [createApplication, { isLoading: isCreating }] = useCreateVolunteerApplicationMutation();
 
-  // Validation schema for each step
-  const validationSchemas = [
-    // Step 1: Personal Information
-    Yup.object().shape({
-      fullName: Yup.string()
-        .min(2, 'Full name must be at least 2 characters')
-        .required('Full name is required'),
-      email: Yup.string()
-        .email('Invalid email address')
-        .required('Email is required'),
-      phone: Yup.string()
-        .matches(
-          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
-          'Invalid phone number'
-        )
-        .required('Phone number is required'),
-    }),
-    // Step 2: Availability & Experience
-    Yup.object().shape({
-      availability: Yup.string()
-        .required('Please select your availability')
-        .test('is-valid', 'Please select your availability', (value) => {
-          return value && value !== 'All';
-        }),
-      experience: Yup.string(),
-    }),
-    // Step 3: Motivation
-    Yup.object().shape({
-      motivation: Yup.string()
-        .min(10, 'Motivation must be at least 10 characters')
-        .required('Motivation is required'),
-    }),
-    // Step 4: Confirmation (no validation needed)
-    Yup.object().shape({}),
-  ];
+  // Single validation schema for all fields
+  const validationSchema = Yup.object().shape({
+    fullName: Yup.string()
+      .min(2, 'Full name must be at least 2 characters')
+      .required('Full name is required'),
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+    phone: Yup.string()
+      .matches(
+        /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+        'Invalid phone number'
+      )
+      .required('Phone number is required'),
+    availability: Yup.string()
+      .required('Please select your availability')
+      .test('is-valid', 'Please select your availability', (value) => {
+        // Custom validation to ensure it's not empty or 'All'
+        return value && value !== '' && value !== 'All';
+      }),
+    experience: Yup.string(),
+    motivation: Yup.string()
+      .min(10, 'Motivation must be at least 10 characters')
+      .required('Motivation is required'),
+  });
 
   // Initial form values
   const initialValues = {
@@ -54,31 +47,93 @@ const ApplicationModal = ({ opportunity, isOpen, onClose, onSubmit }) => {
     motivation: '',
   };
 
-  const nextStep = (validateForm, setTouched) => {
+  const nextStep = async (validateForm, setTouched, setSubmitting, values) => {
+    console.log('Next step called, current step:', currentStep);
+    
     // Validate current step before moving to next
-    validateForm().then((errors) => {
-      if (Object.keys(errors).length === 0) {
-        // No errors, proceed to next step
-        if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
+    const errors = await validateForm();
+    console.log('Validation errors:', errors);
+    
+    // Check if current step is valid
+    let isStepValid = true;
+    
+    if (currentStep === 1) {
+      // Validate personal information
+      isStepValid = !errors.fullName && !errors.email && !errors.phone;
+      console.log('Step 1 validation:', isStepValid);
+    } else if (currentStep === 2) {
+      // Validate availability (special handling for CustomSelect)
+      // The availability field should be a valid option, not empty or 'All'
+      isStepValid = values.availability && values.availability !== '' && values.availability !== 'All';
+      console.log('Step 2 validation:', isStepValid, 'availability value:', values.availability);
+    } else if (currentStep === 3) {
+      // Validate motivation
+      isStepValid = !errors.motivation;
+      console.log('Step 3 validation:', isStepValid);
+    }
+    
+    if (isStepValid) {
+      console.log('Step is valid, proceeding...');
+      // If this is the submit button (step 3 -> step 4), submit the form
+      if (currentStep === totalSteps - 1) {
+        console.log('Submitting form...');
+        handleSubmit(values, { setSubmitting });
       } else {
-        // Mark all fields as touched to show errors
-        setTouched(
-          Object.keys(errors).reduce((acc, field) => {
-            acc[field] = true;
-            return acc;
-          }, {})
-        );
+        // No errors, proceed to next step
+        console.log('Moving to next step...');
+        if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
       }
-    });
+    } else {
+      console.log('Step is invalid, showing errors...');
+      // Mark all fields as touched to show errors
+      const touchedFields = {};
+      if (currentStep === 1) {
+        if (errors.fullName) touchedFields.fullName = true;
+        if (errors.email) touchedFields.email = true;
+        if (errors.phone) touchedFields.phone = true;
+      } else if (currentStep === 2) {
+        // For step 2, we need to mark availability as touched to show the error
+        touchedFields.availability = true;
+      } else if (currentStep === 3) {
+        if (errors.motivation) touchedFields.motivation = true;
+      }
+      setTouched(touchedFields);
+      
+      // Show error message
+      toast.error('Please fill in all required fields correctly.');
+    }
   };
 
   const prevStep = () => {
+    console.log('Previous step called, current step:', currentStep);
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  const handleSubmit = (values) => {
-    onSubmit(values);
-    setCurrentStep(1);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const result = await createApplication({
+        volunteerOpportunity: opportunity._id,
+        ...values
+      }).unwrap();
+      
+      if (result.success) {
+        toast.success('Application submitted successfully!');
+        onSubmit(values);
+        setCurrentStep(1);
+      } else {
+        toast.error(result.message || 'Failed to submit application. Please try again.');
+      }
+    } catch (error) {
+      // Check if it's a validation error
+      if (error.status === 400) {
+        toast.error('Please check your input and try again.');
+      } else {
+        toast.error('Failed to submit application. Please try again.');
+      }
+      console.error('Error submitting application:', error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!isOpen || !opportunity) return null;
@@ -122,12 +177,13 @@ const ApplicationModal = ({ opportunity, isOpen, onClose, onSubmit }) => {
 
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchemas[currentStep - 1]}
+          validationSchema={validationSchema}
           onSubmit={handleSubmit}
           validateOnChange={true}
           validateOnBlur={true}
+          validateOnMount={false}
         >
-          {({ isSubmitting, isValid, values, validateForm, setTouched, setFieldValue }) => (
+          {({ isSubmitting, isValid, values, errors, touched, validateForm, setTouched, setFieldValue, setSubmitting, setFieldError }) => (
             <Form>
               {/* Step 1: Personal Information */}
               {currentStep === 1 && (
@@ -200,15 +256,23 @@ const ApplicationModal = ({ opportunity, isOpen, onClose, onSubmit }) => {
                     <CustomSelect
                       label="Your Availability *"
                       value={values.availability || "All"}
-                      onChange={(value) => setFieldValue('availability', value)}
+                      onChange={(value) => {
+                        console.log('Availability changed to:', value);
+                        // Set the value directly, but if it's "All", set it to empty string for validation
+                        if (value !== "All") {
+                          setFieldValue('availability', value);
+                        } else {
+                          setFieldValue('availability', '');
+                        }
+                      }}
                       options={['All', 'weekdays', 'weekends', 'evenings', 'flexible']}
                       placeholder="Select your availability"
                     />
-                    <ErrorMessage
-                      name="availability"
-                      component="div"
-                      className="text-red-500 text-sm mt-1"
-                    />
+                    {errors.availability && touched.availability && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {errors.availability}
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -315,22 +379,42 @@ const ApplicationModal = ({ opportunity, isOpen, onClose, onSubmit }) => {
                     {currentStep < totalSteps - 1 ? (
                       <button
                         type="button"
-                        onClick={() => nextStep(validateForm, setTouched)}
+                        onClick={() => nextStep(validateForm, setTouched, setSubmitting, values)}
                         className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300"
                       >
                         Next
                       </button>
                     ) : (
                       <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 flex items-center gap-2 disabled:opacity-70"
+                        type="button"
+                        onClick={() => {
+                          // Validate step 3 before submitting
+                          nextStep(validateForm, setTouched, setSubmitting, values);
+                        }}
+                        className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 flex items-center gap-2"
                       >
                         Submit Application
                         <CheckCircle className="w-4 h-4" />
                       </button>
                     )}
                   </div>
+                </div>
+              )}
+
+              {/* Close button for step 4 */}
+              {currentStep === totalSteps && (
+                <div className="flex justify-center mt-8">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Reset form to initial state
+                      setCurrentStep(1);
+                      onClose();
+                    }}
+                    className="px-6 py-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all duration-300"
+                  >
+                    Close
+                  </button>
                 </div>
               )}
             </Form>

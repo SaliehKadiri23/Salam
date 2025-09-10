@@ -229,7 +229,7 @@ const NewsletterSubscribersDashboard = () => {
         
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-          <p>Newsletter Subscribers Dashboard • Updated in real-time</p>
+          <p>Newsletter Subscribers Dashboard</p>
         </div>
       </div>
     </div>

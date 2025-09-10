@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
-import { useGetForumsQuery, useGetQuestionsAndAnswersQuery, useGetDuaRequestsQuery, useIncrementDuaRequestPrayerCountMutation } from "../services/apiSlice";
+import { useGetForumsQuery, useGetQuestionsAndAnswersQuery, useGetDuaRequestsQuery, useIncrementDuaRequestPrayerCountMutation, useGetVolunteerOpportunitiesQuery } from "../services/apiSlice";
 
 const iconComponents = {
   Heart,
@@ -33,8 +33,6 @@ const iconComponents = {
 
 const Community = () => {
   const navigate = useNavigate();
-  const { volunteerOpportunities } =
-    useSelector((state) => state.community);
 
     const {data: forumCategories = [], isLoading, isSuccess, isError} = useGetForumsQuery()
     
@@ -573,86 +571,196 @@ const ScholarQA = () => {
   };
 
   // Volunteer Opportunities Component
-  const VolunteerBoard = () => (
-    <motion.div
-      initial={{
-        opacity: 0,
-        y: 130,
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.45 },
-      }}
-      exit={{
-        opacity: 0,
-        y: 130,
-      }}
-      viewport={{ once: true }}
-      className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden"
-    >
-      <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900 dark:to-orange-700">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-amber-100 rounded-xl">
-            <HandHeart className="text-amber-600" size={20} />
-          </div>
-          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-            Volunteer Opportunities
-          </h2>
-        </div>
-        <p className="text-slate-600 dark:text-slate-200">
-          Get involved and give back to the community
-        </p>
-      </div>
-
-      <div className="p-6 space-y-4">
-        {volunteerOpportunities.map((opportunity, index) => {
-          const IconComponent = iconComponents[opportunity.icon];
-          return (
-            <div
-              key={index}
-              className="group p-4 border border-gray-200 dark:border-emerald-600 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className={`p-3 rounded-xl bg-gradient-to-r ${opportunity.gradient} shadow-sm`}
-                >
-                  <IconComponent size={20} className="text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-slate-800 dark:text-slate-50 mb-1 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
-                    {opportunity.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-300 mb-2">
-                    {opportunity.description}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <MapPin
-                      size={14}
-                      className="text-slate-400 dark:text-slate-100"
-                    />
-                    <span className="text-xs text-slate-500 dark:text-slate-300">
-                      {opportunity.location}
-                    </span>
-                  </div>
-                </div>
-                <button className="px-4 py-2 bg-gray-100 text-slate-700 rounded-lg font-medium hover:bg-emerald-100 hover:text-emerald-700 transition-all duration-200">
-                  Learn More
-                </button>
-              </div>
-            </div>
-          );
-        })}
-
-        <button
-          onClick={() => navigate("/volunteer_board")}
-          className="w-full mt-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+  const VolunteerBoard = () => {
+    const { data: apiResponse, isLoading, isError } = useGetVolunteerOpportunitiesQuery();
+    const volunteerOpportunities = apiResponse?.data || [];
+    
+    if (isLoading) {
+      return (
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 130,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.45 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 130,
+          }}
+          viewport={{ once: true }}
+          className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden"
         >
-          View All Opportunities
-        </button>
-      </div>
-    </motion.div>
-  );
+          <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900 dark:to-orange-700">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-amber-100 rounded-xl">
+                <HandHeart className="text-amber-600" size={20} />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+                Volunteer Opportunities
+              </h2>
+            </div>
+            <p className="text-slate-600 dark:text-slate-200">
+              Get involved and give back to the community
+            </p>
+          </div>
+          
+          <div className="p-6 space-y-4">
+            <div className="flex justify-center items-center h-32">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+            </div>
+            
+            <button
+              onClick={() => navigate("/volunteer_board")}
+              className="w-full mt-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+            >
+              View All Opportunities
+            </button>
+          </div>
+        </motion.div>
+      );
+    }
+    
+    if (isError) {
+      return (
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 130,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.45 },
+          }}
+          exit={{
+            opacity: 0,
+            y: 130,
+          }}
+          viewport={{ once: true }}
+          className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden"
+        >
+          <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900 dark:to-orange-700">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-amber-100 rounded-xl">
+                <HandHeart className="text-amber-600" size={20} />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+                Volunteer Opportunities
+              </h2>
+            </div>
+            <p className="text-slate-600 dark:text-slate-200">
+              Get involved and give back to the community
+            </p>
+          </div>
+          
+          <div className="p-6 space-y-4">
+            <div className="text-center py-4">
+              <p className="text-red-500 dark:text-red-400">Failed to load volunteer opportunities. Please try again later.</p>
+            </div>
+            
+            <button
+              onClick={() => navigate("/volunteer_board")}
+              className="w-full mt-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+            >
+              View All Opportunities
+            </button>
+          </div>
+        </motion.div>
+      );
+    }
+    
+    return (
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 130,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.45 },
+        }}
+        exit={{
+          opacity: 0,
+          y: 130,
+        }}
+        viewport={{ once: true }}
+        className="bg-white dark:bg-black/55 rounded-2xl shadow-sm border border-gray-100 dark:border-emerald-600 overflow-hidden"
+      >
+        <div className="p-6 border-b border-gray-100 dark:border-emerald-600 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900 dark:to-orange-700">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-amber-100 rounded-xl">
+              <HandHeart className="text-amber-600" size={20} />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+              Volunteer Opportunities
+            </h2>
+          </div>
+          <p className="text-slate-600 dark:text-slate-200">
+            Get involved and give back to the community
+          </p>
+        </div>
+
+        <div className="p-6 space-y-4">
+          {volunteerOpportunities.slice(0, 3).map((opportunity, index) => {
+            const IconComponent = iconComponents[opportunity.icon] || HandHeart;
+            return (
+              <div
+                key={opportunity._id || index}
+                className="group p-4 border border-gray-200 dark:border-emerald-600 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`p-3 rounded-xl bg-gradient-to-r ${opportunity.gradient || 'from-amber-500 to-orange-600'} shadow-sm`}
+                  >
+                    <IconComponent size={20} className="text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-50 mb-1 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                      {opportunity.title}
+                    </h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-2">
+                      {opportunity.description}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <MapPin
+                        size={14}
+                        className="text-slate-400 dark:text-slate-100"
+                      />
+                      <span className="text-xs text-slate-500 dark:text-slate-300">
+                        {opportunity.location}
+                      </span>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      // Store the opportunity ID in sessionStorage before navigating
+                      sessionStorage.setItem('scrollToOpportunity', opportunity._id);
+                      navigate(`/volunteer_board#${opportunity._id}`);
+                    }}
+                    className="px-4 py-2 bg-gray-100 text-slate-700 rounded-lg font-medium hover:bg-emerald-100 hover:text-emerald-700 transition-all duration-200"
+                  >
+                    Apply Now
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+
+          <button
+            onClick={() => navigate("/volunteer_board")}
+            className="w-full mt-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+          >
+            View All Opportunities
+          </button>
+        </div>
+      </motion.div>
+    );
+  };
 
   // Community Guidelines Component
   const CommunityGuidelines = () => (

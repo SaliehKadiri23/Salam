@@ -42,7 +42,6 @@ const App = () => {
 
         {/* Resources */}
         <Route path="resources" element={<Resources />} />
-        <Route path="resource-dashboard" element={<ResourceDashboard />} />
 
         {/* Events & News */}
         <Route path="events_and_news" element={<EventsAndNews />} />
@@ -66,7 +65,7 @@ const App = () => {
         {/* Community */}
         <Route path="community" element={<Community />} />
         <Route path="volunteer_board" element={<VolunteerBoard />} />
-        <Route path="volunteer_opportunities" element={<VolunteerOpportunitiesDashboard />} />
+
         <Route path="questions_and_answers" element={<QuestionsAndAnswers />} />
         <Route path="dua_request" element={<DuaRequestWall />} />
         <Route path="contact_us" element={<ContactUs />} />
@@ -74,16 +73,30 @@ const App = () => {
         <Route path="sign_up" element={<SignUp />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<Login />} />
-        
+
+        {/* ! DASHBOARDS */}
+
         {/* Newsletter Subscribers Dashboard */}
-        <Route path="newsletter_subscribers" element={<NewsletterSubscribersDashboard />} />
-        
+        <Route
+          path="newsletter_subscribers_dashboard"
+          element={<NewsletterSubscribersDashboard />}
+        />
+        {/* Volunteer Dashboard */}
+        <Route
+          path="volunteer_opportunities_dashboard"
+          element={<VolunteerOpportunitiesDashboard />}
+        />
+
+        {/* Resources Dashboard */}
+        <Route path="resource_dashboard" element={<ResourceDashboard />} />
+
         {/* Islamic Quotes Dashboard */}
-        <Route path="islamic_quotes" element={<IslamicQuotesDashboard />} />
-
+        <Route
+          path="islamic_quotes_dashboard"
+          element={<IslamicQuotesDashboard />}
+        />
         {/* Scholar QA Dashboard */}
-        <Route path="scholar/qa-dashboard" element={<ScholarQADashboard />} />
-
+        <Route path="qa-dashboard" element={<ScholarQADashboard />} />
       </Route>
     )
   );

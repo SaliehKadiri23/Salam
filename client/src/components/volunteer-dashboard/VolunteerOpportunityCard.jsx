@@ -1,7 +1,7 @@
 import React from 'react';
-import { Edit, Trash2, MapPin, Clock, Users, Medal } from 'lucide-react';
+import { Edit, Trash2, MapPin, Clock, Users, Medal, Eye } from 'lucide-react';
 
-const VolunteerOpportunityCard = ({ opportunity, onEdit, onDelete }) => {
+const VolunteerOpportunityCard = ({ opportunity, onEdit, onDelete, onViewApplicants }) => {
   const urgencyColors = {
     high: "bg-rose-100 text-rose-800 border-rose-200",
     medium: "bg-amber-100 text-amber-800 border-amber-200",
@@ -15,7 +15,9 @@ const VolunteerOpportunityCard = ({ opportunity, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow duration-200">
+    <div
+    id={opportunity._id}
+    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow duration-200">
       <div className="p-6">
         <div className="flex flex-col md:flex-row md:items-start gap-6">
           {/* Image */}
@@ -56,6 +58,16 @@ const VolunteerOpportunityCard = ({ opportunity, onEdit, onDelete }) => {
               
               {/* Action Buttons */}
               <div className="flex space-x-2">
+                <button
+                  onClick={() => onViewApplicants(opportunity)}
+                  className="px-3 mb-3 py-2 text-nowrap bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white text-sm font-medium rounded-lg shadow transition-all duration-200 flex items-center"
+                  title="View Applicants"
+                >
+                  View Applications
+                  <span className="ml-2 bg-white/20 rounded-full px-2 py-0.5 text-xs">
+                    {opportunity.applicationsCount || 0}
+                  </span>
+                </button>
                 <button
                   onClick={() => onEdit(opportunity)}
                   className="p-2 text-gray-600 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"

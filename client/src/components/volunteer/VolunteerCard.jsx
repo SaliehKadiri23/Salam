@@ -18,6 +18,7 @@ const VolunteerCard = ({ opportunity, onApply }) => {
 
   return (
     <div
+      id={opportunity._id}
       className="group bg-white/80 dark:bg-black/40 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-slate-200/60 dark:border-emerald-600 hover:shadow-2xl hover:border-teal-200/80 transition-all duration-500 hover:-translate-y-1"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Plus, Edit, Trash2, Eye, Filter, Search, RefreshCw } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Filter, Search, RefreshCw, Users, ChevronDown, Stars } from 'lucide-react';
 import { 
   useGetVolunteerOpportunitiesQuery, 
   useCreateVolunteerOpportunityMutation, 
   useUpdateVolunteerOpportunityMutation, 
-  useDeleteVolunteerOpportunityMutation 
+  useDeleteVolunteerOpportunityMutation,
+  useGetVolunteerOpportunityApplicantsQuery,
+  useUpdateVolunteerApplicationStatusMutation
 } from '../services/apiSlice';
 import CustomSelect from '../components/volunteer-dashboard/CustomSelect';
 import VolunteerOpportunityForm from '../components/volunteer-dashboard/VolunteerOpportunityForm';
@@ -21,14 +23,31 @@ const VolunteerOpportunitiesDashboard = () => {
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [showInactive, setShowInactive] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedOpportunityForApplicants, setSelectedOpportunityForApplicants] = useState(null);
+  const [isApplicantsModalOpen, setIsApplicantsModalOpen] = useState(false);
+  const [openApplicantId, setOpenApplicantId] = useState(null);
 
   // RTK Query hooks
   const { data, error, isLoading, refetch } = useGetVolunteerOpportunitiesQuery();
   const [createOpportunity] = useCreateVolunteerOpportunityMutation();
   const [updateOpportunity] = useUpdateVolunteerOpportunityMutation();
   const [deleteOpportunity] = useDeleteVolunteerOpportunityMutation();
+  const [updateApplicationStatus] = useUpdateVolunteerApplicationStatusMutation();
+  
+  // Applicant query hook
+  const { 
+    data: applicantsData, 
+    isLoading: applicantsLoading, 
+    refetch: refetchApplicants 
+  } = useGetVolunteerOpportunityApplicantsQuery(
+    selectedOpportunityForApplicants?._id, 
+    { 
+      skip: !selectedOpportunityForApplicants?._id || !isApplicantsModalOpen 
+    }
+  );
 
   const opportunities = data?.data || [];
+  const applicants = applicantsData?.data || [];
 
   // Custom refetch with delay and promise-based toast notifications
   const delayedRefetch = async () => {
@@ -61,6 +80,39 @@ const VolunteerOpportunitiesDashboard = () => {
       await refetchPromise;
     } finally {
       setIsRefreshing(false);
+    }
+  };
+
+  // Fetch applicants for a specific opportunity
+  const fetchApplicants = async (opportunity) => {
+    try {
+      setSelectedOpportunityForApplicants(opportunity);
+      setIsApplicantsModalOpen(true);
+      setOpenApplicantId(null); // Reset accordion state when opening modal
+    } catch (error) {
+      console.error('Error fetching applicants:', error);
+      toast.error('Failed to fetch applicants. Please try again.');
+    }
+  };
+
+  // Update applicant status
+  const updateApplicantStatus = async (applicationId, status) => {
+    try {
+      const result = await updateApplicationStatus({ 
+        applicationId, 
+        status 
+      }).unwrap();
+      
+      if (result.success) {
+        toast.success(result.message);
+        // Refetch applicants to update the UI
+        refetchApplicants();
+      } else {
+        toast.error(result.message || 'Failed to update applicant status. Please try again.');
+      }
+    } catch (error) {
+      toast.error('Failed to update applicant status. Please try again.');
+      console.error('Error updating applicant status:', error);
     }
   };
 
@@ -278,10 +330,12 @@ const VolunteerOpportunitiesDashboard = () => {
           {filteredOpportunities.length > 0 ? (
             filteredOpportunities.map((opportunity) => (
               <VolunteerOpportunityCard
+              id={opportunity._id}
                 key={opportunity._id}
                 opportunity={opportunity}
                 onEdit={handleEditOpportunity}
                 onDelete={handleDeleteOpportunity}
+                onViewApplicants={fetchApplicants}
               />
             ))
           ) : (
@@ -359,6 +413,163 @@ const VolunteerOpportunitiesDashboard = () => {
                   setEditingOpportunity(null);
                 }}
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Applicants Modal */}
+      {isApplicantsModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Applicants for {selectedOpportunityForApplicants?.title}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {selectedOpportunityForApplicants?.organization}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setIsApplicantsModalOpen(false);
+                    setSelectedOpportunityForApplicants(null);
+                    setOpenApplicantId(null);
+                  }}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {applicantsLoading ? (
+                <div className="flex justify-center items-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
+                </div>
+              ) : applicants.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="bg-gray-100 dark:bg-gray-700 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Stars className="w-8 h-8 text-gray-400 dark:text-gray-300" />
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    No applicants yet
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    No one has applied for this opportunity yet.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                    Showing {applicants.length} applicant{applicants.length !== 1 ? 's' : ''}
+                  </div>
+                  <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+                    {applicants.map((applicant) => (
+                      <div 
+                        key={applicant._id} 
+                        className="bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 overflow-hidden"
+                      >
+                        {/* Accordion Header */}
+                        <div 
+                          className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                          onClick={() => setOpenApplicantId(openApplicantId === applicant._id ? null : applicant._id)}
+                        >
+                          <div className="flex items-center gap-3">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              {applicant.fullName}
+                            </h3>
+                            <span className={`px-2 py-1 text-xs rounded-full ${applicant.status === 'accepted' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : applicant.status === 'rejected' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'}`}>
+                              {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}
+                            </span>
+                          </div>
+                          <ChevronDown 
+                            className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${openApplicantId === applicant._id ? 'rotate-180' : ''}`} 
+                          />
+                        </div>
+                        
+                        {/* Accordion Content */}
+                        {openApplicantId === applicant._id && (
+                          <div className="p-4 border-t border-gray-200 dark:border-gray-600">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                              <div className="flex items-center">
+                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                {applicant.email}
+                              </div>
+                              <div className="flex items-center">
+                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                                {applicant.phone}
+                              </div>
+                              <div className="flex items-center">
+                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {applicant.availability}
+                              </div>
+                              <div className="flex items-center">
+                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Applied {new Date(applicant.appliedAt).toLocaleDateString()}
+                              </div>
+                            </div>
+                            
+                            <div className="mt-3">
+                              <h4 className="font-medium text-gray-900 dark:text-white mb-1">Motivation</h4>
+                              <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                {applicant.motivation}
+                              </p>
+                            </div>
+                            
+                            {applicant.experience && (
+                              <div className="mt-3">
+                                <h4 className="font-medium text-gray-900 dark:text-white mb-1">Experience</h4>
+                                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                  {applicant.experience}
+                                </p>
+                              </div>
+                            )}
+                            
+                            <div className="flex flex-col gap-2 mt-4">
+                              <button
+                                onClick={() => updateApplicantStatus(applicant._id, 'accepted')}
+                                disabled={applicant.status === 'accepted'}
+                                className={`px-3 py-2 text-sm rounded-lg transition-colors ${applicant.status === 'accepted' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600 text-white'}`}
+                              >
+                                {applicant.status === 'accepted' ? 'Accepted' : 'Accept'}
+                              </button>
+                              <button
+                                onClick={() => updateApplicantStatus(applicant._id, 'rejected')}
+                                disabled={applicant.status === 'rejected'}
+                                className={`px-3 py-2 text-sm rounded-lg transition-colors ${applicant.status === 'rejected' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600 text-white'}`}
+                              >
+                                {applicant.status === 'rejected' ? 'Rejected' : 'Reject'}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
