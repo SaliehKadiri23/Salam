@@ -29,13 +29,56 @@ const VolunteerBoard = () => {
     if (!isLoading && opportunities.length > 0) {
       // Check if we need to scroll to a specific opportunity
       const scrollToOpportunityId = sessionStorage.getItem('scrollToOpportunity');
-      if (scrollToOpportunityId) {
+      const hash = window.location.hash.replace('#', '');
+      const targetId = scrollToOpportunityId || hash;
+      
+      if (targetId) {
         // Remove the ID from sessionStorage so we don't scroll again on refresh
         sessionStorage.removeItem('scrollToOpportunity');
         
-        // Wait a bit for the DOM to update, then scroll to the element
-        setTimeout(() => {
-          const element = document.getElementById(scrollToOpportunityId);
+        // Function to scroll to the element
+        const scrollToElement = () => {
+          const element = document.getElementById(targetId);
+          if (element) {
+            // Scroll to the element with smooth behavior
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Add a temporary highlight effect
+            element.style.transition = 'background-color 0.5s';
+            element.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+            setTimeout(() => {
+              element.style.backgroundColor = '';
+            }, 2000);
+            return true;
+          }
+          return false;
+        };
+        
+        // Try to scroll immediately
+        if (!scrollToElement()) {
+          // If element not found, try again after a delay (for cases where components are still rendering)
+          const retryInterval = setInterval(() => {
+            if (scrollToElement()) {
+              clearInterval(retryInterval);
+            }
+          }, 100);
+          
+          // Stop trying after 3 seconds
+          setTimeout(() => {
+            clearInterval(retryInterval);
+          }, 3000);
+        }
+      }
+    }
+  }, [isLoading, opportunities]);
+
+  // Handle hash change events (for direct navigation to /volunteer_board#id)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        // Try to scroll to the element
+        const scrollToElement = () => {
+          const element = document.getElementById(hash);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
             // Add a temporary highlight effect
@@ -44,11 +87,40 @@ const VolunteerBoard = () => {
             setTimeout(() => {
               element.style.backgroundColor = '';
             }, 2000);
+            return true;
           }
-        }, 100);
+          return false;
+        };
+        
+        // Try to scroll immediately
+        if (!scrollToElement()) {
+          // If element not found, try again after a delay
+          const retryInterval = setInterval(() => {
+            if (scrollToElement()) {
+              clearInterval(retryInterval);
+            }
+          }, 100);
+          
+          // Stop trying after 3 seconds
+          setTimeout(() => {
+            clearInterval(retryInterval);
+          }, 3000);
+        }
       }
+    };
+
+    // Check for hash on initial load
+    if (window.location.hash) {
+      handleHashChange();
     }
-  }, [isLoading, opportunities]);
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
   const filteredOpportunities = useMemo(() => {
     return opportunities.filter((opportunity) => {

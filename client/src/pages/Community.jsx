@@ -706,50 +706,53 @@ const ScholarQA = () => {
         </div>
 
         <div className="p-6 space-y-4">
-          {volunteerOpportunities.slice(0, 3).map((opportunity, index) => {
-            const IconComponent = iconComponents[opportunity.icon] || HandHeart;
-            return (
-              <div
-                key={opportunity._id || index}
-                className="group p-4 border border-gray-200 dark:border-emerald-600 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div className="flex items-start gap-4">
-                  <div
-                    className={`p-3 rounded-xl bg-gradient-to-r ${opportunity.gradient || 'from-amber-500 to-orange-600'} shadow-sm`}
-                  >
-                    <IconComponent size={20} className="text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-slate-800 dark:text-slate-50 mb-1 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
-                      {opportunity.title}
-                    </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-300 mb-2">
-                      {opportunity.description}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <MapPin
-                        size={14}
-                        className="text-slate-400 dark:text-slate-100"
-                      />
-                      <span className="text-xs text-slate-500 dark:text-slate-300">
-                        {opportunity.location}
-                      </span>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={() => {
-                      // Store the opportunity ID in sessionStorage before navigating
-                      sessionStorage.setItem('scrollToOpportunity', opportunity._id);
-                      navigate(`/volunteer_board#${opportunity._id}`);
+          {volunteerOpportunities.slice(0, 3).map((opportunity, index) => (
+            <div
+              key={opportunity._id || index}
+              className="group p-4 border border-gray-200 dark:border-emerald-600 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+                  <img
+                    src={opportunity.image || "/placeholder-image.jpg"}
+                    alt={opportunity.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = "/placeholder-image.jpg";
                     }}
-                    className="px-4 py-2 bg-gray-100 text-slate-700 rounded-lg font-medium hover:bg-emerald-100 hover:text-emerald-700 transition-all duration-200"
-                  >
-                    Apply Now
-                  </button>
+                  />
                 </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-50 mb-1 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                    {opportunity.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 mb-2 line-clamp-2">
+                    {opportunity.description}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <MapPin
+                      size={14}
+                      className="text-slate-400 dark:text-slate-100"
+                    />
+                    <span className="text-xs text-slate-500 dark:text-slate-300">
+                      {opportunity.location}
+                    </span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => {
+                    // Store the opportunity ID in sessionStorage before navigating
+                    sessionStorage.setItem('scrollToOpportunity', opportunity._id);
+                    // Use a more direct approach for navigation with hash
+                    navigate(`/volunteer_board#${opportunity._id}`);
+                  }}
+                  className="px-4 py-2 bg-gray-100 text-slate-700 rounded-lg font-medium hover:bg-emerald-100 hover:text-emerald-700 transition-all duration-200"
+                >
+                  Apply Now
+                </button>
               </div>
-            );
-          })}
+            </div>
+          ))}
 
           <button
             onClick={() => navigate("/volunteer_board")}
