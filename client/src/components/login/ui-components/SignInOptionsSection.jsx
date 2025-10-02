@@ -1,23 +1,11 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
-import { selectShouldShowLoginOptions } from '../../../redux/loginUiSlice';
 import { selectAuthLoading } from '../../../redux/authSlice';
-import { showEmailForm } from '../../../redux/loginUiSlice';
 
-const SignInOptionsSection = ({ onSocialAuth }) => {
-  const dispatch = useDispatch();
-  const shouldShowLoginOptions = useSelector(selectShouldShowLoginOptions);
+const SignInOptionsSection = ({ onSocialAuth, onEmailSignIn }) => {
   const authLoading = useSelector(selectAuthLoading);
-
-  const handleShowEmailForm = () => {
-    dispatch(showEmailForm());
-  };
-
-  if (!shouldShowLoginOptions) {
-    return null;
-  }
 
   return (
     <motion.div
@@ -64,7 +52,7 @@ const SignInOptionsSection = ({ onSocialAuth }) => {
 
       {/* Email Sign In Button */}
       <motion.button
-        onClick={handleShowEmailForm}
+        onClick={onEmailSignIn}
         disabled={authLoading}
         className="w-full py-4 px-6 rounded-xl font-semibold text-lg bg-green-500 text-white hover:bg-green-600 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
         whileHover={!authLoading ? { scale: 1.02 } : {}}

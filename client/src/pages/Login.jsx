@@ -23,20 +23,16 @@ import {
   apiLoginFailure
 } from '../redux/authSlice';
 import {
-  selectSelectedRole,
   selectShowEmailForm,
-  selectHasSelectedRole,
-  selectShouldShowEmailForm,
-  selectRoleAndShowForm,
   showNotification,
-  resetLoginUi
+  resetLoginUi,
+  showEmailForm
 } from '../redux/loginUiSlice';
 import { useLoginMutation } from '../services/apiSlice';
 
 // Components
 import NotificationBanner from '../components/login/ui-components/NotificationBanner';
 import PageHeader from '../components/login/ui-components/PageHeader';
-import RoleSelectionSection from '../components/login/role-selection/RoleSelectionSection';
 import LoginFormContainer from '../components/login/ui-components/LoginFormContainer';
 import SignInOptionsSection from '../components/login/ui-components/SignInOptionsSection';
 import EmailPasswordForm from '../components/login/form-components/EmailPasswordForm';
@@ -44,14 +40,11 @@ import TrustIndicators from '../components/login/ui-components/TrustIndicators';
 import ForgotPasswordModal from '../components/login/ForgotPasswordModal';
 import IslamicPattern from '../components/utility/IslamicPattern';
 
-const Login = () => {
+export default function Login () {
   const dispatch = useDispatch();
   
   // Redux state
-  const selectedRole = useSelector(selectSelectedRole);
-  const showEmailForm = useSelector(selectShowEmailForm);
-  const hasSelectedRole = useSelector(selectHasSelectedRole);
-  const shouldShowEmailForm = useSelector(selectShouldShowEmailForm);
+  const showEmailFormState = useSelector(selectShowEmailForm);
   const authLoading = useSelector(selectAuthLoading);
   const loginLoading = useSelector(selectLoginLoading);
   const errors = useSelector(selectAuthErrors);
@@ -71,29 +64,26 @@ const Login = () => {
     rememberMe: Yup.boolean()
   });
 
-  // Initialize component
+    // Initialize component
   useEffect(() => {
-    if (savedCredentials.hasRememberedCredentials && userData.role) {
-      dispatch(selectRoleAndShowForm(userData.role));
-    }
     dispatch(clearAllErrors());
+    
+    // If user has saved credentials, show the email form by default
+    if (savedCredentials.hasRememberedCredentials) {
+      dispatch(showEmailForm());
+    }
     
     // Reset UI state on mount
     return () => {
       dispatch(resetLoginUi());
     };
-  }, [dispatch, savedCredentials, userData.role]);
+  }, [dispatch, savedCredentials.hasRememberedCredentials]);
 
   // Get initial values
   const initialValues = {
     email: savedCredentials.email || '',
     password: '',
     rememberMe: savedCredentials.hasRememberedCredentials || false
-  };
-
-  // Handlers
-  const handleRoleSelect = (role) => {
-    dispatch(selectRoleAndShowForm(role));
   };
 
   const handleSocialAuth = async (provider) => {
@@ -257,37 +247,25 @@ const Login = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3">
-            {/* Role Selection Section */}
-            {!hasSelectedRole && (
-              <RoleSelectionSection
-                onRoleSelect={handleRoleSelect}
-                savedCredentials={savedCredentials}
-                userData={userData}
-              />
-            )}
-
             {/* Login Form Container */}
-            {hasSelectedRole && (
-              <LoginFormContainer>
-                {/* Sign In Options */}
-                <SignInOptionsSection onSocialAuth={handleSocialAuth} />
-
-                {/* Email Password Form */}
-                {shouldShowEmailForm && (
-                  <EmailPasswordForm
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleFormSubmit}
-                    onForgotPassword={handleForgotPassword}
-                    isLoading={loginLoading || isLoginMutationLoading}
-                    errors={errors}
-                    savedCredentials={savedCredentials}
-                  />
-                )}
-
-                
-              </LoginFormContainer>
-            )}
+            <LoginFormContainer>
+              {/* Show either Sign In Options OR Email Password Form based on state */}
+              {!showEmailFormState ? (
+                // Sign In Options View
+                <SignInOptionsSection onSocialAuth={handleSocialAuth} onEmailSignIn={() => dispatch(showEmailForm())} />
+              ) : (
+                // Email Password Form View
+                <EmailPasswordForm
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleFormSubmit}
+                  onForgotPassword={handleForgotPassword}
+                  isLoading={loginLoading || isLoginMutationLoading}
+                  errors={errors}
+                  savedCredentials={savedCredentials}
+                />
+              )}
+            </LoginFormContainer>
           </div>
 
           {/* Trust Indicators Sidebar */}
@@ -303,4 +281,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+// export default Login;
