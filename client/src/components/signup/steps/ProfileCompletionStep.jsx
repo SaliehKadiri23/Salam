@@ -16,7 +16,8 @@ import {
   showNotification,
 } from "../../../redux/signupSlice";
 
-const ProfileCompletionStep = ({ stepRefs, onSubmit, onPrevStep }) => {
+
+const ProfileCompletionStep = ({ stepRefs, onPrevStep }) => {
   const dispatch = useDispatch();
   const selectedRole = useSelector(selectSelectedRole);
   const selectedAuthMethod = useSelector(selectSelectedAuthMethod);
@@ -36,42 +37,6 @@ const ProfileCompletionStep = ({ stepRefs, onSubmit, onPrevStep }) => {
     }
   };
 
-  const handleSubmit = async (values) => {
-    if (onSubmit) {
-      await onSubmit(values);
-    } else {
-      // Default submit behavior
-      dispatch(setLoading(true));
-      try {
-        const submitData = { 
-          ...values, 
-          role: selectedRole, 
-          authMethod: selectedAuthMethod 
-        };
-        console.log("Submitting signup data:", submitData);
-
-        // API integration placeholder
-        // const response = await signUpUser(submitData);
-
-        dispatch(showNotification({
-          type: "success",
-          message: "Account created successfully! Welcome to our community."
-        }));
-
-        // Redirect or show success state
-        setTimeout(() => {
-          // window.location.href = '/dashboard';
-        }, 2000);
-      } catch (error) {
-        dispatch(showNotification({
-          type: "error",
-          message: "Failed to create account. Please try again."
-        }));
-      } finally {
-        dispatch(setLoading(false));
-      }
-    }
-  };
 
   if (currentStep !== "completeProfile") return null;
 

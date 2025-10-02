@@ -3,21 +3,17 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 const userSchema = new mongoose.Schema({
+  password: {
+    type: String,
+    required: true,
+  },
   profileInfo: {
-    firstName: {
+    fullName: {
       type: String,
       required: true,
       trim: true,
       minLength: 3,
-      maxLength: 20,
-    },
-    lastName: {
-      type: String,
-      required: false,
-      trim: true,
-      minLength: 3,
-      maxLength: 20,
-      default: "",
+      maxLength: 40,
     },
     role: {
       type: String,
@@ -44,7 +40,6 @@ const userSchema = new mongoose.Schema({
     phone: {
       type: String,
       required: false,
-      minLength: 5,
       maxLength: 17,
     },
     joinDate: {

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  showSuccessModal: false,
   
   currentStep: 'selectRole',
   selectedRole: null,
@@ -197,6 +198,12 @@ const signupSlice = createSlice({
         type: "",
         message: "",
       };
+    },
+    showSuccessModal: (state) => {
+      state.showSuccessModal = true;
+    },
+    hideSuccessModal: (state) => {
+      state.showSuccessModal = false;
     }
   },
 });
@@ -222,7 +229,9 @@ export const {
   resetSignup,
   completeSignup,
   showNotification,
-  hideNotification
+  hideNotification,
+  showSuccessModal,
+  hideSuccessModal
 } = signupSlice.actions;
 
 // Selectors
@@ -238,5 +247,6 @@ export const selectErrors = (state) => state.signup.errors;
 export const selectLoading = (state) => state.signup.loading;
 export const selectCanProceed = (state) => state.signup.canProceed;
 export const selectNotification = (state) => state.signup.notification;
+export const selectShowSuccessModal = (state) => state.signup.showSuccessModal;
 
 export default signupSlice.reducer;

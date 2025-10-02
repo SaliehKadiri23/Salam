@@ -639,6 +639,15 @@ export const apiSlice = createApi({
         { type: "Donations", id: "LIST" },
       ],
     }),
+
+    // ! USER AUTHENTICATION
+    signup: builder.mutation({
+      query: (userData) => ({
+        url: '/api/auth/signup',
+        method: 'POST',
+        body: userData,
+      }),
+    }),
   }),
 });
 
@@ -706,4 +715,5 @@ export const {
   useCreateDonationMutation,
   useUpdateDonationMutation,
   useDeleteDonationMutation,
+  useSignupMutation,
 } = apiSlice;

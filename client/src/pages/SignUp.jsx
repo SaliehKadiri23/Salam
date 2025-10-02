@@ -31,9 +31,19 @@ import {
 // Validation
 import { getSignupValidationSchema } from "../components/signup/validation/signupValidation";
 
+import { useSignupMutation } from "../services/apiSlice";
+
+import SuccessModal from "../components/signup/ui-components/SuccessModal";
+import {
+  selectShowSuccessModal,
+  showSuccessModal,
+  hideSuccessModal,
+} from "../redux/signupSlice";
+
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [signup, { isLoading: isSigningUp }] = useSignupMutation();
   
   // Redux selectors
   const currentStep = useSelector(selectCurrentStep);
@@ -42,6 +52,7 @@ const SignUp = () => {
   const isLoading = useSelector(selectLoading);
   const profileInfo = useSelector(selectProfileInfo);
   const roleSpecificData = useSelector(selectRoleSpecificData);
+  const showSuccess = useSelector(selectShowSuccessModal);
 
   // Refs for smooth scrolling
   const stepRefs = useRef([]);
@@ -88,21 +99,15 @@ const SignUp = () => {
         role: selectedRole, 
         authMethod: selectedAuthMethod 
       };
-      console.log("Submitting signup data:", submitData);
+      
+      await signup(submitData).unwrap();
 
-      dispatch(showNotification({
-        type: "success",
-        message: "Account created successfully! Welcome to our community."
-      }));
+      dispatch(showSuccessModal());
 
-      // Redirect
-      setTimeout(() => {
-        // navigate('/dashboard');
-      }, 2000);
     } catch (error) {
       dispatch(showNotification({
         type: "error",
-        message: "Failed to create account. Please try again."
+        message: error.data?.message || "Failed to create account. Please try again."
       }));
     } finally {
       dispatch(setLoading(false));
@@ -127,6 +132,7 @@ const SignUp = () => {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 relative overflow-hidden">
       <IslamicPattern />
       <NotificationBanner />
+      <SuccessModal isOpen={showSuccess} onClose={() => dispatch(hideSuccessModal())} />
 
       <div className="relative z-10 container mx-auto px-4 py-5">
         {/* Header */}
@@ -160,7 +166,6 @@ const SignUp = () => {
                   <AuthMethodSelectionStep stepRefs={stepRefs} />
                   <ProfileCompletionStep
                     stepRefs={stepRefs}
-                    onSubmit={handleSubmit}
                     onPrevStep={handleBackToAuth}
                   />
                 </Form>
@@ -196,9 +201,8 @@ const SignUp = () => {
             </Link>
           </p>
         </div>
-      </div>
-    </div>
-  );
-};
+              </div>
+            </div>
+        );};
 
 export default SignUp;

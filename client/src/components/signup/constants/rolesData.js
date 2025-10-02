@@ -9,7 +9,7 @@ import {Stars} from "lucide-react"
 
 export const SIGNUP_ROLES = [
   {
-    id: "community_member",
+    id: "community",
     title: "Community Member",
     description:
       "Join our Islamic community to access resources, participate in discussions, and connect with fellow Muslims.",
