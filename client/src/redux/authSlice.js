@@ -342,6 +342,76 @@ const authSlice = createSlice({
       }
     },
 
+    // Login Success initiated from API call (RTK Query)
+    apiLoginSuccess: (state, action) => {
+      const { user, sessionToken, rememberMe } = action.payload;
+      
+      state.isAuthenticated = true;
+      state.user = user;
+      state.role = user.role;
+      state.userData = {
+        ...state.userData,
+        ...user,
+      };
+
+      // Update session data if provided
+      if (sessionToken) {
+        state.session = {
+          ...state.session,
+          sessionToken,
+        };
+      }
+
+      // Handle remember me functionality
+      if (rememberMe) {
+        state.savedCredentials = {
+          email: user.email,
+          hasRememberedCredentials: true,
+        };
+      }
+
+      // Reset loading states
+      state.loginLoading = false;
+      state.loading = false;
+      state.errors = {};
+    },
+
+    // Login Failure initiated from API call (RTK Query)
+    apiLoginFailure: (state, action) => {
+      const { error } = action.payload;
+      
+      state.isAuthenticated = false;
+      state.user = null;
+      state.role = null;
+      state.loginLoading = false;
+      state.loading = false;
+
+      // Set error message
+      state.errors.login = error;
+    },
+
+    // Logout initiated from API call (RTK Query)
+    apiLogoutSuccess: (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.role = null;
+      state.userData = initialState.userData;
+      state.session = initialState.session;
+      state.authProvider = null;
+      state.socialAuthData = {};
+
+      // Preserve remember me settings if enabled
+      if (!state.loginForm.rememberMe) {
+        state.savedCredentials = initialState.savedCredentials;
+        state.loginForm.email = '';
+      }
+      
+      state.loginForm.password = '';
+      state.errors = {};
+      state.loading = false;
+      state.loginLoading = false;
+    },
+
     // Reset Auth State
     resetAuthState: (state) => {
       return {
@@ -387,6 +457,9 @@ export const {
   forgotPasswordStart,
   forgotPasswordSuccess,
   forgotPasswordFailure,
+  apiLoginSuccess,
+  apiLoginFailure,
+  apiLogoutSuccess,
 } = authSlice.actions;
 
 // Selectors

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import {
   setCredentials,
   toggleRememberMe,
@@ -16,7 +18,9 @@ import {
   selectUserData,
   clearAllErrors,
   setUserRole,
-  showForgotPasswordModal
+  showForgotPasswordModal,
+  apiLoginSuccess,
+  apiLoginFailure
 } from '../redux/authSlice';
 import {
   selectSelectedRole,
@@ -27,6 +31,7 @@ import {
   showNotification,
   resetLoginUi
 } from '../redux/loginUiSlice';
+import { useLoginMutation } from '../services/apiSlice';
 
 // Components
 import NotificationBanner from '../components/login/ui-components/NotificationBanner';
@@ -97,50 +102,40 @@ const Login = () => {
     try {
       console.log(`Initiating ${provider} authentication...`);
       
-      // Simulate API call
-      setTimeout(() => {
-        const mockUser = {
-          id: 'user_123',
-          email: 'user@example.com',
-          name: 'Ahmed Rahman',
-          role: selectedRole,
-          profilePicture: null,
-          joinDate: new Date().toISOString(),
-          lastLogin: new Date().toISOString(),
-          isEmailVerified: true
-        };
-        
-        dispatch(loginSuccess({
-          user: mockUser,
-          sessionToken: 'mock_token_123',
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-          deviceInfo: {
-            browser: 'Chrome',
-            os: 'Windows',
-            ip: '192.168.1.1'
-          }
-        }));
-
-        dispatch(showNotification({
-          type: 'success',
-          message: 'Login successful, Alhamdulillah!'
-        }));
-      }, 2000);
+      // For now, we'll show that social auth is not implemented
+      // In a real implementation, this would redirect to the social auth provider
+      toast.info(`Social authentication with ${provider} is not yet implemented.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } catch (error) {
-      dispatch(loginFailure({
-        error: `Failed to authenticate with ${provider}`,
-        field: 'login'
+      console.error('Social auth error:', error);
+      dispatch(apiLoginFailure({
+        error: `Failed to authenticate with ${provider}`
       }));
-      dispatch(showNotification({
-        type: 'error',
-        message: `Failed to authenticate with ${provider}`
-      }));
+      
+      toast.error(`Failed to authenticate with ${provider}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
   const handleForgotPassword = () => {
     dispatch(showForgotPasswordModal());
   };
+
+  // RTK Query mutation
+  const [loginMutation, { isLoading: isLoginMutationLoading }] = useLoginMutation();
+  const navigate = useNavigate();
 
   // Form submission handler
   const handleFormSubmit = async (values, { setSubmitting, setFieldError }) => {
@@ -156,63 +151,91 @@ const Login = () => {
         dispatch(toggleRememberMe());
       }
       
-      // Simulate API call
-      setTimeout(() => {
-        if (values.email === 'test@example.com' && values.password === 'password123') {
-          const mockUser = {
-            id: 'user_123',
-            email: values.email,
-            name: 'Ahmed Rahman',
-            role: selectedRole,
-            profilePicture: null,
-            joinDate: '2023-01-15T10:00:00.000Z',
-            lastLogin: new Date().toISOString(),
-            isEmailVerified: true
-          };
-          
-          dispatch(loginSuccess({
-            user: mockUser,
-            sessionToken: 'mock_token_123',
-            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-            deviceInfo: {
-              browser: navigator.userAgent.split(' ')[0],
-              os: navigator.platform,
-              ip: '192.168.1.1'
-            },
-            rememberMe: values.rememberMe
-          }));
-          
-          dispatch(showNotification({
-            type: 'success',
-            message: 'Login successful, Alhamdulillah!'
-          }));
-        } else {
-          if (values.email !== 'test@example.com') {
-            dispatch(loginFailure({
-              error: 'We couldn\'t find an account with this email address.',
-              field: 'login'
-            }));
-            setFieldError('email', 'Account not found');
-          } else {
-            dispatch(loginFailure({
-              error: 'Invalid password. Please check and try again.',
-              field: 'login'
-            }));
-            setFieldError('password', 'Incorrect password');
-          }
+      // Call the RTK Query login mutation
+      const result = await loginMutation({
+        email: values.email,
+        password: values.password
+      }).unwrap();
+      
+      if (result.success) {
+        dispatch(apiLoginSuccess({
+          user: result.user,
+          sessionToken: result.sessionToken || null,
+          rememberMe: values.rememberMe
+        }));
+        
+        // Show success toast
+        toast.success('Login successful, Alhamdulillah!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        
+        // Navigate to the appropriate page based on user role
+        switch(result.user.role) {
+          case 'chief-imam':
+            navigate('/resource_dashboard');
+            break;
+          case 'imam':
+            navigate('/resource_dashboard');
+            break;
+          default:
+            navigate('/');
+            break;
         }
-        setSubmitting(false);
-      }, 2000);
+      } else {
+        dispatch(apiLoginFailure({
+          error: result.message || 'Login failed'
+        }));
+        
+        // Show error toast
+        toast.error(result.message || 'Login failed. Please try again.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
     } catch (error) {
       console.error('Login error:', error);
-      dispatch(loginFailure({
-        error: 'Unable to connect. Please check your internet connection and try again.',
-        field: 'login'
+      let errorMessage = 'Unable to connect. Please check your internet connection and try again.';
+      
+      // Handle different error types - including network errors
+      if (error && typeof error === 'object') {
+        if (error.status === 'FETCH_ERROR') {
+          errorMessage = 'Network error: Unable to connect to the server. Please check your connection.';
+        } else if (error.status === 'PARSING_ERROR') {
+          errorMessage = 'Server response error. Please try again.';
+        } else if (error.data && error.data.message) {
+          errorMessage = error.data.message;
+        } else if (error.error) {
+          errorMessage = error.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+      
+      dispatch(apiLoginFailure({
+        error: errorMessage
       }));
-      dispatch(showNotification({
-        type: 'error',
-        message: 'Unable to connect. Please check your internet connection and try again.'
-      }));
+      
+      // Show error toast
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } finally {
       setSubmitting(false);
     }
   };
@@ -256,7 +279,7 @@ const Login = () => {
                     validationSchema={validationSchema}
                     onSubmit={handleFormSubmit}
                     onForgotPassword={handleForgotPassword}
-                    isLoading={loginLoading}
+                    isLoading={loginLoading || isLoginMutationLoading}
                     errors={errors}
                     savedCredentials={savedCredentials}
                   />

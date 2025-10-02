@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session")
-const passport = require("passport")
+const passport = require("./config/passport-config") // Updated to use config file
 const bcrypt = require("bcrypt")
 const mongoose = require("mongoose");
 const Article = require("./models/article")
@@ -32,11 +32,13 @@ mongoose.connection.once("open", () => {
 });
 
 
-
 const app = express();
 
 // Cors 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "http://localhost:3000"], // Allow both Vite and Create React App ports
+  credentials: true // Important: allow credentials (cookies, authorization headers)
+}));
 // Allows express to accept Json data
 app.use(express.json());
 

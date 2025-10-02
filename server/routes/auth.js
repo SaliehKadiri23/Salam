@@ -46,4 +46,112 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+// Login Route
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.error("Login Error:", err);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Server error during authentication" 
+      });
+    }
+    
+    if (!user) {
+      // Authentication failed
+      return res.status(401).json({ 
+        success: false, 
+        message: info.message || "Authentication failed" 
+      });
+    }
+    
+    // Authentication successful, create session
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error("Session creation error:", err);
+        return res.status(500).json({ 
+          success: false, 
+          message: "Error creating session" 
+        });
+      }
+      
+      // Return user info (excluding sensitive data)
+      const userData = {
+        id: user._id,
+        email: user.profileInfo.email,
+        name: user.profileInfo.fullName,
+        role: user.profileInfo.role,
+        profilePicture: null, // Add profile picture field if implemented later
+        joinDate: user.profileInfo.joinDate,
+        lastLogin: user.profileInfo.lastLogin,
+        isEmailVerified: user.profileInfo.isEmailVerified,
+      };
+      
+      return res.status(200).json({ 
+        success: true, 
+        user: userData,
+        message: "Login successful"
+      });
+    });
+  })(req, res, next);
+});
+
+// Logout Route
+router.post("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error("Logout error:", err);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Error logging out" 
+      });
+    }
+    
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Session destruction error:", err);
+        return res.status(500).json({ 
+          success: false, 
+          message: "Error destroying session" 
+        });
+      }
+      
+      res.clearCookie('connect.sid'); // Clear session cookie
+      res.status(200).json({ 
+        success: true, 
+        message: "Logout successful" 
+      });
+    });
+  });
+});
+
+// Check Auth Status Route (for checking if user is logged in on page load)
+router.get("/check-auth", (req, res) => {
+  if (req.isAuthenticated() && req.user) {
+    const user = req.user;
+    const userData = {
+      id: user._id,
+      email: user.profileInfo.email,
+      name: user.profileInfo.fullName,
+      role: user.profileInfo.role,
+      profilePicture: null, // Add profile picture field if implemented later
+      joinDate: user.profileInfo.joinDate,
+      lastLogin: user.profileInfo.lastLogin,
+      isEmailVerified: user.profileInfo.isEmailVerified,
+    };
+    
+    return res.status(200).json({ 
+      success: true, 
+      user: userData,
+      isAuthenticated: true 
+    });
+  } else {
+    return res.status(200).json({ 
+      success: false, 
+      user: null,
+      isAuthenticated: false 
+    });
+  }
+});
+
 module.exports = router;

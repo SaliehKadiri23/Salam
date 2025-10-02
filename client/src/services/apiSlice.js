@@ -155,7 +155,10 @@ const getPrayerTimesByAddress = async (address) => {
 
 export const apiSlice = createApi({
   reducerPath: "salam",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:7000" }),
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: "http://localhost:7000",
+    credentials: 'include'  // Important: include cookies in requests
+  }),
   tagTypes: [
     "Articles",
     "Forums",
@@ -166,6 +169,7 @@ export const apiSlice = createApi({
     "DuaRequests",
     "VolunteerOpportunities",
     "Donations",
+    "User",
   ],
   endpoints: (builder) => ({
     // ! ARTICLES
@@ -648,6 +652,31 @@ export const apiSlice = createApi({
         body: userData,
       }),
     }),
+
+    // Login mutation
+    login: builder.mutation({
+      query: (credentials) => ({
+        url: '/api/auth/login',
+        method: 'POST',
+        body: credentials,
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // Logout mutation
+    logout: builder.mutation({
+      query: () => ({
+        url: '/api/auth/logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // Check authentication status
+    checkAuth: builder.query({
+      query: () => '/api/auth/check-auth',
+      providesTags: ['User'],
+    }),
   }),
 });
 
@@ -715,5 +744,10 @@ export const {
   useCreateDonationMutation,
   useUpdateDonationMutation,
   useDeleteDonationMutation,
+
+  // Authentication
   useSignupMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useCheckAuthQuery,
 } = apiSlice;
