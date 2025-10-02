@@ -40,7 +40,7 @@ export const SIGNUP_ROLES = [
     ],
   },
   {
-    id: "chief_imam",
+    id: "chief-imam",
     title: "Chief Imam",
     description:
       "Provide administrative oversight, manage imam community, and ensure Islamic authenticity across the platform.",

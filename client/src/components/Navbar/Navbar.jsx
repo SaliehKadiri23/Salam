@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import {
   Menu,
   X,
@@ -17,15 +17,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedLanguage } from "../../redux/userSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import useTheme from "../../hooks/useTheme";
-import { apiLogoutSuccess, selectIsAuthenticated, selectUser } from "../../redux/authSlice";
+import {
+  apiLogoutSuccess,
+  selectIsAuthenticated,
+  selectUser,
+} from "../../redux/authSlice";
 import { useLogoutMutation } from "../../services/apiSlice";
 import { toast } from "react-toastify";
+import { FaCrown, FaMosque } from "react-icons/fa";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoginMenuOpen, setIsLoginMenuOpen] = useState(false);
   const [morePagesDropDown, setMorePagesDropDown] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-  const [theme, toggle] = useTheme()
+  const [theme, toggle] = useTheme();
+  const userButtonRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isLoginMenuOpen &&
+        userButtonRef.current &&
+        !userButtonRef.current.contains(event.target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setIsLoginMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isLoginMenuOpen]);
 
   const menuPagesDesktop = [
     { title: "Prayer Times", link: "prayer_times" },
@@ -57,7 +85,7 @@ const Navbar = () => {
     try {
       await logoutMutation().unwrap();
       dispatch(apiLogoutSuccess());
-      toast.success('Successfully logged out! May Allah bless you.', {
+      toast.success("Successfully logged out! May Allah bless you.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -65,10 +93,10 @@ const Navbar = () => {
         pauseOnHover: true,
         draggable: true,
       });
-      navigate('/'); // Navigate to home after logout
+      navigate("/"); // Navigate to home after logout
     } catch (error) {
-      console.error('Logout error:', error);
-      toast.error('Error logging out. Please try again.', {
+      console.error("Logout error:", error);
+      toast.error("Error logging out. Please try again.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -79,7 +107,7 @@ const Navbar = () => {
     }
   };
   return (
-    <header className="shadow-sm sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black/85 dark:border-gray-400/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="shadow-sm  sticky top-0 z-50 border-b border-gray-200/80 bg-white/90 dark:bg-black/85 dark:border-gray-400/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between  min-h-16">
           {/* Logo */}
@@ -268,22 +296,33 @@ const Navbar = () => {
 
           {/* Profile Section - Only When Logged In */}
           {isAuthenticated && user ? (
-            <div className="hidden md:flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                <div className="size-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
-                  {user.name?.charAt(0)?.toUpperCase() || 'U'}
-                </div>
-                <span className="text-gray-700 dark:text-white hidden md:block truncate max-w-[100px]">
-                  {user.name}
-                </span>
+            <div className="hidden md:flex flex-col ml-2 justify-center relative">
+              <div className="flex flex-col items-center gap-2">
+                {/* User Icon */}
+                <button
+                  ref={userButtonRef}
+                  onClick={() => setIsLoginMenuOpen(!isLoginMenuOpen)}
+                  className={`size-10 bg-gradient-to-r rounded-full flex items-center justify-center text-white font-bold ${
+                    user?.role == "community"
+                      ? "from-green-400 to-green-600"
+                      : user.role == "imam"
+                      ? "from-teal-400 to-teal-600"
+                      : user.role == "chief-imam"
+                      ? "from-yellow-400 to-yellow-600"
+                      : ""
+                  }`}
+                >
+                  {user?.role == "community" ? (
+                    <Stars className="size-7 " />
+                  ) : user.role == "imam" ? (
+                    <FaMosque className="size-7 " />
+                  ) : user.role == "chief-imam" ? (
+                    <FaCrown className="size-7 " />
+                  ) : (
+                    ""
+                  )}
+                </button>
               </div>
-              <button 
-                onClick={handleLogout}
-                className="flex items-center gap-1 px-3 py-2 rounded-md bg-red-500 font-bold text-white transition-all duration-300 hover:bg-red-600"
-              >
-                <LogOut size={16} />
-                <span className="hidden sm:block">Logout</span>
-              </button>
             </div>
           ) : (
             <div className="hidden md:flex flex-col my-1 gap-1 justify-center items-center lg:flex-row lg:gap-4 md:justify-between ">
@@ -297,6 +336,43 @@ const Navbar = () => {
                   Log In
                 </p>
               </button>
+            </div>
+          )}
+
+          {/* User Profile Dropdown - Positioned above all content */}
+          {isAuthenticated && user && isLoginMenuOpen && (
+            <div 
+              ref={dropdownRef}
+              className="fixed z-[9999] bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-4 border border-gray-200 dark:border-gray-700 min-w-[150px]"
+              style={{
+                top: userButtonRef.current 
+                  ? userButtonRef.current.getBoundingClientRect().bottom + window.scrollY 
+                  : 0,
+                left: userButtonRef.current 
+                  ? Math.max(
+                      0, 
+                      Math.min(
+                        userButtonRef.current.getBoundingClientRect().left,
+                        window.innerWidth - 170 // 200px is approximate dropdown width + some padding
+                      )
+                    )
+                  : 0,
+              }}
+            >
+              <span className="text-gray-700 font-bold capitalize dark:text-white block">
+                {user.name}
+              </span>
+              <span className="text-gray-700 font-bold capitalize dark:text-white block text-sm">
+                (
+                {user?.role == "community"
+                  ? "Community Member"
+                  : user.role == "imam"
+                  ? "Imam"
+                  : user.role == "chief-imam"
+                  ? "Chief Imam"
+                  : ""}
+                )
+              </span>
             </div>
           )}
         </div>
@@ -321,19 +397,65 @@ const Navbar = () => {
             }}
             className="md:hidden overflow-hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-black/95 backdrop-blur-lg border-b border-gray-200 dark:border-gray-500 shadow-lg"
           >
+            {/* Profile Section - Only When Logged In */}
+            {isAuthenticated && user ? (
+              <div className="flex items-center gap-4 justify-center">
+                <div className="flex flex-col items-center gap-2 mt-4">
+                  <div
+                    className={`size-16 bg-gradient-to-r rounded-full flex items-center justify-center text-white font-bold ${
+                      user?.role == "community"
+                        ? "from-green-400 to-green-600"
+                        : user.role == "imam"
+                        ? "from-teal-400 to-teal-600"
+                        : user.role == "chief-imam"
+                        ? "from-yellow-400 to-yellow-600"
+                        : ""
+                    }`}
+                  >
+                    {user?.role == "community" ? (
+                      <Stars className="size-9 " />
+                    ) : user.role == "imam" ? (
+                      <FaMosque className="size-9 " />
+                    ) : user.role == "chief-imam" ? (
+                      <FaCrown className="size-9 " />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <span className="text-gray-700 font-bold capitalize dark:text-white ">
+                    {user.name}
+                  </span>
+                  <span className="text-gray-700 font-bold capitalize dark:text-white ">
+                    (
+                    {user?.role == "community"
+                      ? "Community Member"
+                      : user.role == "imam"
+                      ? "Imam"
+                      : user.role == "chief-imam"
+                      ? "Chief Imam"
+                      : ""}
+                    )
+                  </span>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="px-4 mx-3 py-3 space-y-2">
-              {menuPagesMobile.map((item) => (
-                <NavLink
-                  to={`/${item.link}`}
-                  key={item.title}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="transition-colors duration-200 relative group block text-gray-700 dark:text-white dark:hover:text-green-600 hover:text-green-600 font-medium py-2"
-                >
-                  {item.title}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                </NavLink>
-              ))}
-              
+              <div className="w-full grid grid-cols-2 gap-5">
+                {menuPagesMobile.map((item) => (
+                  <NavLink
+                    to={`/${item.link}`}
+                    key={item.title}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="transition-colors duration-200 relative group block text-gray-700 dark:text-white dark:hover:text-green-600 hover:text-green-600 font-medium py-2"
+                  >
+                    {item.title}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500 group-hover:w-full transition-all duration-300" />
+                  </NavLink>
+                ))}
+              </div>
+
               {/* Show Logout Button when logged in */}
               {isAuthenticated && (
                 <button
@@ -347,7 +469,7 @@ const Navbar = () => {
                   Logout
                 </button>
               )}
-              
+
               {/* Sign Up / Log In - Only when not authenticated */}
               {!isAuthenticated && (
                 <div className="flex flex-row my-1 gap-4 sm:gap-8 justify-center items-center md:justify-between px-7 mb-5 ">

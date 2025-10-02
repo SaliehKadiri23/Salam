@@ -41,8 +41,8 @@ const ProfileCompletionStep = ({ stepRefs, onPrevStep }) => {
   if (currentStep !== "completeProfile") return null;
 
   const isSocialAuth = selectedAuthMethod === "google" || selectedAuthMethod === "facebook";
-  const needsImamFields = selectedRole === "imam" || selectedRole === "chief_imam";
-  const needsChiefImamFields = selectedRole === "chief_imam";
+  const needsImamFields = selectedRole === "imam" || selectedRole === "chief-imam";
+  const needsChiefImamFields = selectedRole === "chief-imam";
 
   return (
     <div

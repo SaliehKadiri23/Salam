@@ -15,9 +15,8 @@ const RoleSelectionStep = ({ stepRefs }) => {
   const currentStep = useSelector(selectCurrentStep);
 
   const handleRoleSelect = (roleId) => {
-    setTimeout(()=>{
        dispatch(selectRole(roleId));
-    }, 1000)
+
    
   };
 
