@@ -8,6 +8,10 @@ const IslamicQuote = require("./models/islamicQuote");
 const DuaRequest = require("./models/duaRequest");
 const VolunteerOpportunity = require("./models/volunteerOpportunity");
 const VolunteerApplication = require("./models/volunteerApplication");
+const Donation = require("./models/donation");
+const session = require("express-session")
+const passport = require("passport")
+const bcrypt = require("bcrypt")
 
 const dbUrl = "mongodb://127.0.0.1:27017/salam";
 
@@ -34,15 +38,76 @@ app.use(cors());
 app.use(express.json());
 
 // ! Articles
-{
 // Getting All Articles
 app.get("/articles", async (req, res)=>{
-    
-    let allArticles = await Article.find({})
-
-    res.json(allArticles)
+    try {
+        let allArticles = await Article.find({})
+        res.json(allArticles)
+    } catch (error) {
+        console.error("Error fetching articles:", error);
+        res.status(500).json({ message: "Error fetching articles", error: error.message });
+    }
 })
-}
+
+// Adding an Article
+app.post("/articles", async (req, res) => {
+    try {
+        const newArticle = new Article(req.body);
+        await newArticle.save();
+        res.status(201).json(newArticle);
+    } catch (error) {
+        console.error("Error adding article:", error);
+        res.status(500).json({ message: "Error adding article", error: error.message });
+    }
+});
+
+// Updating an Article
+app.patch("/articles/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedArticle = await Article.findByIdAndUpdate(
+            id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if (!updatedArticle) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        res.json(updatedArticle);
+    } catch (error) {
+        console.error("Error updating article:", error);
+        res.status(500).json({ message: "Error updating article", error: error.message });
+    }
+});
+
+// Deleting an Article
+app.delete("/articles/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedArticle = await Article.findByIdAndDelete(id);
+        if (!deletedArticle) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        res.json({ message: "Article deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting article:", error);
+        res.status(500).json({ message: "Error deleting article", error: error.message });
+    }
+});
+
+// Liking/Un-liking an Article
+app.post("/articles/:id/like", async (req, res) => {
+    try {
+        const { id } = req.params;
+        // TODO: Replace with req.user._id when auth is implemented
+        const userId = "64f1abf1a2b4c3d4e5f6a111"; // Hardcoded for now
+        const result = await Article.toggleLike(id, userId);
+        res.json(result);
+    } catch (error) {
+        console.error("Error toggling article like:", error);
+        res.status(500).json({ message: "Error toggling like", error: error.message });
+    }
+});
 
 // ! Forums
 {//  Getting All Forums
@@ -1052,6 +1117,138 @@ app.get("/forums", async (req, res)=>{
       res.status(500).json({ 
         success: false, 
         message: "An error occurred while updating the application. Please try again later." 
+      });
+    }
+  });
+
+  // ! Donations
+  // Get all donations
+  app.get("/donations", async (req, res) => {
+    try {
+      const donations = await Donation.find({}).sort({ donationDate: -1 });
+      
+      res.json({
+        success: true,
+        count: donations.length,
+        data: donations
+      });
+    } catch (error) {
+      console.error("Error fetching donations:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while fetching donations. Please try again later." 
+      });
+    }
+  });
+
+  // Get a single donation by ID
+  app.get("/donations/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const donation = await Donation.findById(id);
+      
+      if (!donation) {
+        return res.status(404).json({
+          success: false,
+          message: "Donation not found."
+        });
+      }
+      
+      res.json({
+        success: true,
+        data: donation
+      });
+    } catch (error) {
+      console.error("Error fetching donation:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while fetching the donation. Please try again later." 
+      });
+    }
+  });
+
+  // Create a new donation
+  app.post("/donations", async (req, res) => {
+    try {
+      const newDonation = new Donation(req.body);
+      await newDonation.save();
+      
+      res.status(201).json({
+        success: true,
+        message: "Donation created successfully!",
+        data: newDonation
+      });
+    } catch (error) {
+      console.error("Error creating donation:", error);
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Please check your input and try again." 
+        });
+      }
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while creating the donation. Please try again later." 
+      });
+    }
+  });
+
+  // Update a donation
+  app.patch("/donations/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const updatedDonation = await Donation.findByIdAndUpdate(
+        id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+      
+      if (!updatedDonation) {
+        return res.status(404).json({
+          success: false,
+          message: "Donation not found."
+        });
+      }
+      
+      res.json({
+        success: true,
+        message: "Donation updated successfully!",
+        data: updatedDonation
+      });
+    } catch (error) {
+      console.error("Error updating donation:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while updating the donation. Please try again later." 
+      });
+    }
+  });
+
+  // Delete a donation
+  app.delete("/donations/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const deletedDonation = await Donation.findByIdAndDelete(id);
+      
+      if (!deletedDonation) {
+        return res.status(404).json({
+          success: false,
+          message: "Donation not found."
+        });
+      }
+      
+      res.json({
+        success: true,
+        message: "Donation deleted successfully!",
+        data: deletedDonation
+      });
+    } catch (error) {
+      console.error("Error deleting donation:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "An error occurred while deleting the donation. Please try again later." 
       });
     }
   });

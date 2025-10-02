@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  bookmarkedItems: ["1", "3", "5"],
+  bookmarkedItems: [],
   completedItems: [],
   completedSections: {}, // { resourceId: [sectionId1, sectionId2, ...] }
   progressItems: {
-    "3": 45,
-    "4": 78,
+    
   },
   reviews: {},
   languages: [

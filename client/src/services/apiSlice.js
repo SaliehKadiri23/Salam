@@ -165,6 +165,7 @@ export const apiSlice = createApi({
     "Resources",
     "DuaRequests",
     "VolunteerOpportunities",
+    "Donations",
   ],
   endpoints: (builder) => ({
     // ! ARTICLES
@@ -202,11 +203,18 @@ export const apiSlice = createApi({
 
     // Deleting an Article
     deleteArticle: builder.mutation({
-      query: ({ _id }) => ({
-        url: `/articles/${_id}`,
+      query: (id) => ({
+        url: `/articles/${id}`,
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: _id,
+      }),
+      invalidatesTags: ["Articles"],
+    }),
+
+    // Liking/Un-liking an Article
+    toggleArticleLike: builder.mutation({
+      query: (id) => ({
+        url: `/articles/${id}/like`,
+        method: "POST",
       }),
       invalidatesTags: ["Articles"],
     }),
@@ -577,6 +585,60 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (result, error, id) => [{ type: "DuaRequests", id }],
     }),
+
+    // ! Donations
+    // Get all donations
+    getDonations: builder.query({
+      query: () => "/donations",
+      providesTags: (result) =>
+        result && result.data
+          ? [
+              ...result.data.map(({ _id }) => ({ type: "Donations", id: _id })),
+              { type: "Donations", id: "LIST" },
+            ]
+          : [{ type: "Donations", id: "LIST" }],
+    }),
+
+    // Get a single donation
+    getDonation: builder.query({
+      query: (id) => `/donations/${id}`,
+      providesTags: (result, error, id) => [{ type: "Donations", id }],
+    }),
+
+    // Create a new donation
+    createDonation: builder.mutation({
+      query: (newDonation) => ({
+        url: "/donations",
+        method: "POST",
+        body: newDonation,
+      }),
+      invalidatesTags: [{ type: "Donations", id: "LIST" }],
+    }),
+
+    // Update a donation
+    updateDonation: builder.mutation({
+      query: ({ _id, ...updatedDonation }) => ({
+        url: `/donations/${_id}`,
+        method: "PATCH",
+        body: updatedDonation,
+      }),
+      invalidatesTags: (result, error, { _id }) => [
+        { type: "Donations", id: _id },
+        { type: "Donations", id: "LIST" },
+      ],
+    }),
+
+    // Delete a donation
+    deleteDonation: builder.mutation({
+      query: (_id) => ({
+        url: `/donations/${_id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, _id) => [
+        { type: "Donations", id: _id },
+        { type: "Donations", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -586,6 +648,7 @@ export const {
   useAddNewArticleMutation,
   useUpdateArticleMutation,
   useDeleteArticleMutation,
+  useToggleArticleLikeMutation,
 
   // Forums
   useGetForumsQuery,
@@ -636,4 +699,11 @@ export const {
   useCreateVolunteerApplicationMutation,
   useGetVolunteerOpportunityApplicantsQuery,
   useUpdateVolunteerApplicationStatusMutation,
+
+  // Donations
+  useGetDonationsQuery,
+  useGetDonationQuery,
+  useCreateDonationMutation,
+  useUpdateDonationMutation,
+  useDeleteDonationMutation,
 } = apiSlice;

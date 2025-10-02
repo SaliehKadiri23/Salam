@@ -29,17 +29,49 @@ const articleSchema = new mongoose.Schema({
   author: { type: mongoose.Types.ObjectId, ref: "User", required: true },
   publishDate: {
     type: Date,
-    required: true,
+    default: Date.now,
   },
   image: String,
   isBookmarked: {
     type: Boolean,
     default: false,
   },
+  likedBy: {
+    type: [mongoose.Types.ObjectId],
+    ref: "User",
+    default: [],
+  },
   likes: { type: Number, default: 0 },
   readTime: { type: Number, default: 0 },
 });
 
+// Toggling Likes
+articleSchema.statics.toggleLike = async function (
+  articleId,
+  userId
+) {
+  const article = await this.findById(articleId);
+  if (!article) throw new Error("Article not found");
+
+  const alreadyLiked = article.likedBy.includes(userId);
+
+  if (alreadyLiked) {
+    // Unlike
+    article.likedBy.pull(userId);
+    article.likes = article.likedBy.length;
+  } else {
+    // Like
+    article.likedBy.push(userId);
+    article.likes = article.likedBy.length;
+  }
+
+  await article.save();
+
+  return {
+    likes: article.likes,
+    liked: !alreadyLiked // whether user liked after this action
+  };
+};
 
 const Article = mongoose.model("Article", articleSchema);
 

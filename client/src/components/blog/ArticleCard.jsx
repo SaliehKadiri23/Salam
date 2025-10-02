@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Heart, Share2, BookmarkPlus, Facebook, Linkedin, MessageCircle, Clock, Calendar, ArrowRight } from 'lucide-react';
+import { useToggleArticleLikeMutation } from '../../services/apiSlice';
 
 const isLatest = (dateString) => {
   const articleDate = new Date(dateString);
@@ -11,6 +12,19 @@ const isLatest = (dateString) => {
 const ArticleCard = ({ article, onBookmark, onShare }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [likes, setLikes] = useState(article.likes || 0);
+  const [liked, setLiked] = useState(false);
+  const [toggleLike] = useToggleArticleLikeMutation();
+
+  const handleLike = async () => {
+    try {
+      const result = await toggleLike(article._id).unwrap();
+      setLikes(result.likes);
+      setLiked(result.liked);
+    } catch (error) {
+      console.error('Failed to toggle like:', error);
+    }
+  };
 
   return (
     <article className="group relative bg-white dark:bg-black/60 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 dark:border-emerald-600 flex flex-col h-full">
@@ -181,10 +195,16 @@ const ArticleCard = ({ article, onBookmark, onShare }) => {
           </a>
 
           <div className="flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-300">
-            <div className="flex items-center space-x-1">
-              <Heart className="w-4 h-4" />
-              <span>{article.likes}</span>
-            </div>
+            <button
+              onClick={handleLike}
+              className={`flex items-center space-x-1 ${
+                liked ? "text-red-500" : "text-gray-500 dark:text-gray-300 hover:text-red-500"
+              }`}
+              aria-label={liked ? "Unlike article" : "Like article"}
+            >
+              <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
+              <span>{likes}</span>
+            </button>
           </div>
         </div>
 
