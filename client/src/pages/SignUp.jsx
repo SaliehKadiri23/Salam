@@ -29,16 +29,13 @@ import {
 } from "../redux/signupSlice";
 
 // Validation
+import { useSignupMutation } from "../services/apiSlice";
 import { getSignupValidationSchema } from "../components/signup/validation/signupValidation";
 
-import { useSignupMutation } from "../services/apiSlice";
+import { toast } from "react-toastify";
 
 import SuccessModal from "../components/signup/ui-components/SuccessModal";
-import {
-  selectShowSuccessModal,
-  showSuccessModal,
-  hideSuccessModal,
-} from "../redux/signupSlice";
+import { selectRole, selectAuthMethod, proceedToProfile, selectShowSuccessModal, showSuccessModal, hideSuccessModal } from "../redux/signupSlice";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -56,6 +53,32 @@ const SignUp = () => {
 
   // Refs for smooth scrolling
   const stepRefs = useRef([]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('step') === 'completeProfile') {
+      const fetchSocialProfile = async () => {
+        try {
+          const response = await fetch('http://localhost:7000/api/auth/social-profile', {
+            credentials: 'include'
+          });
+          if (response.ok) {
+            const socialProfile = await response.json();
+            dispatch(updateProfileInfo({
+              fullName: socialProfile.fullName,
+              email: socialProfile.email
+            }));
+            dispatch(selectRole(socialProfile.role));
+            dispatch(selectAuthMethod('google')); // or get from server
+            dispatch(proceedToProfile());
+          }
+        } catch (error) {
+          console.error('Failed to fetch social profile:', error);
+        }
+      };
+      fetchSocialProfile();
+    }
+  }, [dispatch]);
 
   // Auto-hide notifications
   useEffect(() => {
@@ -92,6 +115,7 @@ const SignUp = () => {
 
   // Handle form submission
   const handleSubmit = async (values) => {
+    console.log('Submitting form with values:', values);
     dispatch(setLoading(true));
     try {
       const submitData = { 
@@ -102,7 +126,7 @@ const SignUp = () => {
       
       await signup(submitData).unwrap();
 
-      dispatch(showSuccessModal());
+      toast.success("Account created successfully!");
 
     } catch (error) {
       dispatch(showNotification({
@@ -150,27 +174,25 @@ const SignUp = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <Formik
-              initialValues={getInitialValues()}
-              validationSchema={
-                currentStep === "completeProfile"
-                  ? getSignupValidationSchema(selectedRole, selectedAuthMethod)
-                  : null
-              }
-              onSubmit={handleSubmit}
-              enableReinitialize
-            >
-              {({ values, errors, touched, isSubmitting }) => (
-                <Form className="space-y-8">
-                  <RoleSelectionStep stepRefs={stepRefs} />
-                  <AuthMethodSelectionStep stepRefs={stepRefs} />
-                  <ProfileCompletionStep
-                    stepRefs={stepRefs}
-                    onPrevStep={handleBackToAuth}
-                  />
-                </Form>
-              )}
-            </Formik>
+            {currentStep === 'selectRole' && <RoleSelectionStep stepRefs={stepRefs} />}
+            {currentStep === 'selectAuth' && <AuthMethodSelectionStep stepRefs={stepRefs} />}
+            {currentStep === 'completeProfile' && (
+              <Formik
+                initialValues={getInitialValues()}
+                validationSchema={getSignupValidationSchema(selectedRole, selectedAuthMethod)}
+                onSubmit={handleSubmit}
+                enableReinitialize
+              >
+                {({ values, errors, touched, isSubmitting }) => (
+                  <Form className="space-y-8">
+                    <ProfileCompletionStep
+                      stepRefs={stepRefs}
+                      onPrevStep={handleBackToAuth}
+                    />
+                  </Form>
+                )}
+              </Formik>
+            )}
           </div>
 
           {/* Trust Indicators Sidebar */}

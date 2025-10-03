@@ -19,6 +19,7 @@
   "homepage": "https://github.com/SaliehKadiri23/QUR-AN-LY#readme",
   "description": "",
   "dependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "passport-google-oauth20": "^2.0.0"
   }
 }

@@ -3,9 +3,14 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 const userSchema = new mongoose.Schema({
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   password: {
     type: String,
-    required: true,
+    required: function() { return !this.googleId; }
   },
   profileInfo: {
     fullName: {

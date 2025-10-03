@@ -34,6 +34,7 @@ import axios from "axios";
      import ScholarQADashboard from                                             
      "./pages/scholar/ScholarQADashboard";                                      
 import DonationsDashboard from "./pages/DonationsDashboard";
+import SignUpSuccess from "./pages/SignUpSuccess";
                                                                                 
      const App = () => {                                                        
                                                                                 
@@ -86,7 +87,8 @@ import DonationsDashboard from "./pages/DonationsDashboard";
              <Route path="profile" element={<Profile />} />                     
              <Route path="sign_up" element={<SignUp />} />                      
              <Route path="signup" element={<SignUp />} />                       
-             <Route path="login" element={<Login />} />                         
+             <Route path="login" element={<Login />} />
+             <Route path="signup-success" element={<SignUpSuccess />} />                         
                                                                                 
              {/* ! DASHBOARDS */}                                               
                                                                                 

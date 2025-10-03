@@ -86,31 +86,13 @@ export default function Login () {
     rememberMe: savedCredentials.hasRememberedCredentials || false
   };
 
-  const handleSocialAuth = async (provider) => {
-    dispatch(loginStart());
-    
-    try {
-      console.log(`Initiating ${provider} authentication...`);
-      
-      // For now, we'll show that social auth is not implemented
-      // In a real implementation, this would redirect to the social auth provider
+  const handleSocialAuth = (provider) => {
+    if (provider.toLowerCase() === 'google') {
+      window.location.href = 'http://localhost:7000/api/auth/google';
+    } else {
       toast.info(`Social authentication with ${provider} is not yet implemented.`, {
         position: "top-right",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-    } catch (error) {
-      console.error('Social auth error:', error);
-      dispatch(apiLoginFailure({
-        error: `Failed to authenticate with ${provider}`
-      }));
-      
-      toast.error(`Failed to authenticate with ${provider}`, {
-        position: "top-right",
-        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

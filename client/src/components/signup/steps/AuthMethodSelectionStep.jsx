@@ -30,42 +30,14 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
     dispatch(goBackToRoleSelection());
   };
 
-  const handleSocialAuth = async (provider) => {
-    dispatch(setLoading(true));
-    try {
-      // This will be replaced with actual Passport.js integration
-      console.log(`Initiating ${provider} authentication...`);
-
-      // This will come from Passport.js callback
-      const mockSocialAuthData = {
-        fullName: provider === "Google" ? "Ahmed Al-Rahman" : "Omar Al-Faruq",
-        email: provider === "Google" ? "ahmed@gmail.com" : "omar@facebook.com",
-        profilePicture: null, // Will be available from Google and Fb
-        provider: provider.toLowerCase(),
-        providerId: `${provider.toLowerCase()}_123456789`,
-      };
-
-      // Set social auth data
-      dispatch(setSocialAuthData(mockSocialAuthData));
-      dispatch(selectAuthMethod(provider.toLowerCase()));
-
-      // Show success notification
-      dispatch(showNotification({
-        type: "success",
-        message: `${provider} authentication successful! Please complete your profile.`
-      }));
-
-      // Advance to step 3 (Profile Completion)
-      setTimeout(() => {
-        dispatch(proceedToProfile());
-      }, 2000);
-    } catch (error) {
+  const handleSocialAuth = (provider) => {
+    if (provider.toLowerCase() === 'google') {
+      window.location.href = `http://localhost:7000/api/auth/google?role=${selectedRole}`;
+    } else {
       dispatch(showNotification({
         type: "error",
-        message: `Failed to authenticate with ${provider}`
+        message: `Social authentication with ${provider} is not yet implemented.`
       }));
-    } finally {
-      dispatch(setLoading(false));
     }
   };
 

@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(session({
   secret: "ALLAHU AKBAR - SalamSecretKey",
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   
 }))
 

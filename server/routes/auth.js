@@ -154,4 +154,51 @@ router.get("/check-auth", (req, res) => {
   }
 });
 
+// Google OAuth Routes
+router.get('/google', (req, res, next) => {
+  console.log('Google auth route hit');
+  const { role } = req.query;
+  const state = role ? Buffer.from(JSON.stringify({ role })).toString('base64') : '';
+  passport.authenticate('google', { scope: ['profile', 'email'], state })(req, res, next);
+});
+
+router.get('/google/callback', (req, res, next) => {
+  const { state } = req.query;
+  const { role } = state ? JSON.parse(Buffer.from(state, 'base64').toString()) : { role: null };
+
+  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }, (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.redirect('http://localhost:5173/login');
+    }
+
+    // If the user is found in the database, log them in and redirect to home
+    if (user._id) {
+      req.logIn(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect('http://localhost:5173');
+      });
+    } else {
+      // If it's a new user (social profile), store it in the session and redirect to signup
+      req.session.socialProfile = { ...user, role };
+      res.redirect('http://localhost:5173/signup?step=completeProfile');
+    }
+  })(req, res, next);
+});
+
+// New route to get social profile from session
+router.get('/social-profile', (req, res) => {
+  if (req.session.socialProfile) {
+    res.status(200).json(req.session.socialProfile);
+    // Clear the social profile from the session after it's been sent
+    delete req.session.socialProfile;
+  } else {
+    res.status(404).json({ message: 'No social profile found in session.' });
+  }
+});
+
 module.exports = router;
