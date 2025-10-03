@@ -1,0 +1,195 @@
+[{
+  "_id": {
+    "$oid": "68dea70a248e25b34eaaad90"
+  },
+  "password": "$2b$10$cISojoWQlmVnDA/cHXLKfebxcng.IGn7jElYewwYklQ78DsPnHC.W",
+  "profileInfo": {
+    "fullName": "fgfgf",
+    "role": "community",
+    "email": "sagggy@gmail.com",
+    "location": "hgghhggh",
+    "phone": "",
+    "joinDate": {
+      "$date": "2025-10-02T16:23:38.627Z"
+    },
+    "lastLogin": {
+      "$date": "2025-10-02T16:23:38.627Z"
+    },
+    "selectedLanguage": "en",
+    "isEmailVerified": false,
+    "digitalTasbih": 0,
+    "isPrayerAlertsEnabled": false,
+    "isAdhanAudioEnabled": false,
+    "isSubscribedToNewsLetter": false
+  },
+  "registeredEvents": [],
+  "userProgress": {
+    "bookmarkedItems": {
+      "resources": [],
+      "articles": []
+    },
+    "completedItems": {
+      "resources": []
+    },
+    "progressItems": {
+      "resources": []
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68debfc6248e25b34eaaad95"
+  },
+  "password": "$2b$10$7.jiZjLdi.T1a8S6HI0qiuF.LU8e9QUaGhq24ACu9E0MY0VH4Hdo.",
+  "profileInfo": {
+    "fullName": "fgfgf",
+    "role": "community",
+    "email": "oi0990u9@gmail.com",
+    "location": "Kano State, Nigeria",
+    "phone": "",
+    "joinDate": {
+      "$date": "2025-10-02T18:09:10.944Z"
+    },
+    "lastLogin": {
+      "$date": "2025-10-02T20:55:01.936Z"
+    },
+    "selectedLanguage": "en",
+    "isEmailVerified": false,
+    "digitalTasbih": 0,
+    "isPrayerAlertsEnabled": false,
+    "isAdhanAudioEnabled": false,
+    "isSubscribedToNewsLetter": false
+  },
+  "registeredEvents": [],
+  "userProgress": {
+    "bookmarkedItems": {
+      "resources": [],
+      "articles": []
+    },
+    "completedItems": {
+      "resources": []
+    },
+    "progressItems": {
+      "resources": []
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68dec7a5342a998eccb06501"
+  },
+  "password": "$2b$10$dZI.i4RhGrzcjJJpImV/oel6qGmE9OVIsc1hlo2LtekTpX3BOR.qW",
+  "profileInfo": {
+    "fullName": "huiui",
+    "role": "community",
+    "email": "sasddhsui@gmail.com",
+    "location": "Nigeria",
+    "phone": "",
+    "joinDate": {
+      "$date": "2025-10-02T18:42:45.505Z"
+    },
+    "lastLogin": {
+      "$date": "2025-10-02T18:42:45.505Z"
+    },
+    "selectedLanguage": "en",
+    "isEmailVerified": false,
+    "digitalTasbih": 0,
+    "isPrayerAlertsEnabled": false,
+    "isAdhanAudioEnabled": false,
+    "isSubscribedToNewsLetter": false
+  },
+  "registeredEvents": [],
+  "userProgress": {
+    "bookmarkedItems": {
+      "resources": [],
+      "articles": []
+    },
+    "completedItems": {
+      "resources": []
+    },
+    "progressItems": {
+      "resources": []
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68deecbc02bc982c53a4d545"
+  },
+  "password": "$2b$10$bIRMg5Lig6qopH.9tOoGdui4mdAnto9o9lgistoMwcnkI3Xu0EkL6",
+  "profileInfo": {
+    "fullName": "Salieh Kadiri",
+    "role": "imam",
+    "email": "saliehefuah@gmail.com",
+    "location": "Kano State, Nigeria",
+    "phone": "",
+    "joinDate": {
+      "$date": "2025-10-02T21:21:00.843Z"
+    },
+    "lastLogin": {
+      "$date": "2025-10-02T21:21:25.195Z"
+    },
+    "selectedLanguage": "en",
+    "isEmailVerified": false,
+    "digitalTasbih": 0,
+    "isPrayerAlertsEnabled": false,
+    "isAdhanAudioEnabled": false,
+    "isSubscribedToNewsLetter": false
+  },
+  "registeredEvents": [],
+  "userProgress": {
+    "bookmarkedItems": {
+      "resources": [],
+      "articles": []
+    },
+    "completedItems": {
+      "resources": []
+    },
+    "progressItems": {
+      "resources": []
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68deee1f02bc982c53a4d575"
+  },
+  "password": "$2b$10$0NiFQM2Gjy/oTk69v5JRYeBO7fBFv5f0ybVru6zkcrNzA7xuJAH0S",
+  "profileInfo": {
+    "fullName": "wqiowqji",
+    "role": "chief-imam",
+    "email": "saliehdsjdsudsisdefuah@gmail.com",
+    "location": "dfghjkl",
+    "phone": "",
+    "joinDate": {
+      "$date": "2025-10-02T21:26:55.837Z"
+    },
+    "lastLogin": {
+      "$date": "2025-10-02T21:27:16.044Z"
+    },
+    "selectedLanguage": "en",
+    "isEmailVerified": false,
+    "digitalTasbih": 0,
+    "isPrayerAlertsEnabled": false,
+    "isAdhanAudioEnabled": false,
+    "isSubscribedToNewsLetter": false
+  },
+  "registeredEvents": [],
+  "userProgress": {
+    "bookmarkedItems": {
+      "resources": [],
+      "articles": []
+    },
+    "completedItems": {
+      "resources": []
+    },
+    "progressItems": {
+      "resources": []
+    }
+  },
+  "__v": 0
+}]

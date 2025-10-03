@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session")
@@ -14,7 +15,7 @@ const VolunteerApplication = require("./models/volunteerApplication");
 const Donation = require("./models/donation");
 
 
-const dbUrl = "mongodb://127.0.0.1:27017/salam";
+const dbUrl = process.env.DB_URL;
 
 mongoose
   .connect(dbUrl)

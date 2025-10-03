@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Article = require("../models/article");
 
-const dbUrl = "mongodb://127.0.0.1:27017/salam";
+const dbUrl = process.env.DB_URL;
 mongoose
   .connect(dbUrl)
   .then(() => console.log("Connection Successful"))
