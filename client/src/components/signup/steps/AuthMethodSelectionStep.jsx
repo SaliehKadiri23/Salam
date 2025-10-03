@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FaGoogle, FaFacebook, FaChevronLeft } from "react-icons/fa";
+import { FaGoogle, FaChevronLeft } from "react-icons/fa";
 import { SIGNUP_ROLES } from "../constants/rolesData";
 import { 
   selectAuthMethod,
@@ -105,16 +105,6 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
           >
             <FaGoogle className="text-red-500 w-5 h-5" />
             <span className="font-semibold">Continue with Google</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleSocialAuth("Facebook")}
-            disabled={isLoading}
-            className="w-full flex items-center justify-center space-x-3 p-4 border-2 text-gray-700 dark:text-gray-100  dark:hover:text-gray-800 border-gray-200 dark:border-blue-600 rounded-2xl hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-300 transition-all duration-300 disabled:opacity-50"
-          >
-            <FaFacebook className="text-blue-500 w-5 h-5" />
-            <span className="font-semibold">Continue with Facebook</span>
           </button>
         </div>
 

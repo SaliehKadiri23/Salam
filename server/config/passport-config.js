@@ -21,6 +21,13 @@ passport.use(
           return done(null, false, { message: "No account with this email address exists." });
         }
 
+        // Check if the user signed up with Google (has googleId but no password)
+        if (user.googleId && !user.password) {
+          return done(null, false, { 
+            message: "This email is registered with Google. Please sign in using Google." 
+          });
+        }
+
         // Compare password with hashed password
         const isMatch = await bcrypt.compare(password, user.password);
         
@@ -72,7 +79,16 @@ passport.use(new GoogleStrategy({
       let user = await User.findOne({ 'profileInfo.email': profile.emails[0].value });
 
       if (user) {
-        // If user exists, update last login and return user
+        // Check if user signed up with email/password but is trying to log in with Google
+        if (!user.googleId && user.password) {
+          // User signed up with email/password, but is now trying to log in with Google
+          // This means they have 2 options - this is a conflict
+          return done(null, false, { 
+            message: "An account with this email already exists using email and password. Please sign in using your email and password." 
+          });
+        }
+        
+        // User exists and signed up with Google, so allow login
         user.profileInfo.lastLogin = new Date();
         await user.save();
         return done(null, user);

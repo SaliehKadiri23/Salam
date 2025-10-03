@@ -46,6 +46,7 @@ const initialState = {
   isAuthenticated: false,
   authProvider: null,
   socialAuthData: {},
+  googleId: null,
   
   // Progress
   completedSections: [],
@@ -121,6 +122,10 @@ const signupSlice = createSlice({
       state.socialAuthData = action.payload;
       state.authProvider = action.payload.provider;
       state.isAuthenticated = true;
+    },
+    
+    setGoogleId: (state, action) => {
+      state.googleId = action.payload;
     },
     
     setLoading: (state, action) => {
@@ -218,6 +223,7 @@ export const {
   updateProfileInfo,
   updateRoleSpecificData,
   setSocialAuthData,
+  setGoogleId,
   setLoading,
   setError,
   clearError,
@@ -248,5 +254,7 @@ export const selectLoading = (state) => state.signup.loading;
 export const selectCanProceed = (state) => state.signup.canProceed;
 export const selectNotification = (state) => state.signup.notification;
 export const selectShowSuccessModal = (state) => state.signup.showSuccessModal;
+export const selectGoogleId = (state) => state.signup.googleId;
+export const selectAuthProvider = (state) => state.signup.authProvider;
 
 export default signupSlice.reducer;

@@ -6,10 +6,10 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 
 // Signup Route
-router.post("/signup", async (req, res) => {
-  // console.log("Signup request received:", req.body);
+router.post("/signup", async (req, res, next) => { // Added next
+  console.log("Signup request received:", req.body);
   try {
-    const { fullName, email, password, role, location, phone } = req.body;
+    const { fullName, email, password, role, location, phone, googleId } = req.body; // Added googleId
 
     // Check if user already exists
     const existingUser = await User.findOne({ "profileInfo.email": email });
@@ -18,13 +18,15 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "User with this email already exists." });
     }
 
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    let hashedPassword;
+    if (password) {
+      // Hash the password if it exists (for email signup)
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(password, salt);
+    }
 
     // Create a new user
-    const newUser = new User({
-      password: hashedPassword,
+    const userObject = {
       profileInfo: {
         fullName,
         email,
@@ -34,12 +36,48 @@ router.post("/signup", async (req, res) => {
         joinDate: new Date(),
         lastLogin: new Date(),
       },
-    });
+    };
+    
+    // Only add googleId if it exists (for Google OAuth signups)
+    if (googleId) {
+      userObject.googleId = googleId;
+    }
+    
+    // Only add password if it exists (for email/password signups)
+    if (hashedPassword) {
+      userObject.password = hashedPassword;
+    }
+    
+    const newUser = new User(userObject);
 
 
     await newUser.save();
 
-    res.status(201).json({ message: "User created successfully", userId: newUser._id });
+    // Log the user in
+    req.logIn(newUser, (err) => {
+      if (err) {
+        return next(err);
+      }
+      
+      // Return user data to update frontend auth state
+      const userData = {
+        id: newUser._id,
+        email: newUser.profileInfo.email,
+        name: newUser.profileInfo.fullName,
+        role: newUser.profileInfo.role,
+        profilePicture: null, // Add profile picture field if implemented later
+        joinDate: newUser.profileInfo.joinDate,
+        lastLogin: newUser.profileInfo.lastLogin,
+        isEmailVerified: newUser.profileInfo.isEmailVerified,
+      };
+      
+      res.status(201).json({ 
+        message: "User created successfully", 
+        userId: newUser._id,
+        user: userData 
+      });
+    });
+
   } catch (error) {
     console.error("Signup Error:", error);
     res.status(500).json({ message: "Error creating user", error: error.message });
@@ -171,7 +209,9 @@ router.get('/google/callback', (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      return res.redirect('http://localhost:5173/login');
+      // Include the error message in the redirect URL
+      const errorMessage = info?.message ? encodeURIComponent(info.message) : 'Authentication failed';
+      return res.redirect(`http://localhost:5173/login?error=${errorMessage}`);
     }
 
     // If the user is found in the database, log them in and redirect to home
@@ -184,7 +224,10 @@ router.get('/google/callback', (req, res, next) => {
       });
     } else {
       // If it's a new user (social profile), store it in the session and redirect to signup
-      req.session.socialProfile = { ...user, role };
+      req.session.socialProfile = { 
+        ...user, 
+        role: role // Include the role from the state parameter
+      };
       res.redirect('http://localhost:5173/signup?step=completeProfile');
     }
   })(req, res, next);

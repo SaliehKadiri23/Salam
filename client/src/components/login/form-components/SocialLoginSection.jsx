@@ -18,13 +18,6 @@ const SocialLoginSection = ({ onSocialAuth, authLoading, loginLoading }) => {
           loading={authLoading}
           disabled={loginLoading}
         />
-        
-        <SocialAuthButton
-          provider="facebook"
-          onClick={onSocialAuth}
-          loading={authLoading}
-          disabled={loginLoading}
-        />
       </div>
     </div>
   );

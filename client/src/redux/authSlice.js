@@ -59,7 +59,7 @@ const initialState = {
   forgotPasswordStatus: 'idle', // 'idle', 'loading', 'success', 'error'
 
   // Auth Provider (for social auth)
-  authProvider: null, // 'google', 'facebook', etc.
+  authProvider: null, // 'google', etc.
   socialAuthData: {},
 };
 

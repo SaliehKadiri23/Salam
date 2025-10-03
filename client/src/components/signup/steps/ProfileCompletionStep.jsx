@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FaGoogle, FaFacebook, FaShieldAlt } from "react-icons/fa";
+import { FaGoogle, FaShieldAlt } from "react-icons/fa";
 import FormField from "../form-components/FormField";
 import {
   selectSelectedRole,
@@ -40,7 +40,7 @@ const ProfileCompletionStep = ({ stepRefs, onPrevStep }) => {
 
   if (currentStep !== "completeProfile") return null;
 
-  const isSocialAuth = selectedAuthMethod === "google" || selectedAuthMethod === "facebook";
+  const isSocialAuth = selectedAuthMethod === "google";
   const needsImamFields = selectedRole === "imam" || selectedRole === "chief-imam";
   const needsChiefImamFields = selectedRole === "chief-imam";
 
@@ -57,15 +57,11 @@ const ProfileCompletionStep = ({ stepRefs, onPrevStep }) => {
       {isSocialAuth && (
         <div className="bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-blue-600 rounded-xl p-4 mb-6">
           <div className="flex items-center justify-center gap-3">
-            {selectedAuthMethod === "google" ? (
-              <FaGoogle className="text-red-500 size-10" />
-            ) : (
-              <FaFacebook className="text-blue-500  size-10" />
-            )}
+            <FaGoogle className="text-red-500 size-10" />
             <div className="text-center">
               <p className="text-sm text-blue-700 dark:text-blue-400 font-medium">
                 Great! We've pre-filled some details from your{" "}
-                {selectedAuthMethod === "google" ? "Google" : "Facebook"}{" "}
+                Google{" "}
                 account
               </p>
             </div>
@@ -194,7 +190,7 @@ const ProfileCompletionStep = ({ stepRefs, onPrevStep }) => {
             <FaShieldAlt className="w-4 h-4 mr-2" />
             <span>
               Secured with{" "}
-              {selectedAuthMethod === "google" ? "Google" : "Facebook"}
+              Google
             </span>
           </div>
         )}

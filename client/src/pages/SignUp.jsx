@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { useSelector, useDispatch } from "react-redux";
+import { apiLoginSuccess } from "../redux/authSlice";
 import { useNavigate, Link } from "react-router";
 
 // Components
@@ -26,6 +27,8 @@ import {
   hideNotification,
   updateProfileInfo,
   updateRoleSpecificData,
+  selectGoogleId,
+  selectAuthProvider,
 } from "../redux/signupSlice";
 
 // Validation
@@ -35,7 +38,7 @@ import { getSignupValidationSchema } from "../components/signup/validation/signu
 import { toast } from "react-toastify";
 
 import SuccessModal from "../components/signup/ui-components/SuccessModal";
-import { selectRole, selectAuthMethod, proceedToProfile, selectShowSuccessModal, showSuccessModal, hideSuccessModal } from "../redux/signupSlice";
+import { selectRole, selectAuthMethod, proceedToProfile, selectShowSuccessModal, showSuccessModal, hideSuccessModal, setGoogleId } from "../redux/signupSlice";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -50,6 +53,8 @@ const SignUp = () => {
   const profileInfo = useSelector(selectProfileInfo);
   const roleSpecificData = useSelector(selectRoleSpecificData);
   const showSuccess = useSelector(selectShowSuccessModal);
+  const googleId = useSelector(selectGoogleId);
+  const authProvider = useSelector(selectAuthProvider);
 
   // Refs for smooth scrolling
   const stepRefs = useRef([]);
@@ -70,6 +75,9 @@ const SignUp = () => {
             }));
             dispatch(selectRole(socialProfile.role));
             dispatch(selectAuthMethod('google')); // or get from server
+            if (socialProfile.googleId) {
+              dispatch(setGoogleId(socialProfile.googleId));
+            }
             dispatch(proceedToProfile());
           }
         } catch (error) {
@@ -118,15 +126,36 @@ const SignUp = () => {
     console.log('Submitting form with values:', values);
     dispatch(setLoading(true));
     try {
-      const submitData = { 
+      // Prepare submit data - only include password for email auth
+      let submitData = { 
         ...values, 
         role: selectedRole, 
         authMethod: selectedAuthMethod 
       };
       
-      await signup(submitData).unwrap();
+      // If this is a Google signup, include the googleId and exclude password
+      if (selectedAuthMethod === 'google' || authProvider === 'google') {
+        submitData = {
+          ...submitData,
+          googleId: googleId || values.googleId, // Use googleId from state or form values if available
+          password: undefined // Don't send password for Google auth
+        };
+      }
+      
+      const result = await signup(submitData).unwrap();
+      console.log('Signup result:', result);
 
-      toast.success("Account created successfully!");
+      // Show success modal
+      dispatch(showSuccessModal());
+      
+      // Update authentication state with user data from signup response
+      if (result.user) {
+        dispatch(apiLoginSuccess({
+          user: result.user,
+          sessionToken: null, // Session is already handled by server-side
+          rememberMe: false
+        }));
+      }
 
     } catch (error) {
       dispatch(showNotification({

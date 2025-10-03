@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 import { selectAuthLoading } from '../../../redux/authSlice';
 
 const SignInOptionsSection = ({ onSocialAuth, onEmailSignIn }) => {
@@ -25,19 +25,6 @@ const SignInOptionsSection = ({ onSocialAuth, onEmailSignIn }) => {
         <FaGoogle className="text-red-500 w-5 h-5" />
         <span className="font-semibold">
           {authLoading ? "Connecting..." : "Continue with Google"}
-        </span>
-      </motion.button>
-
-      <motion.button
-        onClick={() => onSocialAuth("Facebook")}
-        disabled={authLoading}
-        className="w-full flex items-center text-gray-700  dark:text-gray-100 dark:hover:text-gray-800 justify-center space-x-3 p-4 border-2 border-gray-200 dark:border-emerald-600 rounded-2xl hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-        whileHover={!authLoading ? { scale: 1.02 } : {}}
-        whileTap={!authLoading ? { scale: 0.98 } : {}}
-      >
-        <FaFacebook className="text-blue-600 w-5 h-5" />
-        <span className="font-semibold ">
-          {authLoading ? "Connecting..." : "Continue with Facebook"}
         </span>
       </motion.button>
 
