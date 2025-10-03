@@ -1,0 +1,24 @@
+{
+  "name": "Salam",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "npm start --prefix client",
+    "server": "npm start --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaliehKadiri23/QUR-AN-LY.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SaliehKadiri23/QUR-AN-LY/issues"
+  },
+  "homepage": "https://github.com/SaliehKadiri23/QUR-AN-LY#readme",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
