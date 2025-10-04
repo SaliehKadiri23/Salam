@@ -6,7 +6,9 @@ const { isAuthenticated, isImamOrAdmin } = require("../middleware/auth");
 // Getting All Questions And Answers
 router.get("/", async (req, res) => {
     try {
-        let questionsAndAnswers = await QuestionAndAnswer.find({});
+        let questionsAndAnswers = await QuestionAndAnswer.find({})
+            .populate('askedBy', 'profileInfo.fullName profileInfo.email') // Populate user info who asked
+            .populate('answeredBy', 'profileInfo.fullName profileInfo.email'); // Populate user info who answered
         res.json(questionsAndAnswers);
     } catch (error) {
         console.error("Error fetching questions and answers:", error);
@@ -37,7 +39,8 @@ router.patch("/:id", isAuthenticated, async (req, res) => {
         const updateData = req.body;
 
         // Find the existing question
-        const existingQuestion = await QuestionAndAnswer.findById(id);
+        const existingQuestion = await QuestionAndAnswer.findById(id)
+            .populate('askedBy', 'profileInfo.fullName profileInfo.email'); // Populate user info
 
         if (!existingQuestion) {
             return res.status(404).json({ message: "Question not found" });
@@ -78,7 +81,9 @@ router.patch("/:id", isAuthenticated, async (req, res) => {
             id,
             updateData,
             { new: true, runValidators: true }
-        );
+        )
+        .populate('askedBy', 'profileInfo.fullName profileInfo.email') // Populate user info for response
+        .populate('answeredBy', 'profileInfo.fullName profileInfo.email'); // Populate answered by user info for response
 
         res.json(updatedQuestion);
     } catch (error) {
@@ -93,7 +98,8 @@ router.delete("/:id", isAuthenticated, async (req, res) => {
         let { id } = req.params;
 
         // Find the existing question
-        const existingQuestion = await QuestionAndAnswer.findById(id);
+        const existingQuestion = await QuestionAndAnswer.findById(id)
+            .populate('askedBy', 'profileInfo.fullName profileInfo.email'); // Populate user info
 
         if (!existingQuestion) {
             return res.status(404).json({ message: "Question not found" });
@@ -122,6 +128,23 @@ router.delete("/:id", isAuthenticated, async (req, res) => {
     } catch (error) {
         console.log("Error : ", error);
         res.status(500).json({ message: "Error deleting question", error: error.message });
+    }
+});
+
+// Getting a single QuestionsAndAnswer by ID
+router.get("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const questionAndAnswer = await QuestionAndAnswer.findById(id)
+            .populate('askedBy', 'profileInfo.fullName profileInfo.email') // Populate user info who asked
+            .populate('answeredBy', 'profileInfo.fullName profileInfo.email'); // Populate user info who answered
+        if (!questionAndAnswer) {
+            return res.status(404).json({ message: "Question and Answer not found" });
+        }
+        res.json(questionAndAnswer);
+    } catch (error) {
+        console.error("Error fetching question and answer:", error);
+        res.status(500).json({ message: "Error fetching question and answer", error: error.message });
     }
 });
 

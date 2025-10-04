@@ -3,6 +3,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { MessageCircle, Send } from "lucide-react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import CategorySelector from "./CategorySelector";
 import QuestionInput from "./QuestionInput";
 import { useAddNewQuestionAndAnswerMutation } from "../../../services/apiSlice";
@@ -31,8 +32,11 @@ function QuestionForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-   const [addNewQuestionAndAnswer, { data, error, isSuccess }] =
-     useAddNewQuestionAndAnswerMutation();
+  const [addNewQuestionAndAnswer, { data, error, isSuccess }] =
+    useAddNewQuestionAndAnswerMutation();
+    
+  // Get the logged-in user from Redux store
+  const user = useSelector(state => state.auth.user);
 
   // Initial form values
   const initialValues = {
@@ -45,8 +49,11 @@ function QuestionForm() {
     try {
       setSubmitError(null);
 
+      // Use the logged-in user's ID, fallback to hardcoded ID if not available
+      const currentUserId = user?.id || "64f1abf1a2b4c3d4e5f6a701";
+
       const newQuestionAndAnswer = {
-        askedBy: "64f1abf1a2b4c3d4e5f6a701",
+        askedBy: currentUserId,
         dateAsked: new Date(),
         questionCategory: values.category,
         question: values.question,

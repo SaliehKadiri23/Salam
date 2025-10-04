@@ -12,7 +12,8 @@ const numberOfActiveScholars = useMemo(() => {
       let activeScholars = [];
       for (let qa of QuestionsAndAnswers) {
         if (qa.isAnswered === true) {
-          activeScholars.push(qa.answeredBy);
+          // Use the ID if answeredBy is an object, otherwise use the value directly
+          activeScholars.push(typeof qa.answeredBy === 'object' ? qa.answeredBy._id : qa.answeredBy);
         }
       }
      return new Set(activeScholars).size;

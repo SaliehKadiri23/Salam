@@ -14,6 +14,7 @@ import {
   Edit,
   RefreshCw,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 import { getTimeAgo } from "../../utils/timeUtils";
 import { toast } from "react-toastify";
 import FilterDropdown from "../../components/qa/scholar/FilterDropdown";
@@ -28,6 +29,9 @@ const ScholarQADashboard = () => {
   } = useGetQuestionsAndAnswersQuery();
   const [updateQuestionAndAnswer] = useUpdateQuestionAndAnswerMutation();
   const [deleteQuestionAndAnswer] = useDeleteQuestionAndAnswerMutation();
+  
+  // Get the logged-in user from Redux store
+  const user = useSelector(state => state.auth.user);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all"); // all, answered, pending
@@ -61,7 +65,7 @@ const ScholarQADashboard = () => {
       qa.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (qa.answer &&
         qa.answer.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      qa.askedBy.toLowerCase().includes(searchQuery.toLowerCase());
+      (qa.askedBy?.profileInfo?.fullName || "").toLowerCase().includes(searchQuery.toLowerCase());
 
     // Status filter
     if (filter === "all") return matchesSearch;
@@ -87,7 +91,7 @@ const ScholarQADashboard = () => {
       const question = questions.find((q) => q._id === questionId);
       if (question && !question.isAnswered) {
         updatedQuestion.isAnswered = true;
-        updatedQuestion.answeredBy = "68bc42e761037ccd9005230b"; // In a real app, this would be the logged-in scholar's id
+        updatedQuestion.answeredBy = user?.id || "68bc42e761037ccd9005230b"; // Use logged-in user's ID
         updatedQuestion.dateAnswered = new Date().toISOString();
       }
 
@@ -385,7 +389,7 @@ const ScholarQADashboard = () => {
 
                         <div className="mb-4">
                           <p className="font-medium text-gray-800 dark:text-white mb-1">
-                            Asked by: {qa.askedBy}
+                            Asked by: {qa.askedBy?.profileInfo?.fullName || "Anonymous"}
                           </p>
                           <p className="text-gray-700 dark:text-gray-300">
                             {qa.question}
@@ -393,19 +397,10 @@ const ScholarQADashboard = () => {
                         </div>
 
                         <div className="flex flex-wrap items-center justify-between gap-3">
-                          <div className="flex items-center gap-2">
-                            {qa.isAnswered ? (
-                              <span className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400">
-                                <CheckCircle className="w-4 h-4" />
-                                Answered by {qa.answeredBy || "Scholar"}
-                              </span>
-                            ) : (
-                              <span className="flex items-center gap-1 text-sm text-amber-600 dark:text-amber-400">
-                                <Clock className="w-4 h-4" />
-                                Awaiting answer
-                              </span>
-                            )}
-                          </div>
+                          <span className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400">
+                  <CheckCircle className="w-4 h-4" />
+                  Answered by {typeof qa.answeredBy === 'object' ? (qa.answeredBy?.profileInfo?.fullName || "Scholar") : qa.answeredBy || "Scholar"}
+                </span>
 
                           <div className="flex items-center gap-2">
                             <button
@@ -425,7 +420,7 @@ const ScholarQADashboard = () => {
                           <div className="flex items-center gap-2 mb-3">
                             <Star className="w-5 h-5 text-yellow-500" />
                             <span className="font-medium text-gray-800 dark:text-white">
-                              Answer by {qa.answeredBy || "Scholar"}
+                              Answer by {typeof qa.answeredBy === 'object' ? (qa.answeredBy?.profileInfo?.fullName || "Scholar") : qa.answeredBy || "Scholar"}
                             </span>
                             <span className="text-sm text-gray-500 dark:text-gray-400">
                               ({getTimeAgo(qa.dateAnswered)})

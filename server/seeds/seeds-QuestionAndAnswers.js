@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const QuestionAndAnswer = require("../models/questionsAndAnswers");
 
-const dbUrl = "mongodb://127.0.0.1:27017/salam";
+const dbUrl = "mongodb+srv://salieh7787:Qasew2006%40%23%24@uppercampcluster.2mmzbce.mongodb.net/Salam?retryWrites=true&w=majority&appName=UpperCampCluster";
 mongoose
   .connect(dbUrl)
   .then(() => console.log("Connection Successful"))
@@ -17,8 +17,8 @@ mongoose.connection.once("open", () => {
 
 const questionsAndAnswers = [
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a101",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-01T09:00:00Z"),
     dateAnswered: new Date("2025-07-02T10:30:00Z"),
     questionCategory: "general",
@@ -30,15 +30,15 @@ const questionsAndAnswers = [
       "Muslims believe that on the Last Day all humans will be resurrected and judged by Allah based on their deeds, and rewarded or punished accordingly.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a102",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-03T11:15:00Z"),
     questionCategory: "worship",
     isAnswered: false,
     question: "How should one perform Wudu correctly according to the Sunnah?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a103",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-05T14:00:00Z"),
     dateAnswered: new Date("2025-07-05T18:00:00Z"),
     questionCategory: "fiqh",
@@ -51,7 +51,7 @@ const questionsAndAnswers = [
       "If one misses a prayer out of genuine forgetfulness, the correct action is to perform it as soon as one remembers (Qada), and it will be accepted by Allah.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a104",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-07T08:30:00Z"),
     questionCategory: "daily-life",
     isAnswered: false,
@@ -61,8 +61,8 @@ const questionsAndAnswers = [
       "What is the Islamic perspective on environmental stewardship and caring for nature?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a105",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-08T16:45:00Z"),
     dateAnswered: new Date("2025-07-09T09:00:00Z"),
     questionCategory: "finance",
@@ -74,7 +74,7 @@ const questionsAndAnswers = [
       "Islamic finance prohibits Riba (interest). Instead, profit-based instruments like Murabaha and Musharakah are used to ensure fairness and shared risk.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a106",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-10T12:10:00Z"),
     questionCategory: "general",
     isAnswered: false,
@@ -82,8 +82,8 @@ const questionsAndAnswers = [
       "Can you explain the concept of Taqwa in Islam and how one can cultivate it?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a107",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-11T13:20:00Z"),
     dateAnswered: new Date("2025-07-12T14:00:00Z"),
     questionCategory: "worship",
@@ -96,7 +96,7 @@ const questionsAndAnswers = [
       "Sadaqah is voluntary charity given at any time, while Zakat is obligatory and calculated on eligible wealth annually.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a108",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-13T09:00:00Z"),
     questionCategory: "daily-life",
     isAnswered: false,
@@ -104,8 +104,8 @@ const questionsAndAnswers = [
       "What Islamic etiquette should one observe when entering a mosque?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a109",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-14T10:30:00Z"),
     dateAnswered: new Date("2025-07-15T11:45:00Z"),
     questionCategory: "fiqh",
@@ -116,7 +116,7 @@ const questionsAndAnswers = [
       "Most schools agree that mere contact without desire doesn’t invalidate Wudu; bodily fluids, deep sleep, or loss of consciousness do.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a110",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-16T14:15:00Z"),
     questionCategory: "finance",
     isAnswered: false,
@@ -126,8 +126,8 @@ const questionsAndAnswers = [
       "How should a Muslim approach modern insurance while avoiding Riba and uncertainty (gharar)?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a111",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-17T12:00:00Z"),
     dateAnswered: new Date("2025-07-18T08:30:00Z"),
     questionCategory: "general",
@@ -140,7 +140,7 @@ const questionsAndAnswers = [
       "Islam emphasizes justice and peaceful coexistence. The Quran states 'there is no compulsion in religion' and advocates respectful dialogue.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a112",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-19T15:20:00Z"),
     questionCategory: "worship",
     isAnswered: false,
@@ -148,8 +148,8 @@ const questionsAndAnswers = [
       "Is listening to the Qur’an while fasting allowed, and does it affect the fast?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a113",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-20T09:45:00Z"),
     dateAnswered: new Date("2025-07-20T13:10:00Z"),
     questionCategory: "daily-life",
@@ -162,7 +162,7 @@ const questionsAndAnswers = [
       "If there’s genuine uncertainty, one should avoid it unless no alternatives exist and necessity demands it.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a114",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-21T10:00:00Z"),
     questionCategory: "fiqh",
     isAnswered: false,
@@ -170,8 +170,8 @@ const questionsAndAnswers = [
       "Can someone intentionally break their fast during Ramadan and make it up later?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a115",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-22T11:10:00Z"),
     dateAnswered: new Date("2025-07-23T12:25:00Z"),
     questionCategory: "general",
@@ -184,7 +184,7 @@ const questionsAndAnswers = [
       "Prophets are honored messengers chosen by Allah. Muslims deeply respect them but never attribute divine status to them; worship is for Allah alone.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a116",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-23T13:30:00Z"),
     questionCategory: "finance",
     isAnswered: false,
@@ -192,8 +192,8 @@ const questionsAndAnswers = [
       "Is cryptocurrency considered halal in Islam, and under what conditions?",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a117",
-    answeredBy: "64f1abf1a2b4c3d4e5f6a111",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
+    answeredBy: "68e0e27a3de844738e07ec33",
     dateAsked: new Date("2025-07-24T14:45:00Z"),
     dateAnswered: new Date("2025-07-25T09:05:00Z"),
     questionCategory: "worship",
@@ -206,7 +206,7 @@ const questionsAndAnswers = [
       "Every letter of the Qur’an has ten rewards. Even reading a few verses daily fosters consistency and reflection, yielding multiplied blessings.",
   },
   {
-    askedBy: "64f1abf1a2b4c3d4e5f6a118",
+    askedBy: "68e0f1bcac4259f5c95ecf3f",
     dateAsked: new Date("2025-07-25T16:00:00Z"),
     questionCategory: "daily-life",
     isAnswered: false,
@@ -214,10 +214,6 @@ const questionsAndAnswers = [
       "How should one maintain Islamic ethics in the workplace, especially when facing unfair treatment?",
   },
 ];
-;
-;
-;
-
 async function seedQuestionsAndAnswers() {
   await QuestionAndAnswer.deleteMany({}).then((res) => console.log(res));
   await QuestionAndAnswer.insertMany(questionsAndAnswers)

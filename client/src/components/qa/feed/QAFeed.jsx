@@ -21,7 +21,7 @@ function QAFeed() {
       // Search filter
       const matchesSearch = searchQuery === "" ||
         qa.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        qa.askedBy.toLowerCase().includes(searchQuery.toLowerCase());
+        (qa.askedBy?.profileInfo?.fullName || "").toLowerCase().includes(searchQuery.toLowerCase());
       
       if (!matchesSearch) return false;
       

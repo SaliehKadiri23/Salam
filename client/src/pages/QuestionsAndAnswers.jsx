@@ -5,7 +5,7 @@ import QAStats from "../components/qa/stats/QAStats";
 import QAFeed from "../components/qa/feed/QAFeed";
 
 // Main App Component - now using refactored components with Redux
-export default function IslamicQAApp() {
+export default function QuestionsAndAnswers() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-green-50 dark:from-gray-800 dark:to-gray-800 relative">
       {/* Islamic Pattern Background */}

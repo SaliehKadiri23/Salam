@@ -271,8 +271,8 @@ const ScholarQA = () => {
                     </p>
                     <div className="flex items-center gap-3 md:grid md:grid-cols-1">
                       <p className="text-sm text-slate-500 dark:text-slate-300">
-                        {/* Asked by {qa.askedBy} */}
-                        Asked by Umar
+                        {/* Display the actual name of the person who asked the question */}
+                        Asked by {qa.askedBy?.profileInfo?.fullName || "Anonymous"}
                       </p>
                       <span
                         className={`px-2 md:mx-auto md:ml-0 py-1 rounded-full text-xs font-medium ${

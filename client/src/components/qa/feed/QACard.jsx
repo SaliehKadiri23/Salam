@@ -22,7 +22,7 @@ function QACard({ qa }) {
   const questionState = questionStates[qa._id];
   
   // Hardcoded user ID for now (to be replaced with actual auth system)
-  const currentUserId = "64f1abf1a2b4c3d4e5f6a701";
+  const currentUserId = useSelector(state => state.auth.user?.id) || "64f1abf1a2b4c3d4e5f6a701";
 
   // Initialize question state if it does not exists
   useEffect(() => {
@@ -93,7 +93,7 @@ function QACard({ qa }) {
           _id: qa._id,
           question: editedQuestion.trim(),
           questionCategory: qa.questionCategory,
-          askedBy: qa.askedBy,
+          askedBy: typeof qa.askedBy === 'object' ? qa.askedBy._id : qa.askedBy,
           dateAsked: qa.dateAsked
         };
 
@@ -125,7 +125,7 @@ function QACard({ qa }) {
   // Check if current user is the owner of the question and question is not answered
   // Note: This check is done at render time. If the question status changes (e.g., gets answered),
   // the component won't automatically re-render, so we also check in the action handlers.
-  const canEditOrDelete = qa.askedBy === currentUserId && !qa.isAnswered;
+  const canEditOrDelete = (typeof qa.askedBy === 'object' ? qa.askedBy._id === currentUserId : qa.askedBy === currentUserId) && !qa.isAnswered;
 
   // Use questionState if available, otherwise fall back to original data
   const displayLikes =  qa.likes;
@@ -140,7 +140,7 @@ function QACard({ qa }) {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
               <div className="flex items-center justify-around gap-3 min-w-0 flex-1">
                 <h3 className="font-semibold text-left text-gray-800 dark:text-gray-100 truncate">
-                  {qa.askedBy}
+                  {qa.askedBy?.profileInfo?.fullName || "Anonymous"}
                 </h3>
                 <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium capitalize whitespace-nowrap">
                   {qa.questionCategory.replace("-", " ")}
@@ -250,7 +250,7 @@ function QACard({ qa }) {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                 <h4 className="font-semibold text-emerald-800 dark:text-emerald-200 flex items-center min-w-0">
                   <Star className="w-7 h-7 rounded-full text-white fill-white bg-green-600 p-1 mr-4 flex-shrink-0" />
-                  <span className="truncate">{qa.answeredBy || "Scholar"}</span>
+                  <span className="truncate">{typeof qa.answeredBy === 'object' ? (qa.answeredBy?.profileInfo?.fullName || "Scholar") : qa.answeredBy || "Scholar"}</span>
                 </h4>
                 <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-200 flex-shrink-0">
                   <Clock className="w-4 h-4" />
