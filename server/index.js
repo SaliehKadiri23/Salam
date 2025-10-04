@@ -119,7 +119,7 @@ app.use("/api/auth", authRouter);
 
 // Serve static files or index.html in production for client-side routing
 if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
+  app.get(/(.*)/, (req, res) => {
     res.sendFile(__dirname + '/dist/index.html');
   });
 }
