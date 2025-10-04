@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const articleSchema = new mongoose.Schema({
-  id: mongoose.Types.ObjectId,
   title: {
     type: String,
     required: true,
@@ -43,6 +42,8 @@ const articleSchema = new mongoose.Schema({
   },
   likes: { type: Number, default: 0 },
   readTime: { type: Number, default: 0 },
+}, {
+  timestamps: true // This will add createdAt and updatedAt fields
 });
 
 // Toggling Likes

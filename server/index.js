@@ -37,7 +37,7 @@ const app = express();
 
 // Cors 
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:3000"], // Allow both Vite and Create React App ports
+  origin: ["http://localhost:5173", "http://localhost:3000", "http://localhost:5174"], // Allow both Vite and Create React App ports and the new port
   credentials: true // Important: allow credentials (cookies, authorization headers)
 }));
 // Allows express to accept Json data
