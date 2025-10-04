@@ -80,7 +80,11 @@ const App = () => {
         {/* Newsletter Subscribers Dashboard */}
         <Route
           path="newsletter_subscribers_dashboard"
-          element={<NewsletterSubscribersDashboard />}
+          element={
+            <ProtectedRoute allowedRoles={['imam', 'chief-imam']}>
+              <NewsletterSubscribersDashboard />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="articles_dashboard"
@@ -93,24 +97,40 @@ const App = () => {
         {/* Volunteer Dashboard */}
         <Route
           path="volunteer_opportunities_dashboard"
-          element={<VolunteerOpportunitiesDashboard />}
+          element={
+            <ProtectedRoute allowedRoles={['imam', 'chief-imam']}>
+              <VolunteerOpportunitiesDashboard />
+            </ProtectedRoute>
+          }
         />
 
         {/* Resources Dashboard */}
         <Route 
           path="resource_dashboard" 
-          element={<ResourceDashboard />}
+          element={
+            <ProtectedRoute allowedRoles={['imam', 'chief-imam']}>
+              <ResourceDashboard />
+            </ProtectedRoute>
+          }
         />
 
         {/* Islamic Quotes Dashboard */}
         <Route
           path="islamic_quotes_dashboard"
-          element={<IslamicQuotesDashboard />}
+          element={
+            <ProtectedRoute allowedRoles={['imam', 'chief-imam']}>
+              <IslamicQuotesDashboard />
+            </ProtectedRoute>
+          }
         />
         {/* Scholar QA Dashboard */}
         <Route 
           path="qa_dashboard" 
-          element={<ScholarQADashboard />}
+          element={
+            <ProtectedRoute allowedRoles={['imam', 'chief-imam']}>
+              <ScholarQADashboard />
+            </ProtectedRoute>
+          }
         />
 
         {/* Donations Dashboard */}

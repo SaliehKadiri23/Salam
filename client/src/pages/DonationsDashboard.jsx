@@ -13,7 +13,9 @@ import {
   X,
   Calendar,
   CreditCard,
-  User
+  User,
+  Star,
+  Stars
 } from 'lucide-react';
 import {
   useGetDonationsQuery,
@@ -160,7 +162,7 @@ const DonationForm = ({ donation, onSubmit, onCancel }) => {
             Donor Name
           </label>
           <div className="relative">
-            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Stars className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               name="donorName"
