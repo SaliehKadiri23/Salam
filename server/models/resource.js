@@ -58,6 +58,11 @@ const resourceSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false, // Not required to maintain backward compatibility
+  },
   contentSections: [{
     id: {
       type: mongoose.Schema.Types.ObjectId,

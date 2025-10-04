@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, Share2, BookmarkPlus, Facebook, Linkedin, MessageCircle, Clock, Calendar, ArrowRight } from 'lucide-react';
 import { useToggleArticleLikeMutation } from '../../services/apiSlice';
+import { FaCrown, FaMosque } from 'react-icons/fa';
 
 const isLatest = (dateString) => {
   const articleDate = new Date(dateString);
@@ -170,26 +171,45 @@ const ArticleCard = ({ article, onBookmark, onShare }) => {
         {/* Article Meta */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-emerald-600">
           <a
-            href={`/authors/${article.author
+            href={`/authors/${article.author.profileInfo.fullName
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
-            className="flex items-center space-x-3 group/author rounded focus:outline-none focus:ring-2 focus:ring-green-300"
+            className="flex items-center space-x-3 group/author rounded focus:outline-none focus:ring-2 focus:ring-2 focus:ring-green-300"
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-              {article.author
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </div>
+            <div
+                  className={`size-10 bg-gradient-to-r rounded-full flex items-center justify-center text-white font-bold ${
+                    article.author.profileInfo?.role == "community"
+                      ? "from-green-400 to-green-600"
+                      : article.author.profileInfo.role == "imam"
+                      ? "from-teal-400 to-teal-600"
+                      : article.author.profileInfo.role == "chief-imam"
+                      ? "from-yellow-400 to-yellow-600"
+                      : ""
+                  }`}
+                >
+                  {article.author.profileInfo?.role == "community" ? (
+                    <Stars className="size-7 " />
+                  ) : article.author.profileInfo.role == "imam" ? (
+                    <FaMosque className="size-7 " />
+                  ) : article.author.profileInfo.role == "chief-imam" ? (
+                    <FaCrown className="size-7 " />
+                  ) : (
+                    ""
+                  )}
+                </div>
             <div>
               <p className="font-medium text-gray-800 dark:text-gray-100 text-sm group-hover/author:underline">
-                {article.author}
+                {article.author.profileInfo.fullName}
+              </p>
+              <p className="font-medium text-gray-800 dark:text-gray-100 text-xs group-hover/author:underline">
+                ({article.author.profileInfo?.role == "community" ? "User" : article.author.profileInfo.role == "imam" ? "Imam" : article.author.profileInfo.role == "chief-imam" ? "Chief Imam" : (
+                    ""
+                  )})
               </p>
               <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-300">
-                <Calendar className="w-3 h-3" />
-                <span>
-                  {new Date(article.publishDate).toLocaleDateString()}
-                </span>
+                <Calendar className="w-3 h-3 mr-2" />
+                {article.publishDate ? new Date(article.publishDate).toLocaleDateString() : "No date"}
+
               </div>
             </div>
           </a>

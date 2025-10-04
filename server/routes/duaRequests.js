@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const DuaRequest = require("../models/duaRequest");
+const { isAuthenticated } = require("../middleware/auth");
 
 // Get all Dua Requests
 router.get("/", async (req, res) => {
@@ -22,10 +23,9 @@ router.get("/", async (req, res) => {
 });
 
 // Create a new Dua Request
-router.post("/", async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
     try {
-        // TODO: Replace with actual user authentication when implemented
-        const currentUserId = "64f1abf1a2b4c3d4e5f6a111"; // Hardcoded for now
+        const currentUserId = req.user._id; // Get user ID from session
         
         const duaRequestData = {
             ...req.body,
@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update a Dua Request
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
         
@@ -72,13 +72,12 @@ router.patch("/:id", async (req, res) => {
             });
         }
         
-        // TODO: Replace with actual user authentication when implemented
-        const currentUserId = "64f1abf1a2b4c3d4e5f6a111"; // Hardcoded for now
-        const isAdmin = false; // Hardcoded for now
+        const currentUserId = req.user._id; // Get user ID from session
+        const isAdmin = req.user.profileInfo.role === 'chief-imam'; // Check if user is admin
         
         // Check if user can update
-        const canUpdate = isAdmin || 
-                         (existingDuaRequest.userId && existingDuaRequest.userId.toString() === currentUserId);
+        const canUpdate = isAdmin ||
+                         (existingDuaRequest.userId && existingDuaRequest.userId.toString() === currentUserId.toString());
         
         if (!canUpdate) {
             return res.status(403).json({
@@ -123,7 +122,7 @@ router.patch("/:id", async (req, res) => {
 });
 
 // Delete a Dua Request
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
         
@@ -137,13 +136,12 @@ router.delete("/:id", async (req, res) => {
             });
         }
         
-        // TODO: Replace with actual user authentication when implemented
-        const currentUserId = "64f1abf1a2b4c3d4e5f6a111"; // Hardcoded for now
-        const isAdmin = false; // Hardcoded for now
+        const currentUserId = req.user._id; // Get user ID from session
+        const isAdmin = req.user.profileInfo.role === 'chief-imam'; // Check if user is admin
         
         // Check if user can delete
-        const canDelete = isAdmin || 
-                         (existingDuaRequest.userId && existingDuaRequest.userId.toString() === currentUserId);
+        const canDelete = isAdmin ||
+                         (existingDuaRequest.userId && existingDuaRequest.userId.toString() === currentUserId.toString());
         
         if (!canDelete) {
             return res.status(403).json({
@@ -169,11 +167,10 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Increment prayer count for a Dua Request
-router.post("/:id/pray", async (req, res) => {
+router.post("/:id/pray", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
-        // TODO: Replace with req.user._id when auth is implemented
-        const userId = "64f1abf1a2b4c3d4e5f6a111";
+        const userId = req.user._id; // Use actual user ID from session
         
         const result = await DuaRequest.incrementPrayerCount(id, userId);
         res.json(result);

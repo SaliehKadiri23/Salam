@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Resource = require("../models/resource");
+const { isAuthenticated, isImamOrAdmin } = require("../middleware/auth");
 
 // Get all resources
 router.get("/", async (req, res) => {
@@ -47,9 +48,12 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a new resource
-router.post("/", async (req, res) => {
+router.post("/", isImamOrAdmin, async (req, res) => {
     try {
-        const newResource = new Resource(req.body);
+        const newResource = new Resource({
+            ...req.body,
+            createdBy: req.user._id  // Track who created the resource
+        });
         await newResource.save();
         
         res.status(201).json({
@@ -67,9 +71,30 @@ router.post("/", async (req, res) => {
 });
 
 // Update a resource
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
+        
+        // Find the existing resource
+        const resource = await Resource.findById(id);
+        if (!resource) {
+            return res.status(404).json({
+                success: false,
+                message: "Resource not found."
+            });
+        }
+        
+        // Only allow chief-imam to edit any resource, or allow the creator to edit their own resource
+        const isOwner = resource.createdBy && resource.createdBy.toString() === req.user._id.toString();
+        const isAdmin = req.user.profileInfo.role === 'chief-imam';
+        
+        if (!(isAdmin || isOwner)) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to update this resource."
+            });
+        }
+        
         const updatedResource = await Resource.findByIdAndUpdate(
             id,
             req.body,
@@ -98,9 +123,30 @@ router.patch("/:id", async (req, res) => {
 });
 
 // Delete a resource
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
+        
+        // Find the existing resource
+        const resource = await Resource.findById(id);
+        if (!resource) {
+            return res.status(404).json({
+                success: false,
+                message: "Resource not found."
+            });
+        }
+        
+        // Only allow chief-imam to delete any resource, or allow the creator to delete their own resource
+        const isOwner = resource.createdBy && resource.createdBy.toString() === req.user._id.toString();
+        const isAdmin = req.user.profileInfo.role === 'chief-imam';
+        
+        if (!(isAdmin || isOwner)) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to delete this resource."
+            });
+        }
+        
         const deletedResource = await Resource.findByIdAndDelete(id);
         
         if (!deletedResource) {

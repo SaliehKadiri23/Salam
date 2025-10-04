@@ -307,7 +307,7 @@ const CustomSelect = ({ label, value, onChange, options }) => {
   );
 };
 
-const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
+export default function ArticleForm ({ article, onSubmit, categories, onCancel })  {
   const [formData, setFormData] = useState(() => {
     // Generate a unique identifier for this form session
     const formId = article ? `edit_${article._id || article.id}` : 'new_article';
@@ -328,19 +328,20 @@ const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
         title: article.title || '',
         excerpt: article.excerpt || '',
         category: article.category || 'Islam',
-        author: article.author || '',
+        author: typeof article.author === 'object' 
+          ? (article.author.profileInfo?.fullName || article.author.fullName || article.author) 
+          : article.author || '',
         image: article.image || '',
         imageFile: null,
         content: article.content || '',
       };
     }
     
-    // For new articles, start with a clean form
+    // For new articles, start with a clean form (excluding author field since it will be set to current user)
     return {
       title: '',
       excerpt: '',
       category: 'Islam',
-      author: '',
       image: '',
       imageFile: null,
       content: '',
@@ -400,21 +401,21 @@ const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
   const handleSuccessfulSubmit = useCallback(() => {
     localStorage.removeItem(`articleDraft_${formId}`);
     setLastSaved(null);
-    toast.success('Article saved successfully!', {
+    const message = article ? 'Article updated successfully!' : 'Article created successfully!';
+    toast.success(message, {
       position: "bottom-right",
       autoClose: 3000,
     });
-  }, [formId]);
+  }, [formId, article]);
 
   // Update form when article prop changes (e.g., when switching between add/edit modes)
   useEffect(() => {
-    // When switching to add mode (article is null), reset to clean form
+    // When switching to add mode (article is null), reset to clean form (excluding author field)
     if (!article) {
       setFormData({
         title: '',
         excerpt: '',
         category: 'Islam',
-        author: '',
         image: '',
         imageFile: null,
         content: '',
@@ -426,7 +427,9 @@ const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
         title: article.title || '',
         excerpt: article.excerpt || '',
         category: article.category || 'Islam',
-        author: article.author || '',
+        author: typeof article.author === 'object' 
+          ? (article.author.profileInfo?.fullName || article.author.fullName || article.author) 
+          : article.author || '',
         image: article.image || '',
         imageFile: null,
         content: article.content || '',
@@ -456,7 +459,7 @@ const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
     const wordCount = formData.content.split(/\s+/).filter(word => word).length;
     const readTime = Math.max(1, Math.round(wordCount / 200));
     
-    const articleData = {
+    let articleData = {
       ...formData,
       readTime,
     };
@@ -477,6 +480,16 @@ const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
       // When creating a new article, remove any ID fields to let MongoDB generate them
       delete articleData._id;
       delete articleData.id;
+    }
+    
+    // For new articles, don't set the author in the frontend - the backend should set it to the current user
+    if (!article) {
+      // Remove the author field for new articles
+      delete articleData.author;
+    } else {
+      // For edits, don't send the author field to prevent it from being modified
+      // The backend will preserve the original author and handle authorization
+      delete articleData.author;
     }
     
     onSubmit(articleData);
@@ -501,20 +514,23 @@ const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
           />
         </div>
         
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Author
-          </label>
-          <input
-            type="text"
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors dark:bg-gray-700 dark:text-white"
-            placeholder="Author name"
-          />
-        </div>
+        {/* Show author field only when editing (not when creating new article) */}
+        {article && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Author
+            </label>
+            <input
+              type="text"
+              name="author"
+              value={formData.author}
+              onChange={handleChange} // This won't actually change the value since it's read-only
+              readOnly // Make the field read-only when editing
+              className="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors dark:bg-gray-700 dark:text-white bg-gray-100 dark:bg-gray-600 cursor-not-allowed"
+              placeholder="Author name"
+            />
+          </div>
+        )}
         
         <div>
           <CustomSelect
@@ -578,5 +594,3 @@ const ArticleForm = ({ article, onSubmit, categories, onCancel }) => {
     </form>
   );
 };
-
-export default ArticleForm;

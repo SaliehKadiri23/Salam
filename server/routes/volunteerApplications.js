@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const VolunteerApplication = require("../models/volunteerApplication");
 const VolunteerOpportunity = require("../models/volunteerOpportunity");
+const { isAuthenticated, isImamOrAdmin } = require("../middleware/auth");
 
 // Create a new Volunteer Application
 router.post("/", async (req, res) => {
@@ -87,7 +88,7 @@ router.post("/", async (req, res) => {
   });
 
   // Get all applicants for a specific Volunteer Opportunity
-  router.get("/opportunity/:id/applicants", async (req, res) => {
+  router.get("/opportunity/:id/applicants", isImamOrAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       
@@ -120,7 +121,7 @@ router.post("/", async (req, res) => {
   });
 
   // Update applicant status
-  router.patch("/:id", async (req, res) => {
+  router.patch("/:id", isImamOrAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const { status } = req.body;

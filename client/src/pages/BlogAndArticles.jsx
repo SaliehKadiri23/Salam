@@ -67,9 +67,11 @@ const BlogAndArticles = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Get Articles Hook
-  const {data : articles = [], isLoading : isArticlesLoading, isSuccess, isError, error} = useGetArticlesQuery()
+  const { data: articlesResponse, isLoading: isArticlesLoading, isSuccess, isError, error } = useGetArticlesQuery();
 
-  console.log(articles, isArticlesLoading, isSuccess, isError, error);
+  console.log(articlesResponse, isArticlesLoading, isSuccess, isError, error);
+
+  const articles = articlesResponse?.data || [];
 
   
   // Categories

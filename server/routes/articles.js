@@ -1,22 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const Article = require("../models/article");
+const { isAuthenticated, isImamOrAdmin } = require("../middleware/auth");
 
 // Getting All Articles
 router.get("/", async (req, res) => {
     try {
-        let allArticles = await Article.find({});
-        res.json(allArticles);
+        let allArticles = await Article.find({}).populate('author', 'profileInfo.fullName profileInfo.email profileInfo.role');
+        res.json({
+            success: true,
+            count: allArticles.length,
+            data: allArticles
+        });
     } catch (error) {
         console.error("Error fetching articles:", error);
-        res.status(500).json({ message: "Error fetching articles", error: error.message });
+        res.status(500).json({ success: false, message: "Error fetching articles", error: error.message });
     }
 });
 
 // Adding an Article
-router.post("/", async (req, res) => {
+router.post("/", isImamOrAdmin, async (req, res) => {
     try {
-        const newArticle = new Article(req.body);
+        // Set the author to the authenticated user's ID
+        const newArticle = new Article({
+            ...req.body,
+            author: req.user._id
+        });
         await newArticle.save();
         res.status(201).json(newArticle);
     } catch (error) {
@@ -26,9 +35,24 @@ router.post("/", async (req, res) => {
 });
 
 // Updating an Article
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
+        // Check if user is owner of the article or is admin
+        const article = await Article.findById(id);
+        if (!article) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        
+        // Only allow chief-imam to edit any article, or allow the author to edit their own article
+        // An imam cannot edit another imam's article
+        const isOwner = article.author.toString() === req.user._id.toString();
+        const isAdmin = req.user.profileInfo.role === 'chief-imam';
+        
+        if (!(isAdmin || isOwner)) {
+            return res.status(403).json({ message: "You are not authorized to update this article" });
+        }
+        
         const updatedArticle = await Article.findByIdAndUpdate(
             id,
             req.body,
@@ -45,9 +69,24 @@ router.patch("/:id", async (req, res) => {
 });
 
 // Deleting an Article
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
+        // Check if user is owner of the article or is admin
+        const article = await Article.findById(id);
+        if (!article) {
+            return res.status(404).json({ message: "Article not found" });
+        }
+        
+        // Only allow chief-imam to delete any article, or allow the author to delete their own article
+        // An imam cannot delete another imam's article
+        const isOwner = article.author.toString() === req.user._id.toString();
+        const isAdmin = req.user.profileInfo.role === 'chief-imam';
+        
+        if (!(isAdmin || isOwner)) {
+            return res.status(403).json({ message: "You are not authorized to delete this article" });
+        }
+        
         const deletedArticle = await Article.findByIdAndDelete(id);
         if (!deletedArticle) {
             return res.status(404).json({ message: "Article not found" });
@@ -60,11 +99,10 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Liking/Un-liking an Article
-router.post("/:id/like", async (req, res) => {
+router.post("/:id/like", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
-        // TODO: Replace with req.user._id when auth is implemented
-        const userId = "64f1abf1a2b4c3d4e5f6a111"; // Hardcoded for now
+        const userId = req.user._id; // Use actual user ID from session
         const result = await Article.toggleLike(id, userId);
         res.json(result);
     } catch (error) {

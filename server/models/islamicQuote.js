@@ -24,6 +24,16 @@ const islamicQuoteSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  addedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false, // Not required to maintain backward compatibility
+  },
+  updatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false, // Not required to maintain backward compatibility
+  },
   createdAt: {
     type: Date,
     default: Date.now,

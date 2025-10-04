@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Newsletter = require("../models/newsletter");
+const { isAdmin } = require("../middleware/auth");
 
-// Adding a Newsletter
+// Adding a Newsletter (public route for anyone to sign up)
 router.post("/", async (req, res) => {
     try {
         const { email } = req.body;
@@ -42,7 +43,7 @@ router.post("/", async (req, res) => {
 });
 
 // Getting all Newsletter Subscribers
-router.get("/", async (req, res) => {
+router.get("/", isAdmin, async (req, res) => {
     try {
         // Fetch all newsletter subscribers, sorted by subscription date (newest first)
         const subscribers = await Newsletter.find({ isActive: true })

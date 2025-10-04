@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const IslamicQuote = require("../models/islamicQuote");
+const { isAuthenticated, isImamOrAdmin } = require("../middleware/auth");
 
 // Get all Islamic quotes
 router.get("/", async (req, res) => {
@@ -77,7 +78,7 @@ router.get("/latest", async (req, res) => {
 });
 
 // Add a new Islamic quote
-router.post("/", async (req, res) => {
+router.post("/", isImamOrAdmin, async (req, res) => {
     try {
         const { text, reference, category, isQuoteOfTheDay } = req.body;
         
@@ -90,7 +91,8 @@ router.post("/", async (req, res) => {
             text,
             reference,
             category,
-            isQuoteOfTheDay: isQuoteOfTheDay || false
+            isQuoteOfTheDay: isQuoteOfTheDay || false,
+            addedBy: req.user._id  // Track who added the quote
         });
         
         await newQuote.save();
@@ -110,7 +112,7 @@ router.post("/", async (req, res) => {
 });
 
 // Update an Islamic quote
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isImamOrAdmin, async (req, res) => {
     try {
         const { id } = req.params;
         const { text, reference, category, isQuoteOfTheDay, isActive } = req.body;
@@ -127,7 +129,8 @@ router.patch("/:id", async (req, res) => {
                 reference,
                 category,
                 isQuoteOfTheDay: isQuoteOfTheDay || false,
-                isActive
+                isActive,
+                updatedBy: req.user._id  // Track who updated the quote
             },
             { new: true, runValidators: true }
         );
@@ -154,7 +157,7 @@ router.patch("/:id", async (req, res) => {
 });
 
 // Delete an Islamic quote (permanent delete)
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isImamOrAdmin, async (req, res) => {
     try {
         const { id } = req.params;
         

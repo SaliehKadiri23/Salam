@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const QuestionAndAnswer = require("../models/questionsAndAnswers");
+const { isAuthenticated, isImamOrAdmin } = require("../middleware/auth");
 
 // Getting All Questions And Answers
 router.get("/", async (req, res) => {
@@ -14,9 +15,13 @@ router.get("/", async (req, res) => {
 });
 
 // Adding a QuestionsAndAnswer
-router.post("/", async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
     try {
-        const newQuestion = new QuestionAndAnswer(req.body);
+        const newQuestion = new QuestionAndAnswer({
+            ...req.body,
+            askedBy: req.user._id,
+            dateAsked: new Date()
+        });
         await newQuestion.save();
         res.status(201).json(newQuestion);
     } catch (error) {
@@ -26,7 +31,7 @@ router.post("/", async (req, res) => {
 });
 
 // Updating a QuestionsAndAnswer
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
         const updateData = req.body;
@@ -43,9 +48,16 @@ router.patch("/:id", async (req, res) => {
 
         // Check if we're adding/updating an answer (scholar action)
         if (updateData.answer !== undefined) {
-            // This is a scholar answering/updating the question
-            // TODO: Replace with actual scholar authentication when implemented
-            updateData.answeredBy = "68bc42e761037ccd9005230b"; // Hardcoded scholar ID
+            // This is an imam/chief-imam answering/updating the question
+            // Check if current user has imam or chief-imam role
+            const isAdmin = req.user.profileInfo.role === 'chief-imam';
+            const isImam = req.user.profileInfo.role === 'imam';
+            
+            if (!isAdmin && !isImam) {
+                return res.status(403).json({ message: "Only imams and chief-imams can answer questions" });
+            }
+            
+            updateData.answeredBy = req.user._id;
             updateData.dateAnswered = new Date();
             updateData.isAnswered = true;
         } else {
@@ -56,9 +68,8 @@ router.patch("/:id", async (req, res) => {
             }
 
             // Check if the current user is the owner of the question
-            // TODO: Replace with actual user authentication when implemented
-            const currentUserId = "64f1abf1a2b4c3d4e5f6a701"; // Hardcoded for now
-            if (existingQuestion.askedBy.toString() !== currentUserId) {
+            const currentUserId = req.user._id;
+            if (existingQuestion.askedBy.toString() !== currentUserId.toString()) {
                 return res.status(403).json({ message: "You are not authorized to edit this question" });
             }
         }
@@ -77,7 +88,7 @@ router.patch("/:id", async (req, res) => {
 });
 
 // Deleting a QuestionsAndAnswer
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
     try {
         let { id } = req.params;
 
@@ -88,21 +99,20 @@ router.delete("/:id", async (req, res) => {
             return res.status(404).json({ message: "Question not found" });
         }
 
-        // Check if the current user is either the owner of the question or a scholar
-        // TODO: Replace with actual user authentication when implemented
-        const currentUserId = "64f1abf1a2b4c3d4e5f6a701"; // Hardcoded user ID
-        const currentScholarId = "68bc42e761037ccd9005230b"; // Hardcoded scholar ID
+        // Check if the current user is either the owner of the question or an imam/chief-imam
+        const currentUserId = req.user._id;
+        const isAdmin = req.user.profileInfo.role === 'chief-imam';
+        const isImam = req.user.profileInfo.role === 'imam';
 
-        const isQuestionOwner = existingQuestion.askedBy.toString() === currentUserId;
-        const isScholar = currentScholarId === "68bc42e761037ccd9005230b"; // In a real app, this would check if the user is a scholar
+        const isQuestionOwner = existingQuestion.askedBy.toString() === currentUserId.toString();
 
-        // If user is not the owner and not a scholar, deny access
-        if (!isQuestionOwner && !isScholar) {
+        // If user is not the owner and not an imam/chief-imam, deny access
+        if (!isQuestionOwner && !isAdmin) {
             return res.status(403).json({ message: "You are not authorized to delete this question" });
         }
 
-        // If question is answered and user is not a scholar, deny access
-        if (existingQuestion.isAnswered && !isScholar) {
+        // If question is answered and user is not an admin, deny access
+        if (existingQuestion.isAnswered && !isAdmin) {
             return res.status(403).json({ message: "Cannot delete a question that has already been answered" });
         }
 
@@ -116,13 +126,12 @@ router.delete("/:id", async (req, res) => {
 });
 
 // Liking/Un-liking a QuestionsAndAnswer
-router.post("/:id/like", async (req, res) => {
+router.post("/:id/like", isAuthenticated, async (req, res) => {
     try {
         let { id } = req.params;
         const result = await QuestionAndAnswer.toggleLike(
             id,
-            "64f1abf1a2b4c3d4e5f6a111"
-            // TODO : IN SHA ALLAH - Replace with req.user._id when auth done
+            req.user._id // Use actual user ID from session
         );
         res.json(result);
     } catch (error) {

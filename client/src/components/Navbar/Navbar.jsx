@@ -343,7 +343,7 @@ const Navbar = () => {
           {isAuthenticated && user && isLoginMenuOpen && (
             <div 
               ref={dropdownRef}
-              className="fixed z-[9999] bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-4 border border-gray-200 dark:border-gray-700 min-w-[150px]"
+              className="fixed flex flex-col justify-center items-center mt-3 z-[9999] bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-4 border border-gray-200 dark:border-gray-700 min-w-[150px]"
               style={{
                 top: userButtonRef.current 
                   ? userButtonRef.current.getBoundingClientRect().bottom + window.scrollY 
@@ -359,7 +359,7 @@ const Navbar = () => {
                   : 0,
               }}
             >
-              <span className="text-gray-700 font-bold capitalize dark:text-white block">
+              <span className="text-gray-700 text-lg font-bold capitalize dark:text-white block">
                 {user.name}
               </span>
               <span className="text-gray-700 font-bold capitalize dark:text-white block text-sm">
@@ -373,6 +373,16 @@ const Navbar = () => {
                   : ""}
                 )
               </span>
+              <button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center mt-3 justify-center gap-2 w-full py-2 text-center text-white bg-red-500 font-bold rounded-lg transition-all duration-300 hover:bg-red-600"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
             </div>
           )}
         </div>

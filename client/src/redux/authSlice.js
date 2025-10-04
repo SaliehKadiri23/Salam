@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   // Authentication State
   isAuthenticated: false,
+  isAuthInitialized: false,
   user: null,
   role: null, // 'community', 'imam', 'chief-imam'
   
@@ -347,6 +348,7 @@ const authSlice = createSlice({
       const { user, sessionToken, rememberMe } = action.payload;
       
       state.isAuthenticated = true;
+      state.isAuthInitialized = true;
       state.user = user;
       state.role = user.role;
       state.userData = {
@@ -381,6 +383,7 @@ const authSlice = createSlice({
       const { error } = action.payload;
       
       state.isAuthenticated = false;
+      state.isAuthInitialized = true;
       state.user = null;
       state.role = null;
       state.loginLoading = false;
@@ -393,6 +396,7 @@ const authSlice = createSlice({
     // Logout initiated from API call (RTK Query)
     apiLogoutSuccess: (state) => {
       state.isAuthenticated = false;
+      state.isAuthInitialized = true;
       state.user = null;
       state.role = null;
       state.userData = initialState.userData;
@@ -465,6 +469,7 @@ export const {
 // Selectors
 export const selectAuthState = (state) => state.auth;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const selectIsAuthInitialized = (state) => state.auth.isAuthInitialized;
 export const selectUser = (state) => state.auth.user;
 export const selectUserData = (state) => state.auth.userData;
 export const selectUserRole = (state) => state.auth.role;

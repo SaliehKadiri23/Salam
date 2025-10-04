@@ -47,8 +47,12 @@ app.use(express.json());
 app.use(session({
   secret: "ALLAHU AKBAR - SalamSecretKey",
   resave: false,
-  saveUninitialized: true,
-  
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // Set to true if you are using https
+    httpOnly: true,
+    sameSite: 'lax'
+  }
 }))
 
 // Passport

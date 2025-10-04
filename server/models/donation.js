@@ -12,6 +12,11 @@ const donationSchema = new mongoose.Schema({
     trim: true,
     lowercase: true
   },
+  donorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false, // Not required to maintain backward compatibility
+  },
   donationType: {
     type: String,
     required: true,

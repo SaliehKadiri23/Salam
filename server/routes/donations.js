@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Donation = require("../models/donation");
+const { isAuthenticated, isAdmin } = require("../middleware/auth");
 
 // Get all donations
-router.get("/", async (req, res) => {
+router.get("/", isAdmin, async (req, res) => {
     try {
       const donations = await Donation.find({}).sort({ donationDate: -1 });
       
@@ -22,7 +23,7 @@ router.get("/", async (req, res) => {
   });
 
   // Get a single donation by ID
-  router.get("/:id", async (req, res) => {
+  router.get("/:id", isAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const donation = await Donation.findById(id);
@@ -50,7 +51,23 @@ router.get("/", async (req, res) => {
   // Create a new donation
   router.post("/", async (req, res) => {
     try {
-      const newDonation = new Donation(req.body);
+      let donationData = {
+        ...req.body
+      };
+      
+      // If the user is authenticated, associate the donation with their account
+      if (req.isAuthenticated() && req.user) {
+        donationData.donorId = req.user._id;
+        // Optionally update donor name/email from user profile if not provided
+        if (!donationData.donorName) {
+          donationData.donorName = req.user.profileInfo.fullName;
+        }
+        if (!donationData.donorEmail) {
+          donationData.donorEmail = req.user.profileInfo.email;
+        }
+      }
+      
+      const newDonation = new Donation(donationData);
       await newDonation.save();
       
       res.status(201).json({
@@ -74,7 +91,7 @@ router.get("/", async (req, res) => {
   });
 
   // Update a donation
-  router.patch("/:id", async (req, res) => {
+  router.patch("/:id", isAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       
@@ -106,7 +123,7 @@ router.get("/", async (req, res) => {
   });
 
   // Delete a donation
-  router.delete("/:id", async (req, res) => {
+  router.delete("/:id", isAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       

@@ -10,7 +10,8 @@ import {
   FileText,
   ChevronDown,
   X,
-  BookOpen
+  BookOpen,
+  AlertCircle
 } from 'lucide-react';
 import {
   useGetArticlesQuery,
@@ -19,6 +20,7 @@ import {
   useDeleteArticleMutation
 } from '../services/apiSlice';
 import ArticleForm from '../components/articles/ArticleForm';
+import { selectIsAuthenticated, selectUserRole, selectUser } from '../redux/authSlice';
 
 const CustomSelect = ({ label, value, onChange, options }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,13 +81,15 @@ const CustomSelect = ({ label, value, onChange, options }) => {
   );
 };
 
-const ArticleDashboard = () => {
-  const { data: articlesData, isLoading, isError, error, refetch } = useGetArticlesQuery();
-  const articles = articlesData || [];
+export default function ArticleDashboard () {
+  const { data: articlesResponse, isLoading, isError, error, refetch } = useGetArticlesQuery();
+  const articles = articlesResponse?.data || [];
   
   const [createArticle] = useAddNewArticleMutation();
   const [updateArticle] = useUpdateArticleMutation();
   const [deleteArticle] = useDeleteArticleMutation();
+  
+  const currentUser = useSelector(selectUser);
   
   const [showForm, setShowForm] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
@@ -108,7 +112,7 @@ const ArticleDashboard = () => {
       const matchesSearch = 
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        article.author.toLowerCase().includes(searchQuery.toLowerCase());
+        (article.author && article.author.profileInfo && article.author.profileInfo.fullName.toLowerCase().includes(searchQuery.toLowerCase()));
       
       const matchesCategory = 
         selectedCategory === 'all' || article.category === selectedCategory;
@@ -128,6 +132,10 @@ const ArticleDashboard = () => {
 
   const handleAddArticle = async (newArticle) => {
     try {
+      // For new articles, we don't include the author in the frontend
+      // The backend will set it to the current authenticated user
+      
+      // If for any reason we need to pass current user info, do it here
       await createArticle(newArticle).unwrap();
       setShowForm(false);
       toast.success('Article created successfully!', {
@@ -491,7 +499,7 @@ const ArticleDashboard = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                          {article.author}
+                          {article.author?.profileInfo?.fullName}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                           {formatDate(article.publishDate)}
@@ -569,5 +577,3 @@ const ArticleDashboard = () => {
     </div>
   );
 };
-
-export default ArticleDashboard;

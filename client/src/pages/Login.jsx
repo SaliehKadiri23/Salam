@@ -52,6 +52,7 @@ export default function Login () {
   const userData = useSelector(selectUserData);
   const loginForm = useSelector(selectLoginForm);
 
+  const navigate = useNavigate();
 
   // Validation schema
   const validationSchema = Yup.object().shape({
@@ -107,7 +108,6 @@ export default function Login () {
 
   // RTK Query mutation
   const [loginMutation, { isLoading: isLoginMutationLoading }] = useLoginMutation();
-  const navigate = useNavigate();
 
   // Form submission handler
   const handleFormSubmit = async (values, { setSubmitting, setFieldError }) => {

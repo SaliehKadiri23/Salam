@@ -75,6 +75,11 @@ const volunteerOpportunitySchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false, // Not required to maintain backward compatibility
+  },
   createdAt: {
     type: Date,
     default: Date.now

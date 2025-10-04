@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const VolunteerOpportunity = require("../models/volunteerOpportunity");
 const VolunteerApplication = require("../models/volunteerApplication");
+const { isAuthenticated, isImamOrAdmin } = require("../middleware/auth");
 
 // Get all Volunteer Opportunities
 router.get("/", async (req, res) => {
@@ -60,9 +61,12 @@ router.get("/:id", async (req, res) => {
 });
 
 // Create a new Volunteer Opportunity
-router.post("/", async (req, res) => {
+router.post("/", isImamOrAdmin, async (req, res) => {
     try {
-        const newOpportunity = new VolunteerOpportunity(req.body);
+        const newOpportunity = new VolunteerOpportunity({
+            ...req.body,
+            createdBy: req.user._id  // Track who created the opportunity
+        });
         await newOpportunity.save();
         
         res.status(201).json({
@@ -86,9 +90,29 @@ router.post("/", async (req, res) => {
 });
 
 // Update a Volunteer Opportunity
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
+        
+        // Find the existing opportunity
+        const opportunity = await VolunteerOpportunity.findById(id);
+        if (!opportunity) {
+            return res.status(404).json({
+                success: false,
+                message: "Volunteer opportunity not found."
+            });
+        }
+        
+        // Only allow chief-imam to edit any opportunity, or allow the creator to edit their own opportunity
+        const isOwner = opportunity.createdBy && opportunity.createdBy.toString() === req.user._id.toString();
+        const isAdmin = req.user.profileInfo.role === 'chief-imam';
+        
+        if (!(isAdmin || isOwner)) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to update this volunteer opportunity."
+            });
+        }
         
         const updatedOpportunity = await VolunteerOpportunity.findByIdAndUpdate(
             id,
@@ -118,9 +142,29 @@ router.patch("/:id", async (req, res) => {
 });
 
 // Delete a Volunteer Opportunity (soft delete)
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
+        
+        // Find the existing opportunity
+        const opportunity = await VolunteerOpportunity.findById(id);
+        if (!opportunity) {
+            return res.status(404).json({
+                success: false,
+                message: "Volunteer opportunity not found."
+            });
+        }
+        
+        // Only allow chief-imam to delete any opportunity, or allow the creator to delete their own opportunity
+        const isOwner = opportunity.createdBy && opportunity.createdBy.toString() === req.user._id.toString();
+        const isAdmin = req.user.profileInfo.role === 'chief-imam';
+        
+        if (!(isAdmin || isOwner)) {
+            return res.status(403).json({
+                success: false,
+                message: "You are not authorized to delete this volunteer opportunity."
+            });
+        }
         
         const updatedOpportunity = await VolunteerOpportunity.findByIdAndUpdate(
             id,
