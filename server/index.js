@@ -35,9 +35,19 @@ mongoose.connection.once("open", () => {
 
 const app = express();
 
+// Serve static files from the dist folder in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('dist'));
+}
+
 // Cors 
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:3000", "http://localhost:5174"], // Allow both Vite and Create React App ports and the new port
+  origin: [
+    "http://localhost:5173", 
+    "http://localhost:3000", 
+    "http://localhost:5174", 
+    "https://salam-28mz.onrender.com" // Render deployment
+  ], 
   credentials: true // Important: allow credentials (cookies, authorization headers)
 }));
 // Allows express to accept Json data
@@ -107,6 +117,15 @@ const authRouter = require("./routes/auth");
 
 app.use("/api/auth", authRouter);
 
-app.listen(7000, () => {
-  console.log("RUNNING ON PORT: 7000");
+// Serve static files or index.html in production for client-side routing
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(__dirname + '/dist/index.html');
+  });
+}
+
+const PORT = process.env.PORT || 7000;
+
+app.listen(PORT, () => {
+  console.log(`RUNNING ON PORT: ${PORT}`);
 });

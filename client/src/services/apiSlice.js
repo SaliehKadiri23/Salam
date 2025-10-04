@@ -153,10 +153,17 @@ const getPrayerTimesByAddress = async (address) => {
   }
 };
 
+const getBaseUrl = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return "https://salam-28mz.onrender.com"; // Render deployment
+  }
+  return "http://localhost:7000";
+};
+
 export const apiSlice = createApi({
   reducerPath: "salam",
   baseQuery: fetchBaseQuery({ 
-    baseUrl: "http://localhost:7000",
+    baseUrl: getBaseUrl(),
     credentials: 'include'  // Important: include cookies in requests
   }),
   tagTypes: [
