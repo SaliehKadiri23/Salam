@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import axios from 'axios';
+import axios from "axios";
 
 // Function to get location by IP
 const getLocationByIP = async () => {
   try {
     // First, try to get location using a more reliable service
     try {
-      const response = await axios.get('https://ipapi.co/json/', {
-        timeout: 5000 // 5 second timeout
+      const response = await axios.get("https://ipapi.co/json/", {
+        timeout: 5000, // 5 second timeout
       });
       const { city, region, country_name } = response.data;
       // Check if we have valid data
@@ -15,13 +15,13 @@ const getLocationByIP = async () => {
         return `${city}, ${region}, ${country_name}`;
       }
     } catch (primaryError) {
-      console.warn('Primary IP API failed:', primaryError.message);
+      console.warn("Primary IP API failed:", primaryError.message);
     }
-    
+
     // If the primary service fails, try a fallback
     try {
-      const response = await axios.get('https://ipwho.is/', {
-        timeout: 5000 // 5 second timeout
+      const response = await axios.get("https://ipwho.is/", {
+        timeout: 5000, // 5 second timeout
       });
       const { city, region, country } = response.data;
       // Check if we have valid data
@@ -29,81 +29,84 @@ const getLocationByIP = async () => {
         return `${city}, ${region}, ${country}`;
       }
     } catch (fallbackError) {
-      console.warn('Fallback IP API failed:', fallbackError.message);
+      console.warn("Fallback IP API failed:", fallbackError.message);
     }
-    
+
     // If both services fail, use the default
-    throw new Error('Unable to detect location');
+    throw new Error("Unable to detect location");
   } catch (error) {
-    console.error('Error fetching location by IP:', error);
-    throw new Error('Unable to detect your location automatically');
+    console.error("Error fetching location by IP:", error);
+    throw new Error("Unable to detect your location automatically");
   }
 };
 
 // Function to get prayer times by address
 const getPrayerTimesByAddress = async (address) => {
   try {
-    const response = await axios.get(`https://api.aladhan.com/v1/timingsByAddress/today`, {
-      params: {
-        address,
-        method: 2, // ISNA
-        school: 0  // Shafi/Maliki/Hanbali
-      },
-      timeout: 10000 
-    });
-    
+    const response = await axios.get(
+      `https://api.aladhan.com/v1/timingsByAddress/today`,
+      {
+        params: {
+          address,
+          method: 2, // ISNA
+          school: 0, // Shafi/Maliki/Hanbali
+        },
+        timeout: 10000,
+      }
+    );
+
     const { data } = response;
     if (data && data.code === 200 && data.data) {
       const { timings } = data.data;
-      
+
       return [
         {
           name: "Fajr",
           begins: timings.Fajr,
           iqama: timings.Fajr,
           icon: "Moon",
-          next: false
+          next: false,
         },
         {
           name: "Sunrise",
           begins: timings.Sunrise,
           iqama: "-",
           icon: "Sunrise",
-          next: false
+          next: false,
         },
         {
           name: "Dhuhr",
           begins: timings.Dhuhr,
           iqama: timings.Dhuhr,
           icon: "Sun",
-          next: false
+          next: false,
         },
         {
           name: "Asr",
           begins: timings.Asr,
           iqama: timings.Asr,
           icon: "Sun",
-          next: false
+          next: false,
         },
         {
           name: "Maghrib",
           begins: timings.Maghrib,
           iqama: timings.Maghrib,
           icon: "Sunset",
-          next: false
+          next: false,
         },
         {
           name: "Isha",
           begins: timings.Isha,
           iqama: timings.Isha,
           icon: "Moon",
-          next: false
-        }
+          next: false,
+        },
       ];
     }
-    throw new Error('Invalid response from prayer times API');
+    throw new Error("Invalid response from prayer times API");
   } catch (error) {
-    console.error('Error fetching prayer times:', error);
+    console.error("Error fetching prayer times:", error);
     // Default prayer times as fallback
     const defaultTimes = [
       {
@@ -111,60 +114,60 @@ const getPrayerTimesByAddress = async (address) => {
         begins: "05:30",
         iqama: "05:45",
         icon: "Moon",
-        next: false
+        next: false,
       },
       {
         name: "Sunrise",
         begins: "06:45",
         iqama: "-",
         icon: "Sunrise",
-        next: false
+        next: false,
       },
       {
         name: "Dhuhr",
         begins: "13:15",
         iqama: "13:30",
         icon: "Sun",
-        next: true
+        next: true,
       },
       {
         name: "Asr",
         begins: "17:00",
         iqama: "17:15",
         icon: "Sun",
-        next: false
+        next: false,
       },
       {
         name: "Maghrib",
         begins: "20:30",
         iqama: "20:45",
         icon: "Sunset",
-        next: false
+        next: false,
       },
       {
         name: "Isha",
         begins: "22:00",
         iqama: "22:15",
         icon: "Moon",
-        next: false
-      }
+        next: false,
+      },
     ];
-    throw new Error('Unable to fetch prayer times.');
+    throw new Error("Unable to fetch prayer times.");
   }
 };
 
 const getBaseUrl = () => {
-  if (process.env.NODE_ENV === 'production') {
-    return "https://salam-28mz.onrender.com"; // Render deployment
+  if (process.env.NODE_ENV === "production") {
+    return "https://salam-phi.vercel.app/";
   }
   return "http://localhost:7000";
 };
 
 export const apiSlice = createApi({
   reducerPath: "salam",
-  baseQuery: fetchBaseQuery({ 
+  baseQuery: fetchBaseQuery({
     baseUrl: getBaseUrl(),
-    credentials: 'include'  // Important: include cookies in requests
+    credentials: "include", // Important: include cookies in requests
   }),
   tagTypes: [
     "Articles",
@@ -260,7 +263,7 @@ export const apiSlice = createApi({
       query: (questionAndAnswerToUpdate) => {
         // Create a clean update object without the _id field
         const { _id, ...updateData } = questionAndAnswerToUpdate;
-        
+
         return {
           url: `/questions_and_answers/${_id}`,
           method: "PATCH",
@@ -352,142 +355,148 @@ export const apiSlice = createApi({
     }),
 
     // ! Resources
-  // Get all resources
-  getResources: builder.query({
-    query: () => "/resources",
-    providesTags: (result) =>
-      result
-        ? [
-            ...result.data.map(({ _id }) => ({ type: "Resources", id:_id })),
-            { type: "Resources", id: "LIST" },
-          ]
-        : [{ type: "Resources", id: "LIST" }],
-  }),
-
-  // Get a single resource
-  getResource: builder.query({
-    query: (id) => `/resources/${id}`,
-    providesTags: (result, error, id) => [{ type: "Resources", id }],
-  }),
-
-  // Create a new resource
-  createResource: builder.mutation({
-    query: (newResource) => ({
-      url: "/resources",
-      method: "POST",
-      body: newResource,
+    // Get all resources
+    getResources: builder.query({
+      query: () => "/resources",
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({ type: "Resources", id: _id })),
+              { type: "Resources", id: "LIST" },
+            ]
+          : [{ type: "Resources", id: "LIST" }],
     }),
-    invalidatesTags: [{ type: "Resources", id: "LIST" }],
-  }),
 
-  // Update a resource
-  updateResource: builder.mutation({
-    query: ({ _id, ...updatedResource }) => ({
-      url: `/resources/${_id}`,
-      method: "PATCH",
-      body: updatedResource,
+    // Get a single resource
+    getResource: builder.query({
+      query: (id) => `/resources/${id}`,
+      providesTags: (result, error, id) => [{ type: "Resources", id }],
     }),
-    invalidatesTags: (result, error, { _id }) => [
-      { type: "Resources", id: _id },
-      { type: "Resources", id: "LIST" },
-    ],
-  }),
 
-  // Delete a resource
-  deleteResource: builder.mutation({
-    query: (_id) => ({
-      url: `/resources/${_id}`,
-      method: "DELETE",
+    // Create a new resource
+    createResource: builder.mutation({
+      query: (newResource) => ({
+        url: "/resources",
+        method: "POST",
+        body: newResource,
+      }),
+      invalidatesTags: [{ type: "Resources", id: "LIST" }],
     }),
-    invalidatesTags: (result, error, _id) => [
-      { type: "Resources", id: _id },
-      { type: "Resources", id: "LIST" },
-    ],
-  }),
 
-  // ! Volunteer Opportunities
-  // Get all Volunteer Opportunities
-  getVolunteerOpportunities: builder.query({
-    query: () => "/volunteer-opportunities",
-    providesTags: (result) =>
-      result && result.data
-        ? [
-            ...result.data.map(({ _id }) => ({ type: "VolunteerOpportunities", id: _id })),
-            { type: "VolunteerOpportunities", id: "LIST" },
-          ]
-        : [{ type: "VolunteerOpportunities", id: "LIST" }],
-  }),
-
-  // Get a single Volunteer Opportunity
-  getVolunteerOpportunity: builder.query({
-    query: (id) => `/volunteer-opportunities/${id}`,
-    providesTags: (result, error, id) => [{ type: "VolunteerOpportunities", id }],
-  }),
-
-  // Create a new Volunteer Opportunity
-  createVolunteerOpportunity: builder.mutation({
-    query: (newOpportunity) => ({
-      url: "/volunteer-opportunities",
-      method: "POST",
-      body: newOpportunity,
+    // Update a resource
+    updateResource: builder.mutation({
+      query: ({ _id, ...updatedResource }) => ({
+        url: `/resources/${_id}`,
+        method: "PATCH",
+        body: updatedResource,
+      }),
+      invalidatesTags: (result, error, { _id }) => [
+        { type: "Resources", id: _id },
+        { type: "Resources", id: "LIST" },
+      ],
     }),
-    invalidatesTags: [{ type: "VolunteerOpportunities", id: "LIST" }],
-  }),
 
-  // Update a Volunteer Opportunity
-  updateVolunteerOpportunity: builder.mutation({
-    query: ({ _id, ...updatedOpportunity }) => ({
-      url: `/volunteer-opportunities/${_id}`,
-      method: "PATCH",
-      body: updatedOpportunity,
+    // Delete a resource
+    deleteResource: builder.mutation({
+      query: (_id) => ({
+        url: `/resources/${_id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, _id) => [
+        { type: "Resources", id: _id },
+        { type: "Resources", id: "LIST" },
+      ],
     }),
-    invalidatesTags: (result, error, { _id }) => [
-      { type: "VolunteerOpportunities", id: _id },
-      { type: "VolunteerOpportunities", id: "LIST" },
-    ],
-  }),
 
-  // Delete a Volunteer Opportunity
-  deleteVolunteerOpportunity: builder.mutation({
-    query: (_id) => ({
-      url: `/volunteer-opportunities/${_id}`,
-      method: "DELETE",
+    // ! Volunteer Opportunities
+    // Get all Volunteer Opportunities
+    getVolunteerOpportunities: builder.query({
+      query: () => "/volunteer-opportunities",
+      providesTags: (result) =>
+        result && result.data
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "VolunteerOpportunities",
+                id: _id,
+              })),
+              { type: "VolunteerOpportunities", id: "LIST" },
+            ]
+          : [{ type: "VolunteerOpportunities", id: "LIST" }],
     }),
-    invalidatesTags: (result, error, _id) => [
-      { type: "VolunteerOpportunities", id: _id },
-      { type: "VolunteerOpportunities", id: "LIST" },
-    ],
-  }),
 
-  // Create a new Volunteer Application
-  createVolunteerApplication: builder.mutation({
-    query: (newApplication) => ({
-      url: "/volunteer-applications",
-      method: "POST",
-      body: newApplication,
+    // Get a single Volunteer Opportunity
+    getVolunteerOpportunity: builder.query({
+      query: (id) => `/volunteer-opportunities/${id}`,
+      providesTags: (result, error, id) => [
+        { type: "VolunteerOpportunities", id },
+      ],
     }),
-    invalidatesTags: [{ type: "VolunteerOpportunities", id: "LIST" }],
-  }),
 
-  // Get applicants for a Volunteer Opportunity
-  getVolunteerOpportunityApplicants: builder.query({
-    query: (opportunityId) => `/volunteer-opportunities/${opportunityId}/applicants`,
-    providesTags: (result, error, opportunityId) => [
-      { type: "VolunteerOpportunities", id: opportunityId }
-    ],
-  }),
-
-  // Update applicant status
-  updateVolunteerApplicationStatus: builder.mutation({
-    query: ({ applicationId, status }) => ({
-      url: `/volunteer-applications/${applicationId}`,
-      method: "PATCH",
-      body: { status },
+    // Create a new Volunteer Opportunity
+    createVolunteerOpportunity: builder.mutation({
+      query: (newOpportunity) => ({
+        url: "/volunteer-opportunities",
+        method: "POST",
+        body: newOpportunity,
+      }),
+      invalidatesTags: [{ type: "VolunteerOpportunities", id: "LIST" }],
     }),
-    invalidatesTags: (result, error, { applicationId }) => [
-      { type: "VolunteerOpportunities", id: "LIST" }
-    ],
-  }),
+
+    // Update a Volunteer Opportunity
+    updateVolunteerOpportunity: builder.mutation({
+      query: ({ _id, ...updatedOpportunity }) => ({
+        url: `/volunteer-opportunities/${_id}`,
+        method: "PATCH",
+        body: updatedOpportunity,
+      }),
+      invalidatesTags: (result, error, { _id }) => [
+        { type: "VolunteerOpportunities", id: _id },
+        { type: "VolunteerOpportunities", id: "LIST" },
+      ],
+    }),
+
+    // Delete a Volunteer Opportunity
+    deleteVolunteerOpportunity: builder.mutation({
+      query: (_id) => ({
+        url: `/volunteer-opportunities/${_id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, _id) => [
+        { type: "VolunteerOpportunities", id: _id },
+        { type: "VolunteerOpportunities", id: "LIST" },
+      ],
+    }),
+
+    // Create a new Volunteer Application
+    createVolunteerApplication: builder.mutation({
+      query: (newApplication) => ({
+        url: "/volunteer-applications",
+        method: "POST",
+        body: newApplication,
+      }),
+      invalidatesTags: [{ type: "VolunteerOpportunities", id: "LIST" }],
+    }),
+
+    // Get applicants for a Volunteer Opportunity
+    getVolunteerOpportunityApplicants: builder.query({
+      query: (opportunityId) =>
+        `/volunteer-opportunities/${opportunityId}/applicants`,
+      providesTags: (result, error, opportunityId) => [
+        { type: "VolunteerOpportunities", id: opportunityId },
+      ],
+    }),
+
+    // Update applicant status
+    updateVolunteerApplicationStatus: builder.mutation({
+      query: ({ applicationId, status }) => ({
+        url: `/volunteer-applications/${applicationId}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (result, error, { applicationId }) => [
+        { type: "VolunteerOpportunities", id: "LIST" },
+      ],
+    }),
 
     // Get the Quote of the Day
     getQuoteOfTheDay: builder.query({
@@ -545,7 +554,10 @@ export const apiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ _id }) => ({ type: "DuaRequests", id: _id })),
+              ...result.data.map(({ _id }) => ({
+                type: "DuaRequests",
+                id: _id,
+              })),
               { type: "DuaRequests", id: "LIST" },
             ]
           : [{ type: "DuaRequests", id: "LIST" }],
@@ -654,8 +666,8 @@ export const apiSlice = createApi({
     // ! USER AUTHENTICATION
     signup: builder.mutation({
       query: (userData) => ({
-        url: '/api/auth/signup',
-        method: 'POST',
+        url: "/api/auth/signup",
+        method: "POST",
         body: userData,
       }),
     }),
@@ -663,26 +675,26 @@ export const apiSlice = createApi({
     // Login mutation
     login: builder.mutation({
       query: (credentials) => ({
-        url: '/api/auth/login',
-        method: 'POST',
+        url: "/api/auth/login",
+        method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ["User"],
     }),
 
     // Logout mutation
     logout: builder.mutation({
       query: () => ({
-        url: '/api/auth/logout',
-        method: 'POST',
+        url: "/api/auth/logout",
+        method: "POST",
       }),
-      invalidatesTags: ['User'],
+      invalidatesTags: ["User"],
     }),
 
     // Check authentication status
     checkAuth: builder.query({
-      query: () => '/api/auth/check-auth',
-      providesTags: ['User'],
+      query: () => "/api/auth/check-auth",
+      providesTags: ["User"],
     }),
   }),
 });
@@ -704,15 +716,15 @@ export const {
   useUpdateQuestionAndAnswerMutation,
   useDeleteQuestionAndAnswerMutation,
   useToggleQuestionAndAnswerLikeMutation,
-  
+
   // PrayerTimes
   useGetPrayerTimesByIPLocationQuery,
   useGetPrayerTimesByLocationQuery,
-  
+
   // Newsletter
   useAddNewsletterSignUpMutation,
   useGetNewsletterSubscribersQuery,
-  
+
   // Islamic Quotes
   useGetIslamicQuotesQuery,
   useGetQuoteOfTheDayQuery,
@@ -720,7 +732,7 @@ export const {
   useAddIslamicQuoteMutation,
   useUpdateIslamicQuoteMutation,
   useDeleteIslamicQuoteMutation,
-  
+
   // Resources
   useGetResourcesQuery,
   useGetResourceQuery,

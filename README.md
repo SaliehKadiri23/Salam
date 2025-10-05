@@ -17,19 +17,22 @@ This application can be deployed on Render as a web service. The application is 
 
 ### Build and Start Commands
 
-**Build Command:** 
+**Build Command:**
+
 ```
 npm install && npm run build
 ```
 
-**Start Command:** 
+**Start Command:**
+
 ```
 npm start
 ```
 
 The application will be available at:
-- Server API: `https://salam-28mz.onrender.com`
-- Client Interface: `https://salam-28mz.onrender.com` (served from the same domain)
+
+- Server API: `https://salam-phi.vercel.app/`
+- Client Interface: `https://salam-phi.vercel.app/` (served from the same domain)
 
 ### Architecture Notes
 
