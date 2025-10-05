@@ -204,14 +204,14 @@ router.get('/google/callback', (req, res, next) => {
   const { state } = req.query;
   const { role } = state ? JSON.parse(Buffer.from(state, 'base64').toString()) : { role: null };
 
-  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }, (err, user, info) => {
+  passport.authenticate('google', { failureRedirect: 'https://salam-phi.vercel.app/login' }, (err, user, info) => {
     if (err) {
       return next(err);
     }
     if (!user) {
       // Include the error message in the redirect URL
       const errorMessage = info?.message ? encodeURIComponent(info.message) : 'Authentication failed';
-      return res.redirect(`http://localhost:5173/login?error=${errorMessage}`);
+      return res.redirect(`https://salam-phi.vercel.app/login?error=${errorMessage}`);
     }
 
     // If the user is found in the database, log them in and redirect to home
@@ -220,7 +220,7 @@ router.get('/google/callback', (req, res, next) => {
         if (err) {
           return next(err);
         }
-        return res.redirect('http://localhost:5173');
+        return res.redirect('https://salam-phi.vercel.app');
       });
     } else {
       // If it's a new user (social profile), store it in the session and redirect to signup
@@ -228,7 +228,7 @@ router.get('/google/callback', (req, res, next) => {
         ...user, 
         role: role // Include the role from the state parameter
       };
-      res.redirect('http://localhost:5173/signup?step=completeProfile');
+      res.redirect('https://salam-phi.vercel.app/signup?step=completeProfile');
     }
   })(req, res, next);
 });
