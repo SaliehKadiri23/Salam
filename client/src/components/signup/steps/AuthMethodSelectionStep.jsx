@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaGoogle, FaChevronLeft } from "react-icons/fa";
 import { SIGNUP_ROLES } from "../constants/rolesData";
-import { 
+import {
   selectAuthMethod,
   goBackToRoleSelection,
   proceedToProfile,
@@ -12,7 +12,7 @@ import {
   selectSelectedRole,
   selectSelectedAuthMethod,
   selectCurrentStep,
-  selectLoading
+  selectLoading,
 } from "../../../redux/signupSlice";
 
 const AuthMethodSelectionStep = ({ stepRefs }) => {
@@ -31,13 +31,15 @@ const AuthMethodSelectionStep = ({ stepRefs }) => {
   };
 
   const handleSocialAuth = (provider) => {
-    if (provider.toLowerCase() === 'google') {
-      window.location.href = `http://localhost:7000/api/auth/google?role=${selectedRole}`;
+    if (provider.toLowerCase() === "google") {
+      window.location.href = `https://salam-phi.vercel.app/api/auth/google?role=${selectedRole}`;
     } else {
-      dispatch(showNotification({
-        type: "error",
-        message: `Social authentication with ${provider} is not yet implemented.`
-      }));
+      dispatch(
+        showNotification({
+          type: "error",
+          message: `Social authentication with ${provider} is not yet implemented.`,
+        })
+      );
     }
   };
 

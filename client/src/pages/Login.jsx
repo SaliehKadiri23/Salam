@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router';
-import { useNavigate } from 'react-router';
-import * as Yup from 'yup';
-import { toast } from 'react-toastify';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router";
+import { useNavigate } from "react-router";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
 import {
   setCredentials,
   toggleRememberMe,
@@ -20,29 +20,29 @@ import {
   setUserRole,
   showForgotPasswordModal,
   apiLoginSuccess,
-  apiLoginFailure
-} from '../redux/authSlice';
+  apiLoginFailure,
+} from "../redux/authSlice";
 import {
   selectShowEmailForm,
   showNotification,
   resetLoginUi,
-  showEmailForm
-} from '../redux/loginUiSlice';
-import { useLoginMutation } from '../services/apiSlice';
+  showEmailForm,
+} from "../redux/loginUiSlice";
+import { useLoginMutation } from "../services/apiSlice";
 
 // Components
-import NotificationBanner from '../components/login/ui-components/NotificationBanner';
-import PageHeader from '../components/login/ui-components/PageHeader';
-import LoginFormContainer from '../components/login/ui-components/LoginFormContainer';
-import SignInOptionsSection from '../components/login/ui-components/SignInOptionsSection';
-import EmailPasswordForm from '../components/login/form-components/EmailPasswordForm';
-import TrustIndicators from '../components/login/ui-components/TrustIndicators';
-import ForgotPasswordModal from '../components/login/ForgotPasswordModal';
-import IslamicPattern from '../components/utility/IslamicPattern';
+import NotificationBanner from "../components/login/ui-components/NotificationBanner";
+import PageHeader from "../components/login/ui-components/PageHeader";
+import LoginFormContainer from "../components/login/ui-components/LoginFormContainer";
+import SignInOptionsSection from "../components/login/ui-components/SignInOptionsSection";
+import EmailPasswordForm from "../components/login/form-components/EmailPasswordForm";
+import TrustIndicators from "../components/login/ui-components/TrustIndicators";
+import ForgotPasswordModal from "../components/login/ForgotPasswordModal";
+import IslamicPattern from "../components/utility/IslamicPattern";
 
-export default function Login () {
+export default function Login() {
   const dispatch = useDispatch();
-  
+
   // Redux state
   const showEmailFormState = useSelector(selectShowEmailForm);
   const authLoading = useSelector(selectAuthLoading);
@@ -57,23 +57,23 @@ export default function Login () {
   // Validation schema
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email('Please enter a valid email address')
-      .required('Email address is required'),
+      .email("Please enter a valid email address")
+      .required("Email address is required"),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
-      .required('Password is required'),
-    rememberMe: Yup.boolean()
+      .min(8, "Password must be at least 8 characters")
+      .required("Password is required"),
+    rememberMe: Yup.boolean(),
   });
 
-    // Initialize component
+  // Initialize component
   useEffect(() => {
     dispatch(clearAllErrors());
-    
+
     // If user has saved credentials, show the email form by default
     if (savedCredentials.hasRememberedCredentials) {
       dispatch(showEmailForm());
     }
-    
+
     // Reset UI state on mount
     return () => {
       dispatch(resetLoginUi());
@@ -82,23 +82,26 @@ export default function Login () {
 
   // Get initial values
   const initialValues = {
-    email: savedCredentials.email || '',
-    password: '',
-    rememberMe: savedCredentials.hasRememberedCredentials || false
+    email: savedCredentials.email || "",
+    password: "",
+    rememberMe: savedCredentials.hasRememberedCredentials || false,
   };
 
   const handleSocialAuth = (provider) => {
-    if (provider.toLowerCase() === 'google') {
-      window.location.href = 'http://localhost:7000/api/auth/google';
+    if (provider.toLowerCase() === "google") {
+      window.location.href = "https://salam-phi.vercel.app/api/auth/google";
     } else {
-      toast.info(`Social authentication with ${provider} is not yet implemented.`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      toast.info(
+        `Social authentication with ${provider} is not yet implemented.`,
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        }
+      );
     }
   };
 
@@ -107,37 +110,42 @@ export default function Login () {
   };
 
   // RTK Query mutation
-  const [loginMutation, { isLoading: isLoginMutationLoading }] = useLoginMutation();
+  const [loginMutation, { isLoading: isLoginMutationLoading }] =
+    useLoginMutation();
 
   // Form submission handler
   const handleFormSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
       dispatch(loginStart());
-      
-      dispatch(setCredentials({
-        email: values.email,
-        password: values.password
-      }));
-      
+
+      dispatch(
+        setCredentials({
+          email: values.email,
+          password: values.password,
+        })
+      );
+
       if (values.rememberMe !== savedCredentials.hasRememberedCredentials) {
         dispatch(toggleRememberMe());
       }
-      
+
       // Call the RTK Query login mutation
       const result = await loginMutation({
         email: values.email,
-        password: values.password
+        password: values.password,
       }).unwrap();
-      
+
       if (result.success) {
-        dispatch(apiLoginSuccess({
-          user: result.user,
-          sessionToken: result.sessionToken || null,
-          rememberMe: values.rememberMe
-        }));
-        
+        dispatch(
+          apiLoginSuccess({
+            user: result.user,
+            sessionToken: result.sessionToken || null,
+            rememberMe: values.rememberMe,
+          })
+        );
+
         // Show success toast
-        toast.success('Login successful, Alhamdulillah!', {
+        toast.success("Login successful, Alhamdulillah!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -145,26 +153,28 @@ export default function Login () {
           pauseOnHover: true,
           draggable: true,
         });
-        
+
         // Navigate to the appropriate page based on user role
-        switch(result.user.role) {
-          case 'chief-imam':
-            navigate('/resource_dashboard');
+        switch (result.user.role) {
+          case "chief-imam":
+            navigate("/resource_dashboard");
             break;
-          case 'imam':
-            navigate('/resource_dashboard');
+          case "imam":
+            navigate("/resource_dashboard");
             break;
           default:
-            navigate('/');
+            navigate("/");
             break;
         }
       } else {
-        dispatch(apiLoginFailure({
-          error: result.message || 'Login failed'
-        }));
-        
+        dispatch(
+          apiLoginFailure({
+            error: result.message || "Login failed",
+          })
+        );
+
         // Show error toast
-        toast.error(result.message || 'Login failed. Please try again.', {
+        toast.error(result.message || "Login failed. Please try again.", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -174,15 +184,17 @@ export default function Login () {
         });
       }
     } catch (error) {
-      console.error('Login error:', error);
-      let errorMessage = 'Unable to connect. Please check your internet connection and try again.';
-      
+      console.error("Login error:", error);
+      let errorMessage =
+        "Unable to connect. Please check your internet connection and try again.";
+
       // Handle different error types - including network errors
-      if (error && typeof error === 'object') {
-        if (error.status === 'FETCH_ERROR') {
-          errorMessage = 'Network error: Unable to connect to the server. Please check your connection.';
-        } else if (error.status === 'PARSING_ERROR') {
-          errorMessage = 'Server response error. Please try again.';
+      if (error && typeof error === "object") {
+        if (error.status === "FETCH_ERROR") {
+          errorMessage =
+            "Network error: Unable to connect to the server. Please check your connection.";
+        } else if (error.status === "PARSING_ERROR") {
+          errorMessage = "Server response error. Please try again.";
         } else if (error.data && error.data.message) {
           errorMessage = error.data.message;
         } else if (error.error) {
@@ -190,14 +202,16 @@ export default function Login () {
         } else if (error.message) {
           errorMessage = error.message;
         }
-      } else if (typeof error === 'string') {
+      } else if (typeof error === "string") {
         errorMessage = error;
       }
-      
-      dispatch(apiLoginFailure({
-        error: errorMessage
-      }));
-      
+
+      dispatch(
+        apiLoginFailure({
+          error: errorMessage,
+        })
+      );
+
       // Show error toast
       toast.error(errorMessage, {
         position: "top-right",
@@ -234,7 +248,10 @@ export default function Login () {
               {/* Show either Sign In Options OR Email Password Form based on state */}
               {!showEmailFormState ? (
                 // Sign In Options View
-                <SignInOptionsSection onSocialAuth={handleSocialAuth} onEmailSignIn={() => dispatch(showEmailForm())} />
+                <SignInOptionsSection
+                  onSocialAuth={handleSocialAuth}
+                  onEmailSignIn={() => dispatch(showEmailForm())}
+                />
               ) : (
                 // Email Password Form View
                 <EmailPasswordForm
@@ -261,6 +278,6 @@ export default function Login () {
       <ForgotPasswordModal />
     </div>
   );
-};
+}
 
 // export default Login;

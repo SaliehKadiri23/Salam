@@ -38,13 +38,21 @@ import { getSignupValidationSchema } from "../components/signup/validation/signu
 import { toast } from "react-toastify";
 
 import SuccessModal from "../components/signup/ui-components/SuccessModal";
-import { selectRole, selectAuthMethod, proceedToProfile, selectShowSuccessModal, showSuccessModal, hideSuccessModal, setGoogleId } from "../redux/signupSlice";
+import {
+  selectRole,
+  selectAuthMethod,
+  proceedToProfile,
+  selectShowSuccessModal,
+  showSuccessModal,
+  hideSuccessModal,
+  setGoogleId,
+} from "../redux/signupSlice";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [signup, { isLoading: isSigningUp }] = useSignupMutation();
-  
+
   // Redux selectors
   const currentStep = useSelector(selectCurrentStep);
   const selectedRole = useSelector(selectSelectedRole);
@@ -61,27 +69,32 @@ const SignUp = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('step') === 'completeProfile') {
+    if (urlParams.get("step") === "completeProfile") {
       const fetchSocialProfile = async () => {
         try {
-          const response = await fetch('http://localhost:7000/api/auth/social-profile', {
-            credentials: 'include'
-          });
+          const response = await fetch(
+            "https://salam-phi.vercel.app/api/auth/social-profile",
+            {
+              credentials: "include",
+            }
+          );
           if (response.ok) {
             const socialProfile = await response.json();
-            dispatch(updateProfileInfo({
-              fullName: socialProfile.fullName,
-              email: socialProfile.email
-            }));
+            dispatch(
+              updateProfileInfo({
+                fullName: socialProfile.fullName,
+                email: socialProfile.email,
+              })
+            );
             dispatch(selectRole(socialProfile.role));
-            dispatch(selectAuthMethod('google')); // or get from server
+            dispatch(selectAuthMethod("google")); // or get from server
             if (socialProfile.googleId) {
               dispatch(setGoogleId(socialProfile.googleId));
             }
             dispatch(proceedToProfile());
           }
         } catch (error) {
-          console.error('Failed to fetch social profile:', error);
+          console.error("Failed to fetch social profile:", error);
         }
       };
       fetchSocialProfile();
@@ -114,54 +127,63 @@ const SignUp = () => {
   // Convert step names to numbers for progress indicator
   const getCurrentStepNumber = () => {
     switch (currentStep) {
-      case "selectRole": return 1;
-      case "selectAuth": return 2;
-      case "completeProfile": return 3;
-      default: return 1;
+      case "selectRole":
+        return 1;
+      case "selectAuth":
+        return 2;
+      case "completeProfile":
+        return 3;
+      default:
+        return 1;
     }
   };
 
   // Handle form submission
   const handleSubmit = async (values) => {
-    console.log('Submitting form with values:', values);
+    console.log("Submitting form with values:", values);
     dispatch(setLoading(true));
     try {
       // Prepare submit data - only include password for email auth
-      let submitData = { 
-        ...values, 
-        role: selectedRole, 
-        authMethod: selectedAuthMethod 
+      let submitData = {
+        ...values,
+        role: selectedRole,
+        authMethod: selectedAuthMethod,
       };
-      
+
       // If this is a Google signup, include the googleId and exclude password
-      if (selectedAuthMethod === 'google' || authProvider === 'google') {
+      if (selectedAuthMethod === "google" || authProvider === "google") {
         submitData = {
           ...submitData,
           googleId: googleId || values.googleId, // Use googleId from state or form values if available
-          password: undefined // Don't send password for Google auth
+          password: undefined, // Don't send password for Google auth
         };
       }
-      
+
       const result = await signup(submitData).unwrap();
-      console.log('Signup result:', result);
+      console.log("Signup result:", result);
 
       // Show success modal
       dispatch(showSuccessModal());
-      
+
       // Update authentication state with user data from signup response
       if (result.user) {
-        dispatch(apiLoginSuccess({
-          user: result.user,
-          sessionToken: null, // Session is already handled by server-side
-          rememberMe: false
-        }));
+        dispatch(
+          apiLoginSuccess({
+            user: result.user,
+            sessionToken: null, // Session is already handled by server-side
+            rememberMe: false,
+          })
+        );
       }
-
     } catch (error) {
-      dispatch(showNotification({
-        type: "error",
-        message: error.data?.message || "Failed to create account. Please try again."
-      }));
+      dispatch(
+        showNotification({
+          type: "error",
+          message:
+            error.data?.message ||
+            "Failed to create account. Please try again.",
+        })
+      );
     } finally {
       dispatch(setLoading(false));
     }
@@ -185,7 +207,10 @@ const SignUp = () => {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 relative overflow-hidden">
       <IslamicPattern />
       <NotificationBanner />
-      <SuccessModal isOpen={showSuccess} onClose={() => dispatch(hideSuccessModal())} />
+      <SuccessModal
+        isOpen={showSuccess}
+        onClose={() => dispatch(hideSuccessModal())}
+      />
 
       <div className="relative z-10 container mx-auto px-4 py-5">
         {/* Header */}
@@ -203,12 +228,19 @@ const SignUp = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3">
-            {currentStep === 'selectRole' && <RoleSelectionStep stepRefs={stepRefs} />}
-            {currentStep === 'selectAuth' && <AuthMethodSelectionStep stepRefs={stepRefs} />}
-            {currentStep === 'completeProfile' && (
+            {currentStep === "selectRole" && (
+              <RoleSelectionStep stepRefs={stepRefs} />
+            )}
+            {currentStep === "selectAuth" && (
+              <AuthMethodSelectionStep stepRefs={stepRefs} />
+            )}
+            {currentStep === "completeProfile" && (
               <Formik
                 initialValues={getInitialValues()}
-                validationSchema={getSignupValidationSchema(selectedRole, selectedAuthMethod)}
+                validationSchema={getSignupValidationSchema(
+                  selectedRole,
+                  selectedAuthMethod
+                )}
                 onSubmit={handleSubmit}
                 enableReinitialize
               >
@@ -243,17 +275,24 @@ const SignUp = () => {
           </p>
           <p className="text-sm">
             By creating an account, you agree to our{" "}
-            <Link to="/terms" className="text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400">
+            <Link
+              to="/terms"
+              className="text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400"
+            >
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link to="/privacy" className="text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400">
+            <Link
+              to="/privacy"
+              className="text-green-600 hover:text-green-700 dark:text-green-500 dark:hover:text-green-400"
+            >
               Privacy Policy
             </Link>
           </p>
         </div>
-              </div>
-            </div>
-        );};
+      </div>
+    </div>
+  );
+};
 
 export default SignUp;
