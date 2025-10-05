@@ -32,7 +32,7 @@ npm start
 The application will be available at:
 
 - Server API: `https://salam-phi.vercel.app/`
-- Client Interface: `https://salam-phi.vercel.app/` (served from the same domain)
+- Client Interface: `https://salam2-five.vercel.app/` (served from the same domain)
 
 ### Architecture Notes
 
