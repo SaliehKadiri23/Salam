@@ -13,6 +13,7 @@ const DuaRequest = require("./models/duaRequest");
 const VolunteerOpportunity = require("./models/volunteerOpportunity");
 const VolunteerApplication = require("./models/volunteerApplication");
 const Donation = require("./models/donation");
+const MongoStore = require("connect-mongo");
 
 const dbUrl = process.env.DB_URL;
 
@@ -53,8 +54,13 @@ app.use(
     secret: "ALLAHU AKBAR - SalamSecretKey",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.DB_URL, // Use your MongoDB connection string
+      collectionName: "sessions", // Optional: name of the collection to store sessions
+      ttl: 14 * 24 * 60 * 60, // Optional: time to live for sessions (14 days)
+    }),
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Set to true if you are using https
+      secure: process.env.NODE_ENV === "production",
       httpOnly: true,
       sameSite: "lax",
     },
