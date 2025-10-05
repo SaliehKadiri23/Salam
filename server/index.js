@@ -36,7 +36,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://salam2-five.vercel.app/",
+      "https://salam2-five.vercel.app",
       "http://localhost:3000",
       "http://localhost:5174",
       "https://salam-phi.vercel.app",
