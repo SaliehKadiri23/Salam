@@ -14,6 +14,7 @@ const VolunteerOpportunity = require("./models/volunteerOpportunity");
 const VolunteerApplication = require("./models/volunteerApplication");
 const Donation = require("./models/donation");
 const MongoStore = require("connect-mongo");
+const cookieParser = require("cookie-parser");
 
 const dbUrl = process.env.DB_URL;
 
@@ -42,11 +43,15 @@ app.use(
       "http://localhost:5174",
       "https://salam-phi.vercel.app",
     ],
-    credentials: true, // Important: allow credentials (cookies, authorization headers)
+    credentials: true,
   })
 );
 // Allows express to accept Json data
 app.use(express.json());
+
+app.use(cookieParser());
+
+app.set('trust proxy', 1);
 
 // Configuring Express Session
 app.use(
@@ -55,14 +60,15 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: process.env.DB_URL, // Use your MongoDB connection string
-      collectionName: "sessions", // Optional: name of the collection to store sessions
-      ttl: 14 * 24 * 60 * 60, // Optional: time to live for sessions (14 days)
+      mongoUrl: process.env.DB_URL, 
+      collectionName: "sessions", 
+      ttl: 14 * 24 * 60 * 60, // Time to live for sessions (14 days)
     }),
     cookie: {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: 'none', 
+      maxAge: 1000 * 60 * 60 * 24 * 14 // Expires in 14 days
     },
   })
 );
